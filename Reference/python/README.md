@@ -1,6 +1,6 @@
 # Reference tools (Python)
 
-Small scripts written while the Maquette proposal was prepared (November 2026). They are not part of the application. They record how each file format was read and checked, and they are the model for the C++ code of the build steps named below.
+Small scripts written while the Maket proposal was prepared (November 2026). They are not part of the application. They record how each file format was read and checked, and they are the model for the C++ code of the build steps named below.
 
 None of these files contains conTimbre data. The conTimbre scripts read the `search_data` folder of a conTimbre installation on the user's own disk; that folder is never copied here.
 
