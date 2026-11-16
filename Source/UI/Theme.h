@@ -1,0 +1,34 @@
+// Theme.h — Maket's colours and look (dark; taken over from Projet as a
+// starting point, so that the apps feel alike).
+
+#pragma once
+
+#include <JuceHeader.h>
+
+namespace Theme
+{
+    inline const juce::Colour background   { 0xff141518 };
+    inline const juce::Colour panel        { 0xff1c1d21 };
+    inline const juce::Colour panel2       { 0xff23252a };
+    inline const juce::Colour header       { 0xff1a1b1f };
+    inline const juce::Colour line         { 0xff2e3036 };
+    inline const juce::Colour lineStrong   { 0xff4a4d55 };
+    inline const juce::Colour text         { 0xffe8e6e1 };
+    inline const juce::Colour textMuted    { 0xffa19f97 };
+    inline const juce::Colour accent       { 0xffe8b04b };     // the tab in front, selection, playhead
+
+    juce::Font font (float height, bool bold = false);
+    juce::Font mono (float height);
+
+    class LookAndFeel : public juce::LookAndFeel_V4
+    {
+    public:
+        LookAndFeel();
+        juce::Font getTextButtonFont (juce::TextButton&, int buttonHeight) override;
+        juce::Font getLabelFont (juce::Label&) override;
+        juce::Font getComboBoxFont (juce::ComboBox&) override;
+        juce::Font getPopupMenuFont() override;
+        void drawButtonBackground (juce::Graphics&, juce::Button&, const juce::Colour& backgroundColour,
+                                   bool highlighted, bool down) override;
+    };
+}
