@@ -1,0 +1,3327 @@
+roll
+	[ slotinfo
+		[ 1
+			[ name Timbre ]
+			[ type text ]
+			[ key t ]
+			[ color 0.0 0.71824 0.957143 1.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 2
+			[ name Modulation ]
+			[ type function ]
+			[ key m ]
+			[ range 0.0 127.0 ]
+			[ slope 0.0 ]
+			[ representation ]
+			[ grid ]
+			[ ysnap ]
+			[ domain 0.0 1.0 ]
+			[ domainslope 0.0 ]
+			[ color 1.0 0.0 0.0 1.0 ]
+			[ temporalmode milliseconds ]
+			[ extend 0 ]
+			[ width auto ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 3
+			[ name `gain\ (dB) ]
+			[ type function ]
+			[ key p ]
+			[ range -20.0 20.0 ]
+			[ slope 0.0 ]
+			[ representation dB ]
+			[ grid ]
+			[ ysnap 0.0 ]
+			[ domain 0.0 0.0 ]
+			[ domainslope 0.0 ]
+			[ color 0.04776 0.295505 0.869231 1.0 ]
+			[ temporalmode milliseconds ]
+			[ extend 0 ]
+			[ width auto ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 4
+			[ name "slot floatlist" ]
+			[ type floatlist ]
+			[ key 0 ]
+			[ range 0.0 1.0 ]
+			[ slope 0.0 ]
+			[ representation ]
+			[ color 0.036391 0.946154 0.946154 1.0 ]
+			[ default 0.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 5
+			[ name "slot int" ]
+			[ type int ]
+			[ key 0 ]
+			[ range 0.0 127.0 ]
+			[ slope 0.0 ]
+			[ representation ]
+			[ default 64.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 6
+			[ name "slot float" ]
+			[ type float ]
+			[ key 0 ]
+			[ range 0.0 1.0 ]
+			[ slope 0.0 ]
+			[ representation ]
+			[ default 0.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 7
+			[ name "slot text" ]
+			[ type text ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 8
+			[ name "slot filelist" ]
+			[ type filelist ]
+			[ key s ]
+			[ color 0.514622 0.234852 0.694401 1.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 150.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 9
+			[ name "slot spat" ]
+			[ type spat ]
+			[ key 0 ]
+			[ range 0.0 10.0 ]
+			[ slope 0.0 ]
+			[ representation ]
+			[ temporalmode relative ]
+			[ extend 0 ]
+			[ width auto ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 10
+			[ name "slot llll" ]
+			[ type llll ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 11
+			[ name "slot 11" ]
+			[ type none ]
+			[ key 0 ]
+			[ color 0.407692 0.156805 0.156805 1.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 12
+			[ name "slot 12" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 13
+			[ name "slot 13" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 14
+			[ name "slot 14" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 15
+			[ name "slot 15" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 16
+			[ name "slot 16" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 17
+			[ name "slot 17" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 18
+			[ name "slot 18" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 19
+			[ name "slot 19" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 20
+			[ name dynamics ]
+			[ type dynamics ]
+			[ key d ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 70.0 ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 21
+			[ name lyrics ]
+			[ type text ]
+			[ key l ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 22
+			[ name articulations ]
+			[ type articulations ]
+			[ key a ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 110.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 23
+			[ name notehead ]
+			[ type notehead ]
+			[ key h ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 110.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 24
+			[ name "slot 24" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 25
+			[ name "slot 25" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 26
+			[ name "slot 26" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 27
+			[ name "slot 27" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 28
+			[ name "slot 28" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 29
+			[ name "slot 29" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 30
+			[ name "slot 30" ]
+			[ type none ]
+			[ key 0 ]
+			[ color 0.0532 0.071039 0.88022 1.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+	]
+	[ commands
+		[ 1
+			[ note note ]
+			[ chord chord ]
+			[ rest rest ]
+			[ key 0 ]
+		]
+		[ 2
+			[ note note ]
+			[ chord chord ]
+			[ rest rest ]
+			[ key 0 ]
+		]
+		[ 3
+			[ note note ]
+			[ chord chord ]
+			[ rest rest ]
+			[ key 0 ]
+		]
+		[ 4
+			[ note note ]
+			[ chord chord ]
+			[ rest rest ]
+			[ key 0 ]
+		]
+		[ 5
+			[ note note ]
+			[ chord chord ]
+			[ rest rest ]
+			[ key 0 ]
+		]
+	]
+	[ clefs None None FG `G8vb F Alto FFGG FFGG ]
+	[ keys CM CM CM CM CM CM CM CM ]
+	[ voicenames Mezzo
+		[ ]
+	Vlc Fl Cl Vla PnRH PnLH ]
+	[ groups ]
+	[ markers
+		[ 942.438822
+			[ marker 1 ]
+		timesig
+			[ 3 4 ]
+		]
+		[ 943.024259
+			[ START STROFE1 ]
+		none ]
+		[ 4549.921597
+			[ marker 2 ]
+		barline ]
+		[ 7186.408747 "D'aarde is niet uit haar " none ]
+		[ 8917.713092
+			[ marker 4 ]
+		barline ]
+		[ 10337.721515
+			[ marker 17 ]
+		none ]
+		[ 11562.389125 "baan getreden" none ]
+		[ 12911.330761
+			[ ]
+		barline ]
+		[ 15504.859623
+			[ toen uw hartje ]
+		none ]
+		[ 16894.862048
+			[ ]
+		barline ]
+		[ 19348.169933
+			[ stil bleef staan ]
+		none ]
+		[ 23954.228363
+			[ ]
+		barline ]
+		[ 23966.605168
+			[ De sterren zijn niet ]
+		none ]
+		[ 27277.299793
+			[ ]
+		barline ]
+		[ 27286.058231
+			[ uitgegaan... en't ]
+		none ]
+		[ 32085.539218
+			[ ]
+		none ]
+		[ 32094.297656
+			[ huis.. is over- ]
+		none ]
+		[ 35401.953942
+			[ ]
+		barline ]
+		[ 35407.0514
+			[ -eind gebleven ]
+		none ]
+		[ 40435.033223
+			[ EIND STROFE1 ]
+		none ]
+		[ 43397.258114
+			[ ]
+		barline ]
+		[ 46494.584357
+			[ START STROFE 2 ]
+		none ]
+		[ 51252.834595
+			[ marker 7 ]
+		barline ]
+		[ 54341.257837
+			[ marker 12 ]
+		barline ]
+		[ 57309.836391
+			[ marker 8 ]
+		barline ]
+		[ 62137.826477
+			[ marker 9 ]
+		barline ]
+		[ 64887.149291
+			[ marker 10 ]
+		barline ]
+		[ 67542.909896
+			[ marker 11 ]
+		barline ]
+		[ 70831.698993
+			[ marker 5 ]
+		barline ]
+		[ 74466.325659
+			[ marker 13 ]
+		barline ]
+		[ 79305.333763
+			[ marker 14 ]
+		barline ]
+		[ 84725.055478
+			[ marker 16 ]
+		barline ]
+		[ 88953.143235
+			[ marker 15 ]
+		barline ]
+		[ 94380.259019
+			[ marker 18 ]
+		barline ]
+		[ 100325.743491
+			[ marker 19 ]
+		barline ]
+		[ 105020.01005
+			[ marker 6 ]
+		barline ]
+		[ 110586.928726
+			[ marker 20 ]
+		barline ]
+		[ 120306.467819
+			[ marker 21 ]
+		barline ]
+		[ 127468.233467
+			[ marker 22 ]
+		barline ]
+		[ 133967.987164
+			[ marker 23 ]
+		barline ]
+		[ 138963.168246
+			[ marker 24 ]
+		barline ]
+		[ 146053.578676
+			[ marker 25 ]
+		barline ]
+		[ 151075.783035
+			[ marker 26 ]
+		barline ]
+		[ 155021.315901
+			[ marker 28 ]
+		barline ]
+		[ 160075.758099
+			[ marker 27 ]
+		barline ]
+		[ 164385.893166
+			[ marker 29 ]
+		barline ]
+		[ 170055.635349
+			[ marker 30 ]
+		barline ]
+		[ 175600.011599
+			[ marker 31 ]
+		barline ]
+		[ 180022.832073
+			[ marker 3 ]
+		none ]
+	]
+	[ stafflines 5 5 5 5 5 5 5 5 ]
+	[ midichannels 1 1 1 1 1 1 1 1 ]
+	[ articulationinfo ]
+	[ noteheadinfo ]
+	[ numparts 1 1 1 1 1 1 1 1 ]
+	[ loop 0.0 1000.0 ]
+	[
+		[ 7397.802301
+			[ 7200.0 7803.0 117
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Doodsbed/Doodsbed_S1/Doodsbed - zang wavs/s1r1.wav" 1 ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 15426.703228
+			[ 7100.0 7513.0 121
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Doodsbed/Doodsbed_S1/Doodsbed - zang wavs/s1r2.wav" 1 ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 23470.414953
+			[ 7200.0 7162.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Doodsbed/Doodsbed_S1/Doodsbed - zang wavs/s1r3.wav" 1 ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 31179.263939
+			[ 7100.0 10564.0 125
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Doodsbed/Doodsbed_S1/Doodsbed - zang wavs/s1r4.wav" 1 ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 42533.594405
+			[ 7100.0 23810.0 106
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Doodsbed/Doodsbed_S1/Doodsbed - zang wavs/s2r1c.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 64118.645117
+			[ 6000.0 7022.0 92
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Doodsbed/Doodsbed_S1/Doodsbed - zang wavs/pn-str-gliss-2c8-trm-1b.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 75411.313297
+			[ 7200.0 14433.0 117
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Doodsbed/Doodsbed update2 oktober 2019/doodsbed audio 2/s3z1+2b.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 93379.459034
+			[ 7100.0 15938.0 114
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Doodsbed/Doodsbed update2 oktober 2019/doodsbed audio 2/s3z3+4.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 114856.873108
+			[ 6900.0 27075.0 117
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Doodsbed/Doodsbed update2 oktober 2019/doodsbed audio 2/s4.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 143894.367415
+			[ 7200.0 20631.0 117
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Doodsbed/Doodsbed update2 oktober 2019/doodsbed audio 2/s5.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 165053.918181
+			[ 7200.0 7439.0 110
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Doodsbed/Doodsbed update2 oktober 2019/doodsbed audio 2/s5z4.wav" 1 ]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[
+		[ 40452.095651
+			[ 7100.0 6244.0 10
+				[ slots
+					[ 1 "DUMMY: SOME TRANSITION EFFECT TO S2: harm-gliss, guiro,..." ]
+				]
+			2 ]
+		2 ]
+	0 ]
+	[
+		[ 7200.802301
+			[ 6690.0 4511.0 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 50.0 0.0 ]
+				]
+				[ slots
+					[ 1 "sul tasto" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 4267.0 16.846475 0.0 ]
+					]
+					[ 3
+						[ 0.0 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 11534.127634
+			[ 6740.0 4493.0 15
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 28.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 16.933333 0.0 ]
+						[ 4274.188017 36.688889 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 15923.344567
+			[ 6768.0 3678.0 36
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 18.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 1.89794 33.866667 0.0 ]
+						[ 3336.020601 50.8 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 19378.120319
+			[ 6786.0 4787.0 51
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 16.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 34.106086 67.733333 0.0 ]
+						[ 761.55103 28.222222 0.0 ]
+						[ 1852.718447 11.288889 0.0 ]
+						[ 3004.506275 5.644444 0.0 ]
+						[ 4590.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 24016.169573
+			[ 6802.0 3493.0 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 50.0 0.0 ]
+				]
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 2996.0 11.82846 0.0 ]
+					]
+					[ 3
+						[ 0.0 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 27232.226636
+			[ 6840.0 3926.0 15
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 28.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 16.933333 0.0 ]
+						[ 3926.0 37.037746 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 31141.951566
+			[ 6886.0 4240.0 36
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 28.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 39.511111 0.0 ]
+						[ 1415.124216 45.155556 0.0 ]
+						[ 2816.553219 73.377778 0.0 ]
+						[ 3679.943903 98.777778 0.0 ]
+						[ 4127.322544 127.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 35389.384433
+			[ 6900.0 5128.0 100
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 16.0 0.0 ]
+				]
+				[ slots
+					[ 1 "sul ponticello" ]
+					[ 2
+						[ 0.0 112.888889 0.0 ]
+						[ 1034.161676 93.133333 0.0 ]
+						[ 1779.792744 62.088889 0.0 ]
+						[ 2252.025754 33.866667 0.0 ]
+						[ 2848.530608 14.111111 0.0 ]
+						[ 3792.996627 0.0 0.0 ]
+						[ 4712.608278 0.0 0.0 ]
+					]
+					[ 3
+						[ 14.553494 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 39862.424766
+			[ 6902.0 3238.0 84
+				[ slots
+					[ 1 "flautando.sul ponticello" ]
+					[ 2
+						[ 17.946586 81.844444 0.0 ]
+						[ 1395.601529 33.584444 0.0 ]
+						[ 2113.0 23.123989 0.0 ]
+					]
+					[ 3
+						[ 62.006466 5.777778 0.0 ]
+						[ 1003.541025 0.444444 0.0 ]
+						[ 1685.341913 -11.111111 0.0 ]
+						[ 2497.009636 -17.333333 0.0 ]
+						[ 3238.0 -19.080452 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 46514.73241
+			[ 6950.0 4767.972191 46
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 992.088927 22.577778 0.0 ]
+						[ 3034.981695 50.8 0.0 ]
+						[ 4767.972191 64.911111 0.0 ]
+					]
+					[ 3
+						[ 0.0 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 51282.704601
+			[ 6650.0 6090.474318 74
+				[ slots
+					[ 2
+						[ 0.0 79.022222 0.0 ]
+						[ 912.996195 53.622222 0.0 ]
+						[ 2016.864299 33.866667 0.0 ]
+						[ 3477.866202 22.577778 0.0 ]
+						[ 4273.462499 22.577778 0.0 ]
+						[ 5409.797312 39.511111 0.0 ]
+						[ 5989.0 61.033865 0.0 ]
+					]
+					[ 3
+						[ 0.0 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 57373.17892
+			[ 5850.0 4920.0 74
+				[ slots
+					[ 2
+						[ 1.986609 45.155556 0.0 ]
+						[ 521.453952 19.755556 0.0 ]
+						[ 1365.588385 8.466667 0.0 ]
+						[ 2567.533291 8.466667 0.0 ]
+						[ 4113.059198 19.755556 0.0 ]
+						[ 4920.0 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 62141.515001
+			[ 3625.0 7919.0 70
+				[ slots
+					[ 1 "tremolo.sul ponticello" ]
+					[ 2
+						[ 0.0 87.488889 0.0 ]
+						[ 368.084722 22.577778 0.0 ]
+						[ 1066.446318 14.111111 0.0 ]
+						[ 2311.334099 11.288889 0.0 ]
+						[ 4301.984365 2.822222 0.0 ]
+						[ 7061.654625 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 5.777778 0.0 ]
+						[ 2029.314739 3.111111 0.0 ]
+						[ 4042.250693 -1.333333 0.0 ]
+						[ 5568.186014 -7.555556 0.0 ]
+						[ 6444.787155 -12.0 0.0 ]
+						[ 7074.0 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 79303.426626
+			[ 4575.0 495.126252 7
+				[ slots
+					[ 1 pizz ]
+					[ 3
+						[ 3.397812 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 79798.552878
+			[ 5350.0 495.126252 42 0 ]
+		0 ]
+		[ 80293.67913
+			[ 6000.0 495.126252 53
+				[ slots
+					[ 1 pizz.natharm ]
+				]
+			0 ]
+		0 ]
+		[ 80788.805381
+			[ 6700.0 547.705776 49 0 ]
+		0 ]
+		[ 81407.816427
+			[ 6700.0 643.499676 28 0 ]
+		0 ]
+		[ 81968.85811
+			[ 6000.0 562.407716 22 0 ]
+		0 ]
+		[ 82569.900309
+			[ 5350.0 716.727242 9
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 83277.900412
+			[ 4575.0 1386.497434 7
+				[ slots
+					[ 2
+						[ 24.714085 14.111111 0.0 ]
+						[ 1369.531015 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 88944.004851
+			[ 5500.0 495.126252 7
+				[ slots
+					[ 1 pizz ]
+					[ 3
+						[ 3.397812 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 89439.131103
+			[ 6275.0 495.126252 42 0 ]
+		0 ]
+		[ 89934.257355
+			[ 6900.0 495.126252 53
+				[ slots
+					[ 1 pizz.natharm ]
+				]
+			0 ]
+		0 ]
+		[ 90429.383606
+			[ 7625.0 547.705776 49 0 ]
+		0 ]
+		[ 91048.394651
+			[ 7625.0 643.499676 28 0 ]
+		0 ]
+		[ 91609.436334
+			[ 6900.0 562.407716 22 0 ]
+		0 ]
+		[ 92210.478534
+			[ 6275.0 716.727242 9
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 92918.478636
+			[ 5500.0 1386.497434 7
+				[ slots
+					[ 2
+						[ 24.714085 14.111111 0.0 ]
+						[ 1369.531015 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 100342.170884
+			[ 4875.0 495.126252 7
+				[ slots
+					[ 1 pizz ]
+					[ 3
+						[ 3.397812 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 100837.297135
+			[ 5675.0 495.126252 42 0 ]
+		0 ]
+		[ 101332.423387
+			[ 6300.0 495.126252 53 0 ]
+		0 ]
+		[ 101827.549638
+			[ 7150.0 547.705776 49 0 ]
+		0 ]
+		[ 102446.560684
+			[ 7150.0 643.499676 28 0 ]
+		0 ]
+		[ 103007.602367
+			[ 6300.0 562.407716 22 0 ]
+		0 ]
+		[ 103608.644566
+			[ 5675.0 716.727242 9 0 ]
+		0 ]
+		[ 104316.644669
+			[ 4875.0 1386.497434 7
+				[ slots
+					[ 2
+						[ 24.714085 14.111111 0.0 ]
+						[ 1369.531015 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 109099.578967
+			[ 7275.0 10486.972191 1
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 6369.354849 0.0 0.0 ]
+						[ 10486.972191 56.444444 0.0 ]
+					]
+					[ 3
+						[ 0.0 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 119724.941656
+			[ 7275.0 12463.70905 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 0.834274 0.0 0.0 ]
+					[ 1.0 25.0 0.0 ]
+				]
+				[ slots
+					[ 1 "sul tasto" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 12463.70905 61.204971 0.0 ]
+					]
+					[ 3
+						[ 0.0 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 132368.650706
+			[ 7300.0 6513.972191 59
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 0.667159 0.0 0.0 ]
+					[ 1.0 75.0 0.0 ]
+				]
+				[ slots
+					[ 1 "sul tasto" ]
+					[ 2
+						[ 0.0 59.266667 0.0 ]
+						[ 6513.972191 79.022222 0.0 ]
+					]
+					[ 3
+						[ 0.0 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 138959.690711
+			[ 7400.0 3391.972191 77
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 76.2 0.0 ]
+						[ 653.567084 25.4 0.0 ]
+						[ 1797.042272 8.466667 0.0 ]
+						[ 2971.972191 3.791823 0.0 ]
+					]
+					[ 3
+						[ 0.0 5.777778 0.0 ]
+						[ 2138.325964 -1.333333 0.0 ]
+						[ 3062.030333 -10.222222 0.0 ]
+						[ 3391.972191 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 146027.208468
+			[ 5200.0 2465.972191 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 25.0 0.0 ]
+				]
+				[ slots
+					[ 1 "con sordino" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 2465.972191 19.755556 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 148466.592864
+			[ 5225.0 5085.972191 21
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 75.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 22.577778 0.0 ]
+						[ 2565.972191 36.688889 0.0 ]
+						[ 5085.972191 64.911111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 153483.434392
+			[ 5300.0 3741.972191 100
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 25.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 64.911111 0.0 ]
+						[ 1848.026876 11.288889 0.0 ]
+						[ 3573.972191 2.868636 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 160094.470946
+			[ 5350.0 2465.972191 110
+				[ slots
+					[ 1 "tremolo.sul ponticello" ]
+					[ 2
+						[ 0.0 107.244444 0.0 ]
+						[ 949.287183 14.111111 0.0 ]
+						[ 2061.972191 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 170060.3513
+			[ 4250.0 9099.972191 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 25.0 0.0 ]
+				]
+				[ slots
+					[ 1 "con sordino" ]
+					[ 3
+						[ 0.0 -5.777778 0.0 ]
+						[ 1900.536838 -7.555556 0.0 ]
+						[ 3800.272822 -10.222222 0.0 ]
+						[ 5480.367861 -13.777778 0.0 ]
+						[ 6612.125469 -15.555556 0.0 ]
+						[ 7865.14282 -18.222222 0.0 ]
+						[ 9099.972191 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[
+		[ 7202.10965
+			[ 6375.0 1746.598523 40
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -100.0 0.0 ]
+				]
+				[ slots
+					[ 1 "flute.flutter-tongue.throat-R.with air noise" ]
+					[ 2
+						[ 4.160288 39.511111 0.0 ]
+						[ 852.258448 28.222222 0.0 ]
+						[ 1746.598523 4.797778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 8948.708173
+			[ 6250.0 2601.189976 34
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -25.0 0.0 ]
+				]
+				[ slots
+					[ 1 "bass flute.bisbigliando" ]
+				]
+			0 ]
+		0 ]
+		[ 11571.729192
+			[ 7375.0 1349.497171 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -275.0 0.0 ]
+				]
+				[ slots
+					[ 1 "bass flute.flutter-tongue.tongue-R" ]
+				]
+			0 ]
+		0 ]
+		[ 12921.226362
+			[ 6000.0 2807.0 17
+				[ slots
+					[ 1 "bass flute.bisbigliando" ]
+				]
+			0 ]
+		0 ]
+		[ 15506.053363
+			[ 7325.0 1402.373888 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -150.0 0.0 ]
+				]
+				[ slots
+					[ 1 "bass flute.flutter-tongue.tongue-R" ]
+				]
+			0 ]
+		0 ]
+		[ 16908.427251
+			[ 6350.0 1089.721099 65
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -225.0 0.0 ]
+				]
+			0 ]
+		0 ]
+		[ 18141.523038
+			[ 5450.0 1240.721099 117
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -50.0 0.0 ]
+				]
+			0 ]
+		0 ]
+		[ 19374.618825
+			[ 4850.0 5509.0 62
+				[ slots
+					[ 1 "bass flute.ordinario" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 149.321448 73.377778 0.0 ]
+						[ 552.80548 118.533333 0.0 ]
+						[ 1317.30154 121.355556 0.0 ]
+						[ 3610.789719 79.022222 0.0 ]
+						[ 5509.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 26116.438218
+			[ 7750.0 1210.506489 10
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -200.0 0.0 ]
+				]
+				[ slots
+					[ 1 "bass flute.bisbigliando" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 239.271507 31.044444 0.0 ]
+						[ 727.699545 53.622222 0.0 ]
+						[ 1194.891581 64.911111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 27310.620383
+			[ 7500.0 2266.0 56
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -25.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 67.733333 0.0 ]
+						[ 495.577129 19.755556 0.0 ]
+						[ 1477.980401 2.822222 0.0 ]
+						[ 2245.226084 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 32067.956758
+			[ 6275.0 4261.393387 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 0.766771 0.0 0.0 ]
+					[ 1.0 50.0 0.0 ]
+				]
+				[ slots
+					[ 1 "bass flute.flutter-tongue.tongue-R" ]
+					[ 2
+						[ 60.875985 0.0 0.0 ]
+						[ 4261.393387 36.688889 0.0 ]
+					]
+					[ 3
+						[ 0.0 -15.555556 0.0 ]
+						[ 3274.616312 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 36329.350146
+			[ 6250.0 6732.0 79
+				[ slots
+					[ 1 "bass flute.bisbigliando" ]
+					[ 2
+						[ 9.998851 76.2 0.0 ]
+						[ 436.436251 42.333333 0.0 ]
+						[ 2059.649577 14.111111 0.0 ]
+						[ 4060.287243 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 4104.411706 -10.222222 0.0 ]
+						[ 5468.013481 -16.444444 0.0 ]
+						[ 6732.0 -18.45168 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 43282.511033
+			[ 3600.0 4386.620684 1
+				[ slots
+					[ 1 "bass flute.multiphonic" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 4386.620684 127.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 -20.0 0.0 ]
+						[ 878.682402 -11.111111 0.0 ]
+						[ 2382.708857 -3.111111 0.0 ]
+						[ 4386.620684 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 47669.131717
+			[ 6850.0 3655.106809 127
+				[ slots
+					[ 1 "bass flute.flutter-tongue.tongue-R" ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 575.844233 62.088889 0.0 ]
+						[ 1693.051216 33.866667 0.0 ]
+						[ 3309.106809 21.989621 0.0 ]
+					]
+					[ 3
+						[ 22.642816 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 51282.238527
+			[ 7125.0 6072.0 30
+				[ slots
+					[ 1 "bass flute.ordinario" ]
+					[ 2
+						[ 0.0 31.044444 0.0 ]
+						[ 3056.622711 0.0 0.0 ]
+						[ 5251.080766 25.4 0.0 ]
+						[ 6072.0 59.266667 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 57368.432947
+			[ 8700.0 4896.0 102
+				[ slots
+					[ 1 "bass flute.multiphonic" ]
+					[ 22 harm ]
+				]
+			0 ]
+		0 ]
+		[ 62139.43211
+			[ 5750.0 502.391983 65
+				[ slots
+					[ 1 pizzicato.tongue ]
+				]
+			0 ]
+		0 ]
+		[ 62573.824094
+			[ 5750.0 502.391983 88 0 ]
+		0 ]
+		[ 63212.216077
+			[ 5750.0 293.148982 81 0 ]
+		0 ]
+		[ 63924.237243
+			[ 5750.0 321.687003 92 0 ]
+		0 ]
+		[ 64652.66288
+			[ 5750.0 502.391983 87 0 ]
+		0 ]
+		[ 65087.054863
+			[ 5750.0 293.148982 94 0 ]
+		0 ]
+		[ 65762.826722
+			[ 5750.0 502.391983 127
+				[ slots
+					[ 1 pizzicato.tongue ]
+				]
+			0 ]
+		0 ]
+		[ 66537.218706
+			[ 5750.0 502.391983 75 0 ]
+		0 ]
+		[ 67107.610689
+			[ 5750.0 293.148982 103 0 ]
+		0 ]
+		[ 67547.631854
+			[ 5750.0 321.687003 72 0 ]
+		0 ]
+		[ 68141.318857
+			[ 5750.0 386.098659 79 0 ]
+		0 ]
+		[ 69143.865276
+			[ 5750.0 661.687003 51 0 ]
+		0 ]
+		[ 70825.552279
+			[ 5750.0 386.098659 32 0 ]
+		0 ]
+		[ 81286.844986
+			[ 6700.0 5183.802533 1
+				[ slots
+					[ 1 "bass flute.ordinario" ]
+				]
+			0 ]
+		0 ]
+		[ 91022.42374
+			[ 7600.0 7712.802533 1
+				[ slots
+					[ 1 "bass flute.ordinario" ]
+				]
+			0 ]
+		0 ]
+		[ 102420.589773
+			[ 7650.0 7982.711081 69
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 0.855932 0.0 0.0 ]
+					[ 1.0 -250.0 0.0 ]
+				]
+				[ slots
+					[ 1 "bass flute.flutter-tongue.tongue-R" ]
+					[ 2
+						[ 0.0 67.733333 0.0 ]
+						[ 2253.398653 93.133333 0.0 ]
+						[ 7982.711081 19.755556 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 110494.078579
+			[ 7350.0 2715.802533 41
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -50.0 0.0 ]
+				]
+				[ slots
+					[ 1 "bass flute.ordinario" ]
+					[ 2
+						[ 0.0 50.8 0.0 ]
+						[ 499.713169 16.933333 0.0 ]
+						[ 2113.802533 7.234594 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 120342.27019
+			[ 6050.0 7213.131814 1
+				[ slots
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 7213.131814 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 127534.676004
+			[ 5975.0 6611.131814 1
+				[ slots
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 6611.131814 4.17306 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 134032.716407
+			[ 5900.0 5106.131814 1
+				[ slots
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 4203.131814 20.865301 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 138966.982966
+			[ 5700.0 7083.131814 1
+				[ slots
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 6611.131814 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 146096.246347
+			[ 7275.0 1326.598523 43
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -100.0 0.0 ]
+				]
+				[ slots
+					[ 1 "bass flute.ordinario" ]
+					[ 2
+						[ 4.160288 39.511111 0.0 ]
+						[ 852.258448 28.222222 0.0 ]
+						[ 1326.598523 15.798366 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 147254.84487
+			[ 7150.0 2601.189976 34
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 0.443173 -50.0 0.0 ]
+					[ 1.0 -100.0 0.0 ]
+				]
+				[ slots
+					[ 1 "bass flute.bisbigliando" ]
+				]
+			0 ]
+		0 ]
+		[ 149917.157887
+			[ 6875.0 990.598523 39
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 50.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 4.160288 39.511111 0.0 ]
+						[ 822.598523 28.61702 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 151075.75641
+			[ 6950.0 1089.189976 48
+				[ slots
+					[ 2
+						[ 0.0 73.377778 0.0 ]
+						[ 1089.189976 101.6 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 152226.042551
+			[ 7000.0 4602.598523 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 0.614202 -300.0 0.0 ]
+					[ 1.0 -350.0 0.0 ]
+				]
+				[ slots
+					[ 1 "bass flute.flutter-tongue.tongue-R" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 4602.598523 45.155556 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 160116.89215
+			[ 7800.0 2465.972191 110
+				[ slots
+					[ 1 "bass flute.flutter-tongue.tongue-R" ]
+					[ 2
+						[ 0.0 107.244444 0.0 ]
+						[ 949.287183 14.111111 0.0 ]
+						[ 2061.972191 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 170060.030958
+			[ 6400.0 9043.972191 1
+				[ slots
+					[ 1 "bass flute.ordinario" ]
+					[ 3
+						[ 0.0 -5.777778 0.0 ]
+						[ 1900.536838 -7.555556 0.0 ]
+						[ 3800.272822 -10.222222 0.0 ]
+						[ 5480.367861 -13.777778 0.0 ]
+						[ 6612.125469 -15.555556 0.0 ]
+						[ 7865.14282 -18.222222 0.0 ]
+						[ 9043.972191 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[
+		[ 8919.006825
+			[ 3975.0 3957.0 12
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -50.0 0.0 ]
+				]
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 599.703481 21.731111 0.0 ]
+						[ 1382.145168 31.891111 0.0 ]
+						[ 3838.22202 11.571111 0.0 ]
+					]
+					[ 3
+						[ 9.055894 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 12928.232112
+			[ 4475.0 3715.0 14
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 50.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 6.491111 0.0 ]
+						[ 2749.000922 16.651111 0.0 ]
+						[ 3715.0 6.491111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 16893.61482
+			[ 3775.0 1729.965288 60
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 0.489193 25.0 0.0 ]
+					[ 1.0 100.0 0.0 ]
+				]
+			0 ]
+		0 ]
+		[ 18623.580109
+			[ 3950.0 688.494753 33
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 50.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 35.277778 0.0 ]
+						[ 688.494753 21.731111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 19343.55708
+			[ 4550.0 7887.367873 4
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 0.578028 25.0 0.0 ]
+					[ 1.0 75.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 1161.887378 31.044444 0.0 ]
+						[ 3213.68954 50.8 0.0 ]
+						[ 3654.65583 28.222222 0.0 ]
+						[ 4610.275905 8.466667 0.0 ]
+						[ 5912.76327 2.822222 0.0 ]
+						[ 7887.367873 28.104902 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 27227.621795
+			[ 4750.0 4851.367873 29
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -25.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 31.044444 0.0 ]
+						[ 1780.795642 5.644444 0.0 ]
+						[ 3779.029126 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 32088.690689
+			[ 4650.0 4237.367873 4
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 75.0 0.0 ]
+				]
+				[ slots
+					[ 1 flutter-tongue.tongue-R ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 4237.367873 42.333333 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 36315.93456
+			[ 4275.0 3074.367873 86
+				[ slots
+					[ 2
+						[ 0.0 84.666667 0.0 ]
+						[ 3074.367873 16.933333 0.0 ]
+					]
+					[ 3
+						[ 23.414437 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 39339.200457
+			[ 4275.0 7184.0 10
+				[ slots
+					[ 1 "air noise.flutter-tongue.tongue-R.without surplus air" ]
+					[ 2
+						[ 0.0 11.288889 0.0 ]
+						[ 2413.388902 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.673258 0.0 0.0 ]
+						[ 838.421569 -13.688889 0.0 ]
+						[ 1514.76883 -17.955556 0.0 ]
+						[ 2405.623911 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 43393.135718
+			[ 3375.0 7821.0 1
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 4262.218367 5.644444 0.0 ]
+						[ 6511.01813 33.866667 0.0 ]
+						[ 7821.0 127.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 51260.892244
+			[ 3425.0 6059.113963 127
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 0.915618 0.0 0.0 ]
+					[ 1.0 50.0 0.0 ]
+				]
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 504.44107 45.155556 0.0 ]
+						[ 1202.337384 25.4 0.0 ]
+						[ 1949.286986 53.622222 0.0 ]
+						[ 2220.905023 124.177778 0.0 ]
+						[ 2424.618551 50.8 0.0 ]
+						[ 2662.284334 28.222222 0.0 ]
+						[ 3153.817629 28.222222 0.0 ]
+						[ 3728.38122 79.022222 0.0 ]
+						[ 3983.742816 28.222222 0.0 ]
+						[ 4494.466008 22.577778 0.0 ]
+						[ 4845.588203 67.733333 0.0 ]
+						[ 5164.790198 31.044444 0.0 ]
+						[ 5579.752791 22.577778 0.0 ]
+						[ 5901.660341 39.511111 0.0 ]
+						[ 6059.113963 70.555556 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 57320.006207
+			[ 3575.0 4836.077307 84
+				[ slots
+					[ 2
+						[ 19.513385 73.377778 0.0 ]
+						[ 785.598173 8.466667 0.0 ]
+						[ 1742.21197 64.911111 0.0 ]
+						[ 2731.738155 8.466667 0.0 ]
+						[ 3689.34414 42.333333 0.0 ]
+						[ 4836.077307 0.0 0.0 ]
+						[ 4836.077307 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 62156.083514
+			[ 3625.0 7919.0 81
+				[ slots
+					[ 1 "air noise.flutter-tongue.tongue-R.without surplus air" ]
+					[ 2
+						[ 0.0 76.2 0.0 ]
+						[ 449.276808 39.511111 0.0 ]
+						[ 1343.042394 16.933333 0.0 ]
+						[ 3258.254364 8.466667 0.0 ]
+						[ 7919.0 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 5.777778 0.0 ]
+						[ 2029.314739 3.111111 0.0 ]
+						[ 4042.250693 -1.333333 0.0 ]
+						[ 5568.186014 -7.555556 0.0 ]
+						[ 6444.787155 -12.0 0.0 ]
+						[ 7074.0 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 74441.7945
+			[ 3600.0 12996.321659 1
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 7114.782763 36.688889 0.0 ]
+						[ 10397.666221 0.0 0.0 ]
+						[ 12986.093562 59.266667 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 87375.116159
+			[ 3975.0 1497.0 57
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -75.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 62.088889 0.0 ]
+						[ 1497.0 16.983551 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 88905.483218
+			[ 3850.0 8357.131814 1
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 2181.483977 33.866667 0.0 ]
+						[ 5448.829194 5.644444 0.0 ]
+						[ 8357.131814 53.622222 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 97267.781699
+			[ 4175.0 3053.715004 57
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -50.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 62.088889 0.0 ]
+						[ 3029.52846 19.755556 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 100303.649251
+			[ 4300.0 4624.131814 22
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 22.577778 0.0 ]
+						[ 2215.071317 45.155556 0.0 ]
+						[ 4624.131814 16.933333 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 104957.408537
+			[ 3525.0 7935.131814 79
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 11.288889 0.0 ]
+						[ 2165.304233 47.977778 0.0 ]
+						[ 7935.131814 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 120282.27019
+			[ 3700.0 7213.131814 1
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 7213.131814 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 127474.676004
+			[ 3775.0 6611.131814 1
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 6611.131814 4.17306 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 133972.716407
+			[ 3825.0 4994.083654 1
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 4203.131814 20.865301 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 138966.800062
+			[ 3900.0 7083.131814 1
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 6611.131814 4.17306 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 147229.937278
+			[ 6850.0 2645.314673 31
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 0.690906 -34.54531 0.0 ]
+					[ 1.0 -100.0 0.0 ]
+				]
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 22.577778 0.0 ]
+						[ 2477.314673 11.288889 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 149875.251951
+			[ 6750.0 1175.569991 11
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 151050.821942
+			[ 6575.0 1091.650618 16
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 100.0 0.0 ]
+				]
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 152142.47256
+			[ 7050.0 887.24362 17
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 125.0 0.0 ]
+				]
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 153276.029113
+			[ 7350.0 3734.083654 14
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 160076.151893
+			[ 4150.0 2749.556553 118
+				[ slots
+					[ 1 flutter-tongue.tongue-R ]
+					[ 2
+						[ 0.0 107.244444 0.0 ]
+						[ 949.287183 14.111111 0.0 ]
+						[ 2061.972191 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 170019.931385
+			[ 4950.0 9043.972191 1
+				[ slots
+					[ 1 ordinario ]
+					[ 3
+						[ 0.0 -5.777778 0.0 ]
+						[ 1900.536838 -7.555556 0.0 ]
+						[ 3800.272822 -10.222222 0.0 ]
+						[ 5480.367861 -13.777778 0.0 ]
+						[ 6612.125469 -15.555556 0.0 ]
+						[ 7865.14282 -18.222222 0.0 ]
+						[ 9043.972191 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[
+		[ 4541.944822
+			[ 7800.0 5264.453507 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 0.488542 0.0 0.0 ]
+					[ 0.817565 525.0 0.0 ]
+					[ 1.0 475.0 0.0 ]
+				]
+				[ slots
+					[ 1 "col legno tratto" ]
+					[ 2
+						[ 0.0 1.411111 0.0 ]
+						[ 737.155457 28.222222 0.0 ]
+						[ 2646.985861 79.022222 0.0 ]
+						[ 4352.735458 104.422222 0.0 ]
+						[ 4459.776183 45.155556 0.0 ]
+						[ 4623.966456 22.577778 0.0 ]
+						[ 4924.981956 5.644444 0.0 ]
+						[ 5264.453507 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 10322.398329
+			[ 5950.0 1258.910866 63
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -25.0 0.0 ]
+				]
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 11581.309195
+			[ 6975.0 1363.291007 71
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -25.0 0.0 ]
+				]
+			0 ]
+		0 ]
+		[ 14241.391373
+			[ 7675.0 1262.910866 86
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -25.0 0.0 ]
+				]
+			0 ]
+		0 ]
+		[ 15504.30224
+			[ 6275.0 1394.70748 82
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -25.0 0.0 ]
+				]
+			0 ]
+		0 ]
+		[ 16899.00972
+			[ 5450.0 1261.291007 61
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -25.0 0.0 ]
+				]
+			0 ]
+		0 ]
+		[ 18135.520483
+			[ 4975.0 1038.291007 81
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 -25.0 0.0 ]
+				]
+			0 ]
+		0 ]
+		[ 19372.031247
+			[ 7100.0 4633.0 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 50.0 0.0 ]
+				]
+				[ slots
+					[ 1 "sul ponticello" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 2945.023614 16.933333 0.0 ]
+						[ 4537.723738 39.511111 0.0 ]
+					]
+				]
+			0 ]
+			[ 7375.0 4633.0 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 50.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 2945.023614 16.933333 0.0 ]
+						[ 4537.723738 39.511111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 23981.051289
+			[ 7200.0 3745.0 37
+				[ slots
+					[ 1 "tremolo.sul ponticello" ]
+					[ 2
+						[ 0.0 36.688889 0.0 ]
+						[ 1395.564348 14.111111 0.0 ]
+						[ 3243.096492 0.0 0.0 ]
+					]
+				]
+			0 ]
+			[ 7575.0 3745.0 37
+				[ slots
+					[ 2
+						[ 0.0 36.688889 0.0 ]
+						[ 1395.564348 14.111111 0.0 ]
+						[ 3243.096492 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 28414.89247
+			[ 5475.0 1295.238767 63
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 29710.131236
+			[ 6075.0 1295.238767 57 0 ]
+		0 ]
+		[ 31005.370003
+			[ 6400.0 922.942002 72 0 ]
+		0 ]
+		[ 32790.948878
+			[ 6150.0 1295.238767 75 0 ]
+		0 ]
+		[ 33610.184879
+			[ 6500.0 1269.0 85 0 ]
+		0 ]
+		[ 34411.960906
+			[ 7200.0 1269.0 105 0 ]
+		0 ]
+		[ 36322.488396
+			[ 6550.0 6958.0 90
+				[ slots
+					[ 1 "col legno tratto" ]
+					[ 2
+						[ 0.0 90.311111 0.0 ]
+						[ 1034.807941 47.977778 0.0 ]
+						[ 2960.65426 16.933333 0.0 ]
+						[ 5988.0 0.829819 0.0 ]
+					]
+					[ 23 diamond ]
+				]
+			0 ]
+			[ 7250.0 6958.0 90
+				[ slots
+					[ 2
+						[ 0.0 47.977778 0.0 ]
+						[ 5988.0 8.098414 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 4176.206873 -5.777778 0.0 ]
+					]
+					[ 23 diamond ]
+				]
+			0 ]
+		0 ]
+		[ 43397.684963
+			[ 7750.0 3157.450333 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 50.0 0.0 ]
+				]
+				[ slots
+					[ 1 harmonic.artificial.fourth ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+			[ 8450.0 3157.450333 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 50.0 0.0 ]
+				]
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 46519.135296
+			[ 8150.0 318.657982 127
+				[ slots
+					[ 1 pressured ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+			[ 8850.0 318.657982 127 0 ]
+		0 ]
+		[ 46837.793278
+			[ 8125.0 776.996421 127
+				[ slots
+					[ 1 "sul ponticello" ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 704.996421 26.05873 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+			[ 8825.0 779.996421 127
+				[ slots
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 707.996421 25.970891 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 47771.131717
+			[ 8125.0 3511.173392 2
+				[ slots
+					[ 1 "sul tasto" ]
+					[ 2
+						[ 0.0 5.644444 0.0 ]
+						[ 2599.493701 39.511111 0.0 ]
+						[ 3511.173392 95.955556 0.0 ]
+					]
+				]
+			0 ]
+			[ 8825.0 3511.173392 2
+				[ slots
+					[ 2
+						[ 0.0 5.644444 0.0 ]
+						[ 2599.493701 39.511111 0.0 ]
+						[ 3511.173392 95.955556 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 51282.305109
+			[ 8050.0 5950.0 127
+				[ slots
+					[ 1 "tremolo.sul ponticello" ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 411.479447 50.8 0.0 ]
+						[ 1385.480715 22.577778 0.0 ]
+						[ 3236.083125 14.111111 0.0 ]
+						[ 4924.35199 11.288889 0.0 ]
+						[ 5857.0 11.167532 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+			[ 8750.0 5950.0 127
+				[ slots
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 411.479447 50.8 0.0 ]
+						[ 1385.480715 22.577778 0.0 ]
+						[ 3236.083125 14.111111 0.0 ]
+						[ 4924.35199 11.288889 0.0 ]
+						[ 5857.0 11.167532 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 57343.814664
+			[ 6275.0 775.531915 68
+				[ slots
+					[ 1 "tremolo.sul ponticello" ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+			[ 7075.0 775.531915 68 0 ]
+		0 ]
+		[ 58250.195822
+			[ 6875.0 923.893617 74 0 ]
+			[ 7650.0 923.893617 81 0 ]
+		0 ]
+		[ 59185.394084
+			[ 6275.0 775.531915 25 0 ]
+			[ 7075.0 775.531915 25 0 ]
+		0 ]
+		[ 60023.775242
+			[ 6875.0 651.893617 23 0 ]
+			[ 7650.0 651.893617 30 0 ]
+		0 ]
+		[ 60848.768089
+			[ 6275.0 775.531915 3 0 ]
+			[ 7075.0 775.531915 3 0 ]
+		0 ]
+		[ 61619.149247
+			[ 6875.0 651.893617 1 0 ]
+			[ 7650.0 651.893617 1 0 ]
+		0 ]
+		[ 62138.667294
+			[ 4800.0 639.531915 35
+				[ slots
+					[ 1 "sul tasto" ]
+				]
+			0 ]
+			[ 5575.0 639.531915 35 0 ]
+		0 ]
+		[ 62773.048452
+			[ 5175.0 447.893617 33 0 ]
+			[ 6300.0 447.893617 33 0 ]
+		0 ]
+		[ 63340.378169
+			[ 4800.0 770.381158 35 0 ]
+			[ 5575.0 770.381158 35 0 ]
+		0 ]
+		[ 64110.759327
+			[ 5175.0 791.613537 33 0 ]
+			[ 6300.0 791.613537 33 0 ]
+		0 ]
+		[ 64902.372864
+			[ 4800.0 1165.381158 4 0 ]
+			[ 5575.0 1165.381158 4 0 ]
+		0 ]
+		[ 66067.754022
+			[ 5175.0 1331.893617 4 0 ]
+			[ 6300.0 1331.893617 4 0 ]
+		0 ]
+		[ 67403.55854
+			[ 4800.0 1931.531915 22
+				[ slots
+					[ 1 "col legno tratto" ]
+				]
+			0 ]
+			[ 5575.0 1931.531915 22 0 ]
+		0 ]
+		[ 69125.939698
+			[ 5175.0 3031.893617 27 0 ]
+			[ 6300.0 3031.893617 2
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 925.513166 -2.222222 0.0 ]
+						[ 1603.889824 -4.888889 0.0 ]
+						[ 2554.552954 -12.0 0.0 ]
+						[ 3031.893617 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 81388.701599
+			[ 6000.0 5688.802533 1
+				[ slots
+					[ 1 "sul tasto" ]
+				]
+			0 ]
+		0 ]
+		[ 91047.280353
+			[ 6900.0 7615.802533 1
+				[ slots
+					[ 1 "sul tasto" ]
+				]
+			0 ]
+		0 ]
+		[ 105016.311109
+			[ 5750.0 495.126252 66
+				[ slots
+					[ 1 pizz ]
+					[ 3
+						[ 3.397812 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 105511.437361
+			[ 6650.0 495.126252 42 0 ]
+		0 ]
+		[ 106006.563613
+			[ 7225.0 495.126252 53 0 ]
+		0 ]
+		[ 106501.689864
+			[ 8050.0 547.705776 49 0 ]
+		0 ]
+		[ 107120.700909
+			[ 8050.0 643.499676 28 0 ]
+		0 ]
+		[ 107681.742592
+			[ 7225.0 562.407716 50 0 ]
+		0 ]
+		[ 108282.784792
+			[ 6650.0 716.727242 87 0 ]
+		0 ]
+		[ 108990.784894
+			[ 5750.0 1386.497434 105
+				[ slots
+					[ 2
+						[ 24.714085 14.111111 0.0 ]
+						[ 1369.531015 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 120311.812929
+			[ 4850.0 7213.131814 1
+				[ slots
+					[ 1 "sul tasto" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 7213.131814 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 127504.218742
+			[ 4925.0 6611.131814 1
+				[ slots
+					[ 1 "sul tasto" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 6611.131814 4.17306 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 134002.259146
+			[ 5200.0 5106.131814 1
+				[ slots
+					[ 1 "sul tasto" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 4203.131814 20.865301 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 138937.623132
+			[ 5500.0 7083.131814 1
+				[ slots
+					[ 1 "sul tasto" ]
+					[ 2
+						[ 0.0 0.0 0.0 ]
+						[ 3548.962325 25.4 0.0 ]
+						[ 6611.131814 4.17306 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 147312.449437
+			[ 5475.0 915.126252 16
+				[ slots
+					[ 1 pizz ]
+					[ 3
+						[ 3.397812 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 148530.113493
+			[ 6075.0 915.126252 16
+				[ slots
+					[ 3
+						[ 3.397812 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 149873.629732
+			[ 5075.0 915.126252 33
+				[ slots
+					[ 3
+						[ 3.397812 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 151049.119097
+			[ 6200.0 747.126252 33
+				[ slots
+					[ 3
+						[ 3.397812 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 151889.03847
+			[ 5600.0 747.126252 33
+				[ slots
+					[ 3
+						[ 3.397812 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 152644.877217
+			[ 6100.0 747.126252 33
+				[ slots
+					[ 3
+						[ 3.397812 5.777778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 153460.674742
+			[ 6950.0 3741.972191 25
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 25.0 0.0 ]
+				]
+				[ slots
+					[ 1 "tremolo.sul ponticello" ]
+					[ 2
+						[ 0.0 53.622222 0.0 ]
+						[ 653.651526 16.933333 0.0 ]
+						[ 3741.972191 0.0 0.0 ]
+					]
+				]
+			0 ]
+			[ 7550.0 3741.972191 25
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 25.0 0.0 ]
+				]
+				[ slots
+					[ 2
+						[ 0.0 53.622222 0.0 ]
+						[ 653.651526 16.933333 0.0 ]
+						[ 3741.972191 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 160054.645938
+			[ 6575.0 2465.972191 110
+				[ slots
+					[ 1 "tremolo.sul ponticello" ]
+					[ 2
+						[ 0.0 107.244444 0.0 ]
+						[ 949.287183 14.111111 0.0 ]
+						[ 2061.972191 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 170060.3513
+			[ 5800.0 9099.972191 1
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 25.0 0.0 ]
+				]
+				[ slots
+					[ 1 "con sordino" ]
+					[ 3
+						[ 0.0 -5.777778 0.0 ]
+						[ 1900.536838 -7.555556 0.0 ]
+						[ 3800.272822 -10.222222 0.0 ]
+						[ 5480.367861 -13.777778 0.0 ]
+						[ 6612.125469 -15.555556 0.0 ]
+						[ 7865.14282 -18.222222 0.0 ]
+						[ 9099.972191 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[
+		[ 0.0
+			[ 6700.0 1221.623308 101
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 603.574818
+			[ 6600.0 663.892687 61 0 ]
+		0 ]
+		[ 696.788175
+			[ 6400.0 524.522922 47 0 ]
+		0 ]
+		[ 697.062931
+			[ 6300.0 570.076532 56 0 ]
+		0 ]
+		[ 789.399922
+			[ 6200.0 431.571882 50 0 ]
+		0 ]
+		[ 835.871208
+			[ 6100.0 384.715817 70 0 ]
+		0 ]
+		[ 881.798497
+			[ 6000.0 339.350297 66 0 ]
+		0 ]
+		[ 928.829936
+			[ 5800.0 292.635798 79 0 ]
+		0 ]
+		[ 8916.193311
+			[ 5500.0 279.682866 28 0 ]
+		0 ]
+		[ 9722.336074
+			[ 6600.0 279.682866 44 0 ]
+		0 ]
+		[ 12894.388607
+			[ 5900.0 279.682866 57 0 ]
+		0 ]
+		[ 13642.53137
+			[ 5400.0 279.682866 22 0 ]
+		0 ]
+		[ 18668.648649
+			[ 8200.0 661.356545 74 0 ]
+		0 ]
+		[ 20545.766338
+			[ 7700.0 1600.0 106 0 ]
+			[ 8800.0 1600.0 127 0 ]
+		0 ]
+		[ 25217.177054
+			[ 7300.0 1314.604682 81 0 ]
+			[ 8400.0 1314.604682 81 0 ]
+		0 ]
+		[ 32091.695073
+			[ 7800.0 1509.682866 70 0 ]
+			[ 8900.0 1509.682866 83 0 ]
+		0 ]
+		[ 36273.388951
+			[ 8400.0 1714.682866 79 0 ]
+			[ 8800.0 1714.682866 79 0 ]
+		0 ]
+		[ 46512.836307
+			[ 6900.0 1419.0 113
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 51102.837766
+			[ 6900.0 1945.671528 127 0 ]
+		0 ]
+		[ 51247.766162
+			[ 2400.0 1292.0 127 0 ]
+		0 ]
+		[ 57359.513116
+			[ 6600.0 695.0 127 0 ]
+		0 ]
+		[ 74464.810386
+			[ 2400.0 6555.0 49
+				[ slots
+					[ 1 ordLv ]
+				]
+			0 ]
+		0 ]
+		[ 81385.250689
+			[ 4600.0 327.0 26
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 5400.0 327.0 26
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 88929.38914
+			[ 2700.0 6856.0 49
+				[ slots
+					[ 1 ordLv ]
+				]
+			0 ]
+		0 ]
+		[ 91043.829444
+			[ 5500.0 327.0 53
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 6300.0 327.0 53
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 6900.0 327.0 64
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 7600.0 327.0 64
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 100327.555173
+			[ 3100.0 4749.0 49
+				[ slots
+					[ 1 ordLv ]
+				]
+			0 ]
+		0 ]
+		[ 102441.995477
+			[ 4900.0 327.0 67
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 5700.0 327.0 67
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 6300.0 327.0 78
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 7200.0 327.0 78
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 104986.036752
+			[ 2300.0 4749.0 92
+				[ slots
+					[ 1 ordLv ]
+				]
+			0 ]
+		0 ]
+		[ 107111.030253
+			[ 5700.0 327.0 92
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 6600.0 327.0 92
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 7200.0 327.0 103
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 8000.0 327.0 103
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 120311.630024
+			[ 2500.0 327.0 49
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 3700.0 327.0 49
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 127443.304219
+			[ 2600.0 327.0 57
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 3800.0 327.0 57
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 133973.149369
+			[ 2600.0 327.0 57
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 3800.0 327.0 57
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 138844.338956
+			[ 2700.0 139.718182 57
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 139026.379229
+			[ 3900.0 139.718182 57
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 139208.419501
+			[ 4700.0 139.718182 57
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 139390.459774
+			[ 5000.0 139.718182 57
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 139572.500046
+			[ 5400.0 139.718182 57
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 139754.540318
+			[ 5500.0 139.718182 57
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 139936.580591
+			[ 5700.0 139.718182 57
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 140123.991799
+			[ 5800.0 139.718182 85
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 146033.99898
+			[ 3900.0 139.718182 41
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 6400.0 139.718182 41
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 147332.503188
+			[ 7000.0 203.718182 29
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 148522.167244
+			[ 5200.0 139.718182 50
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 7500.0 139.718182 50
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 149957.683484
+			[ 6600.0 139.718182 54
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 7100.0 139.718182 54
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 7200.0 139.718182 54
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 151069.065346
+			[ 7300.0 139.718182 38
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 7400.0 139.718182 61
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 9200.0 139.718182 38
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 153490.542431
+			[ 2900.0 139.718182 71
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 4700.0 139.718182 82
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 5800.0 139.718182 82
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 159865.794983
+			[ 2500.0 327.0 127
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 160117.311223
+			[ 4800.0 327.0 81
+				[ slots
+					[ 1 ordLV ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 6000.0 327.0 81
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 7200.0 327.0 108
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 8400.0 327.0 108
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 170068.529603
+			[ 7500.0 327.0 49
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 7900.0 327.0 49
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 9200.0 327.0 44
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+			[ 9500.0 327.0 44
+				[ slots
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[
+		[ 10335.83319
+			[ 7300.0 727.957195 8
+				[ slots
+					[ 1 "dampened.pitch clearly audible.with pedal" ]
+				]
+			0 ]
+		0 ]
+		[ 14283.704164
+			[ 4800.0 727.957195 16 0 ]
+		0 ]
+		[ 16901.621622
+			[ 5300.0 355.19724 16 0 ]
+		0 ]
+		[ 17767.762931
+			[ 5900.0 355.19724 27 0 ]
+		0 ]
+		[ 19357.335854
+			[ 2300.0 4743.0 67
+				[ breakpoints
+					[ 0.0 0.0 0.0 ]
+					[ 1.0 0.0 0.65 ]
+				]
+				[ slots
+					[ 1 "dampened.pitch clearly audible.with pedal" ]
+				]
+			0 ]
+		0 ]
+		[ 23976.669803
+			[ 3100.0 5056.081081 19 0 ]
+		0 ]
+		[ 27306.621622
+			[ 7500.0 1374.687431 21 0 ]
+			[ 8200.0 1374.687431 22 0 ]
+		0 ]
+		[ 29060.42656
+			[ 2800.0 4735.603823 24 0 ]
+		0 ]
+		[ 32078.030383
+			[ 2400.0 4223.090969 22
+				[ slots
+					[ 1 ordinarioLV ]
+				]
+			0 ]
+		0 ]
+		[ 36301.121352
+			[ 2200.0 4383.0 13 0 ]
+		0 ]
+		[ 62134.753757
+			[ 6200.0 559.0 17
+				[ slots
+					[ 1 "dampened.pitch clearly audible.with pedal" ]
+				]
+			0 ]
+		0 ]
+		[ 81401.593129
+			[ 2100.0 1269.0 33
+				[ slots
+					[ 1 "hitting effect.palm of hand.strings.with pedal.ordinario" ]
+				]
+			0 ]
+		0 ]
+		[ 168281.872995
+			[ 2400.0 327.0 55
+				[ slots
+					[ 1 "dampened.pitch clearly audible.with pedal" ]
+					[ 3
+						[ 0.0 -3.111111 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+	0 ]
