@@ -1,6 +1,6 @@
 // MainComponent.h — everything inside Maket's main window.
 //
-// Stage 0a: the row of four tabs (Library and edition, Build surface, Render,
+// The row of four tabs (Library and edition, Build surface, Render,
 // Utilities), an empty page for each, and the inspector on the right. A tab
 // comes in front by a click or by Cmd-1 to Cmd-4 (also in the View menu).
 

@@ -18,7 +18,7 @@ endif()
 
 # The build stage this source stands at; shown at the right of the tab row,
 # so that it is clear which build is being tested.
-set(MAKET_BUILD_STAGE "0a")
+set(MAKET_BUILD_STAGE "0b")
 
 # --- JUCE --------------------------------------------------------------------
 # By default JUCE is downloaded automatically (first build takes a few minutes).
@@ -37,15 +37,20 @@ else()
     FetchContent_MakeAvailable(JUCE)
 endif()
 
+# --- Sources without interface code --------------------------------------------
+# Model, file formats, engines and notation. They are listed apart because the
+# console test program builds them too, without the window. Nothing in this
+# list may include interface code (Source/UI, MainComponent).
+set(MAKET_CORE_SOURCES
+    Source/Model/AppInfo.cpp)
+
 set(MAKET_DEFINITIONS
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
+    MAKET_VERSION="${PROJECT_VERSION}"
     MAKET_BUILD_STAGE="${MAKET_BUILD_STAGE}")
 
 # --- The app -----------------------------------------------------------------
-# From stage 0b on, the sources without interface code (model, file formats,
-# engines, notation) are listed apart, so that the console test program can
-# build them too.
 juce_add_gui_app(Maket
     PRODUCT_NAME        "Maket"
     COMPANY_NAME        "Maket"
@@ -62,7 +67,8 @@ target_sources(Maket PRIVATE
     Source/UI/Tabs.cpp
     Source/UI/TabBar.cpp
     Source/UI/EmptyPage.cpp
-    Source/UI/Inspector.cpp)
+    Source/UI/Inspector.cpp
+    ${MAKET_CORE_SOURCES})
 
 target_compile_definitions(Maket PRIVATE
     JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:Maket,JUCE_PRODUCT_NAME>"
@@ -76,3 +82,25 @@ target_link_libraries(Maket
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
+
+# --- Test program (./build.sh tests) -----------------------------------------
+# A console program that builds the sources without interface code, runs its
+# checks on them and writes Measurements/report.md. Each build step adds its
+# own section to it (Tests/MaketTests.cpp).
+option(MAKET_BUILD_TESTS "Build the MaketTests console program" OFF)
+
+if(MAKET_BUILD_TESTS)
+    juce_add_console_app(MaketTests PRODUCT_NAME "MaketTests")
+    juce_generate_juce_header(MaketTests)
+    target_sources(MaketTests PRIVATE Tests/MaketTests.cpp ${MAKET_CORE_SOURCES})
+    target_compile_definitions(MaketTests PRIVATE
+        ${MAKET_DEFINITIONS} JUCE_STANDALONE_APPLICATION=1
+        MAKET_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+    target_link_libraries(MaketTests
+        PRIVATE
+            juce::juce_core
+        PUBLIC
+            juce::juce_recommended_config_flags
+            juce::juce_recommended_lto_flags
+            juce::juce_recommended_warning_flags)
+endif()

@@ -1,14 +1,16 @@
 // MainComponent.cpp
 
 #include "MainComponent.h"
+#include "Model/AppInfo.h"
 
 MainComponent::MainComponent()
 {
     juce::LookAndFeel::setDefaultLookAndFeel (&lookAndFeel);
     setOpaque (true);
 
-    tabBar.setNote (juce::String (JUCE_APPLICATION_NAME_STRING) + " " + JUCE_APPLICATION_VERSION_STRING
-                    + "  \xc2\xb7  stage " + MAKET_BUILD_STAGE);
+    const auto& app = maket::appInfo();
+    tabBar.setNote (juce::String (app.name) + " " + app.version
+                    + juce::String::fromUTF8 ("  \xc2\xb7  stage ") + app.stage);
     tabBar.onSelect = [this] (int index) { showTab (index); };
     addAndMakeVisible (tabBar);
 
