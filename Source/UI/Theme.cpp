@@ -38,6 +38,10 @@ LookAndFeel::LookAndFeel()
     setColour (juce::TextEditor::backgroundColourId, panel2);
     setColour (juce::TextEditor::outlineColourId, line);
     setColour (juce::TextEditor::focusedOutlineColourId, accent);
+    setColour (juce::TextEditor::textColourId, text);
+    setColour (juce::TextEditor::highlightColourId, accent.withAlpha (0.35f));
+    setColour (juce::TextEditor::highlightedTextColourId, text);
+    setColour (juce::CaretComponent::caretColourId, accent);
     setColour (juce::Label::textColourId, text);
     setColour (juce::PopupMenu::highlightedBackgroundColourId, accent);
     setColour (juce::PopupMenu::highlightedTextColourId, background);

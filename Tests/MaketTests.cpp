@@ -6,8 +6,10 @@
 //
 //   1. The test program itself (stage 0b): version and stage, a work folder,
 //      a file that reads back byte for byte, the report folder.
-//   2. Test material: what is in the repository's Temp folder, and whether
-//      the files the coming step needs are there.
+//   2. Settings (stage 0c): defaults, the settings file written and read
+//      back, values that must be refused, a damaged file.
+//   3. Test material: what is in the repository's Temp folder, and whether
+//      the files the coming steps need are there.
 //
 // Options:  --out <folder>   where report.md is written (default: Measurements)
 //
@@ -15,6 +17,7 @@
 
 #include <JuceHeader.h>
 #include "../Source/Model/AppInfo.h"
+#include "../Source/Model/Settings.h"
 
 #include <cstring>
 #include <iostream>
@@ -58,9 +61,9 @@ void testProgram (const juce::File& work, const juce::File& outDir)
     line ("## 1. The test program");
     line();
     line ("This program builds Maket's sources that hold no interface code (model, file formats, engines, "
-          "notation) without the window, runs checks on them and writes this report. At stage 0b there is "
-          "almost nothing to check yet: this section shows that the program builds, runs, can work with "
-          "files and reports a result. From step 1a on, every step adds its own section.");
+          "notation) without the window, runs checks on them and writes this report. This first section "
+          "shows that the program builds, runs, can work with files and reports a result. Every stage "
+          "after it adds its own section.");
     line();
     line ("| Check | Passed |");
     line ("| --- | --- |");
@@ -115,7 +118,172 @@ void testProgram (const juce::File& work, const juce::File& outDir)
     line();
 }
 
-// --- 2. Test material ----------------------------------------------------------
+// --- 2. Settings ----------------------------------------------------------------
+
+void testSettings (const juce::File& work)
+{
+    using maket::Settings;
+    using maket::SettingKind;
+
+    line ("## 2. Settings");
+    line();
+    line ("Whatever differs from one Mac to another is a setting with a default, kept in one JSON file. "
+          "The checks below work on a settings file in the test's own work folder; the real settings file "
+          "of this Mac is never touched by this program.");
+    line();
+    line ("The settings and their defaults:");
+    line();
+    line ("| Setting | Kind | Default | Name in the file |");
+    line ("| --- | --- | --- | --- |");
+    for (const auto& s : Settings::all())
+    {
+        const juce::String kind = s.kind == SettingKind::folder ? "folder" : s.kind == SettingKind::host ? "host" : "port";
+        const juce::String def (s.defaultValue);
+        line ("| " + juce::String (s.group) + ": " + s.label + " | " + kind + " | "
+              + (def.isEmpty() ? "not set" : "`" + def + "`") + " | `" + s.key + "` |");
+    }
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+
+    // The table itself.
+    {
+        juce::StringArray keys;
+        bool sound = true;
+        for (const auto& s : Settings::all())
+        {
+            juce::String tidied;
+            sound = sound && juce::String (s.key).isNotEmpty() && juce::String (s.label).isNotEmpty()
+                          && juce::String (s.help).isNotEmpty() && ! keys.contains (s.key)
+                          && Settings::validate (s, s.defaultValue, tidied).wasOk() && tidied == s.defaultValue;
+            keys.add (s.key);
+        }
+        checkRow (sound, "Every setting has its own name, a label, a help text and a default that is valid");
+    }
+
+    const auto file = work.getChildFile ("settings test").getChildFile ("settings.json");
+
+    // Starting without a file.
+    {
+        Settings fresh (file);
+        bool defaults = fresh.load().wasOk();
+        for (const auto& s : Settings::all())
+            defaults = defaults && fresh.get (s.key) == s.defaultValue && fresh.isDefault (s.key);
+        checkRow (defaults && ! file.exists(), "Without a settings file every setting has its default, and no file is made");
+    }
+
+    // Changed, saved, read back by a new object: the restart in miniature.
+    const auto home = juce::File::getSpecialLocation (juce::File::userHomeDirectory);
+    const juce::String outside ("/Volumes/Sounds/Maket exports");      // need not exist
+    {
+        Settings a (file);
+        bool ok = a.set ("projectsFolder", home.getChildFile ("Music/Maket projects").getFullPathName()).wasOk()
+               && a.set ("exportsFolder", outside + "/").wasOk()
+               && a.set ("contimbreDataFolder", "  ~/conTimbre/search_data  ").wasOk()
+               && a.set ("ePlayerHost", "studio-mac.local").wasOk()
+               && a.set ("ePlayerPort", "07400").wasOk()
+               && a.save().wasOk();
+
+        Settings b (file);
+        ok = ok && b.load().wasOk();
+        for (const auto& s : Settings::all())
+            ok = ok && a.get (s.key) == b.get (s.key);
+
+        checkRow (ok && b.getInt ("ePlayerPort") == 7400 && b.get ("ePlayerHost") == "studio-mac.local"
+                     && b.isDefault ("importsFolder") && ! b.isDefault ("projectsFolder"),
+                  "Five changed settings are written to the file and read back the same by a fresh start");
+
+        checkRow (b.get ("projectsFolder") == "~/Music/Maket projects"
+                     && b.getFolder ("projectsFolder") == home.getChildFile ("Music/Maket projects")
+                     && b.get ("contimbreDataFolder") == "~/conTimbre/search_data"
+                     && b.get ("exportsFolder") == outside && b.getFolder ("exportsFolder") == juce::File (outside),
+                  "A folder inside the home folder is kept as `~/...` and leads back to the same folder; one outside it keeps its whole path");
+    }
+
+    // The file is plain JSON that a person can read.
+    {
+        juce::var root;
+        const auto text = file.loadFileAsString();
+        const bool parsed = juce::JSON::parse (text, root).wasOk() && root.getDynamicObject() != nullptr;
+        bool complete = parsed && (int) root["maket-settings"] == 1 && root["ePlayerPort"].isInt();
+        for (const auto& s : Settings::all())
+            complete = complete && root.hasProperty (s.key);
+        checkRow (complete && text.contains ("\n") && ! text.contains ("\r"),
+                  "The file is JSON on several lines and holds every setting by name");
+    }
+
+    // What must be refused.
+    {
+        Settings c (file);
+        c.load();
+        const auto port = c.get ("ePlayerPort"), host = c.get ("ePlayerHost"), projects = c.get ("projectsFolder");
+
+        bool refused = true;
+        for (const auto* bad : { "0", "65536", "-5", "46001.5", "port", "" })
+            refused = refused && c.set ("ePlayerPort", bad).failed();
+        for (const auto* bad : { "", "my mac", "127.0.0.1/osc" })
+            refused = refused && c.set ("ePlayerHost", bad).failed();
+        for (const auto* bad : { "", "Documents/Maket", "~joost/Maket" })
+            refused = refused && c.set ("projectsFolder", bad).failed();
+        refused = refused && c.set ("noSuchSetting", "1").failed();
+
+        checkRow (refused && c.get ("ePlayerPort") == port && c.get ("ePlayerHost") == host
+                     && c.get ("projectsFolder") == projects,
+                  "Thirteen values that make no sense (port 0 or 65536, a host with a space, a folder that is not a whole path ...) are refused and change nothing");
+
+        checkRow (c.set ("contimbreDataFolder", "").wasOk() && c.set ("ePlayerPort", "1").wasOk()
+                     && c.set ("ePlayerPort", "65535").wasOk() && c.set ("ePlayerHost", "localhost").wasOk(),
+                  "The edges are accepted: ports 1 and 65535, the host `localhost`, conTimbre's folder left unset");
+    }
+
+    // Back to the default.
+    {
+        Settings d (file);
+        d.load();
+        d.reset ("ePlayerPort");
+        d.reset ("projectsFolder");
+        checkRow (d.getInt ("ePlayerPort") == 46001 && d.isDefault ("projectsFolder") && ! d.isDefault ("ePlayerHost"),
+                  "A setting put back to its default has it again, and the others keep their values");
+    }
+
+    // A file from a newer Maket: what this version does not know is kept.
+    {
+        file.replaceWithText ("{ \"maket-settings\": 1, \"ePlayerPort\": 7500, \"somethingNewer\": { \"a\": [1, 2, 3] } }\n",
+                              false, false, "\n");
+        Settings e (file);
+        bool ok = e.load().wasOk() && e.getInt ("ePlayerPort") == 7500 && e.save().wasOk();
+        juce::var root;
+        ok = ok && juce::JSON::parse (file.loadFileAsString(), root).wasOk()
+                && root["somethingNewer"]["a"].size() == 3 && (int) root["ePlayerPort"] == 7500;
+        checkRow (ok, "An entry this version does not know is left in the file when it is written again");
+    }
+
+    // A wrong value in the file, and a file that is not JSON at all.
+    {
+        file.replaceWithText ("{ \"ePlayerPort\": 99999, \"ePlayerHost\": \"10.0.0.7\" }\n", false, false, "\n");
+        Settings f (file);
+        const auto result = f.load();
+        checkRow (result.failed() && f.getInt ("ePlayerPort") == 46001 && f.get ("ePlayerHost") == "10.0.0.7",
+                  "A value in the file that makes no sense is replaced by its default and reported; the rest is read");
+
+        file.replaceWithText ("this is not a settings file {", false, false, "\n");
+        Settings g (file);
+        const auto damaged = g.load();
+        bool defaults = true;
+        for (const auto& s : Settings::all()) defaults = defaults && g.isDefault (s.key);
+        checkRow (damaged.failed() && defaults && ! file.exists()
+                     && file.getSiblingFile ("settings (unreadable).json").existsAsFile(),
+                  "A file that cannot be read is set aside under another name, reported, and the defaults are used");
+    }
+
+    line();
+    const auto real = Settings::defaultFile();
+    line ("On this machine the app keeps its settings in `" + real.getFullPathName() + "` ("
+          + (real.existsAsFile() ? "the file exists" : "no file yet: nothing was changed in the app so far") + ").");
+    line();
+}
+
+// --- 3. Test material ----------------------------------------------------------
 
 /** A file name without extension, case, spaces, underscores and hyphens, so
     that "mixed_roll_example_01h.txt" and "Mixed roll example 01h" compare equal. */
@@ -126,7 +294,7 @@ juce::String plainName (const juce::String& name)
 
 void testMaterial (const juce::File& temp)
 {
-    line ("## 2. Test material");
+    line ("## 3. Test material");
     line();
     line ("The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. "
           "This section lists what the program finds there; nothing is read yet. A missing file is not a "
@@ -157,20 +325,30 @@ void testMaterial (const juce::File& temp)
     }
     line();
 
-    // What step 1a needs.
-    const char* needed[] = { "doodsbed final v1c", "mixed_roll_example_01h" };
+    // What the coming stages need.
+    struct Needed { const char* name; const char* what; };
+    const Needed needed[] =
+    {
+        { "doodsbed final v1c",                          "1a and 1b: a roll to read and to write back" },
+        { "mixed_roll_example_01h",                      "1a and 1b: a roll to read and to write back" },
+        { "01a doodsbed roll stats",                     "1a: bach's own counts and its dump of every note" },
+        { "02a mixed_roll_example_01h roll stats",       "1a: bach's own counts and its dump of every note" },
+        { "01b doodsbed roll resave after dump",         "1b: the roll as bach saves it again" },
+        { "02b mixed_roll_example_01h resave after dump", "1b: the roll as bach saves it again" }
+    };
 
-    line ("Needed for step 1a (the bach text reader):");
+    line ("Needed for the coming stages:");
     line();
-    line ("| File | Found |");
-    line ("| --- | --- |");
-    for (const auto* name : needed)
+    line ("| File | Needed for | Found |");
+    line ("| --- | --- | --- |");
+    for (const auto& n : needed)
     {
         juce::String found;
         for (const auto& f : files)
-            if (plainName (f.getFileName()) == plainName (name)) { found = f.getRelativePathFrom (temp); break; }
+            if (plainName (f.getFileName()) == plainName (n.name)) { found = f.getRelativePathFrom (temp); break; }
 
-        line ("| " + juce::String (name) + " | " + (found.isNotEmpty() ? "yes, as `" + found + "`" : "not yet") + " |");
+        line ("| " + juce::String (n.name) + " | " + n.what + " | "
+              + (found.isNotEmpty() ? "yes, as `" + found + "`" : "not yet") + " |");
     }
     line();
 }
@@ -202,6 +380,7 @@ int main (int argc, char** argv)
 
     std::cout << app.name << " " << app.version << ", stage " << app.stage << std::endl;
     std::cout << "The test program..." << std::endl;     testProgram (work, outDir);
+    std::cout << "Settings..." << std::endl;             testSettings (work);
     std::cout << "Test material..." << std::endl;        testMaterial (sourceDir.getChildFile ("Temp"));
 
     work.deleteRecursively();

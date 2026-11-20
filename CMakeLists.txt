@@ -18,7 +18,7 @@ endif()
 
 # The build stage this source stands at; shown at the right of the tab row,
 # so that it is clear which build is being tested.
-set(MAKET_BUILD_STAGE "0b")
+set(MAKET_BUILD_STAGE "0c")
 
 # --- JUCE --------------------------------------------------------------------
 # By default JUCE is downloaded automatically (first build takes a few minutes).
@@ -42,7 +42,8 @@ endif()
 # console test program builds them too, without the window. Nothing in this
 # list may include interface code (Source/UI, MainComponent).
 set(MAKET_CORE_SOURCES
-    Source/Model/AppInfo.cpp)
+    Source/Model/AppInfo.cpp
+    Source/Model/Settings.cpp)
 
 set(MAKET_DEFINITIONS
     JUCE_WEB_BROWSER=0
@@ -68,6 +69,8 @@ target_sources(Maket PRIVATE
     Source/UI/TabBar.cpp
     Source/UI/EmptyPage.cpp
     Source/UI/Inspector.cpp
+    Source/UI/PreferencesPage.cpp
+    Source/UI/UtilitiesPage.cpp
     ${MAKET_CORE_SOURCES})
 
 target_compile_definitions(Maket PRIVATE

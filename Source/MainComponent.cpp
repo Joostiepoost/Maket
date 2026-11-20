@@ -14,9 +14,24 @@ MainComponent::MainComponent()
     tabBar.onSelect = [this] (int index) { showTab (index); };
     addAndMakeVisible (tabBar);
 
+    // Read the settings before anything uses them. A problem with the file
+    // is shown on the preferences page; Maket starts all the same.
+    const auto settingsRead = settings.load();
+
     for (int i = 0; i < Tabs::count; ++i)
     {
-        pages[(size_t) i] = std::make_unique<EmptyPage> (i);
+        if (i == Tabs::utilities)
+        {
+            auto page = std::make_unique<UtilitiesPage> (settings);
+            utilities = page.get();
+            utilities->setSettingsNotice (settingsRead.getErrorMessage());
+            utilities->onSettingSelected = [this] (const maket::SettingInfo& info) { showSetting (info); };
+            pages[(size_t) i] = std::move (page);
+        }
+        else
+        {
+            pages[(size_t) i] = std::make_unique<EmptyPage> (i);
+        }
         addChildComponent (*pages[(size_t) i]);
     }
     addAndMakeVisible (inspector);
@@ -38,6 +53,10 @@ MainComponent::MainComponent()
 
 MainComponent::~MainComponent()
 {
+    // A value still being typed on the preferences page is taken over, so
+    // that quitting right after typing does not lose it.
+    if (utilities != nullptr) utilities->commitPendingEdits();
+
    #if JUCE_MAC
     juce::MenuBarModel::setMacMainMenu (nullptr);
    #endif
@@ -69,6 +88,15 @@ void MainComponent::showTab (int index)
     tabBar.setCurrent (index);
     inspector.setTab (index);
     commandManager.commandStatusChanged();        // the View menu ticks the tab in front
+}
+
+void MainComponent::showSetting (const maket::SettingInfo& info)
+{
+    juce::StringPairArray lines;
+    lines.set ("What it is for", info.help);
+    lines.set ("Default", juce::String (info.defaultValue).isEmpty() ? "not set" : info.defaultValue);
+    lines.set ("Name in the settings file", info.key);
+    inspector.showDetail (juce::String::fromUTF8 ("Setting  \xc2\xb7  ") + info.group, info.label, lines);
 }
 
 // --- Commands and the menu bar -----------------------------------------------

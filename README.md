@@ -6,7 +6,7 @@ Maket grows out of the Max/bach patch ScAst beta 4. It takes code and working me
 
 macOS, Apple Silicon only. Built with [JUCE](https://juce.com) 9 and CMake. The full design is in the Maket proposal doc.
 
-**Where the build stands: stage 0b.** The window with its four tabs and the inspector exists, and so does the console test program that will check every later step. See *Status* below.
+**Where the build stands: stage 0c.** The window with its four tabs and the inspector exists, the console test program that checks every later step exists, and Maket keeps its settings. See *Status* below.
 
 ## Building
 
@@ -44,8 +44,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | Stage | Content | State |
 | --- | --- | --- |
 | 0a | Skeleton: repository, build script, the window with four empty tabs and the inspector | done |
-| 0b | Skeleton: console test program and its report; this status table | built, to test |
-| 0c | Skeleton: preferences page and settings file (folders, OSC host and port) | |
+| 0b | Skeleton: console test program and its report; this status table | done |
+| 0c | Skeleton: preferences page and settings file (folders, OSC host and port) | built, to test |
 | 1a | Gate: list type and bach text reader | |
 | 1b | Gate: bach text writer | |
 | 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | |
@@ -79,7 +79,7 @@ Stage 0a adds one thing: the main window.
 - **The inspector** is the panel on the right. One inspector serves all four tabs; for now it names the tab in front and says what it will show there.
 - The right end of the tab row reads `Maket 0.0.1` and the build stage, so that it is clear which build is open. The transport comes there at step 2.
 
-Nothing is saved or remembered yet: Maket always opens on the first tab. Settings arrive with stage 0c.
+Maket always opens on the first tab.
 
 ### Testing stage 0a
 
@@ -102,20 +102,58 @@ Stage 0b adds one thing: the console test program. It has no window. It builds t
 - The first run builds the program, which takes a minute or two. It uses the JUCE the app build already has, so nothing is downloaded again.
 - Terminal shows the sections as they run and ends with a verdict, such as `All 5 checks passed.`, and the place of the report.
 - **The report** is `Measurements/report.md`, a text file in Markdown. It is written again at every run. Open it in any text editor.
-- At this stage the report has two sections. **1. The test program** has five checks: the version and the stage read correctly, a work folder can be made and removed, a file reads back byte for byte, the report folder can be written. **2. Test material** lists the files in `Temp` and says whether the two bach rolls for step 1a are there.
+- At stage 0b the report has two sections. **The test program** has five checks: the version and the stage read correctly, a work folder can be made and removed, a file reads back byte for byte, the report folder can be written. **Test material**, always the last section, lists the files in `Temp` and says whether the files the coming stages need are there.
 - `Measurements/report-cloud-test-machine.md` is the same report from the machine the code is written on, for comparison.
 
 If you commit and push `Measurements/report.md` after a run, the results of your Mac can be read where the code is written. That matters from step 1c on, when the report holds timings that only your Mac with Max and the ePlayer can produce.
 
-In the app, the only change is that the right end of the tab row now reads `stage 0b`.
+## Using stage 0c
 
-### Testing stage 0b
+Stage 0c adds one thing: Maket's settings, with a page to change them. Nothing in Maket points at a folder or a port that exists on one Mac only; whatever differs from one Mac to another is a setting with a default.
 
-1. `./build.sh tests` finishes, and Terminal ends with `All 5 checks passed.` and `Report: Measurements/report.md`.
-2. The first lines of the report name Maket 0.0.1, stage 0b, your Mac and the time of the run.
-3. Section 1 has five rows, all with `yes`.
-4. Section 2 lists your two bach rolls with their sizes, and the table under it says `yes` for both.
-5. `./build.sh` opens Maket, and the right end of the tab row reads `Maket 0.0.1 · stage 0b`.
+**Where.** The Utilities tab (Cmd-4). The list on the left chooses the page. Preferences is the only page so far; the others are listed in grey with the step that brings them.
+
+**The settings.**
+
+| Setting | Default | What it is for |
+| --- | --- | --- |
+| Projects | `~/Documents/Maket` | where new projects are made and where opening a project starts |
+| Imports | `~/Documents/Maket/Imports` | where the file dialog starts when something is imported |
+| Exports | `~/Documents/Maket/Exports` | where the file dialog starts when something is exported |
+| conTimbre search data | not set | the `search_data` folder of conTimbre, for the orchestra generator (step 14) |
+| Host | `127.0.0.1` | the computer on which Max runs with the ePlayer; 127.0.0.1 is this Mac |
+| Port | `46001` | the port on which the Max patch listens |
+
+Nothing uses these values yet. The host and the port come into use at stage 1c, the folders from step 2 on.
+
+**Changing a setting.**
+
+- Type in the field and press Return, or leave the field by Tab or a click elsewhere. Escape puts back what was there.
+- For a folder, **Choose…** opens the usual folder dialog.
+- **Default** puts a setting back to its default; the button is grey while the setting has its default.
+- A change is saved at once; there is no Save button. A value still being typed when you quit is saved too.
+- A value that makes no sense is refused: the field goes back to what it was, and a line under it says why. A port is a whole number from 1 to 65535; a host has no spaces; a folder is a whole path starting with `/` or `~`.
+- The line under a folder shows where it is on this Mac and whether it exists. A folder need not exist yet.
+- A folder inside your home folder is kept as `~/…`, so the settings do not carry your user name.
+
+**The inspector** shows the setting whose field has the keyboard: what it is for, its default, and its name in the settings file.
+
+**The settings file** is `~/Library/Application Support/Maket/settings.json`, plain text in JSON. It is made at the first change. **Show in Finder**, at the bottom of the page, leads to it. If the file is damaged, Maket sets it aside as `settings (unreadable).json`, starts with the defaults, and says so at the top of the preferences page.
+
+**The test report** has a new section 2, Settings, with eleven checks on a settings file of its own; it never touches the real one. The report now has 16 checks in all.
+
+### Testing stage 0c
+
+1. `git pull`, then `./build.sh`. Maket opens, and the right end of the tab row reads `Maket 0.0.1 · stage 0c`.
+2. Cmd-4 shows the Utilities tab: the list on the left with Preferences in front, and the six settings with their defaults.
+3. Click in the Port field. The inspector shows the setting. Type `7400` and press Return: the Default button of that row lights up.
+4. Type `99999` in the Port field and press Return: the field goes back to `7400` and a red line says why.
+5. Press **Choose…** next to Projects and pick any folder: the field shows it (with `~` if it is in your home folder), and the line under it says that the folder exists.
+6. Type a host, for example `studio.local`, and quit with Cmd-Q **without** pressing Return.
+7. Open Maket again (`./build.sh`) and go to the Utilities tab: port, folder and host are as you left them. This is the test of the stage.
+8. **Show in Finder** shows `settings.json`; opened in a text editor, it holds the six settings by name.
+9. Press **Default** on the three rows you changed: they go back, and the buttons turn grey.
+10. `./build.sh tests` ends with `All 16 checks passed.`
 
 ## The repository
 
@@ -125,8 +163,8 @@ CMakeLists.txt      what is built, and with which JUCE
 Source/             the application
   Main.cpp            the application object and its window
   MainComponent.*     everything inside the window
-  UI/                 interface code: tab row, empty pages, inspector, colours
-  Model/              no interface code: for now only the name, version and build stage
+  UI/                 interface code: tab row, pages, preferences, inspector, colours
+  Model/              no interface code: the settings; the name, version and build stage
 Tests/              the console test program
 Measurements/       its reports
 Reference/python/   scripts from the design phase (file formats, checks); not part of the app

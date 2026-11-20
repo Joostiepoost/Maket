@@ -16,6 +16,7 @@ namespace Theme
     inline const juce::Colour text         { 0xffe8e6e1 };
     inline const juce::Colour textMuted    { 0xffa19f97 };
     inline const juce::Colour accent       { 0xffe8b04b };     // the tab in front, selection, playhead
+    inline const juce::Colour warning      { 0xffe07a5f };     // a value that was refused, a problem to read
 
     juce::Font font (float height, bool bold = false);
     juce::Font mono (float height);

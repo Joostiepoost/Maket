@@ -29,7 +29,7 @@ const Info& info (int index)
           "Instruments and routing tables, plugin windows, the orchestra sheet and catalogue, "
           "capture, quantize settings, preferences.",
           "The selected instrument or setting.",
-          "The preferences page arrives at stage 0c; instruments at step 7." }
+          "The preferences page is here since stage 0c; instruments arrive at step 7." }
     };
 
     if (index < 0) index = 0;

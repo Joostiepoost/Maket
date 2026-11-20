@@ -1,8 +1,10 @@
 // MainComponent.h — everything inside Maket's main window.
 //
 // The row of four tabs (Library and edition, Build surface, Render,
-// Utilities), an empty page for each, and the inspector on the right. A tab
-// comes in front by a click or by Cmd-1 to Cmd-4 (also in the View menu).
+// Utilities), a page for each, and the inspector on the right. A tab comes
+// in front by a click or by Cmd-1 to Cmd-4 (also in the View menu). Three
+// pages are still empty; the Utilities tab holds the preferences page.
+// The settings are read here when Maket starts.
 
 #pragma once
 
@@ -15,6 +17,8 @@
 #include "UI/TabBar.h"
 #include "UI/EmptyPage.h"
 #include "UI/Inspector.h"
+#include "UI/UtilitiesPage.h"
+#include "Model/Settings.h"
 
 class MainComponent : public juce::Component,
                       public juce::ApplicationCommandTarget,
@@ -47,8 +51,15 @@ public:
     void menuItemSelected (int, int) override   {}
 
 private:
+    /** Shows a setting in the inspector. */
+    void showSetting (const maket::SettingInfo&);
+
     Theme::LookAndFeel lookAndFeel;
+    juce::TooltipWindow tooltips { this };
     juce::ApplicationCommandManager commandManager;
+
+    maket::Settings settings { maket::Settings::defaultFile() };
+    UtilitiesPage* utilities = nullptr;         // owned by `pages`
 
     TabBar tabBar;
     std::array<std::unique_ptr<juce::Component>, Tabs::count> pages;
