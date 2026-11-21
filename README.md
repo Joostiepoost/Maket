@@ -47,7 +47,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 0b | Skeleton: console test program and its report; this status table | done |
 | 0c | Skeleton: preferences page and settings file (folders, OSC host and port) | done |
 | 0d | Skeleton: buttons to hide and show the list and the inspector | built, to test |
-| 1a | Gate: list type and bach text reader | |
+| 1a | Gate: list type and bach text reader | built, to test |
 | 1b | Gate: bach text writer | |
 | 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | |
 | 1d | Gate: timing tests of the OSC connection | |
@@ -173,6 +173,24 @@ Stage 0d adds one thing, asked for after 0c: the list on the left of a tab and t
 4. Cmd-Alt-L and Cmd-Alt-I do the same, and so do the two entries at the bottom of the View menu.
 5. In another tab (Cmd-1) the left button is grey; the right one still works.
 
+## Using stage 1a
+
+Stage 1a is the first stage of step 1, the gate: the tests that must pass before anything is built on top. It adds what Maket needs to read a bach.roll file. Nothing changes in the window, apart from `stage 1a` at the right of the tab row; the work shows in the test report.
+
+- **The list type.** bach keeps everything in nested lists of numbers and words. Maket now has the same: whole numbers, real numbers, fractions, pitch names, words and lists, to any depth. Every number and word keeps the way it was written in the file (`117.0` stays `117.0`), which stage 1b needs to write a file back byte for byte.
+- **The reader of bach's text.** It follows bach's own rules, taken from bach's source: round and square brackets mean the same; a backtick makes a word of anything (bach writes `` `1 `` for the text 1, and `` `G8vb `` because `G8vb` alone would be read as a pitch); quotes and backslashes keep spaces; `nil` is an empty list and `null` is nothing. A file with a bracket too many or too few is refused, with the line.
+- **The roll reader.** It turns the list of a saved bach.roll into Maket's roll: the header (slot definitions, clefs, voice names, MIDI channels, markers, and every entry Maket does not use yet, kept as it is), then voices, chords and notes, each note with its pitch, duration, velocity, breakpoints, slots and flags (locked, muted, solo).
+- **The test** holds the reader against bach itself, with the files Joost made in Max and put in `Temp`: bach's counts of voices, chords, notes and markers, and bach's dump of every note it plays. Each dumped note is looked up in Maket's roll and compared in full: duration, velocity, breakpoints and the content of every slot.
+
+Two things to know. bach's dump leaves out muted notes (one in doodsbed), so the test expects 306 of 307 there. And bach writes a dynamics slot differently when it plays than when it saves (`[ [ auto 0 0.5 ] mf > ]` against `[ auto mf > ]`); the test brings the first back to the second before comparing.
+
+### Testing stage 1a
+
+1. `git pull`, then `./build.sh`: Maket opens as before, with `stage 1a` at the right of the tab row.
+2. `./build.sh tests` ends with `All 47 checks passed.`
+3. Open `Measurements/report.md` and look at section 3, *Reading bach rolls*: for each of the two rolls a table with Maket's reader on the left, bach on the right, and `yes` in every row. Below each table, one line says what was read from the roll: how many notes glide, and which slots are filled in how many notes. Check that line against what you know of the two pieces.
+4. Push `Measurements/report.md`, as before.
+
 ## The repository
 
 ```
@@ -182,14 +200,15 @@ Source/             the application
   Main.cpp            the application object and its window
   MainComponent.*     everything inside the window
   UI/                 interface code: tab row, panel buttons, pages, preferences, inspector, colours
-  Model/              no interface code: the settings; the name, version and build stage
+  Model/              no interface code: the settings; the name, version and build stage; bach's list type; the roll
+  Formats/            no interface code: reading files (bach's text, bach.roll)
 Tests/              the console test program
 Measurements/       its reports
 Reference/python/   scripts from the design phase (file formats, checks); not part of the app
 Temp/               Joost's test material, test saves, crash reports and screen captures
 ```
 
-`Source/` gains `Formats/`, `Engine/` and `Notation/` as their steps come. Together with `Model/` they hold no interface code, so that the test program can build them without the window.
+`Source/` gains `Engine/` and `Notation/` as their steps come. Together with `Model/` and `Formats/` they hold no interface code, so that the test program can build them without the window.
 
 ## Licence
 

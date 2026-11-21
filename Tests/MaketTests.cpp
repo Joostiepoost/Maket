@@ -8,7 +8,9 @@
 //      a file that reads back byte for byte, the report folder.
 //   2. Settings (stage 0c): defaults, the settings file written and read
 //      back, values that must be refused, a damaged file.
-//   3. Test material: what is in the repository's Temp folder, and whether
+//   3. Reading bach rolls (stage 1a, in BachTests.cpp): the text reader,
+//      and Joost's two rolls against bach's own counts and its dump.
+//   4. Test material: what is in the repository's Temp folder, and whether
 //      the files the coming steps need are there.
 //
 // Options:  --out <folder>   where report.md is written (default: Measurements)
@@ -18,33 +20,15 @@
 #include <JuceHeader.h>
 #include "../Source/Model/AppInfo.h"
 #include "../Source/Model/Settings.h"
+#include "TestReport.h"
 
 #include <cstring>
 #include <iostream>
 
+using namespace testreport;
+
 namespace
 {
-
-juce::String md;          // the report, in Markdown
-int checks = 0;
-int failures = 0;
-
-void line (const juce::String& s = {})       { md << s << "\n"; }
-
-/** Counts a check; a failed one is also printed in Terminal. */
-bool check (bool ok, const juce::String& what)
-{
-    ++checks;
-    if (! ok) { ++failures; std::cout << "  FAIL: " << what << std::endl; }
-    return ok;
-}
-
-/** A check that is also a row of the table being written. */
-void checkRow (bool ok, const juce::String& what)
-{
-    check (ok, what);
-    line ("| " + what + " | " + (ok ? "yes" : "**NO**") + " |");
-}
 
 bool isNumber (const juce::String& s)
 {
@@ -283,7 +267,7 @@ void testSettings (const juce::File& work)
     line();
 }
 
-// --- 3. Test material ----------------------------------------------------------
+// --- 4. Test material ----------------------------------------------------------
 
 /** A file name without extension, case, spaces, underscores and hyphens, so
     that "mixed_roll_example_01h.txt" and "Mixed roll example 01h" compare equal. */
@@ -294,7 +278,7 @@ juce::String plainName (const juce::String& name)
 
 void testMaterial (const juce::File& temp)
 {
-    line ("## 3. Test material");
+    line ("## 4. Test material");
     line();
     line ("The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. "
           "This section lists what the program finds there; nothing is read yet. A missing file is not a "
@@ -381,6 +365,7 @@ int main (int argc, char** argv)
     std::cout << app.name << " " << app.version << ", stage " << app.stage << std::endl;
     std::cout << "The test program..." << std::endl;     testProgram (work, outDir);
     std::cout << "Settings..." << std::endl;             testSettings (work);
+    std::cout << "Reading bach rolls..." << std::endl;   testBachReading (sourceDir.getChildFile ("Temp"));
     std::cout << "Test material..." << std::endl;        testMaterial (sourceDir.getChildFile ("Temp"));
 
     work.deleteRecursively();
