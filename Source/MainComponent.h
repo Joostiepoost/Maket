@@ -4,6 +4,8 @@
 // Utilities), a page for each, and the inspector on the right. A tab comes
 // in front by a click or by Cmd-1 to Cmd-4 (also in the View menu). Three
 // pages are still empty; the Utilities tab holds the preferences page.
+// The list on the left of a tab and the inspector can be hidden and shown
+// (buttons in the tab row, View menu, Cmd-Alt-L and Cmd-Alt-I).
 // The settings are read here when Maket starts.
 
 #pragma once
@@ -34,8 +36,16 @@ public:
     // One command per tab, in the order of Tabs::Index.
     enum CommandIDs
     {
-        cmdShowTab = 0x3000        // cmdShowTab + Tabs::Index
+        cmdShowTab = 0x3000,        // cmdShowTab + Tabs::Index
+        cmdToggleList = 0x3010,
+        cmdToggleInspector
     };
+
+    /** Hides or shows the list on the left of the tabs that have one. */
+    void setListShown (bool shouldShow);
+
+    /** Hides or shows the inspector. */
+    void setInspectorShown (bool shouldShow);
 
     /** Brings a tab in front (one of Tabs::Index). */
     void showTab (int index);
@@ -51,6 +61,12 @@ public:
     void menuItemSelected (int, int) override   {}
 
 private:
+    /** True when the tab in front has a list on its left. */
+    bool currentTabHasList() const      { return tabBar.getCurrent() == Tabs::utilities; }
+
+    /** Brings the two panel buttons in line with what shows. */
+    void updatePanelButtons();
+
     /** Shows a setting in the inspector. */
     void showSetting (const maket::SettingInfo&);
 
@@ -60,6 +76,8 @@ private:
 
     maket::Settings settings { maket::Settings::defaultFile() };
     UtilitiesPage* utilities = nullptr;         // owned by `pages`
+    bool listShown = true;
+    bool inspectorShown = true;
 
     TabBar tabBar;
     std::array<std::unique_ptr<juce::Component>, Tabs::count> pages;

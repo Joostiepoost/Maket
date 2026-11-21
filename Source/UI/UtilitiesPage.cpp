@@ -37,9 +37,17 @@ UtilitiesPage::UtilitiesPage (maket::Settings& settings) : preferences (settings
     addAndMakeVisible (viewport);
 }
 
+void UtilitiesPage::setListVisible (bool shouldShow)
+{
+    if (shouldShow == listVisible) return;
+    listVisible = shouldShow;
+    resized();
+    repaint();
+}
+
 void UtilitiesPage::resized()
 {
-    viewport.setBounds (getLocalBounds().withTrimmedLeft (listWidth));
+    viewport.setBounds (getLocalBounds().withTrimmedLeft (listVisible ? listWidth : 0));
 
     // The page takes the viewport's width and its own height; a scroll bar
     // appears when that is more than the window has.
@@ -50,6 +58,7 @@ void UtilitiesPage::resized()
 void UtilitiesPage::paint (juce::Graphics& g)
 {
     g.fillAll (Theme::background);
+    if (! listVisible) return;
 
     auto list = getLocalBounds().removeFromLeft (listWidth);
     g.setColour (Theme::panel);

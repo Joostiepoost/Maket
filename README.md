@@ -45,7 +45,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | --- | --- | --- |
 | 0a | Skeleton: repository, build script, the window with four empty tabs and the inspector | done |
 | 0b | Skeleton: console test program and its report; this status table | done |
-| 0c | Skeleton: preferences page and settings file (folders, OSC host and port) | built, to test |
+| 0c | Skeleton: preferences page and settings file (folders, OSC host and port) | done |
+| 0d | Skeleton: buttons to hide and show the list and the inspector | built, to test |
 | 1a | Gate: list type and bach text reader | |
 | 1b | Gate: bach text writer | |
 | 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | |
@@ -155,6 +156,23 @@ Nothing uses these values yet. The host and the port come into use at stage 1c, 
 9. Press **Default** on the three rows you changed: they go back, and the buttons turn grey.
 10. `./build.sh tests` ends with `All 16 checks passed.`
 
+## Using stage 0d
+
+Stage 0d adds one thing, asked for after 0c: the list on the left of a tab and the inspector on the right can be hidden, so that the page has the whole window.
+
+- **Two buttons** at the right end of the tab row. Each draws a small window with a bar on the side of its panel: the left one is for the list, the right one for the inspector. The bar is filled while the panel shows and empty while it is hidden.
+- **Shortcuts:** Cmd-Alt-L for the list, Cmd-Alt-I for the inspector (the same as the panel in Projet). Both are in the View menu too, which reads Hide or Show according to the state.
+- **The list** is, for now, the list of pages in the Utilities tab. In a tab without a list the left button is grey. The choice holds for all tabs: when the library gets its list at step 3, the same button hides it.
+- Maket opens with both panels showing. What was hidden is not remembered from one start to the next yet.
+
+### Testing stage 0d
+
+1. `git pull`, then `./build.sh`. The two buttons stand at the right end of the tab row.
+2. Cmd-4, then click the left button: the list of pages goes away and the preferences take its place. Click again: it is back.
+3. Click the right button: the inspector goes away and the page widens. Click again: it is back.
+4. Cmd-Alt-L and Cmd-Alt-I do the same, and so do the two entries at the bottom of the View menu.
+5. In another tab (Cmd-1) the left button is grey; the right one still works.
+
 ## The repository
 
 ```
@@ -163,7 +181,7 @@ CMakeLists.txt      what is built, and with which JUCE
 Source/             the application
   Main.cpp            the application object and its window
   MainComponent.*     everything inside the window
-  UI/                 interface code: tab row, pages, preferences, inspector, colours
+  UI/                 interface code: tab row, panel buttons, pages, preferences, inspector, colours
   Model/              no interface code: the settings; the name, version and build stage
 Tests/              the console test program
 Measurements/       its reports

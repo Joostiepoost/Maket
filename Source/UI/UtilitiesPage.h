@@ -23,6 +23,9 @@ public:
     /** A problem met when the settings file was read; shown on the preferences page. */
     void setSettingsNotice (const juce::String& text)    { preferences.setNotice (text); }
 
+    /** Hides or shows the list of pages on the left. */
+    void setListVisible (bool shouldShow);
+
     /** See PreferencesPage::commitPendingEdits. */
     void commitPendingEdits()                             { preferences.commitPendingEdits(); }
 
@@ -32,6 +35,7 @@ public:
 private:
     static constexpr int listWidth = 200;
 
+    bool listVisible = true;
     PreferencesPage preferences;
     juce::Viewport viewport;        // the page scrolls when the window is low
 

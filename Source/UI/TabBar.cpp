@@ -21,6 +21,17 @@ namespace
 TabBar::TabBar()
 {
     setOpaque (true);
+    addAndMakeVisible (listButton);
+    addAndMakeVisible (inspectorButton);
+}
+
+void TabBar::resized()
+{
+    // The two panel buttons at the far right, in the order of their panels.
+    auto right = getLocalBounds().reduced (0, 5).withTrimmedRight (10);
+    inspectorButton.setBounds (right.removeFromRight (30));
+    right.removeFromRight (2);
+    listButton.setBounds (right.removeFromRight (30));
 }
 
 void TabBar::setCurrent (int index)
@@ -79,7 +90,7 @@ void TabBar::paint (juce::Graphics& g)
         const int left = tabBounds (Tabs::count - 1).getRight() + 12;
         g.setColour (Theme::textMuted);
         g.setFont (Theme::font (12.0f));
-        g.drawText (note, juce::Rectangle<int> (left, 0, getWidth() - left - 16, getHeight()),
+        g.drawText (note, juce::Rectangle<int> (left, 0, listButton.getX() - left - 14, getHeight()),
                     juce::Justification::centredRight, true);
     }
 }
