@@ -289,6 +289,83 @@ void testOnThisComputer()
     line();
 }
 
+/** Joost's takes of 22 Nov, read from the logs in Temp/Timing 1d and
+    compared here once more. For the logs he saved by hand (bach.roll's
+    takes) this is the only place they are compared. */
+void testTakes (const juce::File& folder)
+{
+    line ("### The takes of 22 Nov on Joost's Mac");
+    line();
+
+    if (! folder.isDirectory())
+    {
+        line ("(The folder `Temp/" + folder.getFileName() + "` is not there; nothing to show.)");
+        line();
+        return;
+    }
+
+    const auto dense = densePassage();
+    const auto longOne = longPassage (5.0);
+
+    auto files = folder.findChildFiles (juce::File::findFiles, false, "*");
+    files.sort();
+
+    struct Row { juce::String take, playedBy; maket::timing::Result result; };
+    std::vector<Row> rows;
+
+    for (const auto& file : files)
+    {
+        const auto name = file.getFileName();
+        const bool byHand = name.startsWith ("test");
+        if (! byHand && ! name.endsWith ("max log.txt")) continue;
+
+        const auto log = readCollLog (file.loadFileAsString());
+        const auto take = byHand ? name : name.upToLastOccurrenceOf (" max log.txt", false, false);
+
+        const int highest = highestTick (log);
+        if (highest >= 0)
+            rows.push_back ({ take, "Maket", compareTicksToPassage (highest >= dense.numMessages() ? longOne : dense, log) });
+
+        if (hasBachLines (log))
+        {
+            const auto result = compareBachTake (dense, log);
+            if (result.usable && result.arrived == result.expected)        // a take bach.roll played to its end
+                rows.push_back ({ take, "bach.roll", result });
+        }
+    }
+
+    line ("Every log in `Temp/" + folder.getFileName() + "`, compared here again: how far the messages arrived in Max from their time, in ms. "
+          "The conditions are in the names Joost gave the takes.");
+    line();
+    line ("| Take | Played by | Arrived | Half within | 95 in 100 within | 99 in 100 within | Farthest |");
+    line ("| --- | --- | --- | --- | --- | --- | --- |");
+    for (const auto& row : rows)
+        line ("| " + row.take + " | " + row.playedBy + " | " + juce::String (row.result.arrived) + " of " + juce::String (row.result.expected)
+              + " | " + ms (row.result.all.half) + " | " + ms (row.result.all.most) + " | " + ms (row.result.all.nearlyAll)
+              + " | " + ms (row.result.all.worst) + " |");
+    line();
+
+    // Against the numbers worked out separately (a Python script, 22 Nov).
+    auto find = [&rows] (const juce::String& start, const juce::String& playedBy) -> const maket::timing::Result*
+    {
+        for (const auto& row : rows)
+            if (row.take.startsWith (start) && row.playedBy == playedBy) return &row.result;
+        return nullptr;
+    };
+    auto is = [] (const maket::timing::Result* r, int arrived, double most, double worst)
+    {
+        return r != nullptr && r->arrived == arrived && close (r->all.most, most, 0.006) && close (r->all.worst, worst, 0.006);
+    };
+
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+    checkRow (is (find ("test2", "Maket"), 2806, 0.31, 3.24) && is (find ("test2", "bach.roll"), 1403, 0.15, 5.27)
+              && is (find ("test5", "bach.roll"), 1403, 13.74, 14.09)
+              && is (find ("20261122-200039", "Maket"), 6000, 38.88, 99.36) && is (find ("20261122-204355", "Maket"), 6000, 0.12, 0.64),
+              "Five of these rows (takes 2, 5, 7 and 7d) give the numbers worked out separately");
+    line();
+}
+
 } // namespace
 
 void testTiming (const juce::File& temp)
@@ -304,4 +381,5 @@ void testTiming (const juce::File& temp)
     testLogReading (temp);
     testComparing();
     testOnThisComputer();
+    testTakes (temp.getChildFile ("Timing 1d"));
 }

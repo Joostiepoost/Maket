@@ -332,6 +332,35 @@ Result compareMaketRun (const Passage& passage, const std::vector<OscScheduler::
     return result;
 }
 
+Result compareTicksToPassage (const Passage& passage, const std::vector<LogLine>& log)
+{
+    std::vector<OscScheduler::Sent> sent;
+    for (size_t i = 0; i < passage.notes.size(); ++i)
+        for (int off = 0; off < 2; ++off)
+        {
+            OscScheduler::Sent s;
+            s.due = passage.notes[i].onset + (off == 1 ? passage.notes[i].duration : 0.0);
+            s.sent = s.due;
+            s.text = tickMessage ((int) i, off == 1).toText();
+            sent.push_back (std::move (s));
+        }
+
+    auto result = compareMaketRun (passage, sent, log);
+    result.leftMaket = Spread();        // not known from the log alone
+    return result;
+}
+
+int highestTick (const std::vector<LogLine>& log)
+{
+    int highest = -1;
+    for (const auto& line : log)
+    {
+        int number = 0;
+        if (tickNumber (line.message, number)) highest = std::max (highest, number);
+    }
+    return highest;
+}
+
 Result compareBachTake (const Passage& passage, const std::vector<LogLine>& log)
 {
     Result result;

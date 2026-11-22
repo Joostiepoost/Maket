@@ -270,7 +270,7 @@ How to read a result: *half within 0.05 ms* means that half of the messages arri
 
 Before the takes:
 
-1. `git pull`, then `./build.sh`: `stage 1d`. `./build.sh tests` ends with `All 94 checks passed.`
+1. `git pull`, then `./build.sh`: `stage 1d`. `./build.sh tests` ends with `All 95 checks passed.`
 2. Cmd-4, Preferences, *Timing results*: **Choose…** a new folder `timing 1d` inside the repository's `Temp` folder, so that the files can be pushed.
 3. In Max: the ePlayer with an orchestra, audio on, as for ScAst. Open `Max/Maket OSC log.maxpat` (the new version) and `Max/Maket bach reference.maxpat`. No error should show in the Max window.
 4. In Maket: Cmd-4, **Timing test**. Click **Write the passages as bach.roll files**. In the reference patch, click **read** and choose `timing passage dense.txt` in the timing folder. The passage should show in the bach.roll.
@@ -289,7 +289,22 @@ Then the takes. Before each, type in *Condition* what the state of Max is; the r
 
 After the takes: push the `timing 1d` folder and `Measurements/report.md`.
 
-If a take ends with *Max did not write its log*: the patch did not manage to save where Maket asked. Click **write** in the patch, save under the name the message gives, and click **Read the log again**. Tell me if that happens; it is the one part of the patch I could not try without Max.
+### After the first takes (22 Nov): what they showed and what changed
+
+The takes are in `Temp/Timing 1d`; the test report lists them all in its section 6, compared once more.
+
+- **With Overdrive on** (and Scheduler in Audio Interrupt off) Maket's messages arrive as evenly as bach.roll's own notes: 99 in 100 within about half a millisecond for both. A rare single message, about one in 1600, arrives 1 to 8 ms late; in the takes where both played at once, bach.roll's late notes fall at the same moments on Max's clock, so those are moments at which Max itself was held up.
+- **With Overdrive off** both are uneven (95 in 100 within 7 to 9 ms, single ones 30 to 40 ms). Overdrive must be on, as it must for ScAst.
+- **With Scheduler in Audio Interrupt on** Maket's messages land within 3 ms; bach.roll's own notes within 14 ms.
+- **Five minutes untouched:** 6000 messages, the farthest 0.4 and 0.6 ms from its time.
+- **The one fault found** (take 7): when another app was used while Maket played, macOS slowed Maket down and messages left up to 99 ms late. Maket now tells macOS that it is busy for as long as messages wait (`Source/UI/KeepAwake.h`).
+- **Waiting for Max's log:** Max writes its log when its interface is free, so not while a window is being dragged. Maket now goes on waiting instead of giving up after 8 seconds; **Stop** ends the wait, and **Read the log again** files the take later.
+
+Two things to do with this version:
+
+1. `git pull`, `./build.sh`, and `./build.sh tests`, which ends with `All 95 checks passed.`
+2. **Take 8:** your usual settings, the *Long* passage, **Run from Maket**. After about a minute, bring another app to the front and type in it for a minute or two, as in take 7. In the result, *Leaving Maket … the latest* should now stay under a millisecond.
+3. Push the `Timing 1d` folder and `Measurements/report.md`.
 
 ## The repository
 

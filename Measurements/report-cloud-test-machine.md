@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1d. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 22 Nov 2026 6:50:40pm.
+Maket 0.0.1, stage 1d. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 22 Nov 2026 9:18:19pm.
 
 ## 1. The test program
 
@@ -274,8 +274,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.026 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.010 ms; the latest of all: 0.171 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.029 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.004 ms; the latest of all: 0.043 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -283,8 +283,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.003 | 0.010 | 0.171 |
-| Arrived at the listener in this program | 0.118 | 0.185 | 0.326 |
+| Left Maket | -0.011 | 0.004 | 0.043 |
+| Arrived at the listener in this program | 0.113 | 0.169 | 0.751 |
 
 ## 6. Timing tests: the measuring
 
@@ -331,15 +331,46 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.10 ms; the farthest 1.43 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.10 ms; the farthest 0.30 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.03 ms of their time, 95 in 100 within 0.10 ms, 99 in 100 within 0.29 ms; the farthest 1.43 ms (earliest -0.11, latest +1.43).
-The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.10 ms, 99 in 100 within 0.12 ms; the farthest 1.43 ms (earliest -0.11, latest +1.43).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.10 ms, the farthest 1.43 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.15 ms after it.
+All messages: half within 0.03 ms of their time, 95 in 100 within 0.10 ms, 99 in 100 within 0.13 ms; the farthest 0.30 ms (earliest -0.07, latest +0.30).
+The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.09 ms, 99 in 100 within 0.10 ms; the farthest 0.14 ms (earliest -0.07, latest +0.14).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.10 ms, the farthest 0.30 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.24 ms after it.
 ```
+
+### The takes of 22 Nov on Joost's Mac
+
+Every log in `Temp/Timing 1d`, compared here again: how far the messages arrived in Max from their time, in ms. The conditions are in the names Joost gave the takes.
+
+| Take | Played by | Arrived | Half within | 95 in 100 within | 99 in 100 within | Farthest |
+| --- | --- | --- | --- | --- | --- | --- |
+| 20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v | Maket | 2806 of 2806 | 0.05 | 0.42 | 0.54 | 2.71 |
+| 20261122-193138 dense maket test1 - overdrive IO vector 512 Signal v | Maket | 2806 of 2806 | 0.08 | 0.33 | 0.53 | 8.20 |
+| 20261122-193333 dense maket test1 - overdrive IO vector 1024 Signal  | Maket | 2806 of 2806 | 0.07 | 0.36 | 0.48 | 0.83 |
+| 20261122-193530 dense maket test1 - overdrive IO vector 512 Signal v | Maket | 2806 of 2806 | 0.05 | 0.42 | 0.61 | 3.13 |
+| 20261122-193624 dense maket test1 - overdrive IO vector 512 Signal v | Maket | 2806 of 2806 | 0.06 | 0.38 | 0.56 | 3.66 |
+| 20261122-194644 dense maket test1 - overdrive IO vector 512 Signal v | Maket | 2806 of 2806 | 0.07 | 0.31 | 0.42 | 3.24 |
+| 20261122-194818 dense maket test1 - overdrive IO vector 512 Signal v | Maket | 2806 of 2806 | 0.07 | 0.33 | 0.45 | 6.91 |
+| 20261122-195010 dense maket test4 - overdrive off | Maket | 2806 of 2806 | 0.72 | 8.73 | 18.91 | 29.86 |
+| 20261122-195207 dense maket test5 - overdrive on - scheduler in audi | Maket | 2806 of 2806 | 1.18 | 2.48 | 2.81 | 3.17 |
+| 20261122-195814 dense maket test6b - overdrive on - io vector 512 -  | Maket | 2806 of 2806 | 0.05 | 0.35 | 0.52 | 0.69 |
+| 20261122-200039 long maket test7 - overdrive on - io vector 512 - s | Maket | 6000 of 6000 | 0.04 | 38.88 | 96.71 | 99.36 |
+| 20261122-200711 long maket test7b - overdrive on - io vector 512 -  | Maket | 6000 of 6000 | 0.03 | 0.12 | 0.18 | 0.42 |
+| 20261122-204355 long maket test7d - overdrive on - io vector 512 -  | Maket | 6000 of 6000 | 0.03 | 0.12 | 0.16 | 0.64 |
+| test2 from max OSC log | Maket | 2806 of 2806 | 0.07 | 0.31 | 0.42 | 3.24 |
+| test2 from max OSC log | bach.roll | 1403 of 1403 | 0.03 | 0.15 | 0.20 | 5.27 |
+| test3 from max OSC log | Maket | 2806 of 2806 | 0.07 | 0.33 | 0.45 | 6.91 |
+| test3 from max OSC log | bach.roll | 1403 of 1403 | 0.03 | 0.12 | 0.18 | 8.57 |
+| test4 from max OSC log (overdrive off) | bach.roll | 1403 of 1403 | 0.08 | 6.66 | 38.37 | 40.62 |
+| test5 from max OSC log (overdrive on - scheduler in audio interrupt on) | bach.roll | 1403 of 1403 | 4.83 | 13.74 | 14.04 | 14.09 |
+| test6b from max OSC log (overdrive on - scheduler in audio interrupt on) | Maket | 2806 of 2806 | 0.05 | 0.35 | 0.52 | 0.69 |
+
+| Check | Passed |
+| --- | --- |
+| Five of these rows (takes 2, 5, 7 and 7d) give the numbers worked out separately | yes |
 
 ## 7. Test material
 
@@ -353,6 +384,41 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `02b mixed_roll_example_01h resave after dump.txt` | 17.2 KB |
 | `1c maket log.txt` | 3.3 KB |
 | `1c max log.txt` | 2.8 KB |
+| `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 97.8 KB |
+| `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v send log.txt` | 188.5 KB |
+| `Timing 1d/20261122-193138 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 98.6 KB |
+| `Timing 1d/20261122-193138 dense maket test1 - overdrive IO vector 512 Signal v send log.txt` | 194.2 KB |
+| `Timing 1d/20261122-193333 dense maket test1 - overdrive IO vector 1024 Signal  max log.txt` | 98.6 KB |
+| `Timing 1d/20261122-193333 dense maket test1 - overdrive IO vector 1024 Signal  send log.txt` | 194.2 KB |
+| `Timing 1d/20261122-193530 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 97.9 KB |
+| `Timing 1d/20261122-193530 dense maket test1 - overdrive IO vector 512 Signal v send log.txt` | 188.5 KB |
+| `Timing 1d/20261122-193624 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 97.7 KB |
+| `Timing 1d/20261122-193624 dense maket test1 - overdrive IO vector 512 Signal v send log.txt` | 194.0 KB |
+| `Timing 1d/20261122-194644 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 158.8 KB |
+| `Timing 1d/20261122-194644 dense maket test1 - overdrive IO vector 512 Signal v send log.txt` | 193.3 KB |
+| `Timing 1d/20261122-194818 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 150.0 KB |
+| `Timing 1d/20261122-194818 dense maket test1 - overdrive IO vector 512 Signal v send log.txt` | 193.4 KB |
+| `Timing 1d/20261122-195010 dense maket test4 - overdrive off max log.txt` | 97.8 KB |
+| `Timing 1d/20261122-195010 dense maket test4 - overdrive off send log.txt` | 193.9 KB |
+| `Timing 1d/20261122-195207 dense maket test5 - overdrive on - scheduler in audi max log.txt` | 97.8 KB |
+| `Timing 1d/20261122-195207 dense maket test5 - overdrive on - scheduler in audi send log.txt` | 194.0 KB |
+| `Timing 1d/20261122-195814 dense maket test6b - overdrive on - io vector 512 -  max log.txt` | 98.6 KB |
+| `Timing 1d/20261122-195814 dense maket test6b - overdrive on - io vector 512 -  send log.txt` | 194.0 KB |
+| `Timing 1d/20261122-200039 long maket test7 - overdrive on - io vector 512 - s max log.txt` | 216.7 KB |
+| `Timing 1d/20261122-200039 long maket test7 - overdrive on - io vector 512 - s send log.txt` | 418.8 KB |
+| `Timing 1d/20261122-200711 long maket test7b - overdrive on - io vector 512 -  max log.txt` | 216.7 KB |
+| `Timing 1d/20261122-200711 long maket test7b - overdrive on - io vector 512 -  send log.txt` | 417.8 KB |
+| `Timing 1d/20261122-204355 long maket test7d - overdrive on - io vector 512 -  max log.txt` | 216.7 KB |
+| `Timing 1d/20261122-204355 long maket test7d - overdrive on - io vector 512 -  send log.txt` | 418.1 KB |
+| `Timing 1d/test2 from max OSC log` | 181.8 KB |
+| `Timing 1d/test3 from max OSC log` | 180.6 KB |
+| `Timing 1d/test4 from max OSC log (overdrive off)` | 82.2 KB |
+| `Timing 1d/test5 from max OSC log (overdrive on - scheduler in audio interrupt on)` | 81.6 KB |
+| `Timing 1d/test6b from max OSC log (overdrive on - scheduler in audio interrupt on)` | 98.6 KB |
+| `Timing 1d/timing details.txt` | 12.7 KB |
+| `Timing 1d/timing passage dense.txt` | 54.1 KB |
+| `Timing 1d/timing passage long.txt` | 124.9 KB |
+| `Timing 1d/timing results.md` | 3.2 KB |
 | `doodsbed final v1c.txt` | 56.1 KB |
 | `mixed_roll_example_01h.txt` | 17.2 KB |
 | `roll tests s1b.maxpat` | 100.8 KB |
@@ -373,4 +439,4 @@ Needed for the coming stages:
 | 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `1c maket log.txt` |
 | 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `1c max log.txt` |
 
-All 94 checks passed.
+All 95 checks passed.

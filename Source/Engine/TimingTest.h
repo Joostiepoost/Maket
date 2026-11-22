@@ -121,6 +121,13 @@ struct Result
 Result compareMaketRun (const Passage& passage, const std::vector<OscScheduler::Sent>& sent,
                         const std::vector<LogLine>& log);
 
+/** The same without Maket's record of what it sent: each tick against the
+    time the passage gives it. For a log that was saved by hand. */
+Result compareTicksToPassage (const Passage& passage, const std::vector<LogLine>& log);
+
+/** The highest tick number in a log, or -1 when it holds no ticks. */
+int highestTick (const std::vector<LogLine>& log);
+
 /** A take from bach.roll: its playout in the patch's log, each line against
     the onset it carries. */
 Result compareBachTake (const Passage& passage, const std::vector<LogLine>& log);

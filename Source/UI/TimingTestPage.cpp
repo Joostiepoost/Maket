@@ -327,13 +327,17 @@ void TimingTestPage::finishBachTake()
 
 void TimingTestPage::stop()
 {
+    const bool waitingForMax = state == State::waitingForLog;
+
     scheduler.clear();
-    if (onPlayer && kind == Kind::maketRun)
+    if (onPlayer && kind == Kind::maketRun && ! waitingForMax)
         scheduler.sendImmediately (maket::contimbre::allNotesOff(), maket::OscScheduler::toPlayer, sendTag);
 
-    kind = Kind::none;
+    // A take that only waits for Max's file can still be read later, by Read the log again.
+    if (! waitingForMax) kind = Kind::none;
     setState (State::idle);
-    setStatus ("Stopped. Nothing was filed for this take.");
+    setStatus (waitingForMax ? "No longer waiting. When the file is there, Read the log again files the take."
+                             : "Stopped. Nothing was filed for this take.");
 }
 
 void TimingTestPage::writePassages (bool tellInStatus)
@@ -401,10 +405,11 @@ void TimingTestPage::timerCallback()
         }
         else if (now - stateSince > logTimeout)
         {
-            setState (State::idle);
-            setStatus ("Max did not write its log. In the logging patch, click write and save the file as \""
-                       + maxLogFile.getFileName() + "\" in " + maxLogFile.getParentDirectory().getFullPathName()
-                       + ". Then click Read the log again.", true);
+            // Max writes the file when its interface is free (not while a
+            // window is being dragged), so Maket goes on waiting. Stop ends it.
+            setStatus ("Still waiting for Max to write its log; it does so when it is free. If it never comes: click write in the "
+                       "logging patch and save as \"" + maxLogFile.getFileName() + "\" in "
+                       + maxLogFile.getParentDirectory().getFullPathName() + "; Maket reads it as soon as it is there.", true);
         }
         lastLogSize = size;
     }
