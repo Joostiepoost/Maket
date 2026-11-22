@@ -339,7 +339,7 @@ What is not in this stage: chords as one command and the addressing of a note by
 
 Before the tests:
 
-1. `git pull`, then `./build.sh`: `stage 1e`. `./build.sh tests` ends with `All 108 checks passed.` Should git refuse to pull because of `Max/Maket OSC log.maxpat` (Max saved it once more on your Mac): `git checkout -- "Max/Maket OSC log.maxpat"`, then pull again.
+1. `git pull`, then `./build.sh`: `stage 1e`. `./build.sh tests` ends with `All 109 checks passed.` Should git refuse to pull because of `Max/Maket OSC log.maxpat` (Max saved it once more on your Mac): `git checkout -- "Max/Maket OSC log.maxpat"`, then pull again.
 2. Cmd-4, Preferences, *Test results*: **Choose…** a new folder `Mapping 1e` inside the repository's `Temp` folder.
 3. In Max: ScAst with doodsbed, and the ePlayer with the `doodsbed kwintet` orchestra, as you play it. Close the old logging patch and open the new `Max/Maket OSC log.maxpat`; no error should show in the Max window.
 

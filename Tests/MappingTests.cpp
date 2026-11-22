@@ -195,6 +195,45 @@ void testMapping (const juce::File& temp)
     line();
 }
 
+void testSecondRoll (const juce::File& temp)
+{
+    line ("### A second piece: Bult");
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+
+    Roll roll;
+    juce::StringArray remarks;
+    const auto file = temp.getChildFile ("Bult - maquette final.txt");
+    if (! file.existsAsFile() || maket::readBachRollFile (file, roll, remarks).failed())
+    {
+        line ("| (`Bult - maquette final.txt` is not in Temp, or cannot be read: not checked.) | |");
+        line();
+        return;
+    }
+
+    const auto all = maket::contimbre::messagesForRoll (roll);
+
+    // Pitches written as names in the file: the first note-on of the flute is a G6, 7900 cents.
+    bool named = false;
+    for (const auto& voice : roll.voices)
+        for (const auto& chord : voice.chords)
+            for (const auto& note : chord.notes)
+                named = named || note.pitchName.isNotEmpty();
+
+    bool inRange = true;
+    for (const auto& m : all)
+        if (m.message.address == "noteon")
+            inRange = inRange && m.message.arguments.size() >= 3 && m.message.arguments[1].real > 12.0 && m.message.arguments[1].real < 127.0;
+
+    checkRow ((int) roll.voices.size() == 11 && (int) all.size() == 2478 && count (all, "noteon") == 991 && count (all, "noteoff") == 991
+              && count (all, "program") == 325 && count (all, "gain") == 92 && count (all, "dynamic") == 79 && count (all, "glissando") == 0
+              && named && inRange,
+              "Bult, eleven voices of which seven are played (three have no name, one is muted): 2478 commands, 991 note-ons, 325 programs, "
+              "92 gains, 79 dynamics; pitches written as names (`G6`, `C#7`) become numbers");
+    line();
+}
+
 void testSmallCases()
 {
     line ("### Note-on options, a command in a marker, muted notes");
@@ -347,6 +386,7 @@ void testConTimbreMapping (const juce::File& temp)
     line();
 
     testMapping (temp);
+    testSecondRoll (temp);
     testSmallCases();
     testComparison (temp);
 }
