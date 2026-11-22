@@ -1,0 +1,76 @@
+Maket send log
+Saved: 22 Nov 2026 6:11:49pm
+ePlayer: 127.0.0.1 port 46001; logging patch: port 46002
+Columns, separated by tabs: number, due (ms after the first message was due), late (ms: left Maket after it was due), to (P ePlayer, L logging patch), message
+1	0.000	-0.004	PL	program Cl "bass clarinet boehm system.key noise.tremolo"
+2	0.000	0.183	PL	noteon Cl 80.75 126
+3	200.000	0.002	PL	noteoff Cl 80.75
+4	250.000	-0.002	PL	noteon Cl 81.75 126
+5	450.000	0.019	PL	noteoff Cl 81.75
+6	500.000	0.005	PL	noteon Cl 82.75 126
+7	700.000	0.016	PL	noteoff Cl 82.75
+8	750.000	0.020	PL	noteon Cl 83.75 126
+9	950.000	-0.002	PL	noteoff Cl 83.75
+10	1000.000	-0.003	PL	noteon Cl 84.75 126
+11	1200.000	0.002	PL	noteoff Cl 84.75
+12	1250.000	0.008	PL	noteon Cl 85.75 126
+13	1450.000	0.020	PL	noteoff Cl 85.75
+14	1500.000	0.023	PL	noteon Cl 86.75 126
+15	1700.000	-0.007	PL	noteoff Cl 86.75
+16	1750.000	-0.003	PL	noteon Cl 87.75 126
+17	1950.000	0.014	PL	noteoff Cl 87.75
+18	19900.202	-0.009	PL	program Cl ordinario
+19	19900.202	0.105	PL	noteon Cl 80.75 126
+20	21900.202	-0.001	PL	noteoff Cl 80.75
+21	31296.143	-0.023	PL	program Cl ordinario
+22	31296.143	0.239	PL	noteon Cl 42.599998 126
+23	33296.143	0.012	PL	noteoff Cl 42.599998
+24	44802.694	-0.012	PL	program Cl ordinario
+25	44802.694	0.246	PL	noteon Cl 38.200001 126
+26	46802.694	-0.003	PL	noteoff Cl 38.200001
+27	49486.405	-0.003	PL	program Cl ordinario
+28	49486.405	0.251	PL	noteon Cl 38.200001 5
+29	51486.405	0.011	PL	noteoff Cl 38.200001
+30	54945.556	-0.016	PL	program Cl ordinario
+31	54945.556	0.213	PL	noteon Cl 38.200001 33
+32	56945.556	0.021	PL	noteoff Cl 38.200001
+33	65912.881	-0.010	PL	program Cl ordinario
+34	65912.881	0.258	PL	noteon Cl 34.700001 33
+35	67912.881	0.010	PL	noteoff Cl 34.700001
+36	71363.209	-0.010	PL	program Cl ordinario
+37	71363.209	0.252	PL	noteon Cl 34.700001 33
+38	71863.209	0.013	PL	noteoff Cl 34.700001
+39	72961.899	0.005	PL	program Cl ordinario
+40	72961.899	0.263	PL	noteon Cl 34.700001 33
+41	73161.899	0.004	PL	noteoff Cl 34.700001
+42	73211.899	0.022	PL	noteon Cl 35.700001 33
+43	73411.899	0.012	PL	noteoff Cl 35.700001
+44	73461.899	0.002	PL	noteon Cl 36.700001 33
+45	73661.899	0.017	PL	noteoff Cl 36.700001
+46	73711.899	0.011	PL	noteon Cl 37.700001 33
+47	73911.899	0.008	PL	noteoff Cl 37.700001
+48	73961.899	0.001	PL	noteon Cl 38.700001 33
+49	74161.899	-0.008	PL	noteoff Cl 38.700001
+50	74211.899	0.004	PL	noteon Cl 39.700001 33
+51	74411.899	0.001	PL	noteoff Cl 39.700001
+52	74461.899	0.030	PL	noteon Cl 40.700001 33
+53	74661.899	-0.001	PL	noteoff Cl 40.700001
+54	74711.899	0.022	PL	noteon Cl 41.700001 33
+55	74911.899	-0.005	PL	noteoff Cl 41.700001
+56	76145.095	-0.007	PL	program Cl ordinario
+57	76145.095	0.099	PL	noteon Cl 34.700001 33
+58	76345.095	0.003	PL	noteoff Cl 34.700001
+59	76395.095	-0.001	PL	noteon Cl 35.700001 33
+60	76595.095	-0.008	PL	noteoff Cl 35.700001
+61	76645.095	-0.001	PL	noteon Cl 36.700001 33
+62	76845.095	-0.003	PL	noteoff Cl 36.700001
+63	76895.095	-0.008	PL	noteon Cl 37.700001 33
+64	77095.095	-0.000	PL	noteoff Cl 37.700001
+65	77145.095	-0.017	PL	noteon Cl 38.700001 33
+66	77345.095	-0.008	PL	noteoff Cl 38.700001
+67	77395.095	0.001	PL	noteon Cl 39.700001 33
+68	77595.095	-0.017	PL	noteoff Cl 39.700001
+69	77645.095	-0.020	PL	noteon Cl 40.700001 33
+70	77845.095	-0.016	PL	noteoff Cl 40.700001
+71	77895.095	0.002	PL	noteon Cl 41.700001 33
+72	78095.095	-0.005	PL	noteoff Cl 41.700001

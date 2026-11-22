@@ -49,7 +49,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 0d | Skeleton: buttons to hide and show the list and the inspector | done |
 | 1a | Gate: list type and bach text reader | done |
 | 1b | Gate: bach text writer | done |
-| 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | built, to test |
+| 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | done |
 | 1d | Gate: timing tests of the OSC connection | |
 | 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | |
 | 1f | Gate: addressing by note, chords, tuning | |
@@ -221,7 +221,7 @@ Stage 1c is Maket's first word to Max: it sends OSC messages to the conTimbre eP
 - **Where the messages go** is set on the Preferences page: the ePlayer's host and port (127.0.0.1 and 46001), and a new setting, the logging patch's port (46002).
 - **The send log** on the page shows, for every message, when it was due, how many milliseconds after that it left Maket, and where it went (P the ePlayer, L the logging patch). **Save log…** writes it as a text file.
 - **A thread of its own** sends each message at its time, so a busy window does not hold a message up. **All notes off** sends `all_notes_off` and drops what still waits. When Maket quits while a note sounds, its note-off is sent at once.
-- **One thing the test has to settle:** how the command word must be written. Maket writes `noteon`, as Max's own udpsend object does. If the ePlayer stays silent, tick *Write the commands with a slash* (`/noteon`) and try again.
+- **One thing the test had to settle:** how the command word must be written. Maket writes `noteon`, as Max's own udpsend object does, and the ePlayer takes that (tested 22 Nov). The option *Write the commands with a slash* (`/noteon`) is therefore not needed and goes at the next stage.
 
 A message that left Maket has not necessarily arrived: this kind of network message gets no answer. Whether Max got it shows in Max, by the sound and in the logging patch.
 
@@ -229,7 +229,7 @@ A message that left Maket has not necessarily arrived: this kind of network mess
 
 `Max/Maket OSC log.maxpat` listens on port 46002 and gives every message that arrives a number and the time on the computer's clock, in milliseconds since the last **reset**. The lines are kept in a `coll`: double-click it to see them, click **write** to save them as a text file. A line reads `12, 3410.52 noteon voice1 60. 100;`. It does not pass anything on to the ePlayer: Maket sends each message twice, once to the ePlayer and once to this patch.
 
-The patch was written outside Max and has not been opened in Max yet. If it does not open, or the Max window shows an error when it loads, it can be rebuilt in a few minutes:
+The patch was written outside Max; it opened and worked in Max 9 on 22 Nov. Should it ever need rebuilding, this is what it holds:
 
 - `udpreceive 46002` into `t l b b`.
 - The right outlet of the `t` into `cpuclock`, that into the left inlet of `- 0.`, that into the right inlet of `pack 0 0.`.
