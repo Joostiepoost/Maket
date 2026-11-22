@@ -1,0 +1,6051 @@
+roll
+	[ slotinfo
+		[ 1
+			[ name Timbre ]
+			[ type text ]
+			[ key t ]
+			[ color 0.0 0.71824 0.957143 1.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 2
+			[ name Modulation ]
+			[ type function ]
+			[ key m ]
+			[ range 0.0 127.0 ]
+			[ slope 0.0 ]
+			[ representation ]
+			[ grid ]
+			[ ysnap ]
+			[ domain 0.0 1.0 ]
+			[ domainslope 0.0 ]
+			[ color 1.0 0.0 0.0 1.0 ]
+			[ temporalmode milliseconds ]
+			[ extend 0 ]
+			[ width auto ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 3
+			[ name `gain\ (dB) ]
+			[ type function ]
+			[ key p ]
+			[ range -20.0 20.0 ]
+			[ slope 0.0 ]
+			[ representation dB ]
+			[ grid ]
+			[ ysnap 0.0 ]
+			[ domain 0.0 0.0 ]
+			[ domainslope 0.0 ]
+			[ color 0.04776 0.295505 0.869231 1.0 ]
+			[ temporalmode milliseconds ]
+			[ extend 0 ]
+			[ width auto ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 4
+			[ name "slot floatlist" ]
+			[ type floatlist ]
+			[ key 0 ]
+			[ range 0.0 1.0 ]
+			[ slope 0.0 ]
+			[ representation ]
+			[ color 0.036391 0.946154 0.946154 1.0 ]
+			[ default 0.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 5
+			[ name "slot int" ]
+			[ type int ]
+			[ key 0 ]
+			[ range 0.0 127.0 ]
+			[ slope 0.0 ]
+			[ representation ]
+			[ default 64.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 6
+			[ name "slot float" ]
+			[ type float ]
+			[ key 0 ]
+			[ range 0.0 1.0 ]
+			[ slope 0.0 ]
+			[ representation ]
+			[ default 0.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 7
+			[ name "slot text" ]
+			[ type text ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 8
+			[ name "slot filelist" ]
+			[ type filelist ]
+			[ key s ]
+			[ color 0.514622 0.234852 0.694401 1.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 150.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 9
+			[ name "slot spat" ]
+			[ type spat ]
+			[ key 0 ]
+			[ range 0.0 10.0 ]
+			[ slope 0.0 ]
+			[ representation ]
+			[ temporalmode relative ]
+			[ extend 0 ]
+			[ width auto ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 10
+			[ name "slot llll" ]
+			[ type llll ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 11
+			[ name "slot 11" ]
+			[ type none ]
+			[ key 0 ]
+			[ color 0.407692 0.156805 0.156805 1.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 12
+			[ name "slot 12" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 13
+			[ name "slot 13" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 14
+			[ name "slot 14" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 15
+			[ name "slot 15" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 16
+			[ name "slot 16" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 17
+			[ name "slot 17" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 18
+			[ name "slot 18" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 19
+			[ name "slot 19" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 20
+			[ name dynamics ]
+			[ type dynamics ]
+			[ key d ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 70.0 ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 21
+			[ name lyrics ]
+			[ type text ]
+			[ key l ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 0 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 22
+			[ name articulations ]
+			[ type articulations ]
+			[ key a ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 110.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 23
+			[ name notehead ]
+			[ type notehead ]
+			[ key h ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 110.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 24
+			[ name "slot 24" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 25
+			[ name "slot 25" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 26
+			[ name "slot 26" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 27
+			[ name "slot 27" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 28
+			[ name "slot 28" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 29
+			[ name "slot 29" ]
+			[ type none ]
+			[ key 0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+		[ 30
+			[ name "slot 30" ]
+			[ type none ]
+			[ key 0 ]
+			[ color 0.0532 0.071039 0.88022 1.0 ]
+			[ temporalmode none ]
+			[ extend 0 ]
+			[ width 100.0 ]
+			[ height auto ]
+			[ copywhensplit 1 ]
+			[ access readandwrite ]
+			[ follownotehead 0 ]
+		]
+	]
+	[ commands
+		[ 1
+			[ note note ]
+			[ chord chord ]
+			[ rest rest ]
+			[ key 0 ]
+		]
+		[ 2
+			[ note note ]
+			[ chord chord ]
+			[ rest rest ]
+			[ key 0 ]
+		]
+		[ 3
+			[ note note ]
+			[ chord chord ]
+			[ rest rest ]
+			[ key 0 ]
+		]
+		[ 4
+			[ note note ]
+			[ chord chord ]
+			[ rest rest ]
+			[ key 0 ]
+		]
+		[ 5
+			[ note note ]
+			[ chord chord ]
+			[ rest rest ]
+			[ key 0 ]
+		]
+	]
+	[ clefs None None GG FGG FG FG FFGG FFGG FFGG FG FFGG ]
+	[ keys CM CM CM CM CM CM CM CM CM CM CM ]
+	[ voicenames Mezzo
+		[ ]
+	Fl Cl Vla Vlc PnRH PnLH
+		[ ]
+	ph_voice
+		[ ]
+	]
+	[ groups ]
+	[ markers
+		[ 499.33222
+			[ marker 1 ]
+		barline ]
+		[ 3036.530656
+			[ marker 4 ]
+		division ]
+		[ 6425.992049
+			[ marker 2 ]
+		barline ]
+		[ 9955.813166
+			[ marker 3 ]
+		barline ]
+		[ 12160.318317
+			[ marker 5 ]
+		barline ]
+		[ 14748.806655
+			[ marker 7 ]
+		barline ]
+		[ 17168.978838
+			[ marker 8 ]
+		barline ]
+		[ 19564.380277
+			[ marker 6 ]
+		barline ]
+		[ 23615.507406
+			[ marker 17 ]
+		barline ]
+		[ 26752.468322
+			[ marker 16 ]
+		barline ]
+		[ 30747.654393
+			[ marker 18 ]
+		barline ]
+		[ 33097.233156
+			[ marker 20 ]
+		barline ]
+		[ 35393.907825
+			[ marker 19 ]
+		barline ]
+		[ 37641.813131
+			[ marker 24 ]
+		barline ]
+		[ 40268.75691
+			[ marker 21 ]
+		barline ]
+		[ 44369.820426
+			[ marker 22 ]
+		barline ]
+		[ 47929.234044
+			[ marker 23 ]
+		barline ]
+		[ 53352.543476
+			[ marker 25 ]
+		barline ]
+		[ 60583.62272
+			[ marker 26 ]
+		barline ]
+		[ 68228.982545
+			[ marker 27 ]
+		barline ]
+		[ 75497.72366
+			[ marker 28 ]
+		barline ]
+		[ 88925.806056
+			[ marker 29 ]
+		barline ]
+		[ 113915.311676
+			[ marker 32 ]
+		barline ]
+		[ 116350.628735
+			[ marker 35 ]
+		barline ]
+		[ 118652.681629
+			[ marker 36 ]
+		barline ]
+		[ 121624.325187
+			[ marker 37 ]
+		barline ]
+		[ 123855.094753
+			[ marker 33 ]
+		barline ]
+		[ 130975.48368
+			[ marker 34 ]
+		barline ]
+		[ 140541.668029
+			[ STROFE 4 - "Dies Irae" ]
+		none ]
+		[ 146132.270843
+			[ marker 11 ]
+		barline ]
+		[ 152410.371552
+			[ marker 10 ]
+		barline ]
+		[ 158142.95871
+			[ marker 12 ]
+		barline ]
+		[ 163701.355826
+			[ marker 9 ]
+		barline ]
+		[ 169118.993851
+			[ marker 15 ]
+		barline ]
+		[ 175587.937398
+			[ marker 30 ]
+		barline ]
+		[ 180984.842589
+			[ marker 31 ]
+		barline ]
+		[ 185193.552848
+			[ marker 13 ]
+		barline ]
+		[ 188907.510725
+			[ marker 14 ]
+		barline ]
+		[ 193439.07887 EINDE none ]
+	]
+	[ stafflines 5 5 5 5 5 5 5 5 5 5 5 ]
+	[ midichannels 1 1 1 1 1 1 1 1 1 1 1 ]
+	[ articulationinfo ]
+	[ noteheadinfo ]
+	[ numparts 1 1 1 1 1 1 1 1 1 1 1 ]
+	[ loop 0.0 1000.0 ]
+	[
+		[ 9386.985542
+			[ 7100.0 9428.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s1z1+2.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 18914.54873
+			[ 7100.0 10152.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s1z3+4b.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 30093.859394
+			[ 7100.0 4399.0 120
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s2z1b.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 34535.962098
+			[ 6900.0 4754.0 122
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s2z2.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 39578.271451
+			[ 7100.0 10661.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s2z3+4b.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 52644.648816
+			[ 7100.0 4927.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s3z1.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 60002.143032
+			[ 7100.0 4927.0 114
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s3z2.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 67647.619386
+			[ 7100.0 4927.0 119
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s3z3.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 74644.113602
+			[ 7100.0 7584.0 120
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s3z4.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 87601.674721
+			[ 7100.0 20093.0 118
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s4.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 113084.327679
+			[ 6900.0 9806.0 119
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s5z1+2.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 123292.950024
+			[ 7100.0 4639.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s5z3.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 128384.979039
+			[ 7100.0 5474.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s5z4.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 138986.81912
+			[ 7100.0 5594.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s6z1.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 145418.591814
+			[ 7100.0 5322.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s6z2.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 151380.532774
+			[ 7100.0 5416.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s6z3b.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 157117.134285
+			[ 7100.0 5179.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s6z4b.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 163148.929457
+			[ 7100.0 10842.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s7z1+2.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 174936.100605
+			[ 7100.0 5326.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s7z3.wav" 1 ]
+				]
+			0 ]
+		0 ]
+		[ 181449.031673
+			[ 7100.0 6241.0 127
+				[ slots
+					[ 8 "Macintosh HD:/Users/joostvankerkhoven/Desktop/Compositie - werkmap/Elsschot Songs/Elsschot - Contimbre Maquettes/Bult/Bult zang audio/s7z4.wav" 1 ]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[ 0 ]
+	[
+		[ 482.473441
+			[ 9250.0 489.0 127
+				[ slots
+					[ 1 flz ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 1433.574421
+			[ 9250.0 479.0 127
+				[ slots
+					[ 1 flz-whitenoise ]
+				]
+			0 ]
+		0 ]
+		[ 3025.609874
+			[ 9250.0 930.0 127 0 ]
+		0 ]
+		[ 4203.893054
+			[ 9250.0 977.0 127
+				[ slots
+					[ 1 flz-whitenoise ]
+				]
+			0 ]
+		0 ]
+		[ 6862.600709
+			[ 9250.0 245.267569 107
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 7439.56471
+			[ 9250.0 254.659746 127 0 ]
+		0 ]
+		[ 7989.037574
+			[ 9275.0 181.287796 127 0 ]
+		0 ]
+		[ 8382.542167
+			[ 9300.0 181.287796 127 0 ]
+		0 ]
+		[ 8710.573863
+			[ 9325.0 91.150288 127 0 ]
+		0 ]
+		[ 9011.260473
+			[ 9350.0 120.520937 127 0 ]
+		0 ]
+		[ 9369.317731
+			[ 9375.0 44.562363 127 0 ]
+		0 ]
+		[ 9560.623995
+			[ 9400.0 32.408991 127 0 ]
+		0 ]
+		[ 12708.837265
+			[ 7150.0 1992.0 127
+				[ slots
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 171.647515 0.0 0.0 ]
+						[ 1992.0 76.2 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 17169.034366
+			[ 7150.0 1904.0 127
+				[ slots
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 173.956562 0.0 0.0 ]
+						[ 1904.0 81.844444 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 22539.778397
+			[ 7050.0 4206.252145 127
+				[ slots
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 173.956562 0.0 0.0 ]
+						[ 4206.252145 127.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 26754.466172
+			[ 7150.0 3752.318766 127
+				[ slots
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 596.07461 45.155556 0.0 ]
+						[ 1590.638752 8.466667 0.0 ]
+						[ 3047.252145 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 1971.547694 -12.0 0.0 ]
+						[ 3469.252145 -12.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 30733.178333
+			[ 7150.0 68.349798 80
+				[ slots
+					[ 1 ordinario ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 31624.680202
+			[ 7150.0 68.349798 36
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 32336.804712
+			[ 7150.0 68.349798 36
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 34182.770714
+			[ 8700.0 1054.0 127
+				[ slots
+					[ 1 multiphonic ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 35399.253247
+			[ 7150.0 58.837198 70
+				[ slots
+					[ 1 ordinario ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 36172.669127
+			[ 7150.0 62.674406 42
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 36825.662725
+			[ 7150.0 62.674406 42
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 38778.097156
+			[ 8700.0 1054.0 127
+				[ slots
+					[ 1 multiphonic ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 43202.306291
+			[ 7050.0 4538.325547 127
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 173.956562 0.0 0.0 ]
+						[ 4538.325547 127.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 47913.067468
+			[ 7150.0 5079.318766 127
+				[ slots
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 596.07461 45.155556 0.0 ]
+						[ 1590.638752 8.466667 0.0 ]
+						[ 3047.252145 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 410.257938 -12.0 0.0 ]
+						[ 4595.050123 -20.0 0.0 ]
+						[ 5079.318766 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 56236.441763
+			[ 6675.0 123.559053 1
+				[ slots
+					[ 1 pizz ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 56360.000816
+			[ 6625.0 600.328801 1 0 ]
+		0 ]
+		[ 56960.329617
+			[ 6625.0 114.502368 1 0 ]
+		0 ]
+		[ 57074.831985
+			[ 6675.0 372.617876 1 0 ]
+		0 ]
+		[ 57447.449861
+			[ 6650.0 190.190374 11
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 57637.640236
+			[ 6650.0 316.983957 1 0 ]
+		0 ]
+		[ 57954.624193
+			[ 6625.0 657.256531 1 0 ]
+		0 ]
+		[ 58611.880724
+			[ 6650.0 530.462949 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 59142.343673
+			[ 6700.0 271.053629 1 0 ]
+		0 ]
+		[ 63537.213997
+			[ 6600.0 409.446042 1
+				[ slots
+					[ 1 bisbigl ]
+				]
+			0 ]
+		0 ]
+		[ 64243.582062
+			[ 6575.0 108.989234 2
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 64352.571297
+			[ 6575.0 535.520076 1 0 ]
+		0 ]
+		[ 65358.807038
+			[ 6575.0 463.011989 38 0 ]
+		0 ]
+		[ 65821.819027
+			[ 6600.0 250.179676 9
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 66071.998703
+			[ 6550.0 342.885199 1
+				[ slots
+					[ 1 bisbigl ]
+				]
+			0 ]
+		0 ]
+		[ 66405.24816
+			[ 6575.0 267.110275 1 0 ]
+		0 ]
+		[ 66620.680658
+			[ 6600.0 458.488465 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 71250.832498
+			[ 6200.0 409.446042 1
+				[ slots
+					[ 1 bisbigl ]
+				]
+			0 ]
+		0 ]
+		[ 71957.200563
+			[ 6175.0 108.989234 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 72066.189798
+			[ 6175.0 535.520076 1 0 ]
+		0 ]
+		[ 73072.425539
+			[ 6175.0 463.011989 5 0 ]
+		0 ]
+		[ 73535.437528
+			[ 6200.0 250.179676 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 73785.617204
+			[ 6150.0 342.885199 1
+				[ slots
+					[ 1 bisbigl ]
+				]
+			0 ]
+		0 ]
+		[ 74118.866661
+			[ 6175.0 267.110275 1 0 ]
+		0 ]
+		[ 74334.299159
+			[ 6200.0 458.488465 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 79183.389232
+			[ 6275.0 188.701386 1
+				[ slots
+					[ 1 pizz ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 79372.090618
+			[ 6225.0 916.831862 1 0 ]
+		0 ]
+		[ 80288.92248
+			[ 6225.0 174.86987 1 0 ]
+		0 ]
+		[ 80463.79235
+			[ 6275.0 569.068052 1 0 ]
+		0 ]
+		[ 81032.860402
+			[ 6250.0 290.461818 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 81323.32222
+			[ 6250.0 484.103031 1 0 ]
+		0 ]
+		[ 81807.425251
+			[ 6225.0 1003.772814 1 0 ]
+		0 ]
+		[ 82811.198064
+			[ 6250.0 810.131602 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 83621.329667
+			[ 6300.0 404.654888 1 0 ]
+		0 ]
+		[ 88912.413421
+			[ 7875.0 21505.0 22
+				[ slots
+					[ 1 harmonic ]
+					[ 2
+						[ 0.0 22.577778 0.0 ]
+						[ 20348.0 0.592105 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 113921.400868
+			[ 6675.0 52.520833 127
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 114410.840316
+			[ 6775.0 23.467108 122 0 ]
+		0 ]
+		[ 114829.715529
+			[ 6675.0 23.467108 67 0 ]
+		0 ]
+		[ 115195.600193
+			[ 6975.0 41.36575 84 0 ]
+		0 ]
+		[ 115533.69981
+			[ 6775.0 41.36575 38 0 ]
+		0 ]
+		[ 115833.181658
+			[ 7075.0 30.200168 63 0 ]
+		0 ]
+		[ 117218.751835
+			[ 8700.0 1380.143244 127
+				[ slots
+					[ 1 multiphonic ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 118636.167333
+			[ 6675.0 54.575163 76
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 119066.374011
+			[ 6775.0 25.350359 76 0 ]
+		0 ]
+		[ 119523.097362
+			[ 6675.0 27.003643 40 0 ]
+		0 ]
+		[ 119944.121498
+			[ 6975.0 47.599643 40 0 ]
+		0 ]
+		[ 120333.173331
+			[ 6775.0 47.599643 51 0 ]
+		0 ]
+		[ 120833.65549
+			[ 7075.0 34.751387 51 0 ]
+		0 ]
+		[ 122481.695985
+			[ 8700.0 2288.819406 127
+				[ slots
+					[ 1 multiphonic ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 124820.617492
+			[ 7550.0 6124.211197 127
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 158.627132 0.0 0.0 ]
+						[ 6124.211197 127.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 130972.541823
+			[ 7550.0 8442.830125 127
+				[ slots
+					[ 1 flz ]
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 413.589453 39.511111 0.0 ]
+						[ 1590.638752 8.466667 0.0 ]
+						[ 2975.252145 0.418505 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 5234.534936 -6.666667 0.0 ]
+						[ 7888.830125 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 140526.859547
+			[ 6325.0 195.494118 1
+				[ slots
+					[ 1 pizz ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 140722.353665
+			[ 6025.0 348.0 1 0 ]
+		0 ]
+		[ 141672.188959
+			[ 6025.0 181.164706 1 0 ]
+		0 ]
+		[ 141853.353665
+			[ 6325.0 589.552941 1 0 ]
+		0 ]
+		[ 142442.906606
+			[ 6050.0 300.917647 11
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 142743.824253
+			[ 6050.0 215.964706 1 0 ]
+		0 ]
+		[ 143245.353665
+			[ 6025.0 1039.905882 1 0 ]
+		0 ]
+		[ 144285.259547
+			[ 6050.0 1212.882353 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 145124.553665
+			[ 6350.0 428.858824 1 0 ]
+		0 ]
+		[ 146069.271312
+			[ 6325.0 711.352941 1
+				[ slots
+					[ 1 bisbigl ]
+				]
+			0 ]
+		0 ]
+		[ 147296.483077
+			[ 6050.0 189.352941 2
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 147485.836018
+			[ 6050.0 930.388235 1 0 ]
+		0 ]
+		[ 149234.024253
+			[ 6050.0 804.415981 38 0 ]
+		0 ]
+		[ 150038.440234
+			[ 6325.0 434.650796 9
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 150473.09103
+			[ 6025.0 578.972457 1
+				[ slots
+					[ 1 bisbigl ]
+				]
+			0 ]
+		0 ]
+		[ 151052.063487
+			[ 6050.0 374.28263 1 0 ]
+		0 ]
+		[ 151426.346116
+			[ 6325.0 435.631351 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 152490.883683
+			[ 6975.0 306.655693 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 154105.500967
+			[ 6775.0 786.556927 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 154278.878196
+			[ 6775.0 173.377229 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 154835.158032
+			[ 6950.0 185.426612 1 0 ]
+		0 ]
+		[ 154977.742394
+			[ 6950.0 142.584362 1
+				[ slots
+					[ 1 bisbigl ]
+				]
+			0 ]
+		0 ]
+		[ 155582.88917
+			[ 6750.0 217.558299 44
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 156358.735535
+			[ 6775.0 775.846365 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 156678.713587
+			[ 6975.0 319.978052 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 156888.588556
+			[ 6750.0 93.440118 1 0 ]
+		0 ]
+		[ 156934.589831
+			[ 6975.0 46.001275 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 157063.280056
+			[ 6750.0 95.624506 1 0 ]
+		0 ]
+		[ 157218.411118
+			[ 6750.0 95.624506 1 0 ]
+		0 ]
+		[ 157264.412393
+			[ 6975.0 46.001275 1 0 ]
+		0 ]
+		[ 157436.484446
+			[ 6975.0 46.001275 1 0 ]
+		0 ]
+		[ 157520.300617
+			[ 6750.0 83.816171 1 0 ]
+		0 ]
+		[ 157566.301892
+			[ 6975.0 46.001275 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 158572.624424
+			[ 6975.0 924.455418 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 158699.812353
+			[ 6775.0 127.187929 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 159699.911118
+			[ 6775.0 1000.098765 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 160576.169006
+			[ 6950.0 815.257888 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 161242.901516
+			[ 6750.0 70.159122 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 162443.350076
+			[ 6775.0 631.66118 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 163678.125499
+			[ 6000.0 1842.3212 127
+				[ slots
+					[ 1 kn-cl ]
+				]
+			0 ]
+		0 ]
+		[ 165698.447769
+			[ 6000.0 738.061515 127 0 ]
+		0 ]
+		[ 167003.572558
+			[ 6000.0 907.870588 127
+				[ slots
+					[ 1 kn-cl-tr ]
+				]
+			0 ]
+		0 ]
+		[ 169253.290205
+			[ 6000.0 134.082353 127
+				[ slots
+					[ 1 kn-cl ]
+				]
+			0 ]
+		0 ]
+		[ 171911.913416
+			[ 6000.0 228.07856 127
+				[ slots
+					[ 1 kn-o ]
+				]
+			0 ]
+		0 ]
+		[ 172476.600814
+			[ 6000.0 564.687398 127
+				[ slots
+					[ 1 kn-cl-trem ]
+				]
+			0 ]
+		0 ]
+		[ 174417.489521
+			[ 6000.0 1020.307692 127
+				[ slots
+					[ 1 kn-o ]
+				]
+			0 ]
+		0 ]
+		[ 175530.692467
+			[ 6000.0 181.366612 127
+				[ slots
+					[ 1 kn-cl ]
+				]
+			0 ]
+		0 ]
+		[ 177441.661371
+			[ 6000.0 667.87234 127
+				[ slots
+					[ 1 kn-o-trem ]
+				]
+			0 ]
+		0 ]
+		[ 180985.070388
+			[ 9250.0 126.0 64
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 183717.609301
+			[ 9250.0 117.0 127
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 185196.333371
+			[ 9250.0 293.253553 107
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 185749.006078
+			[ 9250.0 243.938081 127 0 ]
+		0 ]
+		[ 186248.523931
+			[ 9275.0 173.655231 127 0 ]
+		0 ]
+		[ 186598.640078
+			[ 9300.0 173.655231 127 0 ]
+		0 ]
+		[ 186912.861009
+			[ 9325.0 87.312686 127 0 ]
+		0 ]
+		[ 187200.888134
+			[ 9350.0 115.446774 127 0 ]
+		0 ]
+		[ 187517.049347
+			[ 9375.0 42.686202 127 0 ]
+		0 ]
+		[ 187700.301249
+			[ 9400.0 31.04451 127 0 ]
+		0 ]
+		[ 188869.839989
+			[ 6900.0 2616.937127 127
+				[ slots
+					[ 1 jet ]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[
+		[ 476.830946
+			[ 8350.0 489.0 127
+				[ slots
+					[ 1 flz ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 1446.532323
+			[ 10300.0 479.0 127
+				[ slots
+					[ 1 multiphonic ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 3019.967379
+			[ 8350.0 930.0 127
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 4216.850956
+			[ 10300.0 977.0 127
+				[ slots
+					[ 1 multiphonic ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 6857.378366
+			[ 8350.0 245.267569 107
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 7440.101637
+			[ 8525.0 282.565894 127 0 ]
+		0 ]
+		[ 7989.486625
+			[ 8675.0 182.300577 127 0 ]
+		0 ]
+		[ 8388.980028
+			[ 8825.0 170.147205 127 0 ]
+		0 ]
+		[ 8712.872725
+			[ 8900.0 94.188631 127 0 ]
+		0 ]
+		[ 9005.369211
+			[ 8975.0 118.495375 127 0 ]
+		0 ]
+		[ 9365.364155
+			[ 9050.0 33.421772 127 0 ]
+		0 ]
+		[ 9560.633667
+			[ 9075.0 33.421772 127 0 ]
+		0 ]
+		[ 9960.884696
+			[ 7875.0 4670.0 127
+				[ slots
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 155.325442 0.0 0.0 ]
+						[ 4670.0 70.555556 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 14706.075868
+			[ 7875.0 4348.0 127
+				[ slots
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 194.932529 0.0 0.0 ]
+						[ 4348.0 79.681962 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 19580.767837
+			[ 7750.0 7192.099078 127
+				[ slots
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 194.932529 0.0 0.0 ]
+						[ 7167.432126 110.826029 0.0 ]
+						[ 7192.099078 107.961945 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 26772.866915
+			[ 7750.0 3754.11096 127
+				[ slots
+					[ 2
+						[ 0.0 107.961945 0.0 ]
+						[ 613.839836 36.688889 0.0 ]
+						[ 1536.072041 11.288889 0.0 ]
+						[ 3052.333048 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 1971.547694 -12.0 0.0 ]
+						[ 3474.333048 -12.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 30739.780905
+			[ 6550.0 68.349798 73
+				[ slots
+					[ 1 ordinario ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 31631.282775
+			[ 6550.0 68.349798 29
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 32343.407285
+			[ 6550.0 68.349798 29
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 33092.463925
+			[ 5500.0 71.846303 49 0 ]
+		0 ]
+		[ 33170.030381
+			[ 5900.0 71.846303 1 0 ]
+		0 ]
+		[ 33247.596837
+			[ 6100.0 71.846303 1 0 ]
+		0 ]
+		[ 33325.163293
+			[ 6400.0 71.846303 1 0 ]
+		0 ]
+		[ 33402.729749
+			[ 6800.0 71.846303 13 0 ]
+		0 ]
+		[ 33480.296205
+			[ 7000.0 71.846303 19 0 ]
+		0 ]
+		[ 33557.862661
+			[ 7200.0 79.49316 25 0 ]
+		0 ]
+		[ 33635.429116
+			[ 7400.0 70.638108 37 0 ]
+		0 ]
+		[ 33712.995572
+			[ 7500.0 71.823667 61 0 ]
+		0 ]
+		[ 33790.562028
+			[ G6 81.986297 61 0 ]
+		0 ]
+		[ 33868.128484
+			[ G#6 81.986297 61 0 ]
+		0 ]
+		[ 33945.69494
+			[ A#6 81.986297 61 0 ]
+		0 ]
+		[ 34023.261396
+			[ B6 81.986297 61 0 ]
+		0 ]
+		[ 34100.827852
+			[ C#7 81.986297 61 0 ]
+		0 ]
+		[ 34178.394308
+			[ D7 49.986297 62 0 ]
+		0 ]
+		[ 35404.936905
+			[ 6550.0 58.837198 85
+				[ slots
+					[ 1 ordinario ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 36178.723459
+			[ 6550.0 62.674406 42
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 36831.717056
+			[ 6550.0 62.674406 42
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 38756.681714
+			[ 10300.0 679.0 40
+				[ slots
+					[ 1 multiphonic ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 40292.3827
+			[ 7750.0 7639.085512 127
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 194.932529 0.0 0.0 ]
+						[ 7639.085512 127.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 47931.468211
+			[ 7750.0 5081.11096 127
+				[ slots
+					[ 2
+						[ 0.0 107.961945 0.0 ]
+						[ 613.839836 36.688889 0.0 ]
+						[ 1536.072041 11.288889 0.0 ]
+						[ 3052.333048 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 410.257938 -12.0 0.0 ]
+						[ 4595.050123 -20.0 0.0 ]
+						[ 5081.11096 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 55156.066816
+			[ 6400.0 583.061252 1
+				[ slots
+					[ 1 slap ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 55739.128069
+			[ 6350.0 868.902008 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 56608.030077
+			[ 6350.0 482.590622 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 57090.620698
+			[ 6425.0 634.248116 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 57724.868814
+			[ 6375.0 723.885932 1
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 58448.754747
+			[ 6375.0 304.858008 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 58727.509415
+			[ 6450.0 383.068623 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 62512.891505
+			[ 6375.0 45.381087 44
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 62558.272591
+			[ 6275.0 82.686163 6 0 ]
+		0 ]
+		[ 62640.958754
+			[ 6375.0 45.381087 44 0 ]
+		0 ]
+		[ 62810.710933
+			[ 6375.0 45.381087 44 0 ]
+		0 ]
+		[ 62856.09202
+			[ 6275.0 94.335297 6 0 ]
+		0 ]
+		[ 63009.131607
+			[ 6275.0 94.335297 6 0 ]
+		0 ]
+		[ 63136.086832
+			[ 6375.0 45.381087 21 0 ]
+		0 ]
+		[ 63181.467919
+			[ 6275.0 92.18036 1 0 ]
+		0 ]
+		[ 63388.513356
+			[ 6375.0 315.664112 1
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 63704.177469
+			[ 6300.0 731.8763 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 64436.053769
+			[ 6275.0 193.227505 72
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 64973.523505
+			[ 6350.0 126.638333 1
+				[ slots
+					[ 1 bisbigl ]
+				]
+			0 ]
+		0 ]
+		[ 65100.161839
+			[ 6350.0 164.689289 1 0 ]
+		0 ]
+		[ 65594.229704
+			[ 6300.0 153.987457 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 65748.217162
+			[ 6300.0 620.159153 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 66207.431315
+			[ 6375.0 298.551911 1
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 70226.510006
+			[ 5975.0 45.381087 11
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 70271.891092
+			[ 5875.0 82.686163 1 0 ]
+		0 ]
+		[ 70354.577255
+			[ 5975.0 45.381087 11 0 ]
+		0 ]
+		[ 70524.329434
+			[ 5975.0 45.381087 11 0 ]
+		0 ]
+		[ 70569.710521
+			[ 5875.0 94.335297 1 0 ]
+		0 ]
+		[ 70722.750108
+			[ 5875.0 94.335297 1 0 ]
+		0 ]
+		[ 70849.705333
+			[ 5975.0 45.381087 1 0 ]
+		0 ]
+		[ 70895.08642
+			[ 5875.0 92.18036 1 0 ]
+		0 ]
+		[ 71102.131857
+			[ 5975.0 315.664112 1
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 71417.79597
+			[ 5900.0 731.8763 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 72149.67227
+			[ 5875.0 193.227505 39
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 72687.142006
+			[ 5950.0 126.638333 1
+				[ slots
+					[ 1 bisbigl ]
+				]
+			0 ]
+		0 ]
+		[ 72813.78034
+			[ 5950.0 164.689289 1 0 ]
+		0 ]
+		[ 73307.848205
+			[ 5900.0 153.987457 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 73461.835663
+			[ 5900.0 620.159153 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 73921.049816
+			[ 5975.0 298.551911 1
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 77889.489661
+			[ 6000.0 800.183586 1
+				[ slots
+					[ 1 slap ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 78689.673247
+			[ 5950.0 1192.466694 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 79882.139941
+			[ 5950.0 662.299359 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 80544.439301
+			[ 6025.0 870.431588 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 81414.870888
+			[ 5975.0 993.449039 1
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 82408.319927
+			[ 5975.0 418.38207 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 82790.878208
+			[ 6050.0 525.71702 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 100268.735687
+			[ 6550.0 10233.0 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 113908.637893
+			[ 5050.0 52.520833 79
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 114818.343781
+			[ 5050.0 52.520833 7 0 ]
+		0 ]
+		[ 115547.355896
+			[ 5050.0 52.520833 7 0 ]
+		0 ]
+		[ 116324.137668
+			[ 5200.0 58.951042 71
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 116387.782186
+			[ 5600.0 58.951042 21 0 ]
+		0 ]
+		[ 116451.426704
+			[ 5800.0 58.951042 21 0 ]
+		0 ]
+		[ 116515.071222
+			[ 6100.0 58.951042 21 0 ]
+		0 ]
+		[ 116578.715741
+			[ 6500.0 58.951042 28 0 ]
+		0 ]
+		[ 116642.360259
+			[ 6700.0 58.951042 34 0 ]
+		0 ]
+		[ 116706.004777
+			[ 6900.0 65.22541 40 0 ]
+		0 ]
+		[ 116769.649295
+			[ 7100.0 57.959698 52 0 ]
+		0 ]
+		[ 116833.293814
+			[ 7200.0 58.932468 76 0 ]
+		0 ]
+		[ 116896.938332
+			[ 7600.0 67.271068 76 0 ]
+		0 ]
+		[ 116960.58285
+			[ 7700.0 67.271068 76 0 ]
+		0 ]
+		[ 117024.227368
+			[ 7900.0 67.271068 76 0 ]
+		0 ]
+		[ 117087.871887
+			[ 8000.0 67.271068 76 0 ]
+		0 ]
+		[ 117151.516405
+			[ 8200.0 67.271068 76 0 ]
+		0 ]
+		[ 117215.160923
+			[ 8300.0 41.014556 77 0 ]
+		0 ]
+		[ 118642.58948
+			[ 5050.0 52.520833 18
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 119525.295368
+			[ 5050.0 52.520833 46 0 ]
+		0 ]
+		[ 120335.307484
+			[ 5050.0 52.520833 79 0 ]
+		0 ]
+		[ 122433.367925
+			[ 10300.0 1302.732024 127
+				[ slots
+					[ 1 multiphonic ]
+					[ 23 whitesquare ]
+				]
+			0 ]
+		0 ]
+		[ 123869.541015
+			[ 7250.0 6992.583618 127
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 194.932529 0.0 0.0 ]
+						[ 6992.583618 127.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 130977.124632
+			[ 7250.0 8515.11096 127
+				[ slots
+					[ 1 flz ]
+					[ 2
+						[ 0.0 107.961945 0.0 ]
+						[ 613.839836 36.688889 0.0 ]
+						[ 1536.072041 11.288889 0.0 ]
+						[ 3052.333048 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 5234.534936 -6.666667 0.0 ]
+						[ 7888.830125 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 140526.357185
+			[ 6025.0 182.937981 1
+				[ slots
+					[ 1 slap ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 141340.812813
+			[ 6050.0 646.523796 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 142569.507222
+			[ 6025.0 71.809925 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 143251.927556
+			[ 6325.0 834.440426 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 144148.803276
+			[ 6050.0 1397.218736 1
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 145172.433777
+			[ 6050.0 130.180586 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 145302.614363
+			[ 6350.0 946.207311 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 146715.415072
+			[ 6350.0 47.083658 44
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 146762.49873
+			[ 6025.0 85.788317 6 0 ]
+		0 ]
+		[ 146848.287047
+			[ 6350.0 47.083658 44 0 ]
+		0 ]
+		[ 147024.407853
+			[ 6350.0 47.083658 44 0 ]
+		0 ]
+		[ 147071.491511
+			[ 6025.0 97.874494 6 0 ]
+		0 ]
+		[ 147230.272716
+			[ 6025.0 97.874494 6 0 ]
+		0 ]
+		[ 147361.990946
+			[ 6350.0 47.083658 21 0 ]
+		0 ]
+		[ 147409.074604
+			[ 6025.0 95.638709 1 0 ]
+		0 ]
+		[ 147623.887807
+			[ 6350.0 327.506947 1
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 147951.394755
+			[ 6050.0 794.101573 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 148745.496328
+			[ 6025.0 222.677318 72
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 149364.881852
+			[ 6325.0 145.939288 1
+				[ slots
+					[ 1 bisbigl ]
+				]
+			0 ]
+		0 ]
+		[ 149510.821141
+			[ 6325.0 189.789591 1 0 ]
+		0 ]
+		[ 150080.189913
+			[ 6050.0 177.456693 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 150257.646607
+			[ 6050.0 805.064149 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 151910.254886
+			[ 6350.0 312.654364 1
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 152423.940447
+			[ 6950.0 425.616837 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 152789.618878
+			[ 6775.0 365.678431 1 0 ]
+		0 ]
+		[ 153355.281623
+			[ 6750.0 565.662745 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 153779.940447
+			[ 6950.0 424.658824 1
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 154565.864106
+			[ 6775.0 785.923659 10
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 156273.864106
+			[ 6775.0 909.0 1
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+		[ 156458.864106
+			[ 6775.0 185.0 1 0 ]
+		0 ]
+		[ 157657.864106
+			[ 6950.0 695.0 1
+				[ slots
+					[ 1 bisbigl ]
+				]
+			0 ]
+		0 ]
+		[ 158580.864106
+			[ 6975.0 419.0 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 159400.864106
+			[ 6775.0 820.0 1
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 160416.864106
+			[ 6750.0 1016.0 1 0 ]
+		0 ]
+		[ 160906.864106
+			[ 6775.0 211.0 1 0 ]
+		0 ]
+		[ 161200.864106
+			[ 6775.0 294.0 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 161776.864106
+			[ 6950.0 576.0 1 0 ]
+		0 ]
+		[ 161953.864106
+			[ 6750.0 177.0 1 0 ]
+		0 ]
+		[ 162881.864106
+			[ 6750.0 340.0 1 0 ]
+		0 ]
+		[ 164430.418955
+			[ 6000.0 217.558299 127
+				[ slots
+					[ 1 kn-cl ]
+				]
+			0 ]
+		0 ]
+		[ 165782.119616
+			[ 6000.0 46.001275 127
+				[ slots
+					[ 1 kn-o ]
+				]
+			0 ]
+		0 ]
+		[ 166413.831677
+			[ 6000.0 970.001275 127
+				[ slots
+					[ 1 kn-trem ]
+				]
+			0 ]
+		0 ]
+		[ 167547.342138
+			[ 6000.0 127.187929 127
+				[ slots
+					[ 1 kiss ]
+				]
+			0 ]
+		0 ]
+		[ 168547.440903
+			[ 6000.0 1000.098765 127
+				[ slots
+					[ 1 kiss ]
+				]
+			0 ]
+		0 ]
+		[ 169423.698791
+			[ 6000.0 815.257888 127
+				[ slots
+					[ 1 flz-whitenoise ]
+				]
+			0 ]
+		0 ]
+		[ 170711.255968
+			[ 6000.0 95.442861 127
+				[ slots
+					[ 1 kn-cl ]
+				]
+			0 ]
+		0 ]
+		[ 172914.35904
+			[ 6000.0 1393.070434 127
+				[ slots
+					[ 1 kn-trem ]
+				]
+			0 ]
+		0 ]
+		[ 173933.841239
+			[ 6000.0 822.810436 56
+				[ slots
+					[ 1 flz-whitenoise ]
+				]
+			0 ]
+		0 ]
+		[ 175830.238658
+			[ 6000.0 1272.345894 127
+				[ slots
+					[ 1 kn-trem ]
+				]
+			0 ]
+		0 ]
+		[ 178313.980509
+			[ 6000.0 1044.314932 127
+				[ slots
+					[ 1 kiss ]
+				]
+			0 ]
+		0 ]
+		[ 180979.427893
+			[ 8350.0 126.0 64
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 183711.966806
+			[ 8350.0 117.0 127
+				[ slots
+					[ 1 flz ]
+				]
+			0 ]
+		0 ]
+		[ 185191.330899
+			[ 8350.0 293.253553 107
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 185749.520399
+			[ 8525.0 270.669326 127 0 ]
+		0 ]
+		[ 186248.954076
+			[ 8675.0 174.625371 127 0 ]
+		0 ]
+		[ 186604.806892
+			[ 8825.0 162.98368 127 0 ]
+		0 ]
+		[ 186915.063083
+			[ 8900.0 90.223109 127 0 ]
+		0 ]
+		[ 187195.244906
+			[ 8975.0 113.506491 127 0 ]
+		0 ]
+		[ 187513.262224
+			[ 9050.0 32.014651 127 0 ]
+		0 ]
+		[ 187700.310514
+			[ 9075.0 32.014651 127 0 ]
+		0 ]
+		[ 188862.061053
+			[ 5700.0 2617.207571 127
+				[ slots
+					[ 1 slap ]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[
+		[ 469.188451
+			[ 6075.0 456.0 127
+				[ slots
+					[ 1 sp ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 1449.050033
+			[ 6075.0 479.0 127
+				[ slots
+					[ 1 "excessive pressure" ]
+				]
+			0 ]
+		0 ]
+		[ 3017.439497
+			[ 6075.0 930.0 127
+				[ slots
+					[ 1 sp ]
+				]
+			0 ]
+		0 ]
+		[ 4211.264051
+			[ 6075.0 927.0 127
+				[ slots
+					[ 1 "excessive pressure" ]
+				]
+			0 ]
+		0 ]
+		[ 6864.309394
+			[ 8475.0 245.267569 100
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 7442.225492
+			[ 8625.0 170.590332 125 0 ]
+		0 ]
+		[ 7992.693951
+			[ 8750.0 170.590332 125 0 ]
+		0 ]
+		[ 8391.245262
+			[ 8875.0 170.590332 125 0 ]
+		0 ]
+		[ 8709.131963
+			[ 8950.0 100.708444 125 0 ]
+		0 ]
+		[ 9010.814169
+			[ 9025.0 111.849035 125 0 ]
+		0 ]
+		[ 9366.82868
+			[ 9075.0 34.87768 125 0 ]
+		0 ]
+		[ 9561.156101
+			[ 9125.0 30.267042 125 0 ]
+		0 ]
+		[ 11049.062167
+			[ 7275.0 3630.0 127
+				[ slots
+					[ 1 sp ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 182.774509 0.0 0.0 ]
+						[ 3630.0 73.377778 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 16261.850967
+			[ 7275.0 2788.0 127
+				[ slots
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 201.034582 0.0 0.0 ]
+						[ 2788.0 87.488889 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 21540.799644
+			[ 6750.0 5193.343193 127
+				[ slots
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 201.034582 0.0 0.0 ]
+						[ 5193.343193 126.746117 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 26824.64812
+			[ 6750.0 3643.048345 127
+				[ slots
+					[ 1 sptrem ]
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 413.589453 39.511111 0.0 ]
+						[ 1590.638752 8.466667 0.0 ]
+						[ 2936.252145 0.645195 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 1971.547694 -12.0 0.0 ]
+						[ 3358.252145 -12.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 30732.963987
+			[ 6750.0 39.75422 114
+				[ slots
+					[ 1 clbatt ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 31624.465857
+			[ 6750.0 39.75422 93
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 32336.590367
+			[ 6750.0 39.75422 93
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 34230.419502
+			[ 8600.0 680.0 40
+				[ slots
+					[ 1 "excessive pressure" ]
+				]
+			0 ]
+		0 ]
+		[ 35399.068734
+			[ 6750.0 34.221416 70
+				[ slots
+					[ 1 clbatt ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 36172.47258
+			[ 6750.0 36.453248 42
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 36825.466177
+			[ 6750.0 36.453248 42
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 37649.748882
+			[ 5500.0 71.846303 60
+				[ slots
+					[ 1 gett-sp ]
+				]
+			0 ]
+		0 ]
+		[ 37727.315338
+			[ 5900.0 71.846303 56 0 ]
+		0 ]
+		[ 37804.881794
+			[ 6100.0 71.846303 52 0 ]
+		0 ]
+		[ 37882.44825
+			[ 6400.0 71.846303 48 0 ]
+		0 ]
+		[ 37960.014706
+			[ 6800.0 71.846303 44 0 ]
+		0 ]
+		[ 38037.581162
+			[ 7000.0 71.846303 40 0 ]
+		0 ]
+		[ 38115.147618
+			[ 7200.0 79.49316 37 0 ]
+		0 ]
+		[ 38192.714074
+			[ 7400.0 70.638108 33 0 ]
+		0 ]
+		[ 38270.28053
+			[ 7500.0 71.823667 29 0 ]
+		0 ]
+		[ 38347.846986
+			[ 7900.0 81.986297 25 0 ]
+		0 ]
+		[ 38425.413442
+			[ 8000.0 81.986297 21 0 ]
+		0 ]
+		[ 38502.979898
+			[ 8200.0 81.986297 17 0 ]
+		0 ]
+		[ 38580.546354
+			[ 8300.0 81.986297 13 0 ]
+		0 ]
+		[ 38658.11281
+			[ 8500.0 81.986297 10 0 ]
+		0 ]
+		[ 38735.679265
+			[ 8600.0 49.986297 6 0 ]
+		0 ]
+		[ 42328.532247
+			[ 6750.0 5564.211887 127
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 201.034582 0.0 0.0 ]
+						[ 5564.211887 127.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 47983.249417
+			[ 6750.0 4970.048345 127
+				[ slots
+					[ 1 sptrem ]
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 413.589453 39.511111 0.0 ]
+						[ 1590.638752 8.466667 0.0 ]
+						[ 2936.252145 0.645195 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 410.257938 -12.0 0.0 ]
+						[ 4595.050123 -20.0 0.0 ]
+						[ 4970.048345 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 54166.010092
+			[ 6175.0 649.810872 28
+				[ slots
+					[ 1 pizz ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 54815.820963
+			[ 6225.0 450.616509 42 0 ]
+		0 ]
+		[ 55266.437473
+			[ 6150.0 157.897969 12
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 55424.335442
+			[ 6275.0 391.101123 16 0 ]
+		0 ]
+		[ 55815.436565
+			[ 6175.0 364.379927 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 56179.816491
+			[ 6175.0 1395.575122 15 0 ]
+		0 ]
+		[ 57575.391614
+			[ 6250.0 994.757202 41
+				[ slots
+					[ 1 gett ]
+				]
+			0 ]
+		0 ]
+		[ 58570.148815
+			[ 6175.0 551.14116 38
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 61604.748126
+			[ 6100.0 237.368519 1
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 61842.116645
+			[ 6125.0 208.487179 36 0 ]
+		0 ]
+		[ 62050.603824
+			[ 6150.0 596.583235 51 0 ]
+		0 ]
+		[ 63105.550537
+			[ 6125.0 733.841776 1
+				[ slots
+					[ 1 gett ]
+				]
+			0 ]
+		0 ]
+		[ 63839.392313
+			[ 6025.0 244.889702 36
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 64084.282015
+			[ 6050.0 839.740025 8 0 ]
+		0 ]
+		[ 64924.02204
+			[ 6050.0 108.38024 31
+				[ slots
+					[ 1 trem ]
+				]
+			0 ]
+		0 ]
+		[ 65032.40228
+			[ 6150.0 560.92979 1 0 ]
+		0 ]
+		[ 65593.33207
+			[ 6150.0 300.320817 24
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 65893.652887
+			[ 6050.0 606.294717 44 0 ]
+		0 ]
+		[ 69318.366627
+			[ 5700.0 237.368519 1
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 69555.735146
+			[ 5725.0 208.487179 3 0 ]
+		0 ]
+		[ 69764.222325
+			[ 5750.0 596.583235 18 0 ]
+		0 ]
+		[ 70819.169038
+			[ 5725.0 733.841776 1
+				[ slots
+					[ 1 gett ]
+				]
+			0 ]
+		0 ]
+		[ 71553.010814
+			[ 5625.0 244.889702 3
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 71797.900516
+			[ 5650.0 839.740025 1 0 ]
+		0 ]
+		[ 72637.640541
+			[ 5650.0 108.38024 1
+				[ slots
+					[ 1 trem ]
+				]
+			0 ]
+		0 ]
+		[ 72746.020781
+			[ 5750.0 560.92979 1 0 ]
+		0 ]
+		[ 73306.950571
+			[ 5750.0 300.320817 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 73607.271388
+			[ 5650.0 606.294717 11 0 ]
+		0 ]
+		[ 76605.602503
+			[ 5775.0 827.463844 1
+				[ slots
+					[ 1 pizz ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 77433.066346
+			[ 5825.0 573.811374 9 0 ]
+		0 ]
+		[ 78006.87772
+			[ 5750.0 201.065981 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 78207.943701
+			[ 5875.0 498.024968 1 0 ]
+		0 ]
+		[ 78705.968669
+			[ 5775.0 463.998416 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 79169.967085
+			[ 5775.0 1777.113935 1 0 ]
+		0 ]
+		[ 80947.081019
+			[ 5850.0 1266.715677 8
+				[ slots
+					[ 1 gett ]
+				]
+			0 ]
+		0 ]
+		[ 82465.796696
+			[ 5775.0 701.81864 5
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 93560.989732
+			[ 7275.0 16980.0 1
+				[ slots
+					[ 1 "sul tasto" ]
+				]
+			0 ]
+		0 ]
+		[ 113904.672494
+			[ 6075.0 52.520833 122
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 114814.378382
+			[ 6075.0 52.520833 15 0 ]
+		0 ]
+		[ 115543.390497
+			[ 6075.0 52.520833 15 0 ]
+		0 ]
+		[ 117225.027787
+			[ 8300.0 1413.516079 69
+				[ slots
+					[ 1 "excessive pressure" ]
+				]
+			0 ]
+		0 ]
+		[ 118638.624082
+			[ 6075.0 52.520833 61
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 119521.32997
+			[ 6075.0 52.520833 54 0 ]
+		0 ]
+		[ 120331.342085
+			[ 6075.0 52.520833 87 0 ]
+		0 ]
+		[ 121592.358763
+			[ 5200.0 58.708773 60
+				[ slots
+					[ 1 gett-sp ]
+				]
+			0 ]
+		0 ]
+		[ 121655.741724
+			[ 5600.0 58.708773 56 0 ]
+		0 ]
+		[ 121719.124686
+			[ 5800.0 58.708773 52 0 ]
+		0 ]
+		[ 121782.507647
+			[ 6100.0 58.708773 48 0 ]
+		0 ]
+		[ 121845.890608
+			[ 6500.0 58.708773 44 0 ]
+		0 ]
+		[ 121909.273569
+			[ 6700.0 58.708773 40 0 ]
+		0 ]
+		[ 121972.65653
+			[ 6900.0 64.957356 37 0 ]
+		0 ]
+		[ 122036.039492
+			[ 7100.0 57.721504 33 0 ]
+		0 ]
+		[ 122099.422453
+			[ 7200.0 58.690276 29 0 ]
+		0 ]
+		[ 122162.805414
+			[ 7600.0 66.994607 25 0 ]
+		0 ]
+		[ 122226.188375
+			[ 7700.0 66.994607 21 0 ]
+		0 ]
+		[ 122289.571336
+			[ 7900.0 66.994607 17 0 ]
+		0 ]
+		[ 122352.954298
+			[ 8000.0 66.994607 13 0 ]
+		0 ]
+		[ 122416.337259
+			[ 8200.0 66.994607 10 0 ]
+		0 ]
+		[ 122479.72022
+			[ 8300.0 40.846001 6 0 ]
+		0 ]
+		[ 125698.868104
+			[ 7050.0 5255.53245 127
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 201.034582 0.0 0.0 ]
+						[ 5255.53245 127.0 0.0 ]
+						[ 5255.53245 127.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 131012.905838
+			[ 7050.0 8404.048345 127
+				[ slots
+					[ 1 sptrem ]
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 413.589453 39.511111 0.0 ]
+						[ 1590.638752 8.466667 0.0 ]
+						[ 2936.252145 0.645195 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 5234.534936 -6.666667 0.0 ]
+						[ 7850.048345 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 140511.778119
+			[ 6050.0 547.588235 28
+				[ slots
+					[ 1 pizz ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 141059.366355
+			[ 6325.0 379.729412 42 0 ]
+		0 ]
+		[ 141439.095766
+			[ 6025.0 133.058824 12
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 141572.15459
+			[ 6350.0 329.576471 16 0 ]
+		0 ]
+		[ 141901.731061
+			[ 6025.0 307.058824 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 142208.789884
+			[ 6050.0 537.352941 15 0 ]
+		0 ]
+		[ 143384.825178
+			[ 6325.0 838.270588 1
+				[ slots
+					[ 1 pizzB ]
+				]
+			0 ]
+		0 ]
+		[ 144223.095766
+			[ 6050.0 1842.3212 38
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 145691.828731
+			[ 6350.0 293.659893 1
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 145985.488624
+			[ 6350.0 257.929412 36 0 ]
+		0 ]
+		[ 146243.418036
+			[ 6350.0 738.061515 51 0 ]
+		0 ]
+		[ 147548.542825
+			[ 6325.0 907.870588 1
+				[ slots
+					[ 1 gett ]
+				]
+			0 ]
+		0 ]
+		[ 148456.413413
+			[ 6025.0 302.964706 36
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 148759.378119
+			[ 6050.0 1038.882353 8 0 ]
+		0 ]
+		[ 149798.260472
+			[ 6050.0 134.082353 31
+				[ slots
+					[ 1 trem ]
+				]
+			0 ]
+		0 ]
+		[ 149932.342825
+			[ 6350.0 693.952941 1 0 ]
+		0 ]
+		[ 150626.295766
+			[ 6350.0 371.541176 24
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 150997.836943
+			[ 6050.0 736.941176 44 0 ]
+		0 ]
+		[ 151734.778119
+			[ 6025.0 594.03262 72
+				[ slots
+					[ 1 gettSP ]
+				]
+			0 ]
+		0 ]
+		[ 152456.883683
+			[ 6725.0 228.07856 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 153021.571081
+			[ 6950.0 564.687398 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 153841.152096
+			[ 6750.0 819.581015 1
+				[ slots
+					[ 1 trem ]
+				]
+			0 ]
+		0 ]
+		[ 154962.459788
+			[ 6725.0 1020.307692 1
+				[ slots
+					[ 1 gett ]
+				]
+			0 ]
+		0 ]
+		[ 155894.296122
+			[ 6750.0 931.836334 1 0 ]
+		0 ]
+		[ 156075.662734
+			[ 6750.0 181.366612 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 157318.759297
+			[ 6950.0 1243.096563 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 157986.631638
+			[ 6975.0 667.87234 1 0 ]
+		0 ]
+		[ 158790.526891
+			[ 6750.0 803.895254 1
+				[ slots
+					[ 1 gett ]
+				]
+			0 ]
+		0 ]
+		[ 159786.572718
+			[ 6725.0 1787.045827 1 0 ]
+		0 ]
+		[ 161346.175009
+			[ 6750.0 288.225859 8
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 161910.862407
+			[ 6950.0 470.687398 1 0 ]
+		0 ]
+		[ 162084.386138
+			[ 6725.0 79.523732 1 0 ]
+		0 ]
+		[ 162474.569444
+			[ 6975.0 296.183306 1 0 ]
+		0 ]
+		[ 162660.837857
+			[ 6750.0 92.268412 1 0 ]
+		0 ]
+		[ 164577.757043
+			[ 4800.0 216.920898 127
+				[ slots
+					[ 1 clBD ]
+				]
+			0 ]
+		0 ]
+		[ 166193.590016
+			[ 4800.0 360.309288 127
+				[ slots
+					[ 1 fingerB ]
+				]
+			0 ]
+		0 ]
+		[ 167154.414784
+			[ 4800.0 1245.150464 127
+				[ slots
+					[ 1 gettD ]
+				]
+			0 ]
+		0 ]
+		[ 170535.684598
+			[ 4800.0 851.751548 127
+				[ slots
+					[ 1 fingerB ]
+				]
+			0 ]
+		0 ]
+		[ 171774.109211
+			[ 4800.0 226.725232 127
+				[ slots
+					[ 1 tapB ]
+				]
+			0 ]
+		0 ]
+		[ 174787.05983
+			[ 4800.0 963.182293 127
+				[ slots
+					[ 1 gettD ]
+				]
+			0 ]
+		0 ]
+		[ 175808.67926
+			[ 4800.0 693.243337 127
+				[ slots
+					[ 1 tapH ]
+				]
+			0 ]
+		0 ]
+		[ 179379.720463
+			[ 4800.0 367.179843 127
+				[ slots
+					[ 1 fingerB ]
+				]
+			0 ]
+		0 ]
+		[ 180971.785398
+			[ 6075.0 93.0 64
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 183709.438924
+			[ 6075.0 117.0 127
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 185197.970118
+			[ 8475.0 293.253553 100
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 185751.554836
+			[ 8625.0 163.408151 125 0 ]
+		0 ]
+		[ 186252.026368
+			[ 8750.0 163.408151 125 0 ]
+		0 ]
+		[ 186606.976756
+			[ 8875.0 163.408151 125 0 ]
+		0 ]
+		[ 186911.479816
+			[ 8950.0 96.468425 125 0 ]
+		0 ]
+		[ 187200.46062
+			[ 9025.0 107.139975 125 0 ]
+		0 ]
+		[ 187514.665089
+			[ 9075.0 33.409263 125 0 ]
+		0 ]
+		[ 187700.810952
+			[ 9125.0 28.992741 125 0 ]
+		0 ]
+		[ 188824.301801
+			[ 5700.0 2618.520314 127
+				[ slots
+					[ 1 pizzB ]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[
+		[ 483.043421
+			[ 6675.0 456.0 127
+				[ slots
+					[ 1 sp ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 1462.007935
+			[ 6675.0 479.0 127
+				[ slots
+					[ 1 pizzB-nopitch ]
+				]
+			0 ]
+		0 ]
+		[ 3031.294468
+			[ 6675.0 930.0 127
+				[ slots
+					[ 1 sp ]
+				]
+			0 ]
+		0 ]
+		[ 4224.221953
+			[ 6675.0 927.0 127
+				[ slots
+					[ 1 pizzB-nopitch ]
+				]
+			0 ]
+		0 ]
+		[ 6863.128248
+			[ 6675.0 245.267569 107
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 7432.435243
+			[ 7475.0 171.125753 125 0 ]
+		0 ]
+		[ 7996.127914
+			[ 7925.0 171.125753 125 0 ]
+		0 ]
+		[ 8389.673381
+			[ 8200.0 171.125753 125 0 ]
+		0 ]
+		[ 8714.707609
+			[ 7200.0 94.154398 125 0 ]
+		0 ]
+		[ 9010.37119
+			[ 7350.0 110.358894 125 0 ]
+		0 ]
+		[ 9367.456541
+			[ 7475.0 41.489787 125 0 ]
+		0 ]
+		[ 9563.867584
+			[ 7550.0 43.241038 125 0 ]
+		0 ]
+		[ 12164.04438
+			[ 6400.0 2538.0 127
+				[ slots
+					[ 1 sp ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 158.627132 0.0 0.0 ]
+						[ 2538.0 79.022222 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 15394.030479
+			[ 6850.0 3568.0 127
+				[ slots
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 151.35384 0.0 0.0 ]
+						[ 3568.0 81.844444 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 20626.568091
+			[ 6350.0 6104.516885 127
+				[ slots
+					[ 1 sp ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 158.627132 0.0 0.0 ]
+						[ 6080.585132 127.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 26790.79811
+			[ 6125.0 3681.830125 127
+				[ slots
+					[ 1 sptrem ]
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 413.589453 39.511111 0.0 ]
+						[ 1590.638752 8.466667 0.0 ]
+						[ 2975.252145 0.418505 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 1971.547694 -12.0 0.0 ]
+						[ 3397.252145 -12.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 30733.124746
+			[ 6125.0 39.75422 114
+				[ slots
+					[ 1 clbatt ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 31624.626616
+			[ 6125.0 39.75422 93
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 32336.751126
+			[ 6125.0 39.75422 93
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 34192.954413
+			[ 7100.0 479.0 127
+				[ slots
+					[ 1 pizzB-nopitch ]
+				]
+			0 ]
+		0 ]
+		[ 35399.207119
+			[ 6125.0 34.221416 70
+				[ slots
+					[ 1 clbatt ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 36172.619991
+			[ 6125.0 36.453248 42
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 36825.613588
+			[ 6125.0 36.453248 42
+				[ slots
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 38728.787888
+			[ 7100.0 479.0 127
+				[ slots
+					[ 1 pizzB-nopitch ]
+				]
+			0 ]
+		0 ]
+		[ 41378.796556
+			[ 6350.0 6510.889717 127
+				[ slots
+					[ 1 sp ]
+					[ 2
+						[ 0.0 127.0 0.0 ]
+						[ 158.627132 0.0 0.0 ]
+						[ 6510.889717 127.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 47949.399406
+			[ 6125.0 5008.830125 127
+				[ slots
+					[ 1 sptrem ]
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 413.589453 39.511111 0.0 ]
+						[ 1590.638752 8.466667 0.0 ]
+						[ 2975.252145 0.418505 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 410.257938 -12.0 0.0 ]
+						[ 4595.050123 -20.0 0.0 ]
+						[ 5008.830125 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 53368.348438
+			[ 6000.0 510.307479 1
+				[ slots
+					[ 1 trem ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 53983.183773
+			[ 6025.0 257.929412 36
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 54369.113185
+			[ 6050.0 738.061515 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 55190.655918
+			[ 6000.0 250.583678 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 55441.239596
+			[ 5975.0 446.065186 1 0 ]
+		0 ]
+		[ 55887.304782
+			[ 6000.0 249.271722 16 0 ]
+		0 ]
+		[ 56136.576504
+			[ 5950.0 522.158659 1 0 ]
+		0 ]
+		[ 56658.735163
+			[ 5975.0 232.216287 16 0 ]
+		0 ]
+		[ 56890.95145
+			[ 5975.0 755.686903 1 0 ]
+		0 ]
+		[ 57646.638353
+			[ 6000.0 1028.573842 36
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 58675.212194
+			[ 5975.0 492.059964 23 0 ]
+		0 ]
+		[ 60563.743752
+			[ 5975.0 655.986327 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 61219.730079
+			[ 6075.0 544.99031 1 0 ]
+		0 ]
+		[ 61764.720389
+			[ 6050.0 1014.378857 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 62779.099246
+			[ 6025.0 147.996915 27
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 62927.096161
+			[ 6075.0 760.38749 1 0 ]
+		0 ]
+		[ 63687.483652
+			[ 6000.0 832.580977 11
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 64713.458927
+			[ 5975.0 689.1877 1
+				[ slots
+					[ 1 trem ]
+				]
+			0 ]
+		0 ]
+		[ 65382.244988
+			[ 6075.0 554.518864 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 65841.425522
+			[ 6050.0 219.589877 1 0 ]
+		0 ]
+		[ 68277.362253
+			[ 5575.0 655.986327 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 68933.34858
+			[ 5675.0 544.99031 1 0 ]
+		0 ]
+		[ 69478.33889
+			[ 5650.0 1014.378857 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 70492.717747
+			[ 5625.0 147.996915 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 70640.714662
+			[ 5675.0 760.38749 1 0 ]
+		0 ]
+		[ 71401.102153
+			[ 5600.0 832.580977 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 72427.077428
+			[ 5575.0 689.1877 1
+				[ slots
+					[ 1 trem ]
+				]
+			0 ]
+		0 ]
+		[ 73095.863489
+			[ 5675.0 554.518864 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 73555.044023
+			[ 5650.0 219.589877 1 0 ]
+		0 ]
+		[ 75563.560555
+			[ 5600.0 623.68914 1
+				[ slots
+					[ 1 trem ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 76315.001866
+			[ 5625.0 315.236949 3
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 76786.678243
+			[ 5650.0 902.046256 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 77790.753826
+			[ 5600.0 306.259118 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 78097.012944
+			[ 5575.0 545.173299 1 0 ]
+		0 ]
+		[ 78642.186243
+			[ 5600.0 304.655668 1 0 ]
+		0 ]
+		[ 78946.841911
+			[ 5550.0 638.173451 1 0 ]
+		0 ]
+		[ 79585.015362
+			[ 5575.0 283.810804 1 0 ]
+		0 ]
+		[ 79868.826166
+			[ 5575.0 923.587707 1 0 ]
+		0 ]
+		[ 80792.413872
+			[ 5600.0 1257.105491 3
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 81797.519363
+			[ 5575.0 623.12466 1 0 ]
+		0 ]
+		[ 96505.843108
+			[ 6250.0 13906.0 1
+				[ slots
+					[ 1 "sul tasto" ]
+				]
+			0 ]
+		0 ]
+		[ 113922.383567
+			[ 5350.0 52.520833 114
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 114832.089456
+			[ 5350.0 52.520833 7 0 ]
+		0 ]
+		[ 115561.101571
+			[ 5350.0 52.520833 7 0 ]
+		0 ]
+		[ 117227.107722
+			[ 7100.0 410.463519 127
+				[ slots
+					[ 1 pizzB-nopitch ]
+				]
+			0 ]
+		0 ]
+		[ 118656.335155
+			[ 5350.0 52.520833 53
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 119539.041043
+			[ 5350.0 52.520833 46 0 ]
+		0 ]
+		[ 120349.053159
+			[ 5350.0 52.520833 79 0 ]
+		0 ]
+		[ 122474.088972
+			[ 7100.0 410.11715 127
+				[ slots
+					[ 1 pizzB-nopitch ]
+				]
+			0 ]
+		0 ]
+		[ 126611.3897
+			[ 6850.0 4334.129482 127
+				[ slots
+					[ 1 ordinario ]
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 173.956562 0.0 0.0 ]
+						[ 4334.129482 126.29493 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 130991.954812
+			[ 6850.0 8513.318766 127
+				[ slots
+					[ 1 sptrem ]
+					[ 2
+						[ 12.810507 127.0 0.0 ]
+						[ 596.07461 45.155556 0.0 ]
+						[ 1590.638752 8.466667 0.0 ]
+						[ 3047.252145 0.0 0.0 ]
+					]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+						[ 5234.534936 -6.666667 0.0 ]
+						[ 7888.830125 -20.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 140558.819209
+			[ 6050.0 1297.54884 1
+				[ slots
+					[ 1 trem ]
+					[ 3
+						[ 0.0 0.0 0.0 ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 141952.579813
+			[ 6325.0 95.442861 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 142144.234439
+			[ 6025.0 244.953538 1 0 ]
+		0 ]
+		[ 142485.399742
+			[ 6050.0 94.439434 16 0 ]
+		0 ]
+		[ 142676.050941
+			[ 6350.0 303.152325 1 0 ]
+		0 ]
+		[ 143075.415031
+			[ 6025.0 81.394878 16 0 ]
+		0 ]
+		[ 143253.021673
+			[ 6325.0 481.762395 1 0 ]
+		0 ]
+		[ 143830.995833
+			[ 6050.0 295.007644 36
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 144617.682885
+			[ 6025.0 1393.070434 23 0 ]
+		0 ]
+		[ 145637.165084
+			[ 6050.0 822.810436 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 146459.97552
+			[ 6350.0 683.586984 1 0 ]
+		0 ]
+		[ 147143.562503
+			[ 6325.0 1272.345894 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 148415.908397
+			[ 6050.0 185.634062 27
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 148601.542459
+			[ 6050.0 953.761895 1 0 ]
+		0 ]
+		[ 149555.304354
+			[ 6025.0 1044.314932 11
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 150842.195756
+			[ 6050.0 838.865274 1
+				[ slots
+					[ 1 trem ]
+				]
+			0 ]
+		0 ]
+		[ 151681.06103
+			[ 6325.0 575.954893 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 152257.015924
+			[ 6025.0 228.07856 1 0 ]
+		0 ]
+		[ 152660.883683
+			[ 6750.0 754.0 21
+				[ slots
+					[ 1 trem ]
+				]
+			0 ]
+		0 ]
+		[ 153573.883683
+			[ 6975.0 363.0 1
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 154251.883683
+			[ 6975.0 678.0 1
+				[ slots
+					[ 1 trem ]
+				]
+			0 ]
+		0 ]
+		[ 154382.883683
+			[ 6775.0 131.0 3 0 ]
+		0 ]
+		[ 155397.883683
+			[ 6775.0 1015.0 1 0 ]
+		0 ]
+		[ 155693.883683
+			[ 6750.0 296.0 8
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 156580.883683
+			[ 6950.0 887.0 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 157856.005604
+			[ 6975.0 721.094584 23 0 ]
+		0 ]
+		[ 158108.005604
+			[ 6975.0 252.0 8 0 ]
+		0 ]
+		[ 158394.914695
+			[ 6975.0 286.909091 1
+				[ slots
+					[ 1 clbatt ]
+				]
+			0 ]
+		0 ]
+		[ 160223.883683
+			[ 6950.0 819.0 1
+				[ slots
+					[ 1 pizzB ]
+				]
+			0 ]
+		0 ]
+		[ 161372.883683
+			[ 6775.0 525.0 1
+				[ slots
+					[ 1 sptrem ]
+				]
+			0 ]
+		0 ]
+		[ 161672.883683
+			[ 6750.0 300.0 1 0 ]
+		0 ]
+		[ 161994.883683
+			[ 6975.0 322.0 1 0 ]
+		0 ]
+		[ 162124.883683
+			[ 6750.0 130.0 1
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 162495.883683
+			[ 6950.0 371.0 14 0 ]
+		0 ]
+		[ 163834.580995
+			[ 4800.0 851.751548 98
+				[ slots
+					[ 1 fingerB ]
+				]
+			0 ]
+		0 ]
+		[ 165304.005609
+			[ 4800.0 226.725232 98
+				[ slots
+					[ 1 tapB ]
+				]
+			0 ]
+		0 ]
+		[ 165530.730841
+			[ 4800.0 1114.017492 98
+				[ slots
+					[ 1 fingerB ]
+				]
+			0 ]
+		0 ]
+		[ 167623.956227
+			[ 4800.0 963.182293 98
+				[ slots
+					[ 1 tapB ]
+				]
+			0 ]
+		0 ]
+		[ 168855.704729
+			[ 4800.0 1452.267028 98
+				[ slots
+					[ 1 clBD ]
+				]
+			0 ]
+		0 ]
+		[ 169860.649002
+			[ 4800.0 513.502013 98
+				[ slots
+					[ 1 tapH ]
+				]
+			0 ]
+		0 ]
+		[ 170991.824079
+			[ 4800.0 851.751548 98
+				[ slots
+					[ 1 fingerB ]
+				]
+			0 ]
+		0 ]
+		[ 172461.248692
+			[ 4800.0 226.725232 98
+				[ slots
+					[ 1 tapB ]
+				]
+			0 ]
+		0 ]
+		[ 174085.077834
+			[ 4800.0 216.920898 98
+				[ slots
+					[ 1 clBD ]
+				]
+			0 ]
+		0 ]
+		[ 175469.910806
+			[ 4800.0 360.309288 98
+				[ slots
+					[ 1 fingerB ]
+				]
+			0 ]
+		0 ]
+		[ 175968.735574
+			[ 4800.0 1245.150464 98
+				[ slots
+					[ 1 trash ]
+				]
+			0 ]
+		0 ]
+		[ 177213.886038
+			[ 4800.0 1452.267028 98
+				[ slots
+					[ 1 fingerB ]
+				]
+			0 ]
+		0 ]
+		[ 180985.640368
+			[ 6675.0 93.0 64
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 183723.293895
+			[ 6675.0 117.0 127
+				[ slots
+					[ 1 pizz ]
+				]
+			0 ]
+		0 ]
+		[ 185196.8387
+			[ 6675.0 293.253553 107
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 185742.176775
+			[ 7475.0 163.921029 125 0 ]
+		0 ]
+		[ 186255.315755
+			[ 7925.0 163.921029 125 0 ]
+		0 ]
+		[ 186605.471054
+			[ 8200.0 163.921029 125 0 ]
+		0 ]
+		[ 186916.820716
+			[ 7200.0 90.190317 125 0 ]
+		0 ]
+		[ 187200.036291
+			[ 7350.0 105.712572 125 0 ]
+		0 ]
+		[ 187515.266517
+			[ 7475.0 39.742988 125 0 ]
+		0 ]
+		[ 187703.408277
+			[ 7550.0 41.420507 125 0 ]
+		0 ]
+		[ 188899.923752
+			[ 4500.0 2615.891231 127
+				[ slots
+					[ 1 pizzB ]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[
+		[ 347.953253
+			[ 5800.0 752.208983 58
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+		0 ]
+		[ 388.979661
+			[ 6300.0 732.054209 61 0 ]
+		0 ]
+		[ 420.887405
+			[ 6400.0 712.142322 59 0 ]
+		0 ]
+		[ 450.550294
+			[ 7000.0 627.801296 95 0 ]
+		0 ]
+		[ 472.613401
+			[ 8200.0 601.0 127 0 ]
+		0 ]
+		[ 472.707507
+			[ 8800.0 752.528427 125 0 ]
+		0 ]
+		[ 472.782095
+			[ 7500.0 689.878824 120 0 ]
+		0 ]
+		[ 2914.195063
+			[ 5800.0 808.208983 58 0 ]
+		0 ]
+		[ 2955.221471
+			[ 6300.0 788.054209 61 0 ]
+		0 ]
+		[ 2987.129215
+			[ 6400.0 768.142322 59 0 ]
+		0 ]
+		[ 3027.792104
+			[ 7000.0 683.801296 95 0 ]
+		0 ]
+		[ 3038.949317
+			[ 8800.0 808.528427 125 0 ]
+		0 ]
+		[ 3039.023905
+			[ 7500.0 745.878824 120 0 ]
+		0 ]
+		[ 6850.489936
+			[ 6300.0 259.150639 41
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 6856.571306
+			[ 7000.0 259.150639 75 0 ]
+			[ 8200.0 259.150639 75 0 ]
+		0 ]
+		[ 6856.716813
+			[ 8800.0 259.150639 105 0 ]
+		0 ]
+		[ 6856.785847
+			[ 7500.0 259.150639 100 0 ]
+		0 ]
+		[ 6862.436544
+			[ 6400.0 259.150639 39 0 ]
+		0 ]
+		[ 7437.58372
+			[ 6400.0 293.568933 41 0 ]
+		0 ]
+		[ 7443.66509
+			[ 7000.0 293.568933 75 0 ]
+			[ 8200.0 293.568933 75 0 ]
+		0 ]
+		[ 7443.810597
+			[ 8800.0 293.568933 105 0 ]
+		0 ]
+		[ 7443.87963
+			[ 7500.0 293.568933 100 0 ]
+		0 ]
+		[ 7449.530326
+			[ 6500.0 293.568933 39 0 ]
+		0 ]
+		[ 8000.043754
+			[ 6500.0 180.137463 41 0 ]
+		0 ]
+		[ 8006.125125
+			[ 7100.0 180.137463 75 0 ]
+			[ 8200.0 180.137463 75 0 ]
+		0 ]
+		[ 8006.270632
+			[ 8800.0 180.137463 105 0 ]
+		0 ]
+		[ 8006.339666
+			[ 7600.0 180.137463 100 0 ]
+		0 ]
+		[ 8011.990362
+			[ 6600.0 180.137463 39 0 ]
+		0 ]
+		[ 8386.338007
+			[ 6600.0 162.920753 61 0 ]
+		0 ]
+		[ 8391.147891
+			[ 7100.0 162.920753 95 0 ]
+			[ 8300.0 162.920753 95 0 ]
+		0 ]
+		[ 8391.262976
+			[ 8800.0 162.920753 125 0 ]
+		0 ]
+		[ 8391.317576
+			[ 7600.0 162.920753 120 0 ]
+		0 ]
+		[ 8395.786831
+			[ 6700.0 162.920753 59 0 ]
+		0 ]
+		[ 8711.634522
+			[ 6800.0 96.756717 73 0 ]
+		0 ]
+		[ 8716.444406
+			[ 7300.0 96.756717 107 0 ]
+			[ 8300.0 96.756717 107 0 ]
+		0 ]
+		[ 8716.55949
+			[ 8800.0 96.756717 127 0 ]
+		0 ]
+		[ 8716.61409
+			[ 7700.0 96.756717 127 0 ]
+		0 ]
+		[ 8721.083346
+			[ 6900.0 96.756717 71 0 ]
+		0 ]
+		[ 9010.454981
+			[ 7100.0 106.937635 73 0 ]
+		0 ]
+		[ 9015.264865
+			[ 7500.0 106.937635 107 0 ]
+			[ 8300.0 106.937635 107 0 ]
+		0 ]
+		[ 9015.37995
+			[ 8800.0 106.937635 127 0 ]
+		0 ]
+		[ 9015.43455
+			[ 7800.0 106.937635 127 0 ]
+		0 ]
+		[ 9019.903805
+			[ 7200.0 106.937635 71 0 ]
+		0 ]
+		[ 9359.320143
+			[ 7500.0 30.542754 126 0 ]
+		0 ]
+		[ 9361.086697
+			[ 7400.0 33.421772 126 0 ]
+		0 ]
+		[ 9364.756597
+			[ 7800.0 30.542754 126 0 ]
+			[ 8400.0 30.542754 126 0 ]
+		0 ]
+		[ 9364.828377
+			[ 8800.0 30.542754 126 0 ]
+		0 ]
+		[ 9364.862432
+			[ 8000.0 30.542754 126 0 ]
+		0 ]
+		[ 9559.879931
+			[ 7700.0 33.421772 126 0 ]
+		0 ]
+		[ 9561.755904
+			[ 7900.0 33.342093 117 0 ]
+		0 ]
+		[ 9564.755913
+			[ 8000.0 33.342093 126 0 ]
+			[ 8500.0 33.342093 126 0 ]
+		0 ]
+		[ 9564.827693
+			[ 8800.0 33.342093 126 0 ]
+		0 ]
+		[ 9564.861748
+			[ 8200.0 33.342093 126 0 ]
+		0 ]
+		[ 9956.449196
+			[ 2700.0 769.0 124
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+		0 ]
+		[ 9959.586114
+			[ 7900.0 411.0 127 0 ]
+		0 ]
+		[ 11051.409334
+			[ 7300.0 411.0 127 0 ]
+		0 ]
+		[ 12168.068095
+			[ 6400.0 411.0 127 0 ]
+		0 ]
+		[ 12712.391547
+			[ 7200.0 411.0 127 0 ]
+		0 ]
+		[ 14693.645895
+			[ 2700.0 743.0 124 0 ]
+		0 ]
+		[ 14716.104008
+			[ 7900.0 259.578947 127 0 ]
+		0 ]
+		[ 15393.360778
+			[ 6900.0 259.578947 127 0 ]
+		0 ]
+		[ 16265.566312
+			[ 7300.0 259.578947 127 0 ]
+		0 ]
+		[ 17155.397153
+			[ 2300.0 380.0 50 0 ]
+		0 ]
+		[ 17173.139018
+			[ 7200.0 365.881733 127 0 ]
+		0 ]
+		[ 19570.493651
+			[ 2900.0 688.367647 124 0 ]
+		0 ]
+		[ 19581.075367
+			[ 7800.0 240.49226 127 0 ]
+		0 ]
+		[ 20621.470926
+			[ 6300.0 196.257097 127 0 ]
+		0 ]
+		[ 21558.807361
+			[ 3700.0 385.494578 97 0 ]
+		0 ]
+		[ 21558.90619
+			[ 6700.0 196.257097 127 0 ]
+		0 ]
+		[ 22548.905184
+			[ 7000.0 196.257097 127 0 ]
+		0 ]
+		[ 25209.248024
+			[ 7100.0 222.977547 127 0 ]
+		0 ]
+		[ 25432.585561
+			[ 7200.0 65.66356 82 0 ]
+		0 ]
+		[ 25498.249121
+			[ 7100.0 95.510632 82 0 ]
+		0 ]
+		[ 25593.759753
+			[ 7200.0 77.602389 82 0 ]
+		0 ]
+		[ 25671.362141
+			[ 7100.0 95.510632 82 0 ]
+		0 ]
+		[ 25766.872774
+			[ 7200.0 71.632974 82 0 ]
+		0 ]
+		[ 25838.505748
+			[ 7100.0 95.510632 82 0 ]
+		0 ]
+		[ 25934.01638
+			[ 7200.0 59.694145 82 0 ]
+		0 ]
+		[ 25993.710525
+			[ 7100.0 95.510632 82 0 ]
+		0 ]
+		[ 26138.18314
+			[ 7200.0 117.987909 82 0 ]
+		0 ]
+		[ 26256.17105
+			[ 7100.0 118.399024 82 0 ]
+		0 ]
+		[ 26436.046498
+			[ 7000.0 180.37049 101 0 ]
+		0 ]
+		[ 26613.679293
+			[ 7100.0 116.611235 101 0 ]
+		0 ]
+		[ 26735.225781
+			[ 2400.0 385.494578 64 0 ]
+			[ 6400.0 385.494578 79 0 ]
+		0 ]
+		[ 40281.709516
+			[ 2900.0 715.100371 124
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+		0 ]
+		[ 40292.702173
+			[ 7800.0 249.831765 127
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+		0 ]
+		[ 41373.501443
+			[ 6300.0 203.878732 127 0 ]
+		0 ]
+		[ 42347.34196
+			[ 6700.0 203.878732 127 0 ]
+		0 ]
+		[ 43211.787516
+			[ 7000.0 203.878732 127 0 ]
+		0 ]
+		[ 43215.239293
+			[ 2500.0 400.465241 97 0 ]
+		0 ]
+		[ 46273.996662
+			[ 7100.0 192.171438 127 0 ]
+		0 ]
+		[ 46506.478355
+			[ 7200.0 56.59162 82 0 ]
+		0 ]
+		[ 46563.069976
+			[ 7100.0 82.315084 82 0 ]
+		0 ]
+		[ 46640.002733
+			[ 7200.0 56.59162 82 0 ]
+		0 ]
+		[ 46696.594354
+			[ 7100.0 82.315084 82 0 ]
+		0 ]
+		[ 46778.909438
+			[ 7200.0 66.881006 82 0 ]
+		0 ]
+		[ 46845.790444
+			[ 7100.0 16.375 82 0 ]
+		0 ]
+		[ 46930.035803
+			[ 7200.0 61.736313 82 0 ]
+		0 ]
+		[ 46991.772116
+			[ 7100.0 82.315084 82 0 ]
+		0 ]
+		[ 47074.087201
+			[ 7200.0 51.446928 82 0 ]
+		0 ]
+		[ 47125.534128
+			[ 7100.0 82.315084 82 0 ]
+		0 ]
+		[ 47250.046711
+			[ 7200.0 101.686948 82 0 ]
+		0 ]
+		[ 47351.73366
+			[ 7100.0 104.927078 82 0 ]
+		0 ]
+		[ 47556.647795
+			[ 7000.0 180.37049 101 0 ]
+		0 ]
+		[ 47772.28059
+			[ 7100.0 116.611235 101 0 ]
+		0 ]
+		[ 47893.827077
+			[ 2400.0 385.494578 64 0 ]
+			[ 6400.0 385.494578 101 0 ]
+		0 ]
+		[ 53323.860597
+			[ 6000.0 970.782936 51
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+			[ 7200.0 970.782936 51 0 ]
+		0 ]
+		[ 54294.643533
+			[ 6200.0 970.782936 51 0 ]
+			[ 7400.0 970.782936 51 0 ]
+		0 ]
+		[ 55265.426469
+			[ 6000.0 1068.782936 51 0 ]
+			[ 7200.0 1068.782936 51 0 ]
+		0 ]
+		[ 56334.209404
+			[ 6300.0 970.782936 51 0 ]
+			[ 7500.0 970.782936 51 0 ]
+		0 ]
+		[ 57304.99234
+			[ 6100.0 970.782936 51 0 ]
+			[ 7300.0 970.782936 51 0 ]
+		0 ]
+		[ 58275.775276
+			[ 6400.0 1004.731661 51 0 ]
+			[ 7600.0 1004.731661 51 0 ]
+		0 ]
+		[ 60558.309286
+			[ 6000.0 970.782936 51 0 ]
+			[ 7200.0 970.782936 51 0 ]
+		0 ]
+		[ 61529.092221
+			[ 6100.0 970.782936 51 0 ]
+			[ 7300.0 970.782936 51 0 ]
+		0 ]
+		[ 62499.875157
+			[ 6000.0 1117.782936 51 0 ]
+			[ 7200.0 1117.782936 51 0 ]
+		0 ]
+		[ 63617.658093
+			[ 6300.0 970.782936 51 0 ]
+			[ 7500.0 970.782936 51 0 ]
+		0 ]
+		[ 64588.441028
+			[ 6100.0 970.782936 51 0 ]
+			[ 7300.0 970.782936 51 0 ]
+		0 ]
+		[ 65559.223964
+			[ 6400.0 1004.731661 51 0 ]
+			[ 7600.0 1004.731661 51 0 ]
+		0 ]
+		[ 68235.204323
+			[ 4400.0 970.782936 47
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+			[ 8000.0 970.782936 51 0 ]
+		0 ]
+		[ 69205.987259
+			[ 4500.0 970.782936 47 0 ]
+			[ 8100.0 970.782936 51 0 ]
+		0 ]
+		[ 70176.770194
+			[ 4400.0 1068.782936 47 0 ]
+			[ 8000.0 1068.782936 51 0 ]
+		0 ]
+		[ 71245.55313
+			[ 4700.0 970.782936 47 0 ]
+			[ 8300.0 970.782936 51 0 ]
+		0 ]
+		[ 72216.336066
+			[ 4500.0 970.782936 47 0 ]
+			[ 8100.0 970.782936 51 0 ]
+		0 ]
+		[ 73187.119002
+			[ 4800.0 1004.731661 47 0 ]
+			[ 8400.0 1004.731661 51 0 ]
+		0 ]
+		[ 75483.935892
+			[ 4400.0 1015.343464 47 0 ]
+			[ 8000.0 1015.343464 51 0 ]
+		0 ]
+		[ 76499.279356
+			[ 4600.0 1244.544449 47 0 ]
+			[ 8200.0 1244.544449 51 0 ]
+		0 ]
+		[ 77743.823806
+			[ 4400.0 1516.593946 47 0 ]
+			[ 8000.0 1516.593946 51 0 ]
+		0 ]
+		[ 79260.417752
+			[ 4700.0 1252.877944 47 0 ]
+			[ 8300.0 1252.877944 51 0 ]
+		0 ]
+		[ 80513.295696
+			[ 4500.0 1252.877944 43 0 ]
+			[ 8100.0 1252.877944 18 0 ]
+		0 ]
+		[ 81766.17364
+			[ 4800.0 1259.766038 9 0 ]
+			[ 8400.0 1259.766038 1 0 ]
+		0 ]
+		[ 88921.091402
+			[ 2100.0 1109.0 36
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+			[ 3300.0 1109.0 36 0 ]
+		0 ]
+		[ 88984.588197
+			[ 7900.0 607.720123 83 0 ]
+		0 ]
+		[ 91705.123331
+			[ 7000.0 534.610935 81 0 ]
+		0 ]
+		[ 93501.457825
+			[ 7300.0 534.610935 66 0 ]
+		0 ]
+		[ 94630.486244
+			[ 6500.0 760.949031 66 0 ]
+		0 ]
+		[ 95455.632112
+			[ 6400.0 1007.600086 66 0 ]
+		0 ]
+		[ 96463.232198
+			[ 6300.0 760.949031 15 0 ]
+		0 ]
+		[ 98085.34269
+			[ 6400.0 1053.864766 20 0 ]
+		0 ]
+		[ 99139.207456
+			[ 6300.0 1074.23374 20 0 ]
+		0 ]
+		[ 100211.736398
+			[ 6600.0 989.23374 33 0 ]
+		0 ]
+		[ 101454.426026
+			[ 6100.0 611.238172 33 0 ]
+		0 ]
+		[ 103285.911328
+			[ 6700.0 607.720123 96 0 ]
+		0 ]
+		[ 106520.446462
+			[ 5800.0 534.610935 52 0 ]
+		0 ]
+		[ 113902.653442
+			[ 5200.0 50.520833 68
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+			[ 5700.0 50.520833 68 0 ]
+			[ 5800.0 50.520833 68 0 ]
+		0 ]
+		[ 114756.167275
+			[ 5200.0 50.520833 17 0 ]
+			[ 5700.0 50.520833 17 0 ]
+			[ 5800.0 50.520833 17 0 ]
+		0 ]
+		[ 115521.527237
+			[ 5200.0 50.520833 17 0 ]
+			[ 5700.0 50.520833 17 0 ]
+			[ 5800.0 50.520833 17 0 ]
+		0 ]
+		[ 118655.394814
+			[ 5200.0 50.520833 7
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+			[ 5700.0 50.520833 7 0 ]
+			[ 5800.0 50.520833 7 0 ]
+		0 ]
+		[ 119525.908647
+			[ 5200.0 50.520833 40 0 ]
+			[ 5700.0 50.520833 40 0 ]
+			[ 5800.0 50.520833 40 0 ]
+		0 ]
+		[ 120348.268609
+			[ 5200.0 50.520833 73 0 ]
+			[ 5700.0 50.520833 73 0 ]
+			[ 5800.0 50.520833 73 0 ]
+		0 ]
+		[ 123835.843956
+			[ 2400.0 610.048603 124
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+		0 ]
+		[ 123845.221737
+			[ 7300.0 213.130248 127
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+		0 ]
+		[ 124783.246268
+			[ 7600.0 173.927941 127 0 ]
+		0 ]
+		[ 125692.024814
+			[ 7000.0 173.927941 127 0 ]
+		0 ]
+		[ 126585.479059
+			[ 6900.0 173.927941 127 0 ]
+		0 ]
+		[ 129591.653083
+			[ 7000.0 192.171438 127 0 ]
+		0 ]
+		[ 129824.134777
+			[ 7100.0 56.59162 82 0 ]
+		0 ]
+		[ 129918.250775
+			[ 7000.0 82.315084 82 0 ]
+		0 ]
+		[ 130000.565859
+			[ 7100.0 66.881006 82 0 ]
+		0 ]
+		[ 130067.446865
+			[ 7000.0 16.375 82 0 ]
+		0 ]
+		[ 130151.692224
+			[ 7100.0 61.736313 82 0 ]
+		0 ]
+		[ 130213.428537
+			[ 7000.0 82.315084 82 0 ]
+		0 ]
+		[ 130295.743622
+			[ 7100.0 51.446928 82 0 ]
+		0 ]
+		[ 130347.190549
+			[ 7000.0 82.315084 82 0 ]
+		0 ]
+		[ 130471.703132
+			[ 7100.0 101.686948 82 0 ]
+		0 ]
+		[ 130573.390081
+			[ 7000.0 104.927078 82 0 ]
+		0 ]
+		[ 130714.304216
+			[ 6900.0 180.37049 101 0 ]
+		0 ]
+		[ 130881.937011
+			[ 7000.0 116.611235 101 0 ]
+		0 ]
+		[ 130971.483498
+			[ 3200.0 385.494578 127 0 ]
+			[ 6700.0 385.494578 127 0 ]
+		0 ]
+		[ 132381.490497
+			[ 6600.0 385.494578 64 0 ]
+		0 ]
+		[ 180850.5502
+			[ 5800.0 247.208983 54
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 180891.576608
+			[ 6300.0 227.054209 54 0 ]
+		0 ]
+		[ 180923.484352
+			[ 6400.0 207.142322 54 0 ]
+		0 ]
+		[ 180953.147241
+			[ 7000.0 122.801296 80 0 ]
+		0 ]
+		[ 180975.210348
+			[ 8200.0 96.0 64 0 ]
+		0 ]
+		[ 180975.304454
+			[ 8800.0 247.528427 62 0 ]
+		0 ]
+		[ 180975.379042
+			[ 7500.0 184.878824 57 0 ]
+		0 ]
+		[ 183606.19449
+			[ 5800.0 117.0 114 0 ]
+		0 ]
+		[ 183647.220898
+			[ 6300.0 117.0 117 0 ]
+		0 ]
+		[ 183679.128642
+			[ 6400.0 117.0 115 0 ]
+		0 ]
+		[ 183719.791531
+			[ 7000.0 117.0 127 0 ]
+		0 ]
+		[ 183730.948744
+			[ 8800.0 117.0 127 0 ]
+		0 ]
+		[ 183731.023332
+			[ 7500.0 117.0 127 0 ]
+		0 ]
+		[ 185184.732485
+			[ 6300.0 306.552119 41
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 185190.557817
+			[ 7000.0 306.552119 75 0 ]
+			[ 8200.0 306.552119 75 0 ]
+		0 ]
+		[ 185190.697198
+			[ 8800.0 306.552119 105 0 ]
+		0 ]
+		[ 185190.763325
+			[ 7500.0 306.552119 100 0 ]
+		0 ]
+		[ 185196.176117
+			[ 6400.0 306.552119 39 0 ]
+		0 ]
+		[ 185747.108492
+			[ 6400.0 281.209116 41 0 ]
+		0 ]
+		[ 185752.933824
+			[ 7000.0 281.209116 75 0 ]
+			[ 8200.0 281.209116 75 0 ]
+		0 ]
+		[ 185753.073205
+			[ 8800.0 281.209116 105 0 ]
+		0 ]
+		[ 185753.139332
+			[ 7500.0 281.209116 100 0 ]
+		0 ]
+		[ 185758.552123
+			[ 6500.0 281.209116 39 0 ]
+		0 ]
+		[ 186259.06673
+			[ 6500.0 172.553329 41 0 ]
+		0 ]
+		[ 186264.892064
+			[ 7100.0 172.553329 75 0 ]
+			[ 8200.0 172.553329 75 0 ]
+		0 ]
+		[ 186265.031445
+			[ 8800.0 172.553329 105 0 ]
+		0 ]
+		[ 186265.097572
+			[ 7600.0 172.553329 100 0 ]
+		0 ]
+		[ 186270.510363
+			[ 6600.0 172.553329 39 0 ]
+		0 ]
+		[ 186602.276106
+			[ 6600.0 156.061476 61 0 ]
+		0 ]
+		[ 186606.883485
+			[ 7100.0 156.061476 95 0 ]
+			[ 8300.0 156.061476 95 0 ]
+		0 ]
+		[ 186606.993724
+			[ 8800.0 156.061476 125 0 ]
+		0 ]
+		[ 186607.046025
+			[ 7600.0 156.061476 120 0 ]
+		0 ]
+		[ 186611.327116
+			[ 6700.0 156.061476 59 0 ]
+		0 ]
+		[ 186913.877012
+			[ 6800.0 92.683073 73 0 ]
+		0 ]
+		[ 186918.48439
+			[ 7300.0 92.683073 107 0 ]
+			[ 8300.0 92.683073 107 0 ]
+		0 ]
+		[ 186918.59463
+			[ 8800.0 92.683073 127 0 ]
+		0 ]
+		[ 186918.646931
+			[ 7700.0 92.683073 127 0 ]
+		0 ]
+		[ 186922.928022
+			[ 6900.0 92.683073 71 0 ]
+		0 ]
+		[ 187200.116555
+			[ 7100.0 102.435355 73 0 ]
+		0 ]
+		[ 187204.723933
+			[ 7500.0 102.435355 107 0 ]
+			[ 8300.0 102.435355 107 0 ]
+		0 ]
+		[ 187204.834173
+			[ 8800.0 102.435355 127 0 ]
+		0 ]
+		[ 187204.886474
+			[ 7800.0 102.435355 127 0 ]
+		0 ]
+		[ 187209.167565
+			[ 7200.0 102.435355 71 0 ]
+		0 ]
+		[ 187507.472677
+			[ 7500.0 29.256846 126 0 ]
+		0 ]
+		[ 187509.164855
+			[ 7400.0 32.014651 126 0 ]
+		0 ]
+		[ 187512.680244
+			[ 7800.0 29.256846 126 0 ]
+			[ 8400.0 29.256846 126 0 ]
+		0 ]
+		[ 187512.749002
+			[ 8800.0 29.256846 126 0 ]
+		0 ]
+		[ 187512.781624
+			[ 8000.0 29.256846 126 0 ]
+		0 ]
+		[ 187699.588512
+			[ 7700.0 32.014651 126 0 ]
+		0 ]
+		[ 187701.385502
+			[ 7900.0 31.938327 117 0 ]
+		0 ]
+		[ 187704.259205
+			[ 8000.0 31.938327 126 0 ]
+			[ 8500.0 31.938327 126 0 ]
+		0 ]
+		[ 187704.327963
+			[ 8800.0 31.938327 126 0 ]
+		0 ]
+		[ 187704.360585
+			[ 8200.0 31.938327 126 0 ]
+		0 ]
+	0 ]
+	[
+		[ 30748.685589
+			[ 3600.0 50.520833 16
+				[ slots
+					[ 1 dampen-p-secco ]
+				]
+			0 ]
+		0 ]
+		[ 31218.21243
+			[ 3700.0 23.467108 22 0 ]
+		0 ]
+		[ 31637.087644
+			[ 3600.0 23.467108 8 0 ]
+		0 ]
+		[ 32002.972307
+			[ 3900.0 41.36575 25 0 ]
+		0 ]
+		[ 32341.071925
+			[ 3700.0 41.36575 12 0 ]
+		0 ]
+		[ 32640.553773
+			[ 4000.0 30.200168 1 0 ]
+		0 ]
+		[ 33115.075611
+			[ 3000.0 385.494578 47
+				[ slots
+					[ 1 dampen-p ]
+				]
+			0 ]
+		0 ]
+		[ 35383.813618
+			[ 3600.0 43.489583 1
+				[ slots
+					[ 1 dampen-p-secco ]
+				]
+			0 ]
+		0 ]
+		[ 35787.993939
+			[ 3700.0 20.201067 1 0 ]
+		0 ]
+		[ 36151.945359
+			[ 3600.0 21.518528 1 0 ]
+		0 ]
+		[ 36487.448968
+			[ 3900.0 37.930965 1 0 ]
+		0 ]
+		[ 36797.474648
+			[ 3700.0 37.930965 1 0 ]
+		0 ]
+		[ 37134.936992
+			[ 4000.0 27.692512 1 0 ]
+		0 ]
+		[ 37656.259068
+			[ 3000.0 353.485223 33
+				[ slots
+					[ 1 dampen-p ]
+				]
+			0 ]
+		0 ]
+		[ 53283.239669
+			[ 2100.0 1118.0 85
+				[ slots
+					[ 1 "hit strings hand" ]
+				]
+			0 ]
+		0 ]
+		[ 60540.497221
+			[ 2100.0 1118.0 98
+				[ slots
+					[ 1 "hit strings hand" ]
+				]
+			0 ]
+		0 ]
+		[ 113904.799862
+			[ 3300.0 50.520833 64
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 114401.326703
+			[ 3400.0 23.467108 70 0 ]
+		0 ]
+		[ 114820.201917
+			[ 3300.0 23.467108 56 0 ]
+		0 ]
+		[ 115186.08658
+			[ 3600.0 41.36575 73 0 ]
+		0 ]
+		[ 115524.186198
+			[ 3400.0 41.36575 60 0 ]
+		0 ]
+		[ 115823.668046
+			[ 3700.0 30.200168 49 0 ]
+		0 ]
+		[ 116342.189884
+			[ 2700.0 2373.494578 70 0 ]
+		0 ]
+		[ 118656.882324
+			[ 3300.0 54.575163 76 0 ]
+		0 ]
+		[ 119087.089002
+			[ 3400.0 25.350359 76 0 ]
+		0 ]
+		[ 119543.812352
+			[ 3300.0 27.003643 76 0 ]
+		0 ]
+		[ 119964.836488
+			[ 3600.0 47.599643 76 0 ]
+		0 ]
+		[ 120353.888322
+			[ 3400.0 47.599643 76 0 ]
+		0 ]
+		[ 120854.37048
+			[ 3700.0 34.751387 76 0 ]
+		0 ]
+		[ 121612.578574
+			[ 2700.0 2147.5893 56 0 ]
+		0 ]
+		[ 141743.450469
+			[ 6300.0 1246.0 21
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+			[ 6500.0 1246.0 21 0 ]
+			[ 6700.0 1246.0 21 0 ]
+			[ 6900.0 1246.0 21 0 ]
+			[ 8200.0 1246.0 42 0 ]
+		0 ]
+		[ 141752.868311
+			[ 7200.0 1246.0 31 0 ]
+			[ 7600.0 1246.0 42 0 ]
+			[ 7800.0 1246.0 42 0 ]
+			[ 8000.0 1246.0 42 0 ]
+			[ 8300.0 1246.0 42 0 ]
+		0 ]
+		[ 146120.540651
+			[ 7200.0 1246.0 2 0 ]
+			[ 7600.0 1246.0 2 0 ]
+			[ 7800.0 1246.0 2 0 ]
+			[ 8000.0 1246.0 2 0 ]
+			[ 8300.0 1246.0 2 0 ]
+		0 ]
+		[ 146126.933842
+			[ 6300.0 1246.0 1 0 ]
+			[ 6500.0 1246.0 1 0 ]
+			[ 6700.0 1246.0 1 0 ]
+			[ 6900.0 1246.0 1 0 ]
+			[ 8200.0 1246.0 1 0 ]
+		0 ]
+		[ 152423.628393
+			[ 6600.0 1246.0 41 0 ]
+			[ 7200.0 1246.0 41 0 ]
+			[ 7500.0 1246.0 41 0 ]
+			[ 8100.0 1246.0 41 0 ]
+		0 ]
+		[ 152430.021584
+			[ 5600.0 1246.0 16 0 ]
+			[ 5900.0 1246.0 16 0 ]
+			[ 6200.0 1246.0 40 0 ]
+		0 ]
+		[ 158116.619398
+			[ 6600.0 1246.0 6 0 ]
+			[ 7200.0 1246.0 6 0 ]
+			[ 7500.0 1246.0 6 0 ]
+			[ 8100.0 1246.0 6 0 ]
+		0 ]
+		[ 158123.01259
+			[ 5600.0 1246.0 5 0 ]
+			[ 5900.0 1246.0 5 0 ]
+			[ 6200.0 1246.0 5 0 ]
+		0 ]
+		[ 163669.441066
+			[ 4600.0 117.106343 22 0 ]
+			[ 5400.0 117.106343 22 0 ]
+			[ 5500.0 117.106343 22 0 ]
+			[ 5900.0 117.106343 22 0 ]
+		0 ]
+		[ 163672.326806
+			[ 3700.0 117.106343 63
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+			[ 5100.0 117.106343 22 0 ]
+			[ 5700.0 117.106343 22 0 ]
+		0 ]
+		[ 164760.681217
+			[ 3800.0 54.396317 69 0 ]
+		0 ]
+		[ 165731.626107
+			[ 3700.0 54.396317 55 0 ]
+		0 ]
+		[ 166579.739896
+			[ 4000.0 95.885033 72 0 ]
+		0 ]
+		[ 167363.448468
+			[ 3800.0 95.885033 59 0 ]
+		0 ]
+		[ 168057.641776
+			[ 4100.0 55.783978 47 0 ]
+		0 ]
+		[ 169091.089748
+			[ 4600.0 142.622637 63 0 ]
+			[ 5400.0 142.622637 63 0 ]
+			[ 5500.0 142.622637 63 0 ]
+			[ 5900.0 142.622637 63 0 ]
+		0 ]
+		[ 169094.604262
+			[ 3700.0 142.622637 104 0 ]
+			[ 5100.0 142.622637 63 0 ]
+			[ 5700.0 142.622637 63 0 ]
+		0 ]
+		[ 170069.058594
+			[ 2600.0 75.758885 40 0 ]
+		0 ]
+		[ 171051.614847
+			[ 2500.0 82.706207 26 0 ]
+		0 ]
+		[ 171848.628713
+			[ 2800.0 82.706207 43 0 ]
+		0 ]
+		[ 172733.727295
+			[ 2600.0 93.153306 30 0 ]
+		0 ]
+		[ 173702.816597
+			[ 3000.0 94.683999 22 0 ]
+		0 ]
+		[ 174619.33857
+			[ 2900.0 75.758885 41 0 ]
+		0 ]
+		[ 175579.807255
+			[ 3700.0 228.0 23
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+			[ 5100.0 228.0 18 0 ]
+			[ 5700.0 228.0 18 0 ]
+		0 ]
+		[ 175624.313397
+			[ 4600.0 228.0 18 0 ]
+			[ 5400.0 228.0 18 0 ]
+			[ 5500.0 228.0 18 0 ]
+			[ 5900.0 228.0 18 0 ]
+		0 ]
+		[ 188824.242688
+			[ 2100.0 835.78189 127
+				[ slots
+					[ 1 dampen-p ]
+				]
+			0 ]
+		0 ]
+	0 ]
+	[
+		[ 3872.712688
+			[ 6300.0 259.150639 41
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 3974.269408
+			[ 7000.0 259.150639 75 0 ]
+			[ 8200.0 259.150639 75 0 ]
+		0 ]
+		[ 4075.826127
+			[ 7500.0 259.150639 100 0 ]
+		0 ]
+		[ 4177.382846
+			[ 6400.0 259.150639 39 0 ]
+		0 ]
+		[ 4278.939565
+			[ 8800.0 259.150639 105 0 ]
+		0 ]
+		[ 4687.55482
+			[ 6500.0 180.137463 41 0 ]
+		0 ]
+		[ 4801.61154
+			[ 7100.0 180.137463 75 0 ]
+			[ 8200.0 180.137463 75 0 ]
+		0 ]
+		[ 4915.668259
+			[ 7600.0 180.137463 100 0 ]
+		0 ]
+		[ 5029.724979
+			[ 6600.0 180.137463 39 0 ]
+		0 ]
+		[ 5143.781698
+			[ 8800.0 180.137463 105 0 ]
+		0 ]
+		[ 5509.806472
+			[ 6400.0 293.568933 41 0 ]
+		0 ]
+		[ 5515.887842
+			[ 7000.0 293.568933 75 0 ]
+			[ 8200.0 293.568933 75 0 ]
+		0 ]
+		[ 5516.033349
+			[ 8800.0 293.568933 105 0 ]
+		0 ]
+		[ 5516.102382
+			[ 7500.0 293.568933 100 0 ]
+		0 ]
+		[ 5521.753078
+			[ 6500.0 293.568933 39 0 ]
+		0 ]
+		[ 5963.485728
+			[ 8800.0 162.920753 125 0 ]
+		0 ]
+		[ 6039.616692
+			[ 6600.0 162.920753 61 0 ]
+		0 ]
+		[ 6115.747656
+			[ 7100.0 162.920753 95 0 ]
+			[ 8300.0 162.920753 95 0 ]
+		0 ]
+		[ 6191.87862
+			[ 7600.0 162.920753 120 0 ]
+		0 ]
+		[ 6268.009583
+			[ 6700.0 162.920753 59 0 ]
+		0 ]
+		[ 6733.857274
+			[ 6800.0 96.756717 73 0 ]
+		0 ]
+		[ 6810.088516
+			[ 7300.0 96.756717 107 0 ]
+			[ 8300.0 96.756717 107 0 ]
+		0 ]
+		[ 6886.319758
+			[ 7700.0 96.756717 127 0 ]
+		0 ]
+		[ 6962.551
+			[ 6900.0 96.756717 71 0 ]
+		0 ]
+		[ 7038.782242
+			[ 8800.0 96.756717 127 0 ]
+		0 ]
+		[ 7482.677733
+			[ 7100.0 106.937635 73 0 ]
+		0 ]
+		[ 7558.908976
+			[ 7500.0 106.937635 107 0 ]
+			[ 8300.0 106.937635 107 0 ]
+		0 ]
+		[ 7635.140218
+			[ 7800.0 106.937635 127 0 ]
+		0 ]
+		[ 7711.37146
+			[ 7200.0 106.937635 71 0 ]
+		0 ]
+		[ 7787.602702
+			[ 8800.0 106.937635 127 0 ]
+		0 ]
+		[ 8131.542895
+			[ 7500.0 30.542754 126 0 ]
+		0 ]
+		[ 8220.419954
+			[ 7400.0 33.421772 126 0 ]
+		0 ]
+		[ 8309.297012
+			[ 7800.0 30.542754 126 0 ]
+			[ 8400.0 30.542754 126 0 ]
+		0 ]
+		[ 8398.174071
+			[ 8000.0 30.542754 126 0 ]
+		0 ]
+		[ 8487.051129
+			[ 8800.0 30.542754 126 0 ]
+		0 ]
+		[ 9037.050445
+			[ 8800.0 33.342093 126 0 ]
+		0 ]
+		[ 9149.558959
+			[ 7700.0 33.421772 126 0 ]
+		0 ]
+		[ 9262.067473
+			[ 7900.0 33.342093 117 0 ]
+		0 ]
+		[ 9374.575987
+			[ 8000.0 33.342093 126 0 ]
+			[ 8500.0 33.342093 126 0 ]
+		0 ]
+		[ 9487.0845
+			[ 8200.0 33.342093 126 0 ]
+		0 ]
+		[ 40859.443868
+			[ 5500.0 281.713135 49 0 ]
+		0 ]
+		[ 41163.586025
+			[ 5900.0 281.713135 1 0 ]
+		0 ]
+		[ 41467.728181
+			[ 6100.0 281.713135 1 0 ]
+		0 ]
+		[ 41771.870337
+			[ 6400.0 281.713135 1 0 ]
+		0 ]
+		[ 42076.012494
+			[ 6800.0 281.713135 13 0 ]
+		0 ]
+		[ 42380.15465
+			[ 7000.0 281.713135 19 0 ]
+		0 ]
+		[ 42684.296807
+			[ 7200.0 311.696864 25 0 ]
+		0 ]
+		[ 42988.438959
+			[ 7400.0 276.975739 37 0 ]
+		0 ]
+		[ 43292.581116
+			[ 7500.0 281.624379 61 0 ]
+		0 ]
+		[ 43596.723272
+			[ 7900.0 321.472586 61 0 ]
+		0 ]
+		[ 43900.865429
+			[ 8000.0 321.472586 61 0 ]
+		0 ]
+		[ 44205.007585
+			[ 8200.0 321.472586 61 0 ]
+		0 ]
+		[ 44509.149741
+			[ 8300.0 321.472586 61 0 ]
+		0 ]
+		[ 44813.291898
+			[ 8500.0 321.472586 61 0 ]
+		0 ]
+		[ 45117.434054
+			[ 8600.0 195.998901 62 0 ]
+		0 ]
+		[ 119844.967381
+			[ 5200.0 467.397547 71
+				[ slots
+					[ 1 ordinario ]
+				]
+			0 ]
+		0 ]
+		[ 120349.577488
+			[ 5600.0 467.397547 21 0 ]
+		0 ]
+		[ 120854.187595
+			[ 5800.0 467.397547 21 0 ]
+		0 ]
+		[ 121358.797702
+			[ 6100.0 467.397547 21 0 ]
+		0 ]
+		[ 121863.407817
+			[ 6500.0 467.397547 28 0 ]
+		0 ]
+		[ 122368.017924
+			[ 6700.0 467.397547 34 0 ]
+		0 ]
+		[ 122872.628031
+			[ 6900.0 517.144322 40 0 ]
+		0 ]
+		[ 123377.238138
+			[ 7100.0 459.537606 52 0 ]
+		0 ]
+		[ 123881.848253
+			[ 7200.0 467.250282 76 0 ]
+		0 ]
+		[ 124386.45836
+			[ 7600.0 533.363468 76 0 ]
+		0 ]
+		[ 124891.068467
+			[ 7700.0 533.363468 76 0 ]
+		0 ]
+		[ 125395.678574
+			[ 7900.0 533.363468 76 0 ]
+		0 ]
+		[ 125900.288689
+			[ 8000.0 533.363468 76 0 ]
+		0 ]
+		[ 126404.898796
+			[ 8200.0 533.363468 76 0 ]
+		0 ]
+		[ 126909.508903
+			[ 8300.0 325.186837 77 0 ]
+		0 ]
+		[ 142310.739368
+			[ 7200.0 1246.0 31 0 ]
+			[ 7600.0 1246.0 42 0 ]
+			[ 7800.0 1246.0 42 0 ]
+			[ 8000.0 1246.0 42 0 ]
+			[ 8300.0 1246.0 42 0 ]
+		0 ]
+		[ 144245.321526
+			[ 6300.0 1246.0 21
+				[ slots
+					[ 1 ordLV ]
+				]
+			0 ]
+			[ 6500.0 1246.0 21 0 ]
+			[ 6700.0 1246.0 21 0 ]
+			[ 6900.0 1246.0 21 0 ]
+			[ 8200.0 1246.0 42 0 ]
+		0 ]
+		[ 151779.017538
+			[ 6600.0 1246.0 41 0 ]
+			[ 7200.0 1246.0 41 0 ]
+			[ 7500.0 1246.0 41 0 ]
+			[ 8100.0 1246.0 41 0 ]
+		0 ]
+		[ 153632.410729
+			[ 5600.0 1149.0 16 0 ]
+			[ 5900.0 1149.0 16 0 ]
+			[ 6200.0 1149.0 40 0 ]
+		0 ]
+		[ 163788.988544
+			[ 5100.0 117.106343 22 0 ]
+			[ 5700.0 117.106343 22 0 ]
+		0 ]
+		[ 164524.102804
+			[ 4600.0 117.106343 22 0 ]
+			[ 5400.0 117.106343 22 0 ]
+			[ 5500.0 117.106343 22 0 ]
+			[ 5900.0 117.106343 22 0 ]
+		0 ]
+	2 ]
+	[
+		[ 9561.923789
+			[ 7875.0 1170.0 112
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 10731.923789
+			[ 6850.0 37.0 127
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 10856.923789
+			[ 7000.0 37.0 127
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 10981.923789
+			[ 7275.0 910.0 127
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 11891.923789
+			[ 6375.0 72.741733 93
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 12042.627547
+			[ 6375.0 312.236287 124
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 12354.863834
+			[ 7150.0 258.236287 93
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 12667.100121
+			[ 7150.0 1312.64394 93
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 14666.397909
+			[ 7000.0 115.950077 127
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 14876.892248
+			[ 7900.0 487.399659 127
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 15364.291907
+			[ 7500.0 349.422144 99
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 15713.71405
+			[ 6850.0 268.411967 99
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 15982.126017
+			[ 7000.0 241.127546 99
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 16254.610549
+			[ 7275.0 744.474949 99
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 16999.085498
+			[ 6400.0 60.784454 127
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+		[ 17160.549543
+			[ 7150.0 1195.956514 127
+				[ slots
+					[ 23 cross ]
+				]
+			2 ]
+		2 ]
+	2 ]
+	[
+		[ 9812.035281
+			[ 2700.0 9899.381915 124
+				[ slots
+					[ 1 "continuation of piano Eb resonance > vlc + ?" ]
+					[ 2
+						[ 167.931643 101.317778 0.0 ]
+					]
+					[ 20
+						[ auto mp = ]
+					]
+				]
+			0 ]
+		0 ]
+		[ 9994.654202
+			[ 7875.0 218.923425 127
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 10213.577628
+			[ 7500.0 218.923425 99
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 10432.501053
+			[ 7275.0 218.923425 99
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 10651.424478
+			[ 7150.0 218.923425 127
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 10870.347903
+			[ 7000.0 218.923425 99
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 11089.271328
+			[ 6850.0 176.856147 99
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 11266.127476
+			[ 6400.0 156.269377 127
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 19708.267059
+			[ 7500.0 610.738337 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 20319.005396
+			[ 7025.0 610.738337 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 20929.743733
+			[ 6725.0 610.738337 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 21540.482069
+			[ 6550.0 610.738337 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 22151.22041
+			[ 6325.0 610.738337 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 22761.958746
+			[ 6100.0 493.38178 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 23255.340526
+			[ 5350.0 586.782785 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 25068.986973
+			[ 7275.0 665.68857 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 25734.675543
+			[ 6725.0 665.68857 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 26400.364114
+			[ 6350.0 665.68857 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 27066.052682
+			[ 6150.0 665.68857 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 27731.741252
+			[ 5850.0 665.68857 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 28397.429822
+			[ 5550.0 537.77304 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 28935.202862
+			[ 4400.0 639.577655 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 30409.36064
+			[ 7150.0 665.68857 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 31075.04921
+			[ 6550.0 665.68857 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 31740.737779
+			[ 6125.0 665.68857 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 32406.426349
+			[ 5900.0 665.68857 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 33072.114919
+			[ 5550.0 665.68857 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 33737.803489
+			[ 5200.0 537.77304 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 34275.576527
+			[ 3600.0 639.577655 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 35717.793631
+			[ 7000.0 665.68857 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 36383.482202
+			[ 6325.0 665.68857 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 37049.17077
+			[ 5850.0 665.68857 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 37714.85934
+			[ 5575.0 665.68857 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 38380.547911
+			[ 5150.0 665.68857 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 39046.236481
+			[ 4700.0 537.77304 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 39584.00952
+			[ 3000.0 648.55326 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 41281.549813
+			[ 6850.0 836.657766 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 42118.207577
+			[ 6100.0 836.657766 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 42954.865343
+			[ 5550.0 836.657766 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 43791.523109
+			[ 5200.0 836.657766 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 44628.180874
+			[ 4675.0 836.657766 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 45464.83864
+			[ 4050.0 675.889613 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 47913.166025
+			[ 6400.0 836.657766 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 48749.823791
+			[ 5350.0 836.657766 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 49586.481557
+			[ 4400.0 836.657766 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 50423.139323
+			[ 3650.0 836.948065 70
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 51259.797089
+			[ 1850.0 1148.042291 42
+				[ slots
+					[ 23 black ]
+				]
+			0 ]
+		0 ]
+		[ 90088.083901
+			[ 7875.0 788.0 71 0 ]
+		0 ]
+		[ 90876.083901
+			[ 7275.0 788.0 71 0 ]
+		0 ]
+		[ 91664.083901
+			[ 7000.0 788.0 71 0 ]
+		0 ]
+		[ 92452.083901
+			[ 6900.0 788.0 71 0 ]
+		0 ]
+		[ 93240.083901
+			[ 6550.0 788.0 71 0 ]
+		0 ]
+		[ 94028.083901
+			[ 6400.0 788.0 71 0 ]
+		0 ]
+		[ 94816.083901
+			[ 6250.0 788.0 71 0 ]
+		0 ]
+		[ 102247.945126
+			[ 7275.0 1134.210243 69 0 ]
+		0 ]
+		[ 103382.155369
+			[ 6350.0 1134.210243 69 0 ]
+		0 ]
+		[ 104516.365612
+			[ 5850.0 1134.210243 69 0 ]
+		0 ]
+		[ 105650.575854
+			[ 5650.0 1134.210243 69 0 ]
+		0 ]
+		[ 106784.786097
+			[ 4825.0 1134.210243 69 0 ]
+		0 ]
+		[ 107918.996339
+			[ 4400.0 1134.210243 69 0 ]
+		0 ]
+		[ 109053.206582
+			[ 3850.0 839.228858 69 0 ]
+		0 ]
+		[ 110026.377855
+			[ 7000.0 788.0 69 0 ]
+		0 ]
+		[ 110814.377855
+			[ 5850.0 788.0 69 0 ]
+		0 ]
+		[ 111602.377855
+			[ 5150.0 788.0 69 0 ]
+		0 ]
+		[ 112390.377855
+			[ 4825.0 788.0 69 0 ]
+		0 ]
+		[ 113178.377855
+			[ 3225.0 788.0 69 0 ]
+		0 ]
+		[ 113966.377855
+			[ 1825.0 788.0 69 0 ]
+		0 ]
+		[ 114960.857198
+			[ 6900.0 788.0 69 0 ]
+		0 ]
+		[ 115748.857198
+			[ 5650.0 788.0 69 0 ]
+		0 ]
+		[ 116536.857198
+			[ 4850.0 788.0 69 0 ]
+		0 ]
+		[ 117324.857198
+			[ 4450.0 788.0 69 0 ]
+		0 ]
+		[ 118112.857198
+			[ 2025.0 788.0 69 0 ]
+		0 ]
+		[ 120081.164118
+			[ 6550.0 788.0 69 0 ]
+		0 ]
+		[ 120869.164118
+			[ 4825.0 788.0 69 0 ]
+		0 ]
+		[ 121657.164118
+			[ 3275.0 788.0 69 0 ]
+		0 ]
+		[ 122445.164118
+			[ 2025.0 788.0 69 0 ]
+		0 ]
+		[ 125073.463364
+			[ 6400.0 788.0 69 0 ]
+		0 ]
+		[ 125861.463364
+			[ 4375.0 788.0 69 0 ]
+		0 ]
+		[ 126649.463364
+			[ 1900.0 788.0 69 0 ]
+		0 ]
+		[ 130065.762611
+			[ 6250.0 788.0 69 0 ]
+		0 ]
+		[ 130853.762611
+			[ 3825.0 788.0 69 0 ]
+		0 ]
+	2 ]
