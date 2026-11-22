@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1b. Machine: Apple M4, Mac OSX 27.2.1. Date: 22 Nov 2026 2:10:57pm.
+Maket 0.0.1, stage 1c. Machine: Apple M4, Mac OSX 27.2.1. Date: 22 Nov 2026 5:33:42pm.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter (`1b`) | yes |
+| The build stage reads as a step number and a letter (`1c`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -28,6 +28,7 @@ The settings and their defaults:
 | Folders: conTimbre search data | folder | not set | `contimbreDataFolder` |
 | conTimbre ePlayer (OSC): Host | host | `127.0.0.1` | `ePlayerHost` |
 | conTimbre ePlayer (OSC): Port | port | `46001` | `ePlayerPort` |
+| Tests: Logging patch port | port | `46002` | `logPatchPort` |
 
 | Check | Passed |
 | --- | --- |
@@ -242,7 +243,49 @@ Of the 5410 numbers and words written from the roll, 2824 come from the roll's v
 
 Of the 1849 numbers and words written from the roll, 331 come from the roll's values (onsets, pitches, durations, velocities, breakpoints, marker times, flags); the others are kept as the file spelled them (slot contents, header).
 
-## 5. Test material
+## 5. OSC: messages and sending
+
+Stage 1c: Maket's side of the connection to Max. An OSC message is made, turned into the bytes of a network packet, and sent at its time by a thread of its own.
+
+### The bytes of a message
+
+`noteon Fl 60. 100` as it travels, 28 bytes (in groups of four):
+
+```
+6e 6f 74 65  6f 6e 00 00  2c 73 66 69  00 00 00 00  46 6c 00 00  42 70 00 00  00 00 00 64
+```
+
+That is: the word `noteon` and two zero bytes; the kinds of the arguments `,sfi` (a text, a real number, a whole number) and four zero bytes; `Fl` and two zero bytes; 60.0; 100.
+
+| Check | Passed |
+| --- | --- |
+| `noteon Fl 60. 100` gives the 28 bytes worked out by hand from the OSC description | yes |
+| `all_notes_off`, a command without arguments, gives its 20 bytes | yes |
+| The commands read `noteon`, `noteoff`, `program`, with a slash in front only when asked; a name with a space stays one argument | yes |
+| Five messages (texts with spaces, with an accent, empty, of four letters; negative numbers) read back from their bytes as they were, each a multiple of four bytes long | yes |
+| Bytes that are not such a message are refused | yes |
+
+### Sending, on this computer
+
+A listener inside the test program takes the place of Max. This shows that the messages leave whole and in order, and how punctual the send thread is. It says nothing about Max: that is measured with the logging patch.
+
+| Check | Passed |
+| --- | --- |
+| Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
+| 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
+| None leaves before its time (the earliest: -0.025 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.004 ms; the latest of all: 0.012 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| Six messages with the same time (a chord) leave in the order they were given | yes |
+| A note-off that is due in a minute is sent at once when asked (as when Maket quits) | yes |
+
+How punctual the send thread was in the run of 200 messages, in milliseconds after the time each was due (the thread has the system's realtime priority):
+
+| | Half of them within | 95 in 100 within | The latest |
+| --- | --- | --- | --- |
+| Left Maket | -0.008 | 0.004 | 0.012 |
+| Arrived at the listener in this program | 0.154 | 0.235 | 0.362 |
+
+## 6. Test material
 
 The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. This section lists what the program finds there; nothing is read yet. A missing file is not a failed check at this stage.
 
@@ -254,9 +297,12 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `02b mixed_roll_example_01h resave after dump.txt` | 17.2 KB |
 | `doodsbed final v1c.txt` | 56.1 KB |
 | `mixed_roll_example_01h.txt` | 17.2 KB |
+| `roll tests s1b.maxpat` | 100.8 KB |
 | `written by Maket/doodsbed final v1c.txt` | 56.1 KB |
 | `written by Maket/mixed_roll_example_01h changed by Maket.txt` | 17.2 KB |
 | `written by Maket/mixed_roll_example_01h.txt` | 17.2 KB |
+| `written by Maket/screenshots/Marker detail in Inspector.png` | 63.3 KB |
+| `written by Maket/screenshots/Marker detail in roll.png` | 60.7 KB |
 
 Needed for the coming stages:
 
@@ -269,4 +315,4 @@ Needed for the coming stages:
 | 01b doodsbed roll resave after dump | 1b: the roll as bach saves it again | yes, as `01b doodsbed roll resave after dump.txt` |
 | 02b mixed_roll_example_01h resave after dump | 1b: the roll as bach saves it again | yes, as `02b mixed_roll_example_01h resave after dump.txt` |
 
-All 71 checks passed.
+All 82 checks passed.
