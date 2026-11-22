@@ -48,8 +48,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 0c | Skeleton: preferences page and settings file (folders, OSC host and port) | done |
 | 0d | Skeleton: buttons to hide and show the list and the inspector | done |
 | 1a | Gate: list type and bach text reader | done |
-| 1b | Gate: bach text writer | built, to test |
-| 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | |
+| 1b | Gate: bach text writer | done |
+| 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | built, to test |
 | 1d | Gate: timing tests of the OSC connection | |
 | 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | |
 | 1f | Gate: addressing by note, chords, tuning | |
@@ -146,13 +146,13 @@ Nothing uses these values yet. The host and the port come into use at stage 1c, 
 ### Testing stage 0c
 
 1. `git pull`, then `./build.sh`. Maket opens, and the right end of the tab row reads `Maket 0.0.1 · stage 0c`.
-2. Cmd-4 shows the Utilities tab: the list on the left with Preferences in front, and the six settings with their defaults.
+2. Cmd-4 shows the Utilities tab: the list on the left with Preferences in front, and the settings with their defaults.
 3. Click in the Port field. The inspector shows the setting. Type `7400` and press Return: the Default button of that row lights up.
 4. Type `99999` in the Port field and press Return: the field goes back to `7400` and a red line says why.
 5. Press **Choose…** next to Projects and pick any folder: the field shows it (with `~` if it is in your home folder), and the line under it says that the folder exists.
 6. Type a host, for example `studio.local`, and quit with Cmd-Q **without** pressing Return.
 7. Open Maket again (`./build.sh`) and go to the Utilities tab: port, folder and host are as you left them. This is the test of the stage.
-8. **Show in Finder** shows `settings.json`; opened in a text editor, it holds the six settings by name.
+8. **Show in Finder** shows `settings.json`; opened in a text editor, it holds the settings by name.
 9. Press **Default** on the three rows you changed: they go back, and the buttons turn grey.
 10. `./build.sh tests` ends with `All 16 checks passed.`
 
@@ -213,6 +213,45 @@ Stage 1b adds the other direction: Maket can write a roll as a bach.roll file. A
 4. In Max, open `Temp/written by Maket/mixed_roll_example_01h changed by Maket.txt`. It should open without a message in the Max window and show a marker `Maket test (1b)` at 1 second, and the first note of the third voice (`synth1a`) a quarter tone higher than in the original (6975 became 7025 cents). Everything else should be as in the original.
 5. Push `Measurements/report.md`, as before.
 
+## Using stage 1c
+
+Stage 1c is Maket's first word to Max: it sends OSC messages to the conTimbre ePlayer. It adds a test page in Maket and a small logging patch for Max.
+
+- **The OSC test page** is a new entry at the bottom of the list in the Utilities tab (the list is now clickable). It sends a single note, or a run of 8 rising notes (one every 250 ms, 200 ms long), to the voice you name. A note is `noteon <voice> <pitch> <dynamic>` now and `noteoff <voice> <pitch>` after its duration; with a program name filled in, `program <voice> <name>` goes first. The pitch is a MIDI note number with decimals (60 is middle C, 60.5 a quarter tone higher), as the ScAst patch sends it.
+- **Where the messages go** is set on the Preferences page: the ePlayer's host and port (127.0.0.1 and 46001), and a new setting, the logging patch's port (46002).
+- **The send log** on the page shows, for every message, when it was due, how many milliseconds after that it left Maket, and where it went (P the ePlayer, L the logging patch). **Save log…** writes it as a text file.
+- **A thread of its own** sends each message at its time, so a busy window does not hold a message up. **All notes off** sends `all_notes_off` and drops what still waits. When Maket quits while a note sounds, its note-off is sent at once.
+- **One thing the test has to settle:** how the command word must be written. Maket writes `noteon`, as Max's own udpsend object does. If the ePlayer stays silent, tick *Write the commands with a slash* (`/noteon`) and try again.
+
+A message that left Maket has not necessarily arrived: this kind of network message gets no answer. Whether Max got it shows in Max, by the sound and in the logging patch.
+
+### The logging patch
+
+`Max/Maket OSC log.maxpat` listens on port 46002 and gives every message that arrives a number and the time on the computer's clock, in milliseconds since the last **reset**. The lines are kept in a `coll`: double-click it to see them, click **write** to save them as a text file. A line reads `12, 3410.52 noteon voice1 60. 100;`. It does not pass anything on to the ePlayer: Maket sends each message twice, once to the ePlayer and once to this patch.
+
+The patch was written outside Max and has not been opened in Max yet. If it does not open, or the Max window shows an error when it loads, it can be rebuilt in a few minutes:
+
+- `udpreceive 46002` into `t l b b`.
+- The right outlet of the `t` into `cpuclock`, that into the left inlet of `- 0.`, that into the right inlet of `pack 0 0.`.
+- The middle outlet of the `t` into the left inlet of `int`. The `int` into `+ 1`, and `+ 1` back into the right inlet of the `int`. The `int` also into the left inlet of the `pack`.
+- The `pack` into `prepend set`, that into `prepend 0`. The left outlet of the `t` into the same `prepend 0`. The `prepend 0` into `coll maket_osc_log`.
+- For the reset: a message `reset` (and `loadbang`) into `t b b b`. Its right outlet into a second `cpuclock`, that into the right inlet of `- 0.`. Its middle outlet into a message `1`, that into the right inlet of the `int`. Its left outlet into a message `clear`, that into the `coll`.
+- A message `write` into the `coll`.
+
+### Testing stage 1c
+
+1. `git pull`, then `./build.sh`: `stage 1c` at the right of the tab row. `./build.sh tests` ends with `All 82 checks passed.`
+2. In Max, open the ePlayer with an orchestra, as you do for ScAst. Check that the port it listens on is the port on Maket's Preferences page (Cmd-4, Preferences).
+3. In Max, open `Max/Maket OSC log.maxpat`. Look at the Max window: no error should show.
+4. In Maket: Cmd-4, then **OSC test** at the bottom of the list. In *Voice*, type the name of a voice of the loaded orchestra, exactly as the ePlayer shows it.
+5. **Play note.** A middle C should sound for one second. If nothing sounds, tick *Write the commands with a slash* and play again. Which of the two works is the first thing to report.
+6. Type a program name of that voice in *Program* and play again: the voice should change to it.
+7. Change the pitch to `60.5`: a quarter tone higher.
+8. Click **reset** in the logging patch, then **Play 8 notes** in Maket: a rising run of eight short notes. Maket's log shows 16 lines (8 note-ons, 8 note-offs); the number in the patch runs to 16; double-clicking the `coll` shows 16 lines with their times.
+9. Save both logs into the repository's `Temp` folder: **write** in the patch (as `1c max log.txt`), **Save log…** in Maket (as `1c maket log.txt`).
+10. Set the duration to `10000`, play a note and quit Maket (Cmd-Q) while it sounds: the note should stop at once.
+11. Push `Measurements/report.md` and the two logs.
+
 ## The repository
 
 ```
@@ -224,13 +263,15 @@ Source/             the application
   UI/                 interface code: tab row, panel buttons, pages, preferences, inspector, colours
   Model/              no interface code: the settings; the name, version and build stage; bach's list type; the roll
   Formats/            no interface code: reading and writing files (bach's text, bach.roll)
+  Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands
+Max/                patches for Max that belong to Maket (the OSC logging patch)
 Tests/              the console test program
 Measurements/       its reports
 Reference/python/   scripts from the design phase (file formats, checks); not part of the app
 Temp/               Joost's test material, test saves, crash reports and screen captures
 ```
 
-`Source/` gains `Engine/` and `Notation/` as their steps come. Together with `Model/` and `Formats/` they hold no interface code, so that the test program can build them without the window.
+`Source/` gains `Notation/` when its step comes. `Model/`, `Formats/`, `Engine/` and `Notation/` hold no interface code, so that the test program can build them without the window.
 
 ## Licence
 
