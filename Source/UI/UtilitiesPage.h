@@ -11,6 +11,7 @@
 
 #include "PreferencesPage.h"
 #include "OscTestPage.h"
+#include "TimingTestPage.h"
 #include "../Model/Settings.h"
 
 class UtilitiesPage : public juce::Component
@@ -43,6 +44,7 @@ private:
     int currentPage = 0;            // an index into the list of pages
     PreferencesPage preferences;
     OscTestPage oscTest;
+    TimingTestPage timingTest;
     juce::Viewport viewport;        // the page scrolls when the window is low
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UtilitiesPage)

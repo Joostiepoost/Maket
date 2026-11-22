@@ -2,6 +2,7 @@
 
 #include "MainComponent.h"
 #include "Model/AppInfo.h"
+#include "Engine/ConTimbre.h"
 
 MainComponent::MainComponent()
 {
@@ -60,8 +61,13 @@ MainComponent::~MainComponent()
     // that quitting right after typing does not lose it.
     if (utilities != nullptr) utilities->commitPendingEdits();
 
-    // A note that still sounds in the ePlayer gets its note-off now, not never.
-    oscScheduler.sendAllWaitingNow();
+    // Messages that still wait are dropped, and the ePlayer is told to
+    // stop every note: nothing is left sounding when Maket has gone.
+    if (oscScheduler.numWaiting() > 0)
+    {
+        oscScheduler.clear();
+        oscScheduler.sendImmediately (maket::contimbre::allNotesOff(), maket::OscScheduler::toPlayer);
+    }
 
    #if JUCE_MAC
     juce::MenuBarModel::setMacMainMenu (nullptr);

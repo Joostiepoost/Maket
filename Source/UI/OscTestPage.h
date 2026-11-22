@@ -39,7 +39,6 @@ private:
 
     /** Reads the fields; false (with `problem` set) when one cannot be used. */
     bool readFields();
-    maket::contimbre::CommandForm form() const;
     int targets() const;
     void applyTargets();                        // host and ports from the settings, as they are now
 
@@ -56,7 +55,7 @@ private:
     maket::OscScheduler& scheduler;
 
     juce::TextEditor voiceField, programField, pitchField, dynamicField, durationField;
-    juce::ToggleButton slashToggle, copyToggle;
+    juce::ToggleButton copyToggle;
     juce::TextButton noteButton, runButton, offButton, clearButton, saveButton;
     juce::TextEditor logView;
     std::unique_ptr<juce::FileChooser> chooser;

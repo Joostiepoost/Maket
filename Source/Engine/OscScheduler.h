@@ -43,6 +43,7 @@ public:
         double sent = 0.0;      // when it was handed to the system
         juce::String text;      // the message on one line
         int targets = 0;
+        int tag = 0;            // who asked for it (see sendAt)
         bool ok = true;         // false when the system refused it
     };
 
@@ -56,14 +57,20 @@ public:
     static double now()                                     { return juce::Time::getMillisecondCounterHiRes(); }
 
     /** Sends a message at `time`; a time that has passed means at once.
-        Messages with the same time leave in the order they were given. */
-    void sendAt (double time, const OscMessage& message, int targets);
+        Messages with the same time leave in the order they were given.
+        `tag` is any number of the caller's choice; it comes back in the
+        record of what was sent, so that several users of the thread can
+        each ask for their own messages. */
+    void sendAt (double time, const OscMessage& message, int targets, int tag = 0);
+
+    /** Sends a message now, from the thread that calls, without waiting for
+        the send thread. For the last word when Maket quits. */
+    void sendImmediately (const OscMessage& message, int targets, int tag = 0);
 
     /** How many messages are still waiting for their time. */
     int numWaiting() const;
 
-    /** Sends everything that is still waiting at once, in order. Used when
-        Maket quits, so that a note that sounds gets its note-off. */
+    /** Sends everything that is still waiting at once, in order. */
     void sendAllWaitingNow();
 
     /** Forgets everything that is still waiting. */
@@ -71,6 +78,9 @@ public:
 
     /** What left since the last call, in the order it left. */
     std::vector<Sent> takeSent();
+
+    /** The same, for the messages with this tag only; the others stay. */
+    std::vector<Sent> takeSent (int tag);
 
     /** True when the thread got the system's realtime priority. */
     bool isRealtime() const                                 { return realtime; }
@@ -80,6 +90,7 @@ private:
     {
         OscMessage message;
         int targets = 0;
+        int tag = 0;
     };
 
     void run() override;

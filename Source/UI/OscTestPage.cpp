@@ -20,6 +20,9 @@ namespace
     // a time that was set beforehand, like every message in a piece will.
     constexpr double leadTime = 30.0;
 
+    // The mark on this page's messages in the send thread's records.
+    constexpr int sendTag = 1;
+
     void styleField (juce::TextEditor& field, const juce::String& text)
     {
         field.setFont (Theme::font (14.0f));
@@ -32,7 +35,7 @@ OscTestPage::OscTestPage (maket::Settings& s, maket::OscScheduler& sch) : settin
 {
     setOpaque (true);
 
-    styleField (voiceField, "voice1");
+    styleField (voiceField, "Cl");
     styleField (programField, "");
     styleField (pitchField, "60");
     styleField (dynamicField, "100");
@@ -45,12 +48,9 @@ OscTestPage::OscTestPage (maket::Settings& s, maket::OscScheduler& sch) : settin
         addAndMakeVisible (*field);
     }
 
-    slashToggle.setButtonText ("Write the commands with a slash (/noteon instead of noteon)");
     copyToggle.setButtonText ("Send a copy of every message to the logging patch");
     copyToggle.setToggleState (true, juce::dontSendNotification);
-    slashToggle.onClick = [this] { repaint(); };
     copyToggle.onClick  = [this] { repaint(); };
-    addAndMakeVisible (slashToggle);
     addAndMakeVisible (copyToggle);
 
     noteButton.setButtonText ("Play note");
@@ -124,7 +124,6 @@ void OscTestPage::resized()
     }
 
     area.removeFromTop (12);
-    slashToggle.setBounds (area.removeFromTop (24).withWidth (juce::jmin (area.getWidth(), 520)));
     copyToggle.setBounds (area.removeFromTop (24).withWidth (juce::jmin (area.getWidth(), 520)));
 
     area.removeFromTop (12);
@@ -240,11 +239,6 @@ bool OscTestPage::readFields()
     return true;
 }
 
-maket::contimbre::CommandForm OscTestPage::form() const
-{
-    return slashToggle.getToggleState() ? maket::contimbre::CommandForm::withSlash : maket::contimbre::CommandForm::plain;
-}
-
 int OscTestPage::targets() const
 {
     return maket::OscScheduler::toPlayer | (copyToggle.getToggleState() ? (int) maket::OscScheduler::toLog : 0);
@@ -266,9 +260,9 @@ void OscTestPage::playNote()
 
     const double start = maket::OscScheduler::now() + leadTime;
     if (programName.isNotEmpty())
-        scheduler.sendAt (start, maket::contimbre::program (voice, programName, form()), targets());
-    scheduler.sendAt (start, maket::contimbre::noteOn (voice, pitch, dynamic, form()), targets());
-    scheduler.sendAt (start + duration, maket::contimbre::noteOff (voice, pitch, form()), targets());
+        scheduler.sendAt (start, maket::contimbre::program (voice, programName), targets(), sendTag);
+    scheduler.sendAt (start, maket::contimbre::noteOn (voice, pitch, dynamic), targets(), sendTag);
+    scheduler.sendAt (start + duration, maket::contimbre::noteOff (voice, pitch), targets(), sendTag);
 }
 
 void OscTestPage::playRun()
@@ -278,14 +272,14 @@ void OscTestPage::playRun()
 
     const double start = maket::OscScheduler::now() + leadTime;
     if (programName.isNotEmpty())
-        scheduler.sendAt (start, maket::contimbre::program (voice, programName, form()), targets());
+        scheduler.sendAt (start, maket::contimbre::program (voice, programName), targets(), sendTag);
 
     // A rising run in semitones from the pitch, kept inside the range.
     for (int i = 0; i < runLength; ++i)
     {
         const double p = juce::jmin (127.0, pitch + i);
-        scheduler.sendAt (start + i * runSpacing, maket::contimbre::noteOn (voice, p, dynamic, form()), targets());
-        scheduler.sendAt (start + i * runSpacing + runNoteLength, maket::contimbre::noteOff (voice, p, form()), targets());
+        scheduler.sendAt (start + i * runSpacing, maket::contimbre::noteOn (voice, p, dynamic), targets(), sendTag);
+        scheduler.sendAt (start + i * runSpacing + runNoteLength, maket::contimbre::noteOff (voice, p), targets(), sendTag);
     }
 }
 
@@ -296,7 +290,7 @@ void OscTestPage::allNotesOff()
     applyTargets();
 
     scheduler.clear();      // note-ons and note-offs that still wait are dropped
-    scheduler.sendAt (maket::OscScheduler::now(), maket::contimbre::allNotesOff (form()), targets());
+    scheduler.sendAt (maket::OscScheduler::now(), maket::contimbre::allNotesOff(), targets(), sendTag);
     repaint();
 }
 
@@ -348,7 +342,7 @@ void OscTestPage::appendToLog (const std::vector<maket::OscScheduler::Sent>& sen
 
 void OscTestPage::timerCallback()
 {
-    const auto sent = scheduler.takeSent();
+    const auto sent = scheduler.takeSent (sendTag);
     if (! sent.empty()) appendToLog (sent);
     repaint (logHeadingArea);
 }

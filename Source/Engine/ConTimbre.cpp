@@ -5,32 +5,24 @@
 namespace maket::contimbre
 {
 
-namespace
+OscMessage noteOn (const juce::String& voice, double pitch, int dynamic)
 {
-    OscMessage command (const char* word, CommandForm form)
-    {
-        return OscMessage ((form == CommandForm::withSlash ? "/" : "") + juce::String (word));
-    }
+    return OscMessage ("noteon").addText (voice).addReal (pitch).addInteger (dynamic);
 }
 
-OscMessage noteOn (const juce::String& voice, double pitch, int dynamic, CommandForm form)
+OscMessage noteOff (const juce::String& voice, double pitch)
 {
-    return command ("noteon", form).addText (voice).addReal (pitch).addInteger (dynamic);
+    return OscMessage ("noteoff").addText (voice).addReal (pitch);
 }
 
-OscMessage noteOff (const juce::String& voice, double pitch, CommandForm form)
+OscMessage program (const juce::String& voice, const juce::String& programName)
 {
-    return command ("noteoff", form).addText (voice).addReal (pitch);
+    return OscMessage ("program").addText (voice).addText (programName);
 }
 
-OscMessage program (const juce::String& voice, const juce::String& programName, CommandForm form)
+OscMessage allNotesOff()
 {
-    return command ("program", form).addText (voice).addText (programName);
-}
-
-OscMessage allNotesOff (CommandForm form)
-{
-    return command ("all_notes_off", form);
+    return OscMessage ("all_notes_off");
 }
 
 } // namespace maket::contimbre

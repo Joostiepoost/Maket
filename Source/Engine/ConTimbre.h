@@ -20,15 +20,14 @@
 namespace maket::contimbre
 {
 
-/** How the command word is written: `noteon`, as Max's own udpsend sends
-    it, or `/noteon`, as OSC addresses usually look. The ePlayer's udpreceive
-    passes the word on as it comes, so only one of the two can be right;
-    which one is part of the test of stage 1c. */
-enum class CommandForm { plain, withSlash };
+// The command words are sent as they stand, without a slash in front, as
+// Max's own udpsend object sends them: the ePlayer's udpreceive hands the
+// word on as the first word of the message. (Tested with the ePlayer on
+// 22 Nov 2026; `/noteon` is not needed.)
 
-OscMessage noteOn (const juce::String& voice, double pitch, int dynamic, CommandForm form = CommandForm::plain);
-OscMessage noteOff (const juce::String& voice, double pitch, CommandForm form = CommandForm::plain);
-OscMessage program (const juce::String& voice, const juce::String& programName, CommandForm form = CommandForm::plain);
-OscMessage allNotesOff (CommandForm form = CommandForm::plain);
+OscMessage noteOn (const juce::String& voice, double pitch, int dynamic);
+OscMessage noteOff (const juce::String& voice, double pitch);
+OscMessage program (const juce::String& voice, const juce::String& programName);
+OscMessage allNotesOff();
 
 } // namespace maket::contimbre

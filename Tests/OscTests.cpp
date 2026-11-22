@@ -107,17 +107,17 @@ void testBytes()
                            0x2c, 0x00, 0x00, 0x00 }),
               "`all_notes_off`, a command without arguments, gives its 20 bytes");
 
-    checkRow (maket::contimbre::noteOn ("Fl", 60.0, 100, maket::contimbre::CommandForm::withSlash).toText() == "/noteon Fl 60. 100"
+    checkRow (maket::contimbre::noteOn ("Fl", 60.0, 100).toText() == "noteon Fl 60. 100"
               && maket::contimbre::noteOff ("Fl", 60.5).toText() == "noteoff Fl 60.5"
               && maket::contimbre::program ("Alto Flute", "alto flute.multiphonic").toText() == "program \"Alto Flute\" \"alto flute.multiphonic\"",
-              "The commands read `noteon`, `noteoff`, `program`, with a slash in front only when asked; a name with a space stays one argument");
+              "The commands read `noteon`, `noteoff`, `program`, without a slash in front; a name with a space stays one argument");
 
     // There and back.
     std::vector<OscMessage> messages;
     messages.push_back (noteOn);
     messages.push_back (maket::contimbre::noteOff ("Fl", 60.5));
     messages.push_back (maket::contimbre::program ("Alto Flute", "alto flute.multiphonic"));
-    messages.push_back (maket::contimbre::allNotesOff (maket::contimbre::CommandForm::withSlash));
+    messages.push_back (maket::contimbre::allNotesOff());
     messages.push_back (OscMessage ("/maket/custom1").addInteger (-5).addReal (-24.0).addReal (71.02)
                             .addText (juce::String::fromUTF8 ("Fl\xc3\xb6te")).addText ("").addText ("abcd").addInteger (2147483647));
 
@@ -250,8 +250,17 @@ void testSending()
 
         OscMessage in;
         const bool came = listener.receive (in, 1000) && in == maket::contimbre::noteOff ("Fl", 60.0);
-        checkRow (waits && came && scheduler.numWaiting() == 0 && OscScheduler::now() - before < 1000.0,
-                  "A note-off that is due in a minute is sent at once when asked (as when Maket quits)");
+
+        // And the last word when Maket quits: what waits is dropped, all notes off goes at once.
+        scheduler.sendAt (OscScheduler::now() + 60000.0, maket::contimbre::noteOn ("Fl", 61.0, 100), OscScheduler::toPlayer);
+        scheduler.clear();
+        scheduler.sendImmediately (maket::contimbre::allNotesOff(), OscScheduler::toPlayer);
+        OscMessage last;
+        const bool lastWord = listener.receive (last, 1000) && last == maket::contimbre::allNotesOff() && scheduler.numWaiting() == 0;
+
+        checkRow (waits && came && lastWord && OscScheduler::now() - before < 2000.0,
+                  "A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped "
+                  "and `all_notes_off` sent in its place (as when Maket quits)");
     }
 
     line();

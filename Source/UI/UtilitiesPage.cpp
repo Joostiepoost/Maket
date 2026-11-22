@@ -19,11 +19,13 @@ namespace
         { "Capture",      "step 12" },
         { "Quantize",     "step 13" },
         { "Preferences",  ""        },
-        { "OSC test",     ""        }
+        { "OSC test",     ""        },
+        { "Timing test",  ""        }
     };
 
     constexpr int preferencesIndex = 5;
     constexpr int oscTestIndex = 6;
+    constexpr int timingTestIndex = 7;
     constexpr int entryHeight = 30;
     constexpr int listTop = 14;
 
@@ -31,7 +33,7 @@ namespace
 }
 
 UtilitiesPage::UtilitiesPage (maket::Settings& settings, maket::OscScheduler& scheduler)
-    : currentPage (preferencesIndex), preferences (settings), oscTest (settings, scheduler)
+    : currentPage (preferencesIndex), preferences (settings), oscTest (settings, scheduler), timingTest (settings, scheduler)
 {
     setOpaque (true);
 
@@ -52,8 +54,9 @@ void UtilitiesPage::showPage (int index)
     preferences.commitPendingEdits();       // a value still being typed is taken over before the page goes
     currentPage = index;
 
-    if (index == oscTestIndex)  viewport.setViewedComponent (&oscTest, false);
-    else                        viewport.setViewedComponent (&preferences, false);
+    if (index == oscTestIndex)          viewport.setViewedComponent (&oscTest, false);
+    else if (index == timingTestIndex)  viewport.setViewedComponent (&timingTest, false);
+    else                                viewport.setViewedComponent (&preferences, false);
 
     resized();
     repaint();
@@ -85,6 +88,8 @@ void UtilitiesPage::resized()
     const int height = viewport.getMaximumVisibleHeight();
     if (currentPage == oscTestIndex)
         oscTest.setSize (width, juce::jmax (height, oscTest.getHeightFor (width)));
+    else if (currentPage == timingTestIndex)
+        timingTest.setSize (width, juce::jmax (height, timingTest.getHeightFor (width)));
     else
         preferences.setSize (width, juce::jmax (height, preferences.getHeightFor (width)));
 }

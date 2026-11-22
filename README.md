@@ -50,7 +50,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1a | Gate: list type and bach text reader | done |
 | 1b | Gate: bach text writer | done |
 | 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | done |
-| 1d | Gate: timing tests of the OSC connection | |
+| 1d | Gate: timing tests of the OSC connection | built, to test |
 | 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | |
 | 1f | Gate: addressing by note, chords, tuning | |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
@@ -221,7 +221,7 @@ Stage 1c is Maket's first word to Max: it sends OSC messages to the conTimbre eP
 - **Where the messages go** is set on the Preferences page: the ePlayer's host and port (127.0.0.1 and 46001), and a new setting, the logging patch's port (46002).
 - **The send log** on the page shows, for every message, when it was due, how many milliseconds after that it left Maket, and where it went (P the ePlayer, L the logging patch). **Save log…** writes it as a text file.
 - **A thread of its own** sends each message at its time, so a busy window does not hold a message up. **All notes off** sends `all_notes_off` and drops what still waits. When Maket quits while a note sounds, its note-off is sent at once.
-- **One thing the test had to settle:** how the command word must be written. Maket writes `noteon`, as Max's own udpsend object does, and the ePlayer takes that (tested 22 Nov). The option *Write the commands with a slash* (`/noteon`) is therefore not needed and goes at the next stage.
+- **One thing the test had to settle:** how the command word must be written. Maket writes `noteon`, as Max's own udpsend object does, and the ePlayer takes that (tested 22 Nov). The option to write them with a slash (`/noteon`) was therefore removed at stage 1d.
 
 A message that left Maket has not necessarily arrived: this kind of network message gets no answer. Whether Max got it shows in Max, by the sound and in the logging patch.
 
@@ -229,7 +229,7 @@ A message that left Maket has not necessarily arrived: this kind of network mess
 
 `Max/Maket OSC log.maxpat` listens on port 46002 and gives every message that arrives a number and the time on the computer's clock, in milliseconds since the last **reset**. The lines are kept in a `coll`: double-click it to see them, click **write** to save them as a text file. A line reads `12, 3410.52 noteon voice1 60. 100;`. It does not pass anything on to the ePlayer: Maket sends each message twice, once to the ePlayer and once to this patch.
 
-The patch was written outside Max; it opened and worked in Max 9 on 22 Nov. Should it ever need rebuilding, this is what it holds:
+The patch was written outside Max; its first version opened and worked in Max 9 on 22 Nov. Stage 1d added to it (see *Using stage 1d*). Its core, should it ever need rebuilding:
 
 - `udpreceive 46002` into `t l b b`.
 - The right outlet of the `t` into `cpuclock`, that into the left inlet of `- 0.`, that into the right inlet of `pack 0 0.`.
@@ -244,13 +244,52 @@ The patch was written outside Max; it opened and worked in Max 9 on 22 Nov. Shou
 2. In Max, open the ePlayer with an orchestra, as you do for ScAst. Check that the port it listens on is the port on Maket's Preferences page (Cmd-4, Preferences).
 3. In Max, open `Max/Maket OSC log.maxpat`. Look at the Max window: no error should show.
 4. In Maket: Cmd-4, then **OSC test** at the bottom of the list. In *Voice*, type the name of a voice of the loaded orchestra, exactly as the ePlayer shows it.
-5. **Play note.** A middle C should sound for one second. If nothing sounds, tick *Write the commands with a slash* and play again. Which of the two works is the first thing to report.
+5. **Play note.** A middle C should sound for one second.
 6. Type a program name of that voice in *Program* and play again: the voice should change to it.
 7. Change the pitch to `60.5`: a quarter tone higher.
 8. Click **reset** in the logging patch, then **Play 8 notes** in Maket: a rising run of eight short notes. Maket's log shows 16 lines (8 note-ons, 8 note-offs); the number in the patch runs to 16; double-clicking the `coll` shows 16 lines with their times.
 9. Save both logs into the repository's `Temp` folder: **write** in the patch (as `1c max log.txt`), **Save log…** in Maket (as `1c maket log.txt`).
 10. Set the duration to `10000`, play a note and quit Maket (Cmd-Q) while it sounds: the note should stop at once.
 11. Push `Measurements/report.md` and the two logs.
+
+## Using stage 1d
+
+Stage 1d is the measurement the gate is about: do Maket's messages arrive in Max evenly enough to play music with, also when there are many of them, for a long time, and while Max is busy? And how does that compare with bach.roll playing the same notes inside Max, as ScAst does now?
+
+- **The Timing test page** is a new entry in the list of the Utilities tab. One take is one click: Maket tells the logging patch to start a fresh log, plays a fixed passage, tells the patch where to write its log, reads that file, and files the result.
+- **Two passages.** *Dense*: 1403 notes in 23 seconds, in four parts: a line of 40 notes a second, chords of eight notes four times a second, an irregular part of about 95 notes a second, and a burst of 200 notes a second. *Long*: a note every 100 ms for five minutes.
+- **What is measured.** For every note-on and note-off Maket sends a numbered tick to the logging patch, and, when the box is ticked, the real note to the ePlayer, so that the ePlayer is at work as in a piece. The patch notes when each tick arrives. Maket's clock and Max's clock start at different moments, so the delay itself cannot be measured, only the evenness: the arrival times are shifted as a whole until the middle message sits exactly on its time, and the result says how far the others lie from theirs.
+- **The reference.** *Write the passages as bach.roll files* writes both passages as bach.roll files. The new patch `Max/Maket bach reference.maxpat` holds a bach.roll whose playout goes to the same logging patch. *Start a bach.roll take* freshens the log; you press play in Max; *Finish the bach.roll take* has the log written and read. When bach.roll plays while Maket runs, both are measured in the one take.
+- **The results** go to the folder set as *Timing results* on the Preferences page: `timing results.md` (one line per take), `timing details.txt` (the same in words, with every part of the passage apart), and per take the patch's log and Maket's send log. They also show on the page.
+- **The logging patch** now obeys two words from Maket, `reset` and `write <file>`, and logs what any patch sends to `s maket_log_in`. Its buttons still do both by hand.
+- **Removed:** the option to write commands with a slash. When Maket quits while messages still wait, they are dropped and the ePlayer gets `all_notes_off`.
+
+How to read a result: *half within 0.05 ms* means that half of the messages arrived no more than 0.05 ms from their time; *95 in 100 within* and *99 in 100 within* likewise; *the farthest* is the single worst one. For the ear, differences under a millisecond or two between notes that should sound together are not heard as such; the farthest ones and the chords (part 2) are what to look at.
+
+### Testing stage 1d
+
+Before the takes:
+
+1. `git pull`, then `./build.sh`: `stage 1d`. `./build.sh tests` ends with `All 94 checks passed.`
+2. Cmd-4, Preferences, *Timing results*: **Choose…** a new folder `timing 1d` inside the repository's `Temp` folder, so that the files can be pushed.
+3. In Max: the ePlayer with an orchestra, audio on, as for ScAst. Open `Max/Maket OSC log.maxpat` (the new version) and `Max/Maket bach reference.maxpat`. No error should show in the Max window.
+4. In Maket: Cmd-4, **Timing test**. Click **Write the passages as bach.roll files**. In the reference patch, click **read** and choose `timing passage dense.txt` in the timing folder. The passage should show in the bach.roll.
+
+Then the takes. Before each, type in *Condition* what the state of Max is; the result is filed under those words. *Voice* is a voice of the loaded orchestra; the dense passage is not music, so keep the dynamic low, or untick the ePlayer box if it is too much.
+
+| Take | Max | What to do in Maket |
+| --- | --- | --- |
+| 1 | your usual settings; say in the condition what they are: Overdrive on or off, Scheduler in Audio Interrupt on or off (Audio Status window), the signal vector size | **Run from Maket** |
+| 2 | the same | **Start a bach.roll take**, press **play** in the reference patch, wait until it has played to the end, **Finish the bach.roll take** |
+| 3 | the same, both at once | **Run from Maket** and press **play** in the reference patch right after it |
+| 4 | Overdrive off (Options menu) | **Run from Maket**; then a bach.roll take |
+| 5 | Overdrive on, Scheduler in Audio Interrupt the other way than usual | **Run from Maket**; then a bach.roll take |
+| 6 | usual settings, Max kept busy: during the run, drag and resize a Max window, or scroll through a large roll | **Run from Maket** |
+| 7 | usual settings, the Mac left alone | choose the *Long* passage, **Run from Maket** (five minutes) |
+
+After the takes: push the `timing 1d` folder and `Measurements/report.md`.
+
+If a take ends with *Max did not write its log*: the patch did not manage to save where Maket asked. Click **write** in the patch, save under the name the message gives, and click **Read the log again**. Tell me if that happens; it is the one part of the patch I could not try without Max.
 
 ## The repository
 
@@ -263,8 +302,8 @@ Source/             the application
   UI/                 interface code: tab row, panel buttons, pages, preferences, inspector, colours
   Model/              no interface code: the settings; the name, version and build stage; bach's list type; the roll
   Formats/            no interface code: reading and writing files (bach's text, bach.roll)
-  Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands
-Max/                patches for Max that belong to Maket (the OSC logging patch)
+  Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test
+Max/                patches for Max that belong to Maket (the OSC logging patch, the bach.roll reference)
 Tests/              the console test program
 Measurements/       its reports
 Reference/python/   scripts from the design phase (file formats, checks); not part of the app

@@ -44,3 +44,7 @@ void testBachWriting (const juce::File& temp);
 
 /** Stage 1c: OSC messages, the sender and the send thread (Tests/OscTests.cpp). */
 void testOsc();
+
+/** Stage 1d: the passages, the log reader and the comparison of the timing
+    tests (Tests/TimingTests.cpp). `temp` holds the two logs of stage 1c. */
+void testTiming (const juce::File& temp);

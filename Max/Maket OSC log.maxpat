@@ -12,8 +12,8 @@
         "rect": [
             80.0,
             100.0,
-            930.0,
-            520.0
+            960.0,
+            720.0
         ],
         "boxes": [
             {
@@ -42,10 +42,10 @@
                     "patching_rect": [
                         30.0,
                         48.0,
-                        560.0,
+                        640.0,
                         47.0
                     ],
-                    "text": "Notes when each OSC message from Maket arrives in Max. Every message gets a number and the time on the computer's clock, in milliseconds since the last reset, and is kept in the coll below.",
+                    "text": "Notes when each message arrives in Max: every message gets a number and the time on the computer's clock, in milliseconds since the last reset, and is kept in the coll below. Maket's timing test page resets the log and has it written by itself.",
                     "linecount": 3
                 }
             },
@@ -84,13 +84,80 @@
             },
             {
                 "box": {
+                    "id": "obj-22",
+                    "maxclass": "newobj",
+                    "numinlets": 2,
+                    "numoutlets": 2,
+                    "patching_rect": [
+                        30.0,
+                        152.0,
+                        110.0,
+                        22.0
+                    ],
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "text": "route /maket/log"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-c12",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        150.0,
+                        153.0,
+                        560.0,
+                        20.0
+                    ],
+                    "text": "left: Maket's own words for this patch (reset, write <file>); right: everything else, which is logged"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-25",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "patching_rect": [
+                        230.0,
+                        184.0,
+                        95.0,
+                        22.0
+                    ],
+                    "outlettype": [
+                        ""
+                    ],
+                    "text": "r maket_log_in"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-c13",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        335.0,
+                        185.0,
+                        470.0,
+                        20.0
+                    ],
+                    "text": "what is sent to  s maket_log_in  in any patch is logged too (bach.roll's playout)"
+                }
+            },
+            {
+                "box": {
                     "id": "obj-2",
                     "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 3,
                     "patching_rect": [
-                        30.0,
-                        160.0,
+                        121.0,
+                        216.0,
                         170.0,
                         22.0
                     ],
@@ -109,8 +176,8 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [
-                        210.0,
-                        161.0,
+                        300.0,
+                        217.0,
                         400.0,
                         20.0
                     ],
@@ -124,8 +191,8 @@
                     "numinlets": 1,
                     "numoutlets": 1,
                     "patching_rect": [
-                        181.0,
-                        200.0,
+                        272.0,
+                        248.0,
                         60.0,
                         22.0
                     ],
@@ -142,8 +209,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "patching_rect": [
-                        181.0,
-                        232.0,
+                        272.0,
+                        280.0,
                         60.0,
                         22.0
                     ],
@@ -160,8 +227,8 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [
-                        250.0,
-                        233.0,
+                        342.0,
+                        281.0,
                         220.0,
                         20.0
                     ],
@@ -175,8 +242,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "patching_rect": [
-                        105.0,
-                        200.0,
+                        196.0,
+                        248.0,
                         40.0,
                         22.0
                     ],
@@ -193,8 +260,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "patching_rect": [
-                        124.0,
-                        232.0,
+                        215.0,
+                        280.0,
                         40.0,
                         22.0
                     ],
@@ -211,8 +278,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "patching_rect": [
-                        105.0,
-                        272.0,
+                        196.0,
+                        320.0,
                         95.0,
                         22.0
                     ],
@@ -229,8 +296,8 @@
                     "numinlets": 1,
                     "numoutlets": 1,
                     "patching_rect": [
-                        105.0,
-                        304.0,
+                        196.0,
+                        352.0,
                         75.0,
                         22.0
                     ],
@@ -247,8 +314,8 @@
                     "numinlets": 1,
                     "numoutlets": 1,
                     "patching_rect": [
-                        30.0,
-                        344.0,
+                        121.0,
+                        392.0,
                         94.0,
                         22.0
                     ],
@@ -265,12 +332,46 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [
-                        135.0,
-                        345.0,
+                        225.0,
+                        393.0,
                         470.0,
                         20.0
                     ],
-                    "text": "number, time, message: for example  12 3410.52 noteon voice1 60. 100"
+                    "text": "number, time, message: for example  12 3410.52 noteon Cl 60. 100"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-11",
+                    "maxclass": "number",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "patching_rect": [
+                        351.0,
+                        320.0,
+                        60.0,
+                        22.0
+                    ],
+                    "outlettype": [
+                        "",
+                        "bang"
+                    ],
+                    "parameter_enable": 0
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-c8",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        421.0,
+                        321.0,
+                        260.0,
+                        20.0
+                    ],
+                    "text": "the number of the last message"
                 }
             },
             {
@@ -280,8 +381,8 @@
                     "numinlets": 1,
                     "numoutlets": 4,
                     "patching_rect": [
-                        30.0,
-                        420.0,
+                        121.0,
+                        470.0,
                         120.0,
                         22.0
                     ],
@@ -301,46 +402,12 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [
-                        160.0,
-                        421.0,
+                        251.0,
+                        471.0,
                         200.0,
                         20.0
                     ],
                     "text": "double-click to see the lines"
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-11",
-                    "maxclass": "number",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "patching_rect": [
-                        260.0,
-                        272.0,
-                        60.0,
-                        22.0
-                    ],
-                    "outlettype": [
-                        "",
-                        "bang"
-                    ],
-                    "parameter_enable": 0
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-c8",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [
-                        330.0,
-                        273.0,
-                        260.0,
-                        20.0
-                    ],
-                    "text": "the number of the last message"
                 }
             },
             {
@@ -350,8 +417,8 @@
                     "numinlets": 1,
                     "numoutlets": 1,
                     "patching_rect": [
-                        330.0,
-                        380.0,
+                        421.0,
+                        430.0,
                         22.0,
                         22.0
                     ],
@@ -368,8 +435,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "patching_rect": [
-                        330.0,
-                        420.0,
+                        421.0,
+                        470.0,
                         40.0,
                         22.0
                     ],
@@ -386,8 +453,8 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [
-                        330.0,
-                        452.0,
+                        421.0,
+                        502.0,
                         75.0,
                         22.0
                     ],
@@ -401,12 +468,66 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [
-                        360.0,
-                        381.0,
-                        340.0,
+                        451.0,
+                        431.0,
+                        330.0,
+                        33.0
+                    ],
+                    "text": "switch on to see every message in the Max window as well (not during a timing test)",
+                    "linecount": 2
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-23",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "patching_rect": [
+                        30.0,
+                        560.0,
+                        110.0,
+                        22.0
+                    ],
+                    "outlettype": [
+                        "",
+                        "",
+                        ""
+                    ],
+                    "text": "route reset write"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-24",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "patching_rect": [
+                        75.0,
+                        600.0,
+                        85.0,
+                        22.0
+                    ],
+                    "outlettype": [
+                        ""
+                    ],
+                    "text": "prepend write"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-c14",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        170.0,
+                        601.0,
+                        300.0,
                         20.0
                     ],
-                    "text": "switch on to see every message in the Max window as well"
+                    "text": "write <file>: the coll saves its lines there"
                 }
             },
             {
@@ -416,8 +537,8 @@
                     "numinlets": 1,
                     "numoutlets": 1,
                     "patching_rect": [
-                        470.0,
-                        120.0,
+                        560.0,
+                        560.0,
                         60.0,
                         22.0
                     ],
@@ -434,8 +555,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "patching_rect": [
-                        545.0,
-                        120.0,
+                        640.0,
+                        560.0,
                         40.0,
                         22.0
                     ],
@@ -452,12 +573,12 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [
-                        595.0,
-                        121.0,
-                        300.0,
+                        690.0,
+                        561.0,
+                        230.0,
                         33.0
                     ],
-                    "text": "click before a test: empties the log, and starts the clock at 0 and the numbers at 1",
+                    "text": "by hand: empties the log, and starts the clock at 0 and the numbers at 1",
                     "linecount": 2
                 }
             },
@@ -468,8 +589,8 @@
                     "numinlets": 1,
                     "numoutlets": 3,
                     "patching_rect": [
-                        470.0,
-                        160.0,
+                        560.0,
+                        600.0,
                         115.0,
                         22.0
                     ],
@@ -488,8 +609,8 @@
                     "numinlets": 1,
                     "numoutlets": 1,
                     "patching_rect": [
-                        566.0,
-                        200.0,
+                        656.0,
+                        640.0,
                         60.0,
                         22.0
                     ],
@@ -506,8 +627,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "patching_rect": [
-                        518.0,
-                        200.0,
+                        608.0,
+                        640.0,
                         30.0,
                         22.0
                     ],
@@ -524,8 +645,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "patching_rect": [
-                        470.0,
-                        380.0,
+                        560.0,
+                        640.0,
                         40.0,
                         22.0
                     ],
@@ -542,8 +663,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "patching_rect": [
-                        30.0,
-                        380.0,
+                        250.0,
+                        600.0,
                         40.0,
                         22.0
                     ],
@@ -560,12 +681,12 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [
-                        80.0,
-                        381.0,
-                        240.0,
+                        300.0,
+                        601.0,
+                        250.0,
                         33.0
                     ],
-                    "text": "click after a test: saves the log as a text file (Max asks where)",
+                    "text": "by hand: saves the log as a text file (Max asks where)",
                     "linecount": 2
                 }
             }
@@ -575,6 +696,30 @@
                 "patchline": {
                     "source": [
                         "obj-1",
+                        0
+                    ],
+                    "destination": [
+                        "obj-22",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-22",
+                        1
+                    ],
+                    "destination": [
+                        "obj-2",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-25",
                         0
                     ],
                     "destination": [
@@ -759,6 +904,54 @@
                     ],
                     "destination": [
                         "obj-14",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-22",
+                        0
+                    ],
+                    "destination": [
+                        "obj-23",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-23",
+                        0
+                    ],
+                    "destination": [
+                        "obj-17",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-23",
+                        1
+                    ],
+                    "destination": [
+                        "obj-24",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-24",
+                        0
+                    ],
+                    "destination": [
+                        "obj-10",
                         0
                     ]
                 }

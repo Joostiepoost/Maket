@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1c. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 22 Nov 2026 5:27:05pm.
+Maket 0.0.1, stage 1d. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 22 Nov 2026 6:50:40pm.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter (`1c`) | yes |
+| The build stage reads as a step number and a letter (`1d`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -29,6 +29,7 @@ The settings and their defaults:
 | conTimbre ePlayer (OSC): Host | host | `127.0.0.1` | `ePlayerHost` |
 | conTimbre ePlayer (OSC): Port | port | `46001` | `ePlayerPort` |
 | Tests: Logging patch port | port | `46002` | `logPatchPort` |
+| Tests: Timing results | folder | `~/Documents/Maket/Exports/Timing` | `timingFolder` |
 
 | Check | Passed |
 | --- | --- |
@@ -261,7 +262,7 @@ That is: the word `noteon` and two zero bytes; the kinds of the arguments `,sfi`
 | --- | --- |
 | `noteon Fl 60. 100` gives the 28 bytes worked out by hand from the OSC description | yes |
 | `all_notes_off`, a command without arguments, gives its 20 bytes | yes |
-| The commands read `noteon`, `noteoff`, `program`, with a slash in front only when asked; a name with a space stays one argument | yes |
+| The commands read `noteon`, `noteoff`, `program`, without a slash in front; a name with a space stays one argument | yes |
 | Five messages (texts with spaces, with an accent, empty, of four letters; negative numbers) read back from their bytes as they were, each a multiple of four bytes long | yes |
 | Bytes that are not such a message are refused | yes |
 
@@ -273,19 +274,74 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.025 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.013 ms; the latest of all: 0.302 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.026 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.010 ms; the latest of all: 0.171 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
-| A note-off that is due in a minute is sent at once when asked (as when Maket quits) | yes |
+| A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
 How punctual the send thread was in the run of 200 messages, in milliseconds after the time each was due (the thread has the system's realtime priority):
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.006 | 0.013 | 0.302 |
-| Arrived at the listener in this program | 0.122 | 0.187 | 0.396 |
+| Left Maket | -0.003 | 0.010 | 0.171 |
+| Arrived at the listener in this program | 0.118 | 0.185 | 0.326 |
 
-## 6. Test material
+## 6. Timing tests: the measuring
+
+Stage 1d measures on Joost's Mac how evenly Maket's messages arrive in Max. This section checks the measuring itself. A deviation is always: how far a message arrived from the time it was due, after the two clocks have been laid on each other at the middle message.
+
+### The passages
+
+The dense passage: 1403 notes in 23.0 seconds, so 2806 messages (a note-on and a note-off each):
+
+- part 1: a line, 40 notes a second (240 notes)
+- part 2: chords of eight notes, four a second (192 notes)
+- part 3: irregular, about 95 notes a second (571 notes)
+- part 4: a burst, 200 notes a second (400 notes)
+
+The long passage: a note every 100 ms, 3000 notes in 5.0 minutes.
+
+| Check | Passed |
+| --- | --- |
+| The passages are the same notes at every run, in order of time | yes |
+| Written as a bach.roll file and read back, the dense passage holds the same notes, the chords as chords of eight | yes |
+
+### Reading the logs, and the logs of 22 Nov
+
+| Check | Passed |
+| --- | --- |
+| The patch's file of 22 Nov reads as 72 lines, each with its number, time and message | yes |
+| Maket's send log of 22 Nov reads as 72 lines, each with its due time, lateness and message | yes |
+| Both hold the same 72 messages in the same order | yes |
+| The comparison of the two gives the numbers worked out separately: typical 0.2415 ms, half within 0.1420, 95 in 100 within 0.5257, the farthest 0.6643 | yes |
+
+### The comparison, on made-up logs with known faults
+
+| Check | Passed |
+| --- | --- |
+| A log without faults, on a clock that runs two minutes ahead: every message exactly on time, whatever the clocks say | yes |
+| A log with a lost message, two that changed places, late ones and an early one: each fault is found and counted (199 of 200, 1 out of order, latest +0.50, earliest -2.00), per part of the passage too | yes |
+| bach.roll's playout is read note by note and chord by chord, each line against the onset it carries | yes |
+| An empty log gives no numbers, and says why | yes |
+
+### A short run on this computer
+
+The first three seconds of the dense passage go through the send thread to a listener inside the test program, which notes the arrival times on a clock of its own, as the patch does. This checks the whole chain of the measuring; the numbers say nothing about Max.
+
+| Check | Passed |
+| --- | --- |
+| All 240 messages are found in the listener's log, none out of order | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.10 ms; the farthest 1.43 ms) | yes |
+
+```
+Arrived: 240 of 240 messages; out of order: 0.
+All messages: half within 0.03 ms of their time, 95 in 100 within 0.10 ms, 99 in 100 within 0.29 ms; the farthest 1.43 ms (earliest -0.11, latest +1.43).
+The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.10 ms, 99 in 100 within 0.12 ms; the farthest 1.43 ms (earliest -0.11, latest +1.43).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.10 ms, the farthest 1.43 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.15 ms after it.
+```
+
+## 7. Test material
 
 The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. This section lists what the program finds there; nothing is read yet. A missing file is not a failed check at this stage.
 
@@ -295,9 +351,11 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `01b doodsbed roll resave after dump.txt` | 56.6 KB |
 | `02a mixed_roll_example_01h roll stats` | 8.3 KB |
 | `02b mixed_roll_example_01h resave after dump.txt` | 17.2 KB |
+| `1c maket log.txt` | 3.3 KB |
+| `1c max log.txt` | 2.8 KB |
 | `doodsbed final v1c.txt` | 56.1 KB |
 | `mixed_roll_example_01h.txt` | 17.2 KB |
-| `roll tests s1b.maxpat` | 30.1 KB |
+| `roll tests s1b.maxpat` | 100.8 KB |
 | `written by Maket/doodsbed final v1c.txt` | 56.1 KB |
 | `written by Maket/mixed_roll_example_01h changed by Maket.txt` | 17.2 KB |
 | `written by Maket/mixed_roll_example_01h.txt` | 17.2 KB |
@@ -312,5 +370,7 @@ Needed for the coming stages:
 | 02a mixed_roll_example_01h roll stats | 1a: bach's own counts and its dump of every note | yes, as `02a mixed_roll_example_01h roll stats` |
 | 01b doodsbed roll resave after dump | 1b: the roll as bach saves it again | yes, as `01b doodsbed roll resave after dump.txt` |
 | 02b mixed_roll_example_01h resave after dump | 1b: the roll as bach saves it again | yes, as `02b mixed_roll_example_01h resave after dump.txt` |
+| 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `1c maket log.txt` |
+| 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `1c max log.txt` |
 
-All 82 checks passed.
+All 94 checks passed.

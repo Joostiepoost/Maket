@@ -33,13 +33,18 @@ OscScheduler::~OscScheduler()
     stopThread (2000);
 }
 
-void OscScheduler::sendAt (double time, const OscMessage& message, int targets)
+void OscScheduler::sendAt (double time, const OscMessage& message, int targets, int tag)
 {
     {
         const juce::ScopedLock sl (lock);
-        waiting.insert ({ time, Event { message, targets } });
+        waiting.insert ({ time, Event { message, targets, tag } });
     }
     wake.signal();
+}
+
+void OscScheduler::sendImmediately (const OscMessage& message, int targets, int tag)
+{
+    sendNow (now(), Event { message, targets, tag });
 }
 
 int OscScheduler::numWaiting() const
@@ -62,11 +67,22 @@ std::vector<OscScheduler::Sent> OscScheduler::takeSent()
     return result;
 }
 
+std::vector<OscScheduler::Sent> OscScheduler::takeSent (int tag)
+{
+    std::vector<Sent> result, others;
+    const juce::ScopedLock sl (lock);
+    for (auto& record : sentLog)
+        (record.tag == tag ? result : others).push_back (std::move (record));
+    sentLog.swap (others);
+    return result;
+}
+
 void OscScheduler::sendNow (double due, const Event& event)
 {
     Sent record;
     record.due = due;
     record.targets = event.targets;
+    record.tag = event.tag;
     record.text = event.message.toText();
     record.sent = now();
 

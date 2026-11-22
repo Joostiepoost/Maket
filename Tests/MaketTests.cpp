@@ -14,7 +14,9 @@
 //      writer, and Joost's rolls read and written back byte for byte.
 //   5. OSC (stage 1c, in OscTests.cpp): the bytes of a message, sending to
 //      a listener inside this program, the punctuality of the send thread.
-//   6. Test material: what is in the repository's Temp folder, and whether
+//   6. Timing tests (stage 1d, in TimingTests.cpp): the passages, the
+//      reader of the Max patch's log, the comparison with known answers.
+//   7. Test material: what is in the repository's Temp folder, and whether
 //      the files the coming steps need are there.
 //
 // Options:  --out <folder>   where report.md is written (default: Measurements)
@@ -271,7 +273,7 @@ void testSettings (const juce::File& work)
     line();
 }
 
-// --- 6. Test material ----------------------------------------------------------
+// --- 7. Test material ----------------------------------------------------------
 
 /** A file name without extension, case, spaces, underscores and hyphens, so
     that "mixed_roll_example_01h.txt" and "Mixed roll example 01h" compare equal. */
@@ -282,7 +284,7 @@ juce::String plainName (const juce::String& name)
 
 void testMaterial (const juce::File& temp)
 {
-    line ("## 6. Test material");
+    line ("## 7. Test material");
     line();
     line ("The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. "
           "This section lists what the program finds there; nothing is read yet. A missing file is not a "
@@ -322,7 +324,9 @@ void testMaterial (const juce::File& temp)
         { "01a doodsbed roll stats",                     "1a: bach's own counts and its dump of every note" },
         { "02a mixed_roll_example_01h roll stats",       "1a: bach's own counts and its dump of every note" },
         { "01b doodsbed roll resave after dump",         "1b: the roll as bach saves it again" },
-        { "02b mixed_roll_example_01h resave after dump", "1b: the roll as bach saves it again" }
+        { "02b mixed_roll_example_01h resave after dump", "1b: the roll as bach saves it again" },
+        { "1c maket log",                                "1d: Maket's send log of 22 Nov, to check the measuring" },
+        { "1c max log",                                  "1d: the Max patch's log of 22 Nov, to check the measuring" }
     };
 
     line ("Needed for the coming stages:");
@@ -372,6 +376,7 @@ int main (int argc, char** argv)
     std::cout << "Reading bach rolls..." << std::endl;   testBachReading (sourceDir.getChildFile ("Temp"));
     std::cout << "Writing bach rolls..." << std::endl;   testBachWriting (sourceDir.getChildFile ("Temp"));
     std::cout << "OSC..." << std::endl;                  testOsc();
+    std::cout << "Timing tests..." << std::endl;         testTiming (sourceDir.getChildFile ("Temp"));
     std::cout << "Test material..." << std::endl;        testMaterial (sourceDir.getChildFile ("Temp"));
 
     work.deleteRecursively();
