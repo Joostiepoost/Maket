@@ -48,3 +48,89 @@ The note-ons alone: half within 0.06 ms of their time, 95 in 100 within 0.38 ms,
   Part 4 (a burst, 200 notes a second): 95 in 100 within 0.10 ms, the farthest 0.36 ms.
 Leaving Maket: 95 in 100 within 0.41 ms of their time, the latest 0.69 ms after it.
 
+=== 22 Nov 19:46:44   dense passage, played by Maket (with the ePlayer)   [test1 - overdrive, IO vector 512, Signal vector 64, no CPU limit]
+Arrived: 2806 of 2806 messages; out of order: 0.
+All messages: half within 0.07 ms of their time, 95 in 100 within 0.31 ms, 99 in 100 within 0.42 ms; the farthest 3.24 ms (earliest -0.18, latest +3.24).
+The note-ons alone: half within 0.08 ms of their time, 95 in 100 within 0.34 ms, 99 in 100 within 0.41 ms; the farthest 3.24 ms (earliest -0.18, latest +3.24).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.16 ms, the farthest 0.70 ms.
+  Part 2 (chords of eight notes, four a second): 95 in 100 within 0.45 ms, the farthest 0.55 ms.
+  Part 3 (irregular, about 95 notes a second): 95 in 100 within 0.16 ms, the farthest 1.82 ms.
+  Part 4 (a burst, 200 notes a second): 95 in 100 within 0.13 ms, the farthest 3.24 ms.
+Leaving Maket: 95 in 100 within 0.40 ms of their time, the latest 0.71 ms after it.
+
+=== 22 Nov 19:46:44   dense passage, played by bach.roll, while Maket played   [test1 - overdrive, IO vector 512, Signal vector 64, no CPU limit]
+Arrived: 1012 of 1403 messages; out of order: 0. bach.roll played notewise.
+All messages: half within 0.03 ms of their time, 95 in 100 within 0.17 ms, 99 in 100 within 0.21 ms; the farthest 5.28 ms (earliest -0.04, latest +5.28).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.06 ms, the farthest 0.10 ms.
+  Part 2 (chords of eight notes, four a second): 95 in 100 within 0.21 ms, the farthest 0.22 ms.
+  Part 3 (irregular, about 95 notes a second): 95 in 100 within 0.05 ms, the farthest 5.28 ms.
+  Part 4 (a burst, 200 notes a second): 95 in 100 within 0.08 ms, the farthest 0.08 ms.
+
+=== 22 Nov 19:48:18   dense passage, played by Maket (with the ePlayer)   [test1 - overdrive, IO vector 512, Signal vector 64, no CPU limit]
+Arrived: 2806 of 2806 messages; out of order: 0.
+All messages: half within 0.07 ms of their time, 95 in 100 within 0.33 ms, 99 in 100 within 0.45 ms; the farthest 6.91 ms (earliest -0.18, latest +6.91).
+The note-ons alone: half within 0.08 ms of their time, 95 in 100 within 0.36 ms, 99 in 100 within 0.44 ms; the farthest 5.91 ms (earliest -0.18, latest +5.91).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.18 ms, the farthest 2.27 ms.
+  Part 2 (chords of eight notes, four a second): 95 in 100 within 0.47 ms, the farthest 0.62 ms.
+  Part 3 (irregular, about 95 notes a second): 95 in 100 within 0.16 ms, the farthest 0.33 ms.
+  Part 4 (a burst, 200 notes a second): 95 in 100 within 0.14 ms, the farthest 6.91 ms.
+Leaving Maket: 95 in 100 within 0.41 ms of their time, the latest 0.78 ms after it.
+
+=== 22 Nov 19:48:18   dense passage, played by bach.roll, while Maket played   [test1 - overdrive, IO vector 512, Signal vector 64, no CPU limit]
+Arrived: 881 of 1403 messages; out of order: 0. bach.roll played notewise.
+All messages: half within 0.03 ms of their time, 95 in 100 within 0.16 ms, 99 in 100 within 0.20 ms; the farthest 8.57 ms (earliest -0.05, latest +8.57).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.05 ms, the farthest 0.13 ms.
+  Part 2 (chords of eight notes, four a second): 95 in 100 within 0.20 ms, the farthest 0.22 ms.
+  Part 3 (irregular, about 95 notes a second): 95 in 100 within 0.05 ms, the farthest 8.57 ms.
+
+=== 22 Nov 19:50:10   dense passage, played by Maket (with the ePlayer)   [test4 - overdrive off]
+Arrived: 2806 of 2806 messages; out of order: 0.
+All messages: half within 0.72 ms of their time, 95 in 100 within 8.73 ms, 99 in 100 within 18.91 ms; the farthest 29.86 ms (earliest -0.87, latest +29.86).
+The note-ons alone: half within 0.66 ms of their time, 95 in 100 within 10.90 ms, 99 in 100 within 18.89 ms; the farthest 29.11 ms (earliest -0.85, latest +29.11).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 6.58 ms, the farthest 23.63 ms.
+  Part 2 (chords of eight notes, four a second): 95 in 100 within 7.92 ms, the farthest 18.84 ms.
+  Part 3 (irregular, about 95 notes a second): 95 in 100 within 9.12 ms, the farthest 29.11 ms.
+  Part 4 (a burst, 200 notes a second): 95 in 100 within 9.96 ms, the farthest 29.86 ms.
+Leaving Maket: 95 in 100 within 0.45 ms of their time, the latest 0.68 ms after it.
+
+=== 22 Nov 19:52:07   dense passage, played by Maket (with the ePlayer)   [test5 - overdrive on - scheduler in audio interrupt on]
+Arrived: 2806 of 2806 messages; out of order: 0.
+All messages: half within 1.18 ms of their time, 95 in 100 within 2.48 ms, 99 in 100 within 2.81 ms; the farthest 3.17 ms (earliest -2.41, latest +3.17).
+The note-ons alone: half within 1.19 ms of their time, 95 in 100 within 2.51 ms, 99 in 100 within 2.87 ms; the farthest 3.15 ms (earliest -2.41, latest +3.15).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 2.48 ms, the farthest 3.13 ms.
+  Part 2 (chords of eight notes, four a second): 95 in 100 within 2.78 ms, the farthest 2.81 ms.
+  Part 3 (irregular, about 95 notes a second): 95 in 100 within 2.36 ms, the farthest 3.17 ms.
+  Part 4 (a burst, 200 notes a second): 95 in 100 within 2.36 ms, the farthest 3.09 ms.
+Leaving Maket: 95 in 100 within 0.46 ms of their time, the latest 0.68 ms after it.
+
+=== 22 Nov 19:58:14   dense passage, played by Maket (with the ePlayer)   [test6b - overdrive on - io vector 512 - signal vector 128 - max kept busy]
+Arrived: 2806 of 2806 messages; out of order: 0.
+All messages: half within 0.05 ms of their time, 95 in 100 within 0.35 ms, 99 in 100 within 0.52 ms; the farthest 0.69 ms (earliest -0.11, latest +0.69).
+The note-ons alone: half within 0.05 ms of their time, 95 in 100 within 0.36 ms, 99 in 100 within 0.54 ms; the farthest 0.69 ms (earliest -0.11, latest +0.69).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.18 ms, the farthest 0.40 ms.
+  Part 2 (chords of eight notes, four a second): 95 in 100 within 0.56 ms, the farthest 0.69 ms.
+  Part 3 (irregular, about 95 notes a second): 95 in 100 within 0.15 ms, the farthest 0.48 ms.
+  Part 4 (a burst, 200 notes a second): 95 in 100 within 0.09 ms, the farthest 0.22 ms.
+Leaving Maket: 95 in 100 within 0.38 ms of their time, the latest 0.72 ms after it.
+
+=== 22 Nov 20:00:39   long passage, played by Maket (with the ePlayer)   [test7 - overdrive on - io vector 512 - signal vector 128 - long passage]
+Arrived: 6000 of 6000 messages; out of order: 0.
+All messages: half within 0.04 ms of their time, 95 in 100 within 38.88 ms, 99 in 100 within 96.71 ms; the farthest 99.36 ms (earliest -0.25, latest +99.36).
+The note-ons alone: half within 0.05 ms of their time, 95 in 100 within 49.57 ms, 99 in 100 within 79.33 ms; the farthest 99.31 ms (earliest -0.25, latest +99.31).
+Leaving Maket: 95 in 100 within 38.96 ms of their time, the latest 99.42 ms after it.
+Over the 5.0 minutes the two clocks drift apart by 4.86 ms a minute.
+
+=== 22 Nov 20:07:11   long passage, played by Maket (with the ePlayer)   [test7b - overdrive on - io vector 512 - signal vector 128 - long passage (without touching the laptop)]
+Arrived: 6000 of 6000 messages; out of order: 0.
+All messages: half within 0.03 ms of their time, 95 in 100 within 0.12 ms, 99 in 100 within 0.18 ms; the farthest 0.42 ms (earliest -0.24, latest +0.42).
+The note-ons alone: half within 0.04 ms of their time, 95 in 100 within 0.13 ms, 99 in 100 within 0.19 ms; the farthest 0.42 ms (earliest -0.23, latest +0.42).
+Leaving Maket: 95 in 100 within 0.20 ms of their time, the latest 0.39 ms after it.
+Over the 5.0 minutes the two clocks drift apart by -0.00 ms a minute.
+
+=== 22 Nov 20:43:55   long passage, played by Maket (with the ePlayer)   [test7d - overdrive on - io vector 512 - signal vector 128 - long passage (without touching the laptop - after cooling down - no visual activity in max)]
+Arrived: 6000 of 6000 messages; out of order: 0.
+All messages: half within 0.03 ms of their time, 95 in 100 within 0.12 ms, 99 in 100 within 0.16 ms; the farthest 0.64 ms (earliest -0.26, latest +0.64).
+The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.13 ms, 99 in 100 within 0.17 ms; the farthest 0.64 ms (earliest -0.26, latest +0.64).
+Leaving Maket: 95 in 100 within 0.21 ms of their time, the latest 0.28 ms after it.
+Over the 5.0 minutes the two clocks drift apart by -0.00 ms a minute.
+
