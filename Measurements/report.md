@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1d. Machine: Apple M4, Mac OSX 27.2.1. Date: 22 Nov 2026 9:23:33pm.
+Maket 0.0.1, stage 1d. Machine: Apple M4, Mac OSX 27.2.1. Date: 22 Nov 2026 10:20:08pm.
 
 ## 1. The test program
 
@@ -274,8 +274,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.026 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.004 ms; the latest of all: 0.019 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.028 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.001 ms; the latest of all: 0.008 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -283,8 +283,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.009 | 0.004 | 0.019 |
-| Arrived at the listener in this program | 0.133 | 0.207 | 0.365 |
+| Left Maket | -0.012 | 0.001 | 0.008 |
+| Arrived at the listener in this program | 0.150 | 0.229 | 0.313 |
 
 ## 6. Timing tests: the measuring
 
@@ -331,14 +331,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.06 ms; the farthest 0.17 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.07 ms; the farthest 0.16 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.03 ms of their time, 95 in 100 within 0.06 ms, 99 in 100 within 0.08 ms; the farthest 0.17 ms (earliest -0.08, latest +0.17).
-The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.06 ms, 99 in 100 within 0.08 ms; the farthest 0.17 ms (earliest -0.08, latest +0.17).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.06 ms, the farthest 0.17 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.02 ms after it.
+All messages: half within 0.03 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.09 ms; the farthest 0.16 ms (earliest -0.08, latest +0.16).
+The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.06 ms, 99 in 100 within 0.08 ms; the farthest 0.16 ms (earliest -0.08, latest +0.16).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.07 ms, the farthest 0.16 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.01 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -360,6 +360,8 @@ Every log in `Temp/Timing 1d`, compared here again: how far the messages arrived
 | 20261122-200039 long maket test7 - overdrive on - io vector 512 - s | Maket | 6000 of 6000 | 0.04 | 38.88 | 96.71 | 99.36 |
 | 20261122-200711 long maket test7b - overdrive on - io vector 512 -  | Maket | 6000 of 6000 | 0.03 | 0.12 | 0.18 | 0.42 |
 | 20261122-204355 long maket test7d - overdrive on - io vector 512 -  | Maket | 6000 of 6000 | 0.03 | 0.12 | 0.16 | 0.64 |
+| 20261122-213411 long maket Test8 - overdrive on - scheduler in audi | Maket | 6000 of 6000 | 0.06 | 69.78 | 97.40 | 103.10 |
+| 20261122-214401 long maket Test 8b - conditions same as 8a - Maket  | Maket | 6000 of 6000 | 0.05 | 0.14 | 0.18 | 1.12 |
 | test2 from max OSC log | Maket | 2806 of 2806 | 0.07 | 0.31 | 0.42 | 3.24 |
 | test2 from max OSC log | bach.roll | 1403 of 1403 | 0.03 | 0.15 | 0.20 | 5.27 |
 | test3 from max OSC log | Maket | 2806 of 2806 | 0.07 | 0.33 | 0.45 | 6.91 |
@@ -413,15 +415,19 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `Timing 1d/20261122-200711 long maket test7b - overdrive on - io vector 512 -  send log.txt` | 417.8 KB |
 | `Timing 1d/20261122-204355 long maket test7d - overdrive on - io vector 512 -  max log.txt` | 216.7 KB |
 | `Timing 1d/20261122-204355 long maket test7d - overdrive on - io vector 512 -  send log.txt` | 418.1 KB |
+| `Timing 1d/20261122-213411 long maket Test8 - overdrive on - scheduler in audi max log.txt` | 218.4 KB |
+| `Timing 1d/20261122-213411 long maket Test8 - overdrive on - scheduler in audi send log.txt` | 419.3 KB |
+| `Timing 1d/20261122-214401 long maket Test 8b - conditions same as 8a - Maket  max log.txt` | 218.4 KB |
+| `Timing 1d/20261122-214401 long maket Test 8b - conditions same as 8a - Maket  send log.txt` | 418.2 KB |
 | `Timing 1d/test2 from max OSC log` | 181.8 KB |
 | `Timing 1d/test3 from max OSC log` | 180.6 KB |
 | `Timing 1d/test4 from max OSC log (overdrive off)` | 82.2 KB |
 | `Timing 1d/test5 from max OSC log (overdrive on - scheduler in audio interrupt on)` | 81.6 KB |
 | `Timing 1d/test6b from max OSC log (overdrive on - scheduler in audio interrupt on)` | 98.6 KB |
-| `Timing 1d/timing details.txt` | 12.7 KB |
+| `Timing 1d/timing details.txt` | 14.0 KB |
 | `Timing 1d/timing passage dense.txt` | 54.1 KB |
 | `Timing 1d/timing passage long.txt` | 124.9 KB |
-| `Timing 1d/timing results.md` | 3.2 KB |
+| `Timing 1d/timing results.md` | 3.6 KB |
 | `written by Maket/doodsbed final v1c.txt` | 56.1 KB |
 | `written by Maket/logs/1c maket log.txt` | 3.3 KB |
 | `written by Maket/logs/1c max log.txt` | 2.8 KB |

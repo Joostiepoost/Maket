@@ -21,3 +21,4 @@ Every line is one take. Times in milliseconds: how far the messages arrived from
 | 22 Nov 20:43:55 | long | Maket (with the ePlayer) | test7d - overdrive on - io vector 512 - signal vector 128 - long passage (without touching the laptop - after cooling down - no visual activity in max) | 6000 of 6000 | 0 | 0.05 | 0.03 | 0.12 | 0.16 | 0.64 | 0.28 |
 | 22 Nov 21:34:11 | long | Maket (with the ePlayer) | Test8 - overdrive on - scheduler in audio thread off - io vector 512 - signal vector 128 | 6000 of 6000 | 0 | 20.87 | 0.06 | 69.78 | 97.40 | 103.10 | 103.35 |
 | 22 Nov 21:44:01 | long | Maket (with the ePlayer) | Test 8b - conditions same as 8a - Maket kept in focus | 6000 of 6000 | 0 | 0.07 | 0.05 | 0.14 | 0.18 | 1.12 | 0.28 |
+| 22 Nov 22:22:12 | long | Maket (with the ePlayer) | Test9 - usual settings - bringing other app in front; | 6000 of 6000 | 0 | 0.26 | 0.05 | 0.16 | 0.22 | 12.99 | 0.32 |
