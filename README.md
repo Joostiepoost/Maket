@@ -50,7 +50,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1a | Gate: list type and bach text reader | done |
 | 1b | Gate: bach text writer | done |
 | 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | done |
-| 1d | Gate: timing tests of the OSC connection | built, to test |
+| 1d | Gate: timing tests of the OSC connection | done |
 | 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | |
 | 1f | Gate: addressing by note, chords, tuning | |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
@@ -303,6 +303,10 @@ The takes are in `Temp/Timing 1d`; the test report lists them all in its section
 Two things to do with this version:
 
 1. `git pull`, `./build.sh`, and `./build.sh tests`, which ends with `All 95 checks passed.`
+Take 9 (22 Nov, 22:22) confirmed it: five minutes with other apps in front, every message left Maket within 0.32 ms of its time, and no crash. In that take 12 of the 6000 messages arrived in Max between 1 and 13 ms late although they had left on time: the Mac was busy with the other apps.
+
+The steps of that last test, for the record:
+
 2. **Take 9:** your usual settings, the *Long* passage, **Run from Maket**. After about a minute, bring another app to the front and use it for a minute or two, as in takes 7 and 8a. The stream should stay even, and in the result *Leaving Maket … the latest* should stay under a millisecond. Maket should not crash at the end; wait ten seconds after the last note to be sure.
 3. Push the `Timing 1d` folder and `Measurements/report.md`. Should Maket crash again: the report macOS writes is in `~/Library/Logs/DiagnosticReports` (a file whose name starts with `Maket`); copy it into `Temp`.
 
