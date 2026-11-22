@@ -20,6 +20,7 @@
 #include "UI/EmptyPage.h"
 #include "UI/Inspector.h"
 #include "UI/UtilitiesPage.h"
+#include "Engine/OscScheduler.h"
 #include "Model/Settings.h"
 
 class MainComponent : public juce::Component,
@@ -75,6 +76,7 @@ private:
     juce::ApplicationCommandManager commandManager;
 
     maket::Settings settings { maket::Settings::defaultFile() };
+    maket::OscScheduler oscScheduler;           // sends OSC messages at their time, on a thread of its own
     UtilitiesPage* utilities = nullptr;         // owned by `pages`
     bool listShown = true;
     bool inspectorShown = true;

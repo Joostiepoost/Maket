@@ -42,7 +42,11 @@ const std::vector<SettingInfo>& Settings::all()
           "The computer on which Max runs with the conTimbre ePlayer. 127.0.0.1 is this Mac itself." },
 
         { "ePlayerPort", "conTimbre ePlayer (OSC)", "Port", SettingKind::port, "46001", false,
-          "The port on which the Max patch listens for the ePlayer's messages (its udpreceive object)." }
+          "The port on which the Max patch listens for the ePlayer's messages (its udpreceive object)." },
+
+        { "logPatchPort", "Tests", "Logging patch port", SettingKind::port, "46002", false,
+          "The port of Maket's logging patch in Max (Max/Maket OSC log.maxpat), which notes when each message "
+          "arrives. Used by the OSC test page. It must differ from the ePlayer's port." }
     };
     return table;
 }

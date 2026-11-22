@@ -24,7 +24,7 @@ MainComponent::MainComponent()
     {
         if (i == Tabs::utilities)
         {
-            auto page = std::make_unique<UtilitiesPage> (settings);
+            auto page = std::make_unique<UtilitiesPage> (settings, oscScheduler);
             utilities = page.get();
             utilities->setSettingsNotice (settingsRead.getErrorMessage());
             utilities->onSettingSelected = [this] (const maket::SettingInfo& info) { showSetting (info); };
@@ -59,6 +59,9 @@ MainComponent::~MainComponent()
     // A value still being typed on the preferences page is taken over, so
     // that quitting right after typing does not lose it.
     if (utilities != nullptr) utilities->commitPendingEdits();
+
+    // A note that still sounds in the ePlayer gets its note-off now, not never.
+    oscScheduler.sendAllWaitingNow();
 
    #if JUCE_MAC
     juce::MenuBarModel::setMacMainMenu (nullptr);

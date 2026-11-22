@@ -10,12 +10,13 @@
 #include <functional>
 
 #include "PreferencesPage.h"
+#include "OscTestPage.h"
 #include "../Model/Settings.h"
 
 class UtilitiesPage : public juce::Component
 {
 public:
-    explicit UtilitiesPage (maket::Settings&);
+    UtilitiesPage (maket::Settings&, maket::OscScheduler&);
 
     /** Called when a setting's field gets the keyboard. */
     std::function<void (const maket::SettingInfo&)> onSettingSelected;
@@ -31,12 +32,17 @@ public:
 
     void paint (juce::Graphics&) override;
     void resized() override;
+    void mouseDown (const juce::MouseEvent&) override;
 
 private:
     static constexpr int listWidth = 200;
 
+    void showPage (int index);
+
     bool listVisible = true;
+    int currentPage = 0;            // an index into the list of pages
     PreferencesPage preferences;
+    OscTestPage oscTest;
     juce::Viewport viewport;        // the page scrolls when the window is low
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UtilitiesPage)

@@ -41,3 +41,6 @@ void testBachReading (const juce::File& temp);
 /** Stage 1b: the bach text writer (Tests/BachWriteTests.cpp). Writes the two
     rolls to `Temp/written by Maket`, for Joost to open in bach.roll. */
 void testBachWriting (const juce::File& temp);
+
+/** Stage 1c: OSC messages, the sender and the send thread (Tests/OscTests.cpp). */
+void testOsc();
