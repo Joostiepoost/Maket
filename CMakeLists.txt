@@ -61,12 +61,17 @@ set(MAKET_DEFINITIONS
     MAKET_BUILD_STAGE="${MAKET_BUILD_STAGE}")
 
 # --- The app -----------------------------------------------------------------
+# NSAppSleepDisabled: macOS does not "nap" Maket when it is not in front. A
+# napping app's timers fire up to a tenth of a second late, and so would its
+# notes (measured at stage 1d). Source/Platform/BusyActivity says the same to
+# the system while Maket plays; this entry holds whatever the app is doing.
 juce_add_gui_app(Maket
     PRODUCT_NAME        "Maket"
     COMPANY_NAME        "Maket"
     BUNDLE_ID           "com.maket.app"
     VERSION             ${PROJECT_VERSION}
-    MICROPHONE_PERMISSION_ENABLED FALSE)
+    MICROPHONE_PERMISSION_ENABLED FALSE
+    PLIST_TO_MERGE      "<plist><dict><key>NSAppSleepDisabled</key><true/><key>LSAppNapIsDisabled</key><true/></dict></plist>")
 
 juce_generate_juce_header(Maket)
 
@@ -84,6 +89,13 @@ target_sources(Maket PRIVATE
     Source/UI/OscTestPage.cpp
     Source/UI/TimingTestPage.cpp
     ${MAKET_CORE_SOURCES})
+
+# What differs per operating system. On macOS a few lines of Objective-C.
+if(APPLE)
+    target_sources(Maket PRIVATE Source/Platform/BusyActivity.mm)
+else()
+    target_sources(Maket PRIVATE Source/Platform/BusyActivity.cpp)
+endif()
 
 target_compile_definitions(Maket PRIVATE
     JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:Maket,JUCE_PRODUCT_NAME>"

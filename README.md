@@ -297,14 +297,14 @@ The takes are in `Temp/Timing 1d`; the test report lists them all in its section
 - **With Overdrive off** both are uneven (95 in 100 within 7 to 9 ms, single ones 30 to 40 ms). Overdrive must be on, as it must for ScAst.
 - **With Scheduler in Audio Interrupt on** Maket's messages land within 3 ms; bach.roll's own notes within 14 ms.
 - **Five minutes untouched:** 6000 messages, the farthest 0.4 and 0.6 ms from its time.
-- **The one fault found** (take 7): when another app was used while Maket played, macOS slowed Maket down and messages left up to 99 ms late. Maket now tells macOS that it is busy for as long as messages wait (`Source/UI/KeepAwake.h`).
+- **The one fault found** (take 7): when another app was used while Maket played, macOS slowed Maket down and messages left up to 99 ms late. Maket now tells macOS that it is busy for as long as messages wait (`Source/UI/KeepAwake.h`, `Source/Platform/BusyActivity`), and its `Info.plist` asks not to be napped at all. A first attempt, with a class of JUCE's, had no effect and crashed Maket five seconds after the last message (take 8): that class lets go of the system's token too early. Maket now holds the token itself.
 - **Waiting for Max's log:** Max writes its log when its interface is free, so not while a window is being dragged. Maket now goes on waiting instead of giving up after 8 seconds; **Stop** ends the wait, and **Read the log again** files the take later.
 
 Two things to do with this version:
 
 1. `git pull`, `./build.sh`, and `./build.sh tests`, which ends with `All 95 checks passed.`
-2. **Take 8:** your usual settings, the *Long* passage, **Run from Maket**. After about a minute, bring another app to the front and type in it for a minute or two, as in take 7. In the result, *Leaving Maket … the latest* should now stay under a millisecond.
-3. Push the `Timing 1d` folder and `Measurements/report.md`.
+2. **Take 9:** your usual settings, the *Long* passage, **Run from Maket**. After about a minute, bring another app to the front and use it for a minute or two, as in takes 7 and 8a. The stream should stay even, and in the result *Leaving Maket … the latest* should stay under a millisecond. Maket should not crash at the end; wait ten seconds after the last note to be sure.
+3. Push the `Timing 1d` folder and `Measurements/report.md`. Should Maket crash again: the report macOS writes is in `~/Library/Logs/DiagnosticReports` (a file whose name starts with `Maket`); copy it into `Temp`.
 
 ## The repository
 
@@ -315,6 +315,7 @@ Source/             the application
   Main.cpp            the application object and its window
   MainComponent.*     everything inside the window
   UI/                 interface code: tab row, panel buttons, pages, preferences, inspector, colours
+  Platform/           what differs per operating system (on macOS: telling the system that Maket is busy)
   Model/              no interface code: the settings; the name, version and build stage; bach's list type; the roll
   Formats/            no interface code: reading and writing files (bach's text, bach.roll)
   Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test
