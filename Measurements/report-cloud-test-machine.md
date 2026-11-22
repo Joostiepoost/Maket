@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1a. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 21 Nov 2026 2:14:17pm.
+Maket 0.0.1, stage 1b. Machine: Intel(R) Xeon(R) Processor @ 2.30GHz, Linux. Date: 22 Nov 2026 1:01:55pm.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter (`1a`) | yes |
+| The build stage reads as a step number and a letter (`1b`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -136,7 +136,113 @@ Read from it: 57 notes glide, with 126 breakpoints between them; 341 slots are f
 
 Read from it: 8 notes glide, with 27 breakpoints between them; 49 slots are filled: slot 1 cpe_timbre (text) in 8 notes; slot 2 modulation (function) in 16 notes; slot 3 cpe_gain-presence dB (function) in 3 notes; slot 6 waveshape (function) in 6 notes; slot 10 vibrato (function) in 2 notes; slot 20 dynamics (dynamics) in 3 notes; slot 22 articulations (articulations) in 2 notes; slot 29 fixed cc (llll) in 1 note; slot 30 iac port & ch (llll) in 8 notes.
 
-## 4. Test material
+## 4. Writing bach rolls
+
+Stage 1b: the writer of bach's text, and the writer that makes a bach.roll file of a roll. The layout and the rules for numbers and texts are bach's own, taken from its source. The test agreed for this stage: Joost's two rolls, read and written back, come out byte for byte as they were, each with the header it came with.
+
+### The text writer
+
+| Check | Passed |
+| --- | --- |
+| A real number is written with at most six decimals and always a point, a whole number without one (`7100.0`, `0.5`, `35407.0514`, `40452.095651`, `179244.0`, `-0.2875`, `0.333333`, `0.666667`, `0.0`, `117`) | yes |
+| bach's layout: a tab per level, every list on its own line, a closing bracket on the last line of its list or alone after an inner list, no line end at the end; round brackets come out square | yes |
+| What was written reads back to the same list, and is written the same again | yes |
+
+Texts, and how each is written so that bach and Maket read it back as the same text:
+
+| Text | Written as | Why |
+| --- | --- | --- |
+| `pizz` | `` pizz `` |  |
+| `-eind` | `` -eind `` |  |
+| `uitgegaan...` | `` uitgegaan... `` |  |
+| `s3z1+2b.wav` | `` s3z1+2b.wav `` |  |
+| `1` | `` `1 `` | would be read as a number |
+| `7100.0` | `` `7100.0 `` | would be read as a number |
+| `G8vb` | `` `G8vb `` | would be read as a pitch |
+| `nil` | `` `nil `` | would be read as an empty list |
+| `[x]` | `` `[x] `` | brackets |
+| `gain (dB)` | `` `gain\ (dB) `` | brackets and a space |
+| `a b` | `` "a b" `` | a space |
+| `x,y` | `` "x,y" `` | a comma |
+| `D'aarde is niet uit haar ` | `` "D'aarde is niet uit haar " `` | spaces, one at the end |
+| `say "hi"` | `` "say \"hi\"" `` | a space and quotes |
+| `Flöte 1` | `` "Flöte 1" `` | an accent is nothing special |
+| `a\b` | `` "a\\b" `` | a backslash |
+| `(empty)` | `` "" `` | an empty text |
+
+| Check | Passed |
+| --- | --- |
+| All 17 texts above are written as expected and read back as themselves | yes |
+
+### doodsbed final v1c
+
+`doodsbed final v1c.txt`: 57474 bytes, 3327 lines.
+
+| Check | Result | Passed |
+| --- | --- | --- |
+| Read into a list and written out: byte for byte the file | the same | yes |
+| Read into a roll and written out from the roll: byte for byte the file, with the header it came with | the same | yes |
+| Every number and word of the file, written from its value alone by bach's rules, comes out as the file spelled it | 5342 of 5342 | yes |
+| With the velocity of the first note raised by 1 in the roll, the written text differs in exactly one line | 1 line | yes |
+| Written as a file, `Temp/written by Maket/doodsbed final v1c.txt`: byte for byte the original | the same | yes |
+
+Of the 5342 numbers and words written from the roll, 2824 come from the roll's values (onsets, pitches, durations, velocities, breakpoints, marker times, flags); the others are kept as the file spelled them (slot contents, header).
+
+### mixed_roll_example_01h
+
+`mixed_roll_example_01h.txt`: 17614 bytes, 946 lines.
+
+| Check | Result | Passed |
+| --- | --- | --- |
+| Read into a list and written out: byte for byte the file | the same | yes |
+| Read into a roll and written out from the roll: byte for byte the file, with the header it came with | the same | yes |
+| Every number and word of the file, written from its value alone by bach's rules, comes out as the file spelled it | 1849 of 1849 | yes |
+| With the velocity of the first note raised by 1 in the roll, the written text differs in exactly one line | 1 line | yes |
+| Written as a file, `Temp/written by Maket/mixed_roll_example_01h.txt`: byte for byte the original | the same | yes |
+
+Of the 1849 numbers and words written from the roll, 331 come from the roll's values (onsets, pitches, durations, velocities, breakpoints, marker times, flags); the others are kept as the file spelled them (slot contents, header).
+
+### A roll changed by Maket
+
+`Temp/written by Maket/mixed_roll_example_01h changed by Maket.txt` is `mixed_roll_example_01h.txt` with two changes made in the roll:
+
+- the first note of voice 3 (`synth1a`, at 1.45 s) is 50 cents, a quarter tone, higher: 6975.0 cents became 7025.0;
+- a marker named `Maket test (1b)` stands at 1.0 s. In the file its name is written `` `Maket\ test\ (1b) ``.
+
+| Check | Passed |
+| --- | --- |
+| The file is written, and read back it holds the higher note and the marker | yes |
+| With the two changes taken out again, it is byte for byte the original: nothing else was touched | yes |
+
+The same for the two files as bach saved them again (for doodsbed that is the file with the longer header of the newer bach):
+
+### doodsbed, re-saved by bach
+
+`01b doodsbed roll resave after dump.txt`: 57987 bytes, 3350 lines.
+
+| Check | Result | Passed |
+| --- | --- | --- |
+| Read into a list and written out: byte for byte the file | the same | yes |
+| Read into a roll and written out from the roll: byte for byte the file, with the header it came with | the same | yes |
+| Every number and word of the file, written from its value alone by bach's rules, comes out as the file spelled it | 5410 of 5410 | yes |
+| With the velocity of the first note raised by 1 in the roll, the written text differs in exactly one line | 1 line | yes |
+
+Of the 5410 numbers and words written from the roll, 2824 come from the roll's values (onsets, pitches, durations, velocities, breakpoints, marker times, flags); the others are kept as the file spelled them (slot contents, header).
+
+### mixed example, re-saved by bach
+
+`02b mixed_roll_example_01h resave after dump.txt`: 17614 bytes, 946 lines.
+
+| Check | Result | Passed |
+| --- | --- | --- |
+| Read into a list and written out: byte for byte the file | the same | yes |
+| Read into a roll and written out from the roll: byte for byte the file, with the header it came with | the same | yes |
+| Every number and word of the file, written from its value alone by bach's rules, comes out as the file spelled it | 1849 of 1849 | yes |
+| With the velocity of the first note raised by 1 in the roll, the written text differs in exactly one line | 1 line | yes |
+
+Of the 1849 numbers and words written from the roll, 331 come from the roll's values (onsets, pitches, durations, velocities, breakpoints, marker times, flags); the others are kept as the file spelled them (slot contents, header).
+
+## 5. Test material
 
 The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. This section lists what the program finds there; nothing is read yet. A missing file is not a failed check at this stage.
 
@@ -148,6 +254,9 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `02b mixed_roll_example_01h resave after dump.txt` | 17.2 KB |
 | `doodsbed final v1c.txt` | 56.1 KB |
 | `mixed_roll_example_01h.txt` | 17.2 KB |
+| `written by Maket/doodsbed final v1c.txt` | 56.1 KB |
+| `written by Maket/mixed_roll_example_01h changed by Maket.txt` | 17.2 KB |
+| `written by Maket/mixed_roll_example_01h.txt` | 17.2 KB |
 
 Needed for the coming stages:
 
@@ -160,4 +269,4 @@ Needed for the coming stages:
 | 01b doodsbed roll resave after dump | 1b: the roll as bach saves it again | yes, as `01b doodsbed roll resave after dump.txt` |
 | 02b mixed_roll_example_01h resave after dump | 1b: the roll as bach saves it again | yes, as `02b mixed_roll_example_01h resave after dump.txt` |
 
-All 47 checks passed.
+All 71 checks passed.

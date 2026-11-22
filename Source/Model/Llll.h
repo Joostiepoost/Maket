@@ -37,7 +37,8 @@ struct Llll
     juce::int64 den = 1;        // rational: the denominator
     double value = 0.0;         // any number: its value; pitch: cents (C5 = 6000)
     juce::String text;          // symbol: its text, without quotes, backtick or escapes
-    juce::String spelling;      // an atom as it was written in the file; empty when made by Maket
+    juce::String spelling;      // an atom as it was written in the file; empty when made by Maket.
+                                // The writer uses it as it stands: to change an atom, put a new one in its place.
     std::vector<Llll> items;    // list: its items
 
     // --- making items ---
@@ -68,8 +69,8 @@ struct Llll
     int depth() const;
 
     /** The item as text on one line, atoms as they were spelled, lists in
-        square brackets. (bach's own layout with line breaks comes with the
-        writer, stage 1b.) */
+        square brackets: for messages and reports. A file is written with
+        writeLlllText (Formats/LlllText.h), in bach's own layout. */
     juce::String toLine() const;
 
     /** True when two items hold the same: same kinds of atoms and lists, the

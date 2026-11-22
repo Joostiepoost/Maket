@@ -41,6 +41,8 @@ struct SlotValue
 struct Note
 {
     double cents = 6000.0;
+    juce::String pitchName;     // set when the file gave the pitch as a note name (C#5) and not in cents;
+                                // written back as long as it still stands for `cents`
     double duration = 0.0;      // ms
     int velocity = 100;
     int flags = 0;
@@ -81,6 +83,7 @@ struct Marker
     double position = 0.0;      // ms
     Llll names;                 // one name or several; an empty list when the marker has none
     juce::String role;          // none, barline, timesig, tempo, division, subdivision ...
+    bool hasContent = false;
     Llll content;               // what belongs to the role, such as [ 3 4 ] for a time signature
 
     juce::String nameAsText() const;
@@ -94,7 +97,7 @@ struct SlotInfo
     juce::String type;          // function, text, int, float, llll, filelist, dynamics ...
     juce::String key;
     juce::String temporalMode;  // none, relative, milliseconds
-    Llll all;                   // the whole definition as the file gave it
+    Llll all;                   // the whole definition as the file gave it; this is what is written back
 };
 
 /** One entry of the file's header, in the order of the file. */

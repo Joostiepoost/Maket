@@ -10,7 +10,9 @@
 //      back, values that must be refused, a damaged file.
 //   3. Reading bach rolls (stage 1a, in BachTests.cpp): the text reader,
 //      and Joost's two rolls against bach's own counts and its dump.
-//   4. Test material: what is in the repository's Temp folder, and whether
+//   4. Writing bach rolls (stage 1b, in BachWriteTests.cpp): the text
+//      writer, and Joost's rolls read and written back byte for byte.
+//   5. Test material: what is in the repository's Temp folder, and whether
 //      the files the coming steps need are there.
 //
 // Options:  --out <folder>   where report.md is written (default: Measurements)
@@ -267,7 +269,7 @@ void testSettings (const juce::File& work)
     line();
 }
 
-// --- 4. Test material ----------------------------------------------------------
+// --- 5. Test material ----------------------------------------------------------
 
 /** A file name without extension, case, spaces, underscores and hyphens, so
     that "mixed_roll_example_01h.txt" and "Mixed roll example 01h" compare equal. */
@@ -278,7 +280,7 @@ juce::String plainName (const juce::String& name)
 
 void testMaterial (const juce::File& temp)
 {
-    line ("## 4. Test material");
+    line ("## 5. Test material");
     line();
     line ("The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. "
           "This section lists what the program finds there; nothing is read yet. A missing file is not a "
@@ -366,6 +368,7 @@ int main (int argc, char** argv)
     std::cout << "The test program..." << std::endl;     testProgram (work, outDir);
     std::cout << "Settings..." << std::endl;             testSettings (work);
     std::cout << "Reading bach rolls..." << std::endl;   testBachReading (sourceDir.getChildFile ("Temp"));
+    std::cout << "Writing bach rolls..." << std::endl;   testBachWriting (sourceDir.getChildFile ("Temp"));
     std::cout << "Test material..." << std::endl;        testMaterial (sourceDir.getChildFile ("Temp"));
 
     work.deleteRecursively();

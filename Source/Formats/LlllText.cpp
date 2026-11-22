@@ -2,7 +2,10 @@
 
 #include "LlllText.h"
 
+#include <algorithm>
+#include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <string>
 
 namespace maket
@@ -346,6 +349,259 @@ juce::Result readLlllText (const juce::String& text, Llll& result)
         return juce::Result::fail ("Line " + juce::String (openedAtLine.back()) + ": a list is opened here and never closed.");
 
     return juce::Result::ok();
+}
+
+// --- Writing ----------------------------------------------------------------------
+//
+// What follows does what bach does when it saves text (`writetxt`): the
+// layout of llll_to_text_buf_pretty and the symbol rules of
+// prepare_string_for_text_buf and chkparser.l, in bach's source, with the
+// settings bach.roll uses (a tab per level, every list on a line of its own,
+// no line wrapping, six decimals).
+
+namespace
+{
+    /** A real number as bach prints it: at most `maxDecimals` decimals, the
+        zeros at the end taken off, but one digit left after the point
+        (7100.0, 0.5, 35407.0514). */
+    Str realText (double x, int maxDecimals)
+    {
+        char buffer[400];
+        const int n = std::snprintf (buffer, sizeof (buffer), "%.*f", maxDecimals, x);
+        Str s (buffer, (size_t) juce::jlimit (0, (int) sizeof (buffer) - 1, n));
+
+        for (auto& c : s)
+            if (c == ',') c = '.';      // whatever the language settings of the machine
+
+        while (s.size() > 1 && s.back() == '0' && s[s.size() - 2] != '.')
+            s.pop_back();
+        return s;
+    }
+
+    // What bach's check finds in a symbol (chkparser.l).
+    enum SymbolFlag { hasBrackets = 1, hasSeparators = 2, hasSpecials = 4, startsWithBacktick = 8 };
+
+    /** How many characters of s, from `from` on, are not in `stop`. */
+    size_t runOutside (const Str& s, size_t from, const char* stop)
+    {
+        size_t i = from;
+        while (i < s.size() && std::strchr (stop, s[i]) == nullptr) ++i;        // (a zero byte is in every `stop`)
+        return i - from;
+    }
+
+    /** bach tries a list of patterns and takes the one that covers most of
+        the symbol; of two that cover as much, the first. */
+    int symbolFlags (const Str& s)
+    {
+        struct Rule { const char* stop; int flags; };
+
+        static const char* const all       = "()[] \t\n\r,;\"\\";
+        static const char* const sepsSpecs = " \t\n\r,;\"\\";
+        static const char* const brksSpecs = "()[]\"\\";
+        static const char* const specs     = "\"\\";
+        static const char* const brksSeps  = "()[] \t\n\r,;";
+        static const char* const seps      = " \t\n\r,;";
+        static const char* const brks      = "()[]";
+        static const char* const newline   = "\n";
+
+        if (s.empty()) return 0;
+
+        int best = 0;
+        size_t bestLength = 0;
+
+        if (s[0] != '`')
+        {
+            const Rule rules[] =
+            {
+                { all,       0 },
+                { sepsSpecs, hasBrackets },
+                { brksSpecs, hasSeparators },
+                { specs,     hasBrackets | hasSeparators },
+                { brksSeps,  hasSpecials },
+                { seps,      hasBrackets | hasSpecials },
+                { brks,      hasSeparators | hasSpecials },
+                { newline,   hasBrackets | hasSeparators | hasSpecials }
+            };
+
+            for (const auto& rule : rules)
+            {
+                const size_t length = runOutside (s, 0, rule.stop);
+                if (length > bestLength) { bestLength = length; best = rule.flags; }
+            }
+            return best;
+        }
+
+        // A symbol that itself begins with a backtick. (The second and the last
+        // two of bach's patterns are not what their comments say; they are
+        // followed here as they are.)
+        const Rule rules[] =
+        {
+            { all,       startsWithBacktick },
+            { nullptr,   startsWithBacktick | hasBrackets },
+            { brksSpecs, startsWithBacktick | hasSeparators },
+            { specs,     startsWithBacktick | hasBrackets | hasSeparators },
+            { brksSeps,  startsWithBacktick | hasSpecials },
+            { seps,      startsWithBacktick | hasSpecials },
+            { brks,      startsWithBacktick | hasSeparators | hasSpecials },
+            { newline,   startsWithBacktick | hasBrackets | hasSpecials }
+        };
+
+        for (const auto& rule : rules)
+        {
+            size_t length = 1;
+            if (rule.stop != nullptr)
+                length += runOutside (s, 1, rule.stop);
+            else
+                while (length < s.size() && std::strchr (sepsSpecs, s[length]) != nullptr) ++length;
+
+            if (length > bestLength) { bestLength = length; best = rule.flags; }
+        }
+        return best;
+    }
+
+    Str withBackslashBefore (const Str& s, const char* which)
+    {
+        Str out;
+        for (const char c : s)
+        {
+            if (std::strchr (which, c) != nullptr && c != 0) out += '\\';
+            out += c;
+        }
+        return out;
+    }
+
+    /** True when `written` reads back as the one symbol `name`. */
+    bool readsBackAs (const Str& written, const Str& name)
+    {
+        Llll back;
+        return readLlllText (fromUtf8 (written), back).wasOk()
+               && back.size() == 1 && back[0].isSymbol() && back[0].text == fromUtf8 (name);
+    }
+
+    /** A symbol as bach writes it: as it is when that reads back as a symbol;
+        with a backtick when it looks like a number, a pitch or holds
+        brackets; in quotes when it holds spaces, commas or semicolons. */
+    Str symbolText (const Str& name)
+    {
+        Llll probe;
+        const bool plainSymbol = wordToAtom (name, probe) && probe.isSymbol();
+        const int flags = symbolFlags (name);
+
+        Str out;
+        const char* closing = "";
+        enum class Escape { none, quotes, quotesAndSeparators } escape = Escape::none;
+
+        if (! plainSymbol || (flags & (hasBrackets | startsWithBacktick)) != 0)
+        {
+            out = "`";
+            escape = Escape::quotesAndSeparators;
+        }
+        else if ((flags & hasSeparators) != 0)
+        {
+            out = "\"";
+            closing = "\"";
+            escape = Escape::quotes;
+        }
+
+        if (escape == Escape::quotes && (flags & hasSpecials) != 0)
+            out += withBackslashBefore (name, "\"'");
+        else if (escape == Escape::quotesAndSeparators && (flags & (hasSpecials | hasSeparators)) != 0)
+            out += withBackslashBefore (name, ",; \n\t\"'");
+        else
+            out += name;
+
+        out += closing;
+
+        // bach's rules leave a few symbols that do not read back as themselves
+        // (an empty one, one with a backslash in it). Those are written in
+        // quotes with every quote and backslash kept by a backslash, which
+        // bach reads as the same symbol.
+        if (! readsBackAs (out, name))
+            out = "\"" + withBackslashBefore (name, "\"\\") + "\"";
+
+        return out;
+    }
+
+    Str atomText (const Llll& atom)
+    {
+        if (atom.spelling.isNotEmpty())
+            return atom.spelling.toStdString();
+
+        switch (atom.kind)
+        {
+            case Llll::Kind::integer:   return std::to_string ((long long) atom.num);
+            case Llll::Kind::rational:  return std::to_string ((long long) atom.num) + "/" + std::to_string ((long long) atom.den);
+            case Llll::Kind::real:      return realText (atom.value, 6);
+            case Llll::Kind::pitch:     return realText (atom.value, 6);       // Maket makes no note names: in cents
+            case Llll::Kind::symbol:    return symbolText (atom.text.toStdString());
+            case Llll::Kind::list:      break;
+        }
+        return {};
+    }
+
+    void addTabs (Str& out, int depth)
+    {
+        out.append ((size_t) std::max (0, depth - 1), '\t');
+    }
+
+    /** bach's layout. Every atom and every closing bracket is followed by one
+        character, a space or a line end, which the next thing written may
+        turn into a line end. */
+    void writeItems (const Llll& list, Str& out, int& depth, bool& justClosedAList)
+    {
+        for (const auto& item : list.items)
+        {
+            if (item.isList())
+            {
+                ++depth;
+                if (! out.empty()) out.back() = '\n';
+                addTabs (out, depth);
+                justClosedAList = false;
+                out += "[ ";
+
+                writeItems (item, out, depth, justClosedAList);
+
+                if (justClosedAList)
+                {
+                    out.back() = '\n';
+                    addTabs (out, depth);
+                }
+                --depth;
+                out += "]\n";
+                justClosedAList = true;
+            }
+            else
+            {
+                // After a list, an atom begins a new line. bach leaves a real
+                // number out of this rule (it stays at the start of the line
+                // the bracket ended); the same is done here.
+                if (justClosedAList && item.kind != Llll::Kind::real && ! out.empty())
+                {
+                    out.back() = '\n';
+                    addTabs (out, depth);
+                    justClosedAList = false;
+                }
+                out += atomText (item);
+                out += ' ';
+            }
+        }
+    }
+}
+
+juce::String writeLlllText (const Llll& items)
+{
+    Str out;
+    int depth = 1;
+    bool justClosedAList = false;
+    writeItems (items, out, depth, justClosedAList);
+
+    if (! out.empty()) out.pop_back();      // the last space or line end
+    return fromUtf8 (out);
+}
+
+juce::String writeLlllAtom (const Llll& atom)
+{
+    return atom.isList() ? juce::String() : fromUtf8 (atomText (atom));
 }
 
 } // namespace maket

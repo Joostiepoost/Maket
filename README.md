@@ -46,9 +46,9 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 0a | Skeleton: repository, build script, the window with four empty tabs and the inspector | done |
 | 0b | Skeleton: console test program and its report; this status table | done |
 | 0c | Skeleton: preferences page and settings file (folders, OSC host and port) | done |
-| 0d | Skeleton: buttons to hide and show the list and the inspector | built, to test |
-| 1a | Gate: list type and bach text reader | built, to test |
-| 1b | Gate: bach text writer | |
+| 0d | Skeleton: buttons to hide and show the list and the inspector | done |
+| 1a | Gate: list type and bach text reader | done |
+| 1b | Gate: bach text writer | built, to test |
 | 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | |
 | 1d | Gate: timing tests of the OSC connection | |
 | 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | |
@@ -191,6 +191,28 @@ Two things to know. bach's dump leaves out muted notes (one in doodsbed), so the
 3. Open `Measurements/report.md` and look at section 3, *Reading bach rolls*: for each of the two rolls a table with Maket's reader on the left, bach on the right, and `yes` in every row. Below each table, one line says what was read from the roll: how many notes glide, and which slots are filled in how many notes. Check that line against what you know of the two pieces.
 4. Push `Measurements/report.md`, as before.
 
+## Using stage 1b
+
+Stage 1b adds the other direction: Maket can write a roll as a bach.roll file. Again nothing changes in the window, apart from `stage 1b`; the work shows in the test report and in three files the test writes.
+
+- **The text writer** lays a list out as bach.roll's `writetxt` does: a tab per level, every list on a line of its own, square brackets, no line end after the last line. The layout and the rules below are bach's own, taken from its source.
+- **Numbers and texts.** What was read from a file and not changed is written exactly as the file spelled it. What Maket makes itself is written by bach's rules: a real number with at most six decimals and always a point (`7100.0`), a whole number without one (`88`), a text with a backtick or in quotes when it needs one to be read back as a text (`` `gain\ (dB) ``, `"baan getreden"`).
+- **The roll writer** builds the file the way bach builds it when it saves: the header entries in the order they came in, then the voices; in each note the pitch, duration, velocity, breakpoints, slots and flag. Onsets, pitches, durations, velocities, breakpoints, marker times and flags are written from the roll's values, not copied from the text they were read from. A header keeps the entries it came with; none are added.
+- **The test** is the one agreed for this stage: each of the two rolls, read and written back, is byte for byte the file it was. It is done through the list alone and through the roll, and also for the two files bach saved again. As a further check, every number and word in the files is written from its value alone and compared with the file's spelling: 5342 of 5342 in doodsbed, 1849 of 1849 in the mixed example.
+
+`./build.sh tests` writes three files into `Temp/written by Maket/` (a folder git leaves alone):
+
+- `doodsbed final v1c.txt` and `mixed_roll_example_01h.txt`, the same byte for byte as your originals;
+- `mixed_roll_example_01h changed by Maket.txt`, the mixed example with two changes made in the roll: a marker named `Maket test (1b)` at 1.0 s, and the first note of voice 3 (`synth1a`, at 1.45 s) 50 cents higher (6975 became 7025 cents). This is the first file bach reads that bach did not write itself.
+
+### Testing stage 1b
+
+1. `git pull`, then `./build.sh`: Maket opens as before, with `stage 1b` at the right of the tab row.
+2. `./build.sh tests` ends with `All 71 checks passed.` Section 4 of `Measurements/report.md`, *Writing bach rolls*, has `yes` in every row.
+3. In Max, open `Temp/written by Maket/doodsbed final v1c.txt` and `Temp/written by Maket/mixed_roll_example_01h.txt` in a bach.roll (`read`). They should look and play as your own files do; since they are the same bytes, bach cannot tell them apart.
+4. In Max, open `Temp/written by Maket/mixed_roll_example_01h changed by Maket.txt`. It should open without a message in the Max window and show a marker `Maket test (1b)` at 1 second, and the first note of the third voice (`synth1a`) a quarter tone higher than in the original (6975 became 7025 cents). Everything else should be as in the original.
+5. Push `Measurements/report.md`, as before.
+
 ## The repository
 
 ```
@@ -201,7 +223,7 @@ Source/             the application
   MainComponent.*     everything inside the window
   UI/                 interface code: tab row, panel buttons, pages, preferences, inspector, colours
   Model/              no interface code: the settings; the name, version and build stage; bach's list type; the roll
-  Formats/            no interface code: reading files (bach's text, bach.roll)
+  Formats/            no interface code: reading and writing files (bach's text, bach.roll)
 Tests/              the console test program
 Measurements/       its reports
 Reference/python/   scripts from the design phase (file formats, checks); not part of the app

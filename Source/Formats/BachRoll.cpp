@@ -3,6 +3,8 @@
 #include "BachRoll.h"
 #include "LlllText.h"
 
+#include <cmath>
+
 namespace maket
 {
 
@@ -63,6 +65,7 @@ namespace
             return juce::Result::fail (place + ": a note needs pitch, duration and velocity.");
 
         note.cents = n[0].value;
+        if (n[0].kind == Llll::Kind::pitch) note.pitchName = n[0].spelling;
         note.duration = n[1].value;
         note.velocity = (int) n[2].value;
 
@@ -153,7 +156,7 @@ namespace
             marker.position = m[0].value;
             if (m.size() > 1) marker.names = m[1];
             marker.role = (m.size() > 2 && m[2].isSymbol()) ? m[2].text : juce::String ("none");
-            if (m.size() > 3) marker.content = m[3];
+            if (m.size() > 3) { marker.content = m[3]; marker.hasContent = true; }
             roll.markers.push_back (std::move (marker));
         }
     }
@@ -263,6 +266,171 @@ juce::Result readBachRollFile (const juce::File& file, Roll& roll, juce::StringA
     if (r.failed()) return r;
 
     return readBachRoll (content, roll, remarks);
+}
+
+// --- Writing ----------------------------------------------------------------------
+//
+// The list is built the way bach builds it when it saves (the functions
+// get_rollvoice_values_as_llll, get_rollchord_values_as_llll,
+// get_rollnote_values_as_llll and get_markers_as_llll in bach's source):
+// the same items in the same order, onsets, pitches, durations and
+// breakpoints as real numbers, velocities and flags as whole numbers.
+
+namespace
+{
+    Llll symbolItem (const char* name)      { return Llll::makeSymbol (name); }
+
+    Llll pitchItem (const Note& note)
+    {
+        if (note.pitchName.isNotEmpty())
+        {
+            const auto asNamed = readLlllWord (note.pitchName);
+            if (asNamed.kind == Llll::Kind::pitch && std::abs (asNamed.value - note.cents) < 1.0e-9)
+                return asNamed;
+        }
+        return Llll::makeReal (note.cents);
+    }
+
+    Llll noteAsList (const Note& note)
+    {
+        Llll n;
+        n.items.push_back (pitchItem (note));
+        n.items.push_back (Llll::makeReal (note.duration));
+        n.items.push_back (Llll::makeInteger (note.velocity));
+
+        for (const auto& other : note.others)
+            if (other.head() == "graphic") n.items.push_back (other);
+
+        if (! note.breakpoints.empty())
+        {
+            Llll points;
+            points.items.push_back (symbolItem ("breakpoints"));
+            for (const auto& b : note.breakpoints)
+            {
+                Llll point;
+                point.items.push_back (Llll::makeReal (b.position));
+                point.items.push_back (Llll::makeReal (b.cents));
+                point.items.push_back (Llll::makeReal (b.slope));
+                if (b.hasVelocity) point.items.push_back (Llll::makeInteger (b.velocity));
+                points.items.push_back (std::move (point));
+            }
+            n.items.push_back (std::move (points));
+        }
+
+        if (! note.slots.empty())
+        {
+            Llll slots;
+            slots.items.push_back (symbolItem ("slots"));
+            for (const auto& slot : note.slots)
+            {
+                Llll one;
+                one.items.push_back (Llll::makeInteger (slot.number));
+                one.items.insert (one.items.end(), slot.content.items.begin(), slot.content.items.end());
+                slots.items.push_back (std::move (one));
+            }
+            n.items.push_back (std::move (slots));
+        }
+
+        for (const auto& other : note.others)           // articulations, name
+            if (other.head() != "graphic") n.items.push_back (other);
+
+        n.items.push_back (Llll::makeInteger (note.flags));
+        return n;
+    }
+
+    Llll chordAsList (const Chord& chord)
+    {
+        Llll c;
+        c.items.push_back (Llll::makeReal (chord.onset));
+        for (const auto& note : chord.notes)    c.items.push_back (noteAsList (note));
+        for (const auto& other : chord.others)  c.items.push_back (other);
+        c.items.push_back (Llll::makeInteger (chord.flags));
+        return c;
+    }
+
+    Llll voiceAsList (const Voice& voice)
+    {
+        Llll v;
+        for (const auto& chord : voice.chords) v.items.push_back (chordAsList (chord));
+        v.items.push_back (Llll::makeInteger (voice.flags));
+        return v;
+    }
+
+    Llll markersAsList (const Roll& roll)
+    {
+        Llll entry;
+        entry.items.push_back (symbolItem ("markers"));
+        for (const auto& marker : roll.markers)
+        {
+            Llll m;
+            m.items.push_back (Llll::makeReal (marker.position));
+            m.items.push_back (marker.names);
+            m.items.push_back (Llll::makeSymbol (marker.role.isEmpty() ? juce::String ("none") : marker.role));
+            if (marker.hasContent) m.items.push_back (marker.content);
+            entry.items.push_back (std::move (m));
+        }
+        return entry;
+    }
+
+    Llll slotInfoAsList (const Roll& roll)
+    {
+        Llll entry;
+        entry.items.push_back (symbolItem ("slotinfo"));
+        for (const auto& info : roll.slotInfo) entry.items.push_back (info.all);
+        return entry;
+    }
+}
+
+Llll bachRollAsList (const Roll& roll)
+{
+    Llll file;
+    file.items.push_back (symbolItem ("roll"));
+
+    // The header, in the order it came in. Markers and slot definitions are
+    // written from the roll's own lists; the other entries as they were kept.
+    bool markersWritten = false, slotInfoWritten = false;
+    for (const auto& entry : roll.header)
+    {
+        if (entry.name == "markers")
+        {
+            if (! markersWritten) file.items.push_back (markersAsList (roll));
+            markersWritten = true;
+        }
+        else if (entry.name == "slotinfo")
+        {
+            if (! slotInfoWritten) file.items.push_back (slotInfoAsList (roll));
+            slotInfoWritten = true;
+        }
+        else
+        {
+            file.items.push_back (entry.content);
+        }
+    }
+    if (! slotInfoWritten && ! roll.slotInfo.empty()) file.items.push_back (slotInfoAsList (roll));
+    if (! markersWritten && ! roll.markers.empty())   file.items.push_back (markersAsList (roll));
+
+    for (const auto& voice : roll.voices) file.items.push_back (voiceAsList (voice));
+    return file;
+}
+
+juce::String writeBachRollText (const Roll& roll)
+{
+    return writeLlllText (bachRollAsList (roll));
+}
+
+juce::Result writeBachRollFile (const juce::File& file, const Roll& roll)
+{
+    const auto text = writeBachRollText (roll);
+
+    if (! file.getParentDirectory().createDirectory())
+        return juce::Result::fail ("The folder " + file.getParentDirectory().getFullPathName() + " could not be made.");
+
+    // Through a temporary file beside it, so that a failed write leaves an
+    // existing file as it was. Plain UTF-8, Unix line ends, as bach writes.
+    if (! file.replaceWithData (text.toRawUTF8(), text.getNumBytesAsUTF8()))
+        return juce::Result::fail ("The file " + file.getFullPathName() + " could not be written.");
+
+    return juce::Result::ok();
 }
 
 } // namespace maket

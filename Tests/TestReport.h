@@ -37,3 +37,7 @@ inline void checkRow (bool ok, const juce::String& what)
 /** Stage 1a: the bach text reader (Tests/BachTests.cpp). `temp` is the
     repository's Temp folder with Joost's rolls and bach's own answers. */
 void testBachReading (const juce::File& temp);
+
+/** Stage 1b: the bach text writer (Tests/BachWriteTests.cpp). Writes the two
+    rolls to `Temp/written by Maket`, for Joost to open in bach.roll. */
+void testBachWriting (const juce::File& temp);

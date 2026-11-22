@@ -6,3 +6,6 @@ xcuserdata/
 .vscode/
 .idea/
 __pycache__/
+
+# Written by the test program at every run (stage 1b); the same as the originals
+Temp/written by Maket/
