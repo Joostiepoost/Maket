@@ -27,15 +27,21 @@ class P:
 # ---------------------------------------------------------------- the logging patch
 p=P()
 p.comment("obj-c1","Maket OSC log",30,20,300,24,fontsize=16.0,fontface=1)
-p.comment("obj-c2","Notes when each message arrives in Max: every message gets a number and the time on the computer's clock, in milliseconds since the last reset, and is kept in the coll below. Maket's timing test page resets the log and has it written by itself.",30,48,640,47,linecount=3)
+p.comment("obj-c2","Notes when each message arrives in Max: every message gets a number and the time on the computer's clock, in milliseconds since the last reset, and is kept in the coll below. Maket's test pages reset the log and have it written by themselves.",30,48,640,47,linecount=3)
 
 p.box("obj-1","newobj","udpreceive 46002",30,120,110,1,1,[""])
 p.comment("obj-c3","the port: the same number as \"Logging patch port\" in Maket's preferences",150,121,440)
 p.box("obj-22","newobj","route /maket/log",30,152,110,2,2,["",""])
-p.comment("obj-c12","left: Maket's own words for this patch (reset, write <file>); right: everything else, which is logged",150,153,560)
+p.comment("obj-c12","left: Maket's own words for this patch (reset, write <file>, tap 1 or 0); right: everything else, which is logged",150,153,620)
 
 p.box("obj-25","newobj","r maket_log_in",230,184,95,0,1,[""])
 p.comment("obj-c13","what is sent to  s maket_log_in  in any patch is logged too (bach.roll's playout)",335,185,470)
+
+# the tap: what any patch in this Max sends to the conTimbre ePlayer (ScAst's cpe_poly ends in  s contimbre_eplayer)
+p.box("obj-26","newobj","r contimbre_eplayer",560,120,120,0,1,[""])
+p.box("obj-27","toggle",None,520,152,22,1,1,["int"],h=22.0,parameter_enable=0)
+p.box("obj-28","newobj","gate",520,184,60,2,1,[""])
+p.comment("obj-c15","the tap: while this is on, every command that a patch in this Max sends to the conTimbre ePlayer (to  s contimbre_eplayer, as ScAst does) is logged too. Maket's conTimbre test page switches it on and off; it can be done by hand as well.",690,120,250,88,linecount=6)
 
 p.box("obj-2","newobj","t l b b",121,216,170,1,3,["","bang","bang"])
 p.comment("obj-c4","right to left: first the time, then the number, then the message itself",300,217,400)
@@ -60,9 +66,10 @@ p.box("obj-14","newobj","print Maket",421,502,75,1,0,None)
 p.comment("obj-c9","switch on to see every message in the Max window as well (not during a timing test)",451,431,330,33,linecount=2)
 
 # Maket's words, and the buttons that do the same by hand
-p.box("obj-23","newobj","route reset write",30,560,110,1,3,["","",""])
+p.box("obj-23","newobj","route reset write tap",30,560,130,4,4,["","","",""])
+p.comment("obj-c16","tap 1 or 0: to the switch of the tap, above",170,561,300)
 p.box("obj-24","newobj","prepend write",75,600,85,1,1,[""])
-p.comment("obj-c14","write <file>: the coll saves its lines there",170,601,300)
+p.comment("obj-c14","write <file>: the coll saves its lines there",170,601,75,33,linecount=2)
 p.box("obj-15","newobj","loadbang",560,560,60,1,1,["bang"])
 p.box("obj-16","message","reset",640,560,40,2,1,[""])
 p.comment("obj-c10","by hand: empties the log, and starts the clock at 0 and the numbers at 1",690,561,230,33,linecount=2)
@@ -70,8 +77,8 @@ p.box("obj-17","newobj","t b b b",560,600,115,1,3,["bang","bang","bang"])
 p.box("obj-18","newobj","cpuclock",656,640,60,1,1,["float"])
 p.box("obj-19","message","1",608,640,30,2,1,[""])
 p.box("obj-20","message","clear",560,640,40,2,1,[""])
-p.box("obj-21","message","write",250,600,40,2,1,[""])
-p.comment("obj-c11","by hand: saves the log as a text file (Max asks where)",300,601,250,33,linecount=2)
+p.box("obj-21","message","write",255,600,40,2,1,[""])
+p.comment("obj-c11","by hand: saves the log as a text file (Max asks where)",305,601,245,33,linecount=2)
 
 L=p.line
 L("obj-1",0,"obj-22",0)
@@ -85,6 +92,8 @@ L("obj-9",0,"obj-10",0); L("obj-9",0,"obj-13",1); L("obj-12",0,"obj-13",0); L("o
 L("obj-22",0,"obj-23",0)      # Maket's words
 L("obj-23",0,"obj-17",0)      # reset
 L("obj-23",1,"obj-24",0); L("obj-24",0,"obj-10",0)   # write <file>
+L("obj-23",2,"obj-27",0)      # tap 1 / tap 0
+L("obj-27",0,"obj-28",0); L("obj-26",0,"obj-28",1); L("obj-28",0,"obj-2",0)
 L("obj-15",0,"obj-17",0); L("obj-16",0,"obj-17",0)
 L("obj-17",2,"obj-18",0); L("obj-18",0,"obj-4",1)
 L("obj-17",1,"obj-19",0); L("obj-19",0,"obj-5",1)

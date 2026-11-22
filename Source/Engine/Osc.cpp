@@ -14,7 +14,11 @@ bool OscArgument::operator== (const OscArgument& other) const
     switch (kind)
     {
         case Kind::integer: return integer == other.integer;
-        case Kind::real:    return std::memcmp (&real, &other.real, sizeof (float)) == 0;
+        case Kind::real:
+        {
+            const float mine = (float) real, theirs = (float) other.real;
+            return std::memcmp (&mine, &theirs, sizeof (float)) == 0;
+        }
         case Kind::text:    return text == other.text;
     }
     return false;
@@ -33,7 +37,7 @@ OscMessage& OscMessage::addReal (double value)
 {
     OscArgument a;
     a.kind = OscArgument::Kind::real;
-    a.real = (float) value;
+    a.real = value;
     arguments.push_back (a);
     return *this;
 }
@@ -111,8 +115,9 @@ juce::MemoryBlock OscMessage::encode() const
         }
         else if (a.kind == OscArgument::Kind::real)
         {
+            const float asSent = (float) a.real;
             juce::uint32 bits = 0;
-            std::memcpy (&bits, &a.real, sizeof (bits));
+            std::memcpy (&bits, &asSent, sizeof (bits));
             appendFourBytes (out, bits);
         }
         else
@@ -150,10 +155,7 @@ bool OscMessage::decode (const void* rawData, size_t size, OscMessage& result)
             if (! readFourBytes (data, size, position, bits)) return false;
             float value = 0.0f;
             std::memcpy (&value, &bits, sizeof (value));
-            OscArgument a;
-            a.kind = OscArgument::Kind::real;
-            a.real = value;
-            result.arguments.push_back (a);
+            result.addReal ((double) value);
         }
         else if (type == 's')
         {
@@ -182,7 +184,7 @@ juce::String OscMessage::toText() const
         else if (a.kind == OscArgument::Kind::real)
         {
             // As Max shows a real number: with a point, without zeros after it.
-            auto number = juce::String ((double) a.real, 6);
+            auto number = juce::String (a.real, 6);
             while (number.endsWithChar ('0')) number = number.dropLastCharacters (1);
             line << number;
         }

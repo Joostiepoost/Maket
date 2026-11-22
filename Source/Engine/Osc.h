@@ -32,9 +32,10 @@ struct OscArgument
 
     Kind kind = Kind::integer;
     juce::int32 integer = 0;
-    float real = 0.0f;
+    double real = 0.0;          // the value as it was given; it travels as a 32-bit real number
     juce::String text;
 
+    /** Equal as they travel: real numbers are compared as 32-bit numbers. */
     bool operator== (const OscArgument& other) const;
     bool operator!= (const OscArgument& other) const    { return ! (*this == other); }
 };

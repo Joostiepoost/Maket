@@ -48,3 +48,7 @@ void testOsc();
 /** Stage 1d: the passages, the log reader and the comparison of the timing
     tests (Tests/TimingTests.cpp). `temp` holds the two logs of stage 1c. */
 void testTiming (const juce::File& temp);
+
+/** Stage 1e: a roll's notes as commands for the conTimbre ePlayer, and the
+    comparison with a log from Max (Tests/MappingTests.cpp). */
+void testConTimbreMapping (const juce::File& temp);

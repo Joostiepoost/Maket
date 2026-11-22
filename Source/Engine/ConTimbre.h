@@ -7,8 +7,8 @@
 // 127, times are in milliseconds. (ePlayer manual V2.1; the Max patch
 // cpe_poly of ScAst sends the same.)
 //
-// This file holds only the commands the tests of stage 1c need. The full
-// mapping of a note (dynamic curves, gain, glissando, options) is stage 1e.
+// This file holds the commands one by one. How a note of a roll becomes a
+// series of them is in ConTimbreMapping.
 //
 // No interface code.
 
@@ -29,5 +29,16 @@ OscMessage noteOn (const juce::String& voice, double pitch, int dynamic);
 OscMessage noteOff (const juce::String& voice, double pitch);
 OscMessage program (const juce::String& voice, const juce::String& programName);
 OscMessage allNotesOff();
+
+/** A change of loudness with its change of timbre, for the note of that
+    pitch: to `target` (0 to 127) over `duration` ms. */
+OscMessage dynamic (const juce::String& voice, double pitch, double target, double duration);
+
+/** The gain of a whole voice, in dB, at once. */
+OscMessage gain (const juce::String& voice, double decibels);
+
+/** A glide of the note of that pitch: to `interval` semitones from the
+    pitch it began on, over `duration` ms. */
+OscMessage glissando (const juce::String& voice, double pitch, double interval, double duration);
 
 } // namespace maket::contimbre

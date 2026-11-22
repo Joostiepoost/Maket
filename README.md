@@ -51,7 +51,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1b | Gate: bach text writer | done |
 | 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | done |
 | 1d | Gate: timing tests of the OSC connection | done |
-| 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | |
+| 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | built, to test |
 | 1f | Gate: addressing by note, chords, tuning | |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
@@ -260,7 +260,7 @@ Stage 1d is the measurement the gate is about: do Maket's messages arrive in Max
 - **Two passages.** *Dense*: 1403 notes in 23 seconds, in four parts: a line of 40 notes a second, chords of eight notes four times a second, an irregular part of about 95 notes a second, and a burst of 200 notes a second. *Long*: a note every 100 ms for five minutes.
 - **What is measured.** For every note-on and note-off Maket sends a numbered tick to the logging patch, and, when the box is ticked, the real note to the ePlayer, so that the ePlayer is at work as in a piece. The patch notes when each tick arrives. Maket's clock and Max's clock start at different moments, so the delay itself cannot be measured, only the evenness: the arrival times are shifted as a whole until the middle message sits exactly on its time, and the result says how far the others lie from theirs.
 - **The reference.** *Write the passages as bach.roll files* writes both passages as bach.roll files. The new patch `Max/Maket bach reference.maxpat` holds a bach.roll whose playout goes to the same logging patch. *Start a bach.roll take* freshens the log; you press play in Max; *Finish the bach.roll take* has the log written and read. When bach.roll plays while Maket runs, both are measured in the one take.
-- **The results** go to the folder set as *Timing results* on the Preferences page: `timing results.md` (one line per take), `timing details.txt` (the same in words, with every part of the passage apart), and per take the patch's log and Maket's send log. They also show on the page.
+- **The results** go to the folder set as *Test results* (at this stage still called *Timing results*) on the Preferences page: `timing results.md` (one line per take), `timing details.txt` (the same in words, with every part of the passage apart), and per take the patch's log and Maket's send log. They also show on the page.
 - **The logging patch** now obeys two words from Maket, `reset` and `write <file>`, and logs what any patch sends to `s maket_log_in`. Its buttons still do both by hand.
 - **Removed:** the option to write commands with a slash. When Maket quits while messages still wait, they are dropped and the ePlayer gets `all_notes_off`.
 
@@ -309,6 +309,57 @@ The steps of that last test, for the record:
 
 2. **Take 9:** your usual settings, the *Long* passage, **Run from Maket**. After about a minute, bring another app to the front and use it for a minute or two, as in takes 7 and 8a. The stream should stay even, and in the result *Leaving Maket … the latest* should stay under a millisecond. Maket should not crash at the end; wait ten seconds after the last note to be sure.
 3. Push the `Timing 1d` folder and `Measurements/report.md`. Should Maket crash again: the report macOS writes is in `~/Library/Logs/DiagnosticReports` (a file whose name starts with `Maket`); copy it into `Temp`.
+
+## Using stage 1e
+
+Stage 1e is the full conTimbre mapping: every note of a roll becomes the series of commands for the ePlayer that the Max patch `cpe_poly` makes of it. Until now Maket could only send single test notes.
+
+- **What a note becomes** (the voice's name comes first in every command; the pitch is the note's pitch in cents divided by 100):
+
+  | In the roll | Command | When |
+  | --- | --- | --- |
+  | slot 1, the timbre | `program <voice> <name>` | at the onset, before the note |
+  | slot 3, the gain curve | `gain <voice> <dB>`, one for every point | at the time of each point |
+  | the note | `noteon <voice> <pitch> <velocity>`, followed by the first two items of slot 4 when it is filled | at the onset |
+  | | `noteoff <voice> <pitch>` | at the end |
+  | slot 2, the dynamic curve | `dynamic <voice> <pitch> <value of the next point> <ms to it>`, one for every point but the last | at the time of each point, rounded to a whole millisecond |
+  | pitch breakpoints | `glissando <voice> <pitch> <semitones at the next breakpoint> <ms to it>`, one for every breakpoint but the last | at each breakpoint, rounded to a whole millisecond |
+  | a marker named `cpe ...` | what follows `cpe`, as a command of its own | at the marker |
+
+  Muted notes, chords and voices send nothing, and neither does a voice without a name. The value of the first point of the dynamic curve is not sent: the note starts at its velocity, as in the patch.
+- **The conTimbre test page** is a new entry in the list of the Utilities tab. **Choose…** a roll file (or drop one on the page). The voices that have a name appear with a tick each; the table under *Results* says what each voice gives.
+- **Play** sends the roll to the ePlayer; **Stop** ends it and sends `all_notes_off`. *from, in seconds* starts in the middle: the notes that begin from there on, and before them each voice gets the last timbre and the last gain it was given earlier, so that a passage sounds the same as in a run from the start.
+- **The message-by-message check.** The logging patch has a new part, the *tap*: while it is on, every command that a patch in Max sends to the ePlayer (to `s contimbre_eplayer`, where `cpe_poly` ends) is logged too. **Start a ScAst take** empties the log and switches the tap on; you play the roll in ScAst; **Finish the ScAst take** switches the tap off, has the log written, and holds Maket's own commands for the roll against it. The result says, per kind of command, how many are the same on both sides; what only ScAst sends; what only Maket sends; for a command without a partner, Maket's nearest one of that kind beside it; whether commands due at the same moment come in the same order; and whether a number is whole on one side and real on the other.
+- **Files**, in the folder set as *Test results* on the Preferences page (the setting that was called *Timing results*): per take the patch's log (`... scast max log.txt`) and Maket's own commands with their times (`... scast maket commands.txt`), and `mapping results.txt`, to which every comparison is added. **Compare with a log file…** does the comparison for a log saved by hand.
+- `MaketTests --compare <roll file> <log file>` does the same comparison in Terminal.
+
+What is not in this stage: chords as one command and the addressing of a note by a number of its own (1f), and anything about tuning.
+
+### Testing stage 1e
+
+Before the tests:
+
+1. `git pull`, then `./build.sh`: `stage 1e`. `./build.sh tests` ends with `All 108 checks passed.` Should git refuse to pull because of `Max/Maket OSC log.maxpat` (Max saved it once more on your Mac): `git checkout -- "Max/Maket OSC log.maxpat"`, then pull again.
+2. Cmd-4, Preferences, *Test results*: **Choose…** a new folder `Mapping 1e` inside the repository's `Temp` folder.
+3. In Max: ScAst with doodsbed, and the ePlayer with the `doodsbed kwintet` orchestra, as you play it. Close the old logging patch and open the new `Max/Maket OSC log.maxpat`; no error should show in the Max window.
+
+**Test 1, the check, command by command:**
+
+4. In Maket: Cmd-4, **conTimbre test**, **Choose…** `Temp/doodsbed final v1c.txt`. It must be the roll that is open in ScAst; if that one has changed since, save it from ScAst and choose that file. The table should list eight voices, 306 notes in all.
+5. **Start a ScAst take.** In the logging patch the switch of the tap goes on.
+6. In ScAst: play the roll from its very start to its end, as you usually do.
+7. In Maket: **Finish the ScAst take.** The result appears under *Results*, and the status line says in one sentence how it went: either *The same commands on both sides*, or how many differ.
+
+**Test 2, by ear:**
+
+8. **Play** in Maket, and compare with ScAst playing the same roll: timbres, dynamics, glissandi, balance. *from, in seconds* takes you to a spot.
+9. **Stop** in the middle: silence at once.
+
+**Test 3, if you like, the second piece:** the same two tests with the Bult roll and its orchestra.
+
+After the tests: push the `Mapping 1e` folder and `Measurements/report.md`. Whatever the check shows, the files say exactly what differs, so there is nothing you need to write down beyond what you hear.
+
+Please keep the orchestra files (`.cePlayerOrc`) out of the repository: they hold conTimbre's sample names and the repository is public. Git now ignores files with that ending.
 
 ## The repository
 

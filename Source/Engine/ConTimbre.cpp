@@ -25,4 +25,19 @@ OscMessage allNotesOff()
     return OscMessage ("all_notes_off");
 }
 
+OscMessage dynamic (const juce::String& voice, double pitch, double target, double duration)
+{
+    return OscMessage ("dynamic").addText (voice).addReal (pitch).addReal (target).addReal (duration);
+}
+
+OscMessage gain (const juce::String& voice, double decibels)
+{
+    return OscMessage ("gain").addText (voice).addReal (decibels);
+}
+
+OscMessage glissando (const juce::String& voice, double pitch, double interval, double duration)
+{
+    return OscMessage ("glissando").addText (voice).addReal (pitch).addReal (interval).addReal (duration);
+}
+
 } // namespace maket::contimbre

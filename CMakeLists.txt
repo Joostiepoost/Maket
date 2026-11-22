@@ -18,7 +18,7 @@ endif()
 
 # The build stage this source stands at; shown at the right of the tab row,
 # so that it is clear which build is being tested.
-set(MAKET_BUILD_STAGE "1d")
+set(MAKET_BUILD_STAGE "1e")
 
 # --- JUCE --------------------------------------------------------------------
 # By default JUCE is downloaded automatically (first build takes a few minutes).
@@ -52,7 +52,8 @@ set(MAKET_CORE_SOURCES
     Source/Engine/OscSender.cpp
     Source/Engine/OscScheduler.cpp
     Source/Engine/ConTimbre.cpp
-    Source/Engine/TimingTest.cpp)
+    Source/Engine/TimingTest.cpp
+    Source/Engine/ConTimbreMapping.cpp)
 
 set(MAKET_DEFINITIONS
     JUCE_WEB_BROWSER=0
@@ -88,6 +89,7 @@ target_sources(Maket PRIVATE
     Source/UI/UtilitiesPage.cpp
     Source/UI/OscTestPage.cpp
     Source/UI/TimingTestPage.cpp
+    Source/UI/ConTimbreTestPage.cpp
     ${MAKET_CORE_SOURCES})
 
 # What differs per operating system. On macOS a few lines of Objective-C.
@@ -119,7 +121,7 @@ option(MAKET_BUILD_TESTS "Build the MaketTests console program" OFF)
 if(MAKET_BUILD_TESTS)
     juce_add_console_app(MaketTests PRODUCT_NAME "MaketTests")
     juce_generate_juce_header(MaketTests)
-    target_sources(MaketTests PRIVATE Tests/MaketTests.cpp Tests/BachTests.cpp Tests/BachWriteTests.cpp Tests/OscTests.cpp Tests/TimingTests.cpp ${MAKET_CORE_SOURCES})
+    target_sources(MaketTests PRIVATE Tests/MaketTests.cpp Tests/BachTests.cpp Tests/BachWriteTests.cpp Tests/OscTests.cpp Tests/TimingTests.cpp Tests/MappingTests.cpp ${MAKET_CORE_SOURCES})
     target_compile_definitions(MaketTests PRIVATE
         ${MAKET_DEFINITIONS} JUCE_STANDALONE_APPLICATION=1
         MAKET_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")

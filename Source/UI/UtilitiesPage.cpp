@@ -20,12 +20,14 @@ namespace
         { "Quantize",     "step 13" },
         { "Preferences",  ""        },
         { "OSC test",     ""        },
-        { "Timing test",  ""        }
+        { "Timing test",  ""        },
+        { "conTimbre test", ""      }
     };
 
     constexpr int preferencesIndex = 5;
     constexpr int oscTestIndex = 6;
     constexpr int timingTestIndex = 7;
+    constexpr int conTimbreTestIndex = 8;
     constexpr int entryHeight = 30;
     constexpr int listTop = 14;
 
@@ -33,7 +35,8 @@ namespace
 }
 
 UtilitiesPage::UtilitiesPage (maket::Settings& settings, maket::OscScheduler& scheduler)
-    : currentPage (preferencesIndex), preferences (settings), oscTest (settings, scheduler), timingTest (settings, scheduler)
+    : currentPage (preferencesIndex), preferences (settings), oscTest (settings, scheduler), timingTest (settings, scheduler),
+      conTimbreTest (settings, scheduler)
 {
     setOpaque (true);
 
@@ -56,6 +59,7 @@ void UtilitiesPage::showPage (int index)
 
     if (index == oscTestIndex)          viewport.setViewedComponent (&oscTest, false);
     else if (index == timingTestIndex)  viewport.setViewedComponent (&timingTest, false);
+    else if (index == conTimbreTestIndex) viewport.setViewedComponent (&conTimbreTest, false);
     else                                viewport.setViewedComponent (&preferences, false);
 
     resized();
@@ -90,6 +94,8 @@ void UtilitiesPage::resized()
         oscTest.setSize (width, juce::jmax (height, oscTest.getHeightFor (width)));
     else if (currentPage == timingTestIndex)
         timingTest.setSize (width, juce::jmax (height, timingTest.getHeightFor (width)));
+    else if (currentPage == conTimbreTestIndex)
+        conTimbreTest.setSize (width, juce::jmax (height, conTimbreTest.getHeightFor (width)));
     else
         preferences.setSize (width, juce::jmax (height, preferences.getHeightFor (width)));
 }

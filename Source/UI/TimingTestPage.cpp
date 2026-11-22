@@ -247,7 +247,7 @@ bool TimingTestPage::prepare (const juce::String& playedBy)
     if (dir == juce::File() || ! dir.createDirectory())
     {
         setStatus ("The folder for the timing files could not be made: " + settings.get ("timingFolder")
-                   + ". Set another one on the Preferences page (Timing results).", true);
+                   + ". Set another one on the Preferences page (Test results).", true);
         return false;
     }
 

@@ -48,9 +48,9 @@ const std::vector<SettingInfo>& Settings::all()
           "The port of Maket's logging patch in Max (Max/Maket OSC log.maxpat), which notes when each message "
           "arrives. Used by the OSC test page. It must differ from the ePlayer's port." },
 
-        { "timingFolder", "Tests", "Timing results", SettingKind::folder, "~/Documents/Maket/Exports/Timing", false,
-          "Where the timing tests of stage 1d keep their files: the logs the Max patch writes, Maket's own send logs, "
-          "the passages as bach.roll files, and the table of results." }
+        { "timingFolder", "Tests", "Test results", SettingKind::folder, "~/Documents/Maket/Exports/Timing", false,
+          "Where the test pages of step 1 keep their files: the logs the Max patch writes, Maket's own send logs and "
+          "commands, the passages of the timing test as bach.roll files, and the results." }
     };
     return table;
 }

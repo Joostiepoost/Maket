@@ -16,7 +16,9 @@
 //      a listener inside this program, the punctuality of the send thread.
 //   6. Timing tests (stage 1d, in TimingTests.cpp): the passages, the
 //      reader of the Max patch's log, the comparison with known answers.
-//   7. Test material: what is in the repository's Temp folder, and whether
+//   7. The conTimbre mapping (stage 1e, in MappingTests.cpp): a roll's
+//      notes as commands for the ePlayer; the comparison with a Max log.
+//   8. Test material: what is in the repository's Temp folder, and whether
 //      the files the coming steps need are there.
 //
 // Options:  --out <folder>   where report.md is written (default: Measurements)
@@ -26,6 +28,9 @@
 #include <JuceHeader.h>
 #include "../Source/Model/AppInfo.h"
 #include "../Source/Model/Settings.h"
+#include "../Source/Engine/ConTimbreMapping.h"
+#include "../Source/Engine/TimingTest.h"
+#include "../Source/Formats/BachRoll.h"
 #include "TestReport.h"
 
 #include <cstring>
@@ -273,7 +278,7 @@ void testSettings (const juce::File& work)
     line();
 }
 
-// --- 7. Test material ----------------------------------------------------------
+// --- 8. Test material ----------------------------------------------------------
 
 /** A file name without extension, case, spaces, underscores and hyphens, so
     that "mixed_roll_example_01h.txt" and "Mixed roll example 01h" compare equal. */
@@ -284,7 +289,7 @@ juce::String plainName (const juce::String& name)
 
 void testMaterial (const juce::File& temp)
 {
-    line ("## 7. Test material");
+    line ("## 8. Test material");
     line();
     line ("The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. "
           "This section lists what the program finds there; nothing is read yet. A missing file is not a "
@@ -353,6 +358,23 @@ int main (int argc, char** argv)
     for (int i = 1; i < argc; ++i)
     {
         const juce::String a (argv[i]);
+
+        // MaketTests --compare <roll file> <log of the logging patch>: no tests, only the
+        // comparison of the conTimbre test page, for every voice of the roll that has a name.
+        if (a == "--compare" && i + 2 < argc)
+        {
+            const auto cwd = juce::File::getCurrentWorkingDirectory();
+            maket::Roll roll;
+            juce::StringArray remarks;
+            const auto read = maket::readBachRollFile (cwd.getChildFile (juce::String::fromUTF8 (argv[i + 1])), roll, remarks);
+            if (read.failed()) { std::cout << read.getErrorMessage() << std::endl; return 1; }
+
+            const auto log = maket::timing::readCollLog (cwd.getChildFile (juce::String::fromUTF8 (argv[i + 2])).loadFileAsString());
+            const auto comparison = maket::contimbre::compareWithLog (maket::contimbre::messagesForRoll (roll), log);
+            std::cout << maket::contimbre::describe (comparison) << std::endl;
+            return comparison.usable && comparison.numOnlyInLog == 0 && comparison.numOnlyInMaket == 0 ? 0 : 1;
+        }
+
         if (a == "--out" && i + 1 < argc)
             outDir = juce::File::getCurrentWorkingDirectory().getChildFile (juce::String::fromUTF8 (argv[++i]));
     }
@@ -377,6 +399,7 @@ int main (int argc, char** argv)
     std::cout << "Writing bach rolls..." << std::endl;   testBachWriting (sourceDir.getChildFile ("Temp"));
     std::cout << "OSC..." << std::endl;                  testOsc();
     std::cout << "Timing tests..." << std::endl;         testTiming (sourceDir.getChildFile ("Temp"));
+    std::cout << "The conTimbre mapping..." << std::endl; testConTimbreMapping (sourceDir.getChildFile ("Temp"));
     std::cout << "Test material..." << std::endl;        testMaterial (sourceDir.getChildFile ("Temp"));
 
     work.deleteRecursively();
