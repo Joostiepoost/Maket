@@ -9,3 +9,6 @@ __pycache__/
 
 # Written by the test program at every run (stage 1b); the same as the originals
 Temp/written by Maket/
+
+# conTimbre orchestra files hold sample names: never in the repository
+*.cePlayerOrc
