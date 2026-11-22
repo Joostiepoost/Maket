@@ -134,3 +134,17 @@ The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.13 ms,
 Leaving Maket: 95 in 100 within 0.21 ms of their time, the latest 0.28 ms after it.
 Over the 5.0 minutes the two clocks drift apart by -0.00 ms a minute.
 
+=== 22 Nov 21:34:11   long passage, played by Maket (with the ePlayer)   [Test8 - overdrive on - scheduler in audio thread off - io vector 512 - signal vector 128]
+Arrived: 6000 of 6000 messages; out of order: 0.
+All messages: half within 0.06 ms of their time, 95 in 100 within 69.78 ms, 99 in 100 within 97.40 ms; the farthest 103.10 ms (earliest -0.26, latest +103.10).
+The note-ons alone: half within 0.08 ms of their time, 95 in 100 within 69.95 ms, 99 in 100 within 93.83 ms; the farthest 99.39 ms (earliest -0.26, latest +99.39).
+Leaving Maket: 95 in 100 within 69.94 ms of their time, the latest 103.35 ms after it.
+Over the 5.0 minutes the two clocks drift apart by 0.06 ms a minute.
+
+=== 22 Nov 21:44:01   long passage, played by Maket (with the ePlayer)   [Test 8b - conditions same as 8a - Maket kept in focus]
+Arrived: 6000 of 6000 messages; out of order: 0.
+All messages: half within 0.05 ms of their time, 95 in 100 within 0.14 ms, 99 in 100 within 0.18 ms; the farthest 1.12 ms (earliest -0.23, latest +1.12).
+The note-ons alone: half within 0.07 ms of their time, 95 in 100 within 0.16 ms, 99 in 100 within 0.20 ms; the farthest 1.12 ms (earliest -0.23, latest +1.12).
+Leaving Maket: 95 in 100 within 0.20 ms of their time, the latest 0.28 ms after it.
+Over the 5.0 minutes the two clocks drift apart by 0.00 ms a minute.
+
