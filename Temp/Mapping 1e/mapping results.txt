@@ -1,0 +1,152 @@
+=== 23 Nov 09:05:58   doodsbed final v1c.txt against 20261123-090222 doodsbed final v1c scast max log.txt
+Voices: Vlc, Fl, Cl, Vla, PnRH, PnLH
+The same command at the same time in both: 1146. Maket makes 1166 commands for the roll, the log holds 1620.
+  program       Maket   109   log   109   the same   109
+  gain          Maket   180   log   180   the same   180
+  noteon        Maket   295   log   295   the same   295
+  noteoff       Maket   295   log   295   the same   295
+  dynamic       Maket   218   log   218   the same   201
+  glissando     Maket    69   log   307   the same    66
+  set_window_titlesMaket     0   log   216   the same     0
+In time, the pairs lie: half within 0.16 ms of each other, 95 in 100 within 1.14 ms, the farthest 4.02 ms.
+At 94 moments the commands of one voice that are due together come in another order in the log than Maket sends them:
+  18 times   Max: program, noteon, gain, dynamic   Maket: program, gain, noteon, dynamic
+  9 times   Max: program, noteon, gain, dynamic, glissando   Maket: program, gain, noteon, dynamic, glissando
+  9 times   Max: noteon, gain   Maket: gain, noteon
+  7 times   Max: noteon, noteoff   Maket: noteoff, noteon
+  7 times   Max: program, noteon, gain   Maket: program, gain, noteon
+  5 times   Max: program, noteon, noteon, gain, gain   Maket: program, gain, noteon, gain, noteon
+  4 times   Max: program, noteon, noteon, noteon, noteon, gain, gain, gain, gain   Maket: program, gain, noteon, gain, noteon, gain, noteon, gain, noteon
+  4 times   Max: noteon, gain, dynamic   Maket: gain, noteon, dynamic
+
+Only in the log (474; the first):
+     -2.046 s   set_window_titles
+     -1.047 s   set_window_titles
+     -0.046 s   set_window_titles
+      0.000 s   glissando PnRH 67. 0. 1221.623308
+      0.604 s   glissando PnRH 66. 0. 663.892687
+      0.698 s   glissando PnRH 64. 0. 524.522922
+      0.698 s   glissando PnRH 63. 0. 570.076532
+      0.790 s   glissando PnRH 62. 0. 431.571882
+      0.836 s   glissando PnRH 61. 0. 384.715817
+      0.882 s   glissando PnRH 60. 0. 339.350297
+      0.929 s   glissando PnRH 58. 0. 292.635798
+      0.953 s   set_window_titles
+
+Only in Maket (20; the first):
+     19.372 s   dynamic Vla 71. 16.933333 2945.023614
+     19.372 s   glissando Vla 71. 0.5 4633.
+     22.317 s   dynamic Vla 71. 39.511111 1592.700124
+     23.981 s   dynamic Vla 72. 14.111111 1395.564348
+     25.377 s   dynamic Vla 72. 0. 1847.532144
+     36.322 s   dynamic Vla 65.5 47.977778 1034.807941
+     37.357 s   dynamic Vla 65.5 16.933333 1925.846319
+     39.283 s   dynamic Vla 65.5 0.829819 3027.34574
+     43.398 s   glissando Vla 77.5 0.5 3157.450333
+     46.838 s   dynamic Vla 81.25 26.05873 704.996421
+     47.771 s   dynamic Vla 81.25 39.511111 2599.493701
+     50.370 s   dynamic Vla 81.25 95.955556 911.679691
+
+Side by side, a command of the log and Maket's nearest one of that kind for that voice:
+  Max:      19.373 s   dynamic Vla 73.75 16.933333 2945.023614
+  Maket:    19.372 s   dynamic Vla 71. 16.933333 2945.023614
+  Max:      19.373 s   glissando Vla 73.75 0.5 4633.
+  Maket:    19.372 s   glissando Vla 71. 0.5 4633.
+  Max:      22.317 s   dynamic Vla 73.75 39.511111 1592.700124
+  Maket:    22.317 s   dynamic Vla 71. 39.511111 1592.700124
+  Max:      23.981 s   dynamic Vla 75.75 14.111111 1395.564348
+  Maket:    23.981 s   dynamic Vla 72. 14.111111 1395.564348
+  Max:      25.377 s   dynamic Vla 75.75 0. 1847.532144
+  Maket:    25.377 s   dynamic Vla 72. 0. 1847.532144
+  Max:      36.323 s   dynamic Vla 72.5 47.977778 1034.807941
+  Maket:    36.322 s   dynamic Vla 65.5 47.977778 1034.807941
+  Max:      37.357 s   dynamic Vla 72.5 16.933333 1925.846319
+  Maket:    37.357 s   dynamic Vla 65.5 16.933333 1925.846319
+  Max:      39.283 s   dynamic Vla 72.5 0.829819 3027.34574
+  Maket:    39.283 s   dynamic Vla 65.5 0.829819 3027.34574
+  Max:      43.398 s   glissando Vla 84.5 0.5 3157.450333
+  Maket:    43.398 s   glissando Vla 77.5 0.5 3157.450333
+  Max:      46.839 s   dynamic Vla 88.25 26.05873 704.996421
+  Maket:    46.838 s   dynamic Vla 81.25 26.05873 704.996421
+  Max:      47.772 s   dynamic Vla 88.25 39.511111 2599.493701
+  Maket:    47.771 s   dynamic Vla 81.25 39.511111 2599.493701
+  Max:      50.370 s   dynamic Vla 88.25 95.955556 911.679691
+  Maket:    50.370 s   dynamic Vla 81.25 95.955556 911.679691
+
+=== 23 Nov 09:20:05   doodsbed final v1c.txt against 20261123-091638 doodsbed final v1c scast max log.txt
+Voices: Vlc, Fl, Cl, Vla, PnRH, PnLH
+The same command at the same time in both: 1146. Maket makes 1166 commands for the roll, the log holds 1612.
+  program       Maket   109   log   109   the same   109
+  gain          Maket   180   log   180   the same   180
+  noteon        Maket   295   log   295   the same   295
+  noteoff       Maket   295   log   295   the same   295
+  dynamic       Maket   218   log   218   the same   201
+  glissando     Maket    69   log   307   the same    66
+  set_window_titlesMaket     0   log   206   the same     0
+  end_dialog    Maket     0   log     1   the same     0
+  all_notes_off Maket     0   log     1   the same     0
+In time, the pairs lie: half within 0.15 ms of each other, 95 in 100 within 1.21 ms, the farthest 3.74 ms.
+At 96 moments the commands of one voice that are due together come in another order in the log than Maket sends them:
+  18 times   Max: program, noteon, gain, dynamic   Maket: program, gain, noteon, dynamic
+  9 times   Max: noteon, gain   Maket: gain, noteon
+  9 times   Max: program, noteon, gain, dynamic, glissando   Maket: program, gain, noteon, dynamic, glissando
+  8 times   Max: noteon, noteoff   Maket: noteoff, noteon
+  7 times   Max: program, noteon, gain   Maket: program, gain, noteon
+  5 times   Max: program, noteon, noteon, gain, gain   Maket: program, gain, noteon, gain, noteon
+  4 times   Max: noteon, gain, dynamic   Maket: gain, noteon, dynamic
+  4 times   Max: program, noteon, noteon, noteon, noteon, gain, gain, gain, gain   Maket: program, gain, noteon, gain, noteon, gain, noteon, gain, noteon
+
+Only in the log (466; the first):
+     -2.136 s   set_window_titles
+     -1.136 s   set_window_titles
+     -0.136 s   set_window_titles
+      0.000 s   glissando PnRH 67. 0. 1221.623308
+      0.605 s   glissando PnRH 66. 0. 663.892687
+      0.697 s   glissando PnRH 64. 0. 524.522922
+      0.698 s   glissando PnRH 63. 0. 570.076532
+      0.790 s   glissando PnRH 62. 0. 431.571882
+      0.836 s   glissando PnRH 61. 0. 384.715817
+      0.864 s   set_window_titles
+      0.882 s   glissando PnRH 60. 0. 339.350297
+      0.929 s   glissando PnRH 58. 0. 292.635798
+
+Only in Maket (20; the first):
+     19.372 s   dynamic Vla 71. 16.933333 2945.023614
+     19.372 s   glissando Vla 71. 0.5 4633.
+     22.317 s   dynamic Vla 71. 39.511111 1592.700124
+     23.981 s   dynamic Vla 72. 14.111111 1395.564348
+     25.377 s   dynamic Vla 72. 0. 1847.532144
+     36.322 s   dynamic Vla 65.5 47.977778 1034.807941
+     37.357 s   dynamic Vla 65.5 16.933333 1925.846319
+     39.283 s   dynamic Vla 65.5 0.829819 3027.34574
+     43.398 s   glissando Vla 77.5 0.5 3157.450333
+     46.838 s   dynamic Vla 81.25 26.05873 704.996421
+     47.771 s   dynamic Vla 81.25 39.511111 2599.493701
+     50.370 s   dynamic Vla 81.25 95.955556 911.679691
+
+Side by side, a command of the log and Maket's nearest one of that kind for that voice:
+  Max:      19.373 s   dynamic Vla 73.75 16.933333 2945.023614
+  Maket:    19.372 s   dynamic Vla 71. 16.933333 2945.023614
+  Max:      19.373 s   glissando Vla 73.75 0.5 4633.
+  Maket:    19.372 s   glissando Vla 71. 0.5 4633.
+  Max:      22.317 s   dynamic Vla 73.75 39.511111 1592.700124
+  Maket:    22.317 s   dynamic Vla 71. 39.511111 1592.700124
+  Max:      23.982 s   dynamic Vla 75.75 14.111111 1395.564348
+  Maket:    23.981 s   dynamic Vla 72. 14.111111 1395.564348
+  Max:      25.377 s   dynamic Vla 75.75 0. 1847.532144
+  Maket:    25.377 s   dynamic Vla 72. 0. 1847.532144
+  Max:      36.323 s   dynamic Vla 72.5 47.977778 1034.807941
+  Maket:    36.322 s   dynamic Vla 65.5 47.977778 1034.807941
+  Max:      37.357 s   dynamic Vla 72.5 16.933333 1925.846319
+  Maket:    37.357 s   dynamic Vla 65.5 16.933333 1925.846319
+  Max:      39.283 s   dynamic Vla 72.5 0.829819 3027.34574
+  Maket:    39.283 s   dynamic Vla 65.5 0.829819 3027.34574
+  Max:      43.398 s   glissando Vla 84.5 0.5 3157.450333
+  Maket:    43.398 s   glissando Vla 77.5 0.5 3157.450333
+  Max:      46.839 s   dynamic Vla 88.25 26.05873 704.996421
+  Maket:    46.838 s   dynamic Vla 81.25 26.05873 704.996421
+  Max:      47.771 s   dynamic Vla 88.25 39.511111 2599.493701
+  Maket:    47.771 s   dynamic Vla 81.25 39.511111 2599.493701
+  Max:      50.370 s   dynamic Vla 88.25 95.955556 911.679691
+  Maket:    50.370 s   dynamic Vla 81.25 95.955556 911.679691
+
