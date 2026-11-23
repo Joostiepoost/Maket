@@ -31,22 +31,35 @@ namespace
         else if (atom.isSymbol())               message.addText (atom.text);
     }
 
-    void addNote (std::vector<TimedMessage>& out, const juce::String& voice, int voiceIndex, double onset, const Note& note)
+    /** Which commands of a note to make: all of them in Maket's order, or one of
+        the two halves of the Max patch's order. */
+    enum class Part { all, programAndNote, curves };
+
+    void addNote (std::vector<TimedMessage>& out, const juce::String& voice, int voiceIndex, double onset, const Note& note,
+                  Part part, bool glissandoToZero)
     {
         const double pitch = note.cents / 100.0;
-        auto add = [&] (double time, OscMessage message) { out.push_back ({ time, std::move (message), voiceIndex, onset }); };
+        auto add = [&] (double time, OscMessage message) { out.push_back ({ time, std::move (message), voiceIndex, onset, time }); };
+
+        const bool start = part != Part::curves, curves = part != Part::programAndNote;
 
         // Slot 1: the program, before the note.
-        if (const auto* slot = note.slot (1))
-            if (slot->content.size() > 0 && ! slot->content[0].isList())
-                add (onset, program (voice, slot->content[0].isSymbol() ? slot->content[0].text : slot->content[0].toLine()));
+        if (start)
+            if (const auto* slot = note.slot (1))
+                if (slot->content.size() > 0 && ! slot->content[0].isList())
+                    add (onset, program (voice, slot->content[0].isSymbol() ? slot->content[0].text : slot->content[0].toLine()));
 
         // Slot 3: the gain of the voice, a step at every point.
-        if (const auto* slot = note.slot (3))
-            for (const auto& p : pointsOf (slot->content))
-                add (onset + p.x, gain (voice, p.y));
+        auto addGains = [&]
+        {
+            if (const auto* slot = note.slot (3))
+                for (const auto& p : pointsOf (slot->content))
+                    add (onset + p.x, gain (voice, p.y));
+        };
+        if (part == Part::all) addGains();
 
         // The note itself, with the first two items of slot 4 when there are any.
+        if (start)
         {
             auto on = noteOn (voice, pitch, note.velocity);
             if (const auto* slot = note.slot (4))
@@ -55,6 +68,9 @@ namespace
             add (onset, std::move (on));
             add (onset + note.duration, noteOff (voice, pitch));
         }
+
+        if (! curves) return;
+        if (part == Part::curves) addGains();
 
         // Slot 2: from every point to the next one.
         if (const auto* slot = note.slot (2))
@@ -71,6 +87,10 @@ namespace
             const double to = note.breakpoints[i + 1].position * note.duration;
             add (onset + std::round (from), glissando (voice, pitch, note.breakpoints[i + 1].cents / 100.0, to - from));
         }
+
+        // The Max patch: a note without breakpoints still gets a glide, to where it is.
+        if (glissandoToZero && note.breakpoints.size() < 2)
+            add (onset, glissando (voice, pitch, 0.0, note.duration));
     }
 
     /** The command a marker holds, when its name begins with `cpe`. */
@@ -91,7 +111,7 @@ namespace
     }
 }
 
-std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<int>& voices)
+std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<int>& voices, const MappingOptions& options)
 {
     std::vector<TimedMessage> out;
 
@@ -104,20 +124,47 @@ std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<i
         for (const auto& chord : voice.chords)
         {
             if (chord.isMuted()) continue;
-            for (const auto& note : chord.notes)
-                if (! note.isMuted())
-                    addNote (out, voice.name, (int) v, chord.onset, note);
+
+            if (options.noteOnFirst)
+            {
+                for (const auto& note : chord.notes)
+                    if (! note.isMuted())
+                        addNote (out, voice.name, (int) v, chord.onset, note, Part::programAndNote, options.glissandoToZero);
+                for (const auto& note : chord.notes)
+                    if (! note.isMuted())
+                        addNote (out, voice.name, (int) v, chord.onset, note, Part::curves, options.glissandoToZero);
+            }
+            else
+            {
+                for (const auto& note : chord.notes)
+                    if (! note.isMuted())
+                        addNote (out, voice.name, (int) v, chord.onset, note, Part::all, options.glissandoToZero);
+            }
         }
     }
 
     for (const auto& marker : roll.markers)
     {
         OscMessage message;
-        if (markerCommand (marker, message)) out.push_back ({ marker.position, std::move (message), -1, marker.position });
+        if (markerCommand (marker, message)) out.push_back ({ marker.position, std::move (message), -1, marker.position, marker.position });
     }
 
     // In order of time; commands of one moment stay in the order they were made.
     std::stable_sort (out.begin(), out.end(), [] (const TimedMessage& a, const TimedMessage& b) { return a.time < b.time; });
+
+    // The commands of one voice that are due at the same moment, a little apart from each other.
+    if (options.spacing > 0.0)
+    {
+        std::map<int, std::pair<double, int>> last;     // per voice: the moment, and how many commands it holds so far
+        for (auto& m : out)
+        {
+            auto& [moment, count] = last[m.voice];
+            if (count > 0 && std::abs (m.moment - moment) < 1.0e-9)     m.time = m.moment + options.spacing * count++;
+            else                                    { moment = m.moment; count = 1; }
+        }
+        std::stable_sort (out.begin(), out.end(), [] (const TimedMessage& a, const TimedMessage& b) { return a.time < b.time; });
+    }
+
     return out;
 }
 
@@ -145,6 +192,7 @@ std::vector<TimedMessage> messagesFrom (const std::vector<TimedMessage>& all, do
             juce::ignoreUnused (voice);
             m.time = from;
             m.noteOnset = from;
+            m.moment = from;
             out.push_back (m);
         }
 
@@ -211,6 +259,8 @@ namespace
         juce::StringArray words;
         bool matched = false;
         int partner = -1;       // for a command of the log: which of Maket's it was paired with
+        double moment = 0.0;    // for a command of Maket's: when it is due by the roll
+        bool known = false;     // not paired, but explained by what is known of the Max patch
     };
 
     juce::String timeAndText (double seconds, const juce::String& text)
@@ -225,10 +275,12 @@ Comparison compareWithLog (const std::vector<TimedMessage>& expected, const std:
 
     std::vector<Item> mine, theirs;
     juce::StringArray myVoices;
+    std::vector<int> ownCounts (2, 0);
     for (const auto& e : expected)
     {
         Item item { e.time, e.message.toText(), {}, false };
         item.words = wordsOf (item.text);
+        item.moment = e.moment;
         if (item.words.size() > 1) myVoices.addIfNotAlreadyThere (item.words[1]);
         mine.push_back (std::move (item));
     }
@@ -237,6 +289,14 @@ Comparison compareWithLog (const std::vector<TimedMessage>& expected, const std:
         if (! isCommandForThePlayer (line.message)) continue;
         Item item { line.time, line.message, wordsOf (line.message), false };
         if (item.words.isEmpty()) continue;
+
+        // What the ePlayer's own Max side sends is counted and left aside.
+        static const juce::StringArray playersOwn { "set_window_titles", "end_dialog" };
+        if (const int own = playersOwn.indexOf (item.words[0]); own >= 0)
+        {
+            ++ownCounts[(size_t) own];
+            continue;
+        }
 
         // A command for a voice Maket was not asked to play is set apart.
         static const juce::StringArray perVoice { "noteon", "noteoff", "program", "dynamic", "gain", "glissando" };
@@ -250,6 +310,8 @@ Comparison compareWithLog (const std::vector<TimedMessage>& expected, const std:
 
     c.inMaket = (int) mine.size();
     c.inLog = (int) theirs.size();
+    if (ownCounts[0] > 0) c.playersOwn.add (juce::String (ownCounts[0]) + " set_window_titles");
+    if (ownCounts[1] > 0) c.playersOwn.add (juce::String (ownCounts[1]) + " end_dialog");
 
     if (mine.empty())   { c.problem = "The roll gives no commands for the chosen voices."; return c; }
     if (theirs.empty()) { c.problem = "The log holds no commands for the ePlayer."; return c; }
@@ -327,7 +389,7 @@ Comparison compareWithLog (const std::vector<TimedMessage>& expected, const std:
             const auto& t = theirs[i];
             if (t.partner < 0 || t.words.size() < 2) continue;
             const auto& m = mine[(size_t) t.partner];
-            moments[{ (juce::int64) std::llround (m.time * 1000.0), m.words[1] }].push_back ({ (int) i, t.partner });
+            moments[{ (juce::int64) std::llround (m.moment * 1000.0), m.words[1] }].push_back ({ (int) i, t.partner });
         }
 
         std::map<juce::String, int> patterns;
@@ -355,6 +417,51 @@ Comparison compareWithLog (const std::vector<TimedMessage>& expected, const std:
             c.orderDifferences.add (juce::String (byCount[i].first) + " times   " + byCount[i].second);
     }
 
+    // What is known of the Max patch, among the commands that found no partner.
+    for (auto& t : theirs)
+    {
+        if (t.matched) continue;
+        const double when = t.time - c.offset;
+
+        // `all_notes_off`: playing was stopped in Max.
+        if (t.words[0] == "all_notes_off") { t.known = true; ++c.numStops; continue; }
+
+        if ((t.words[0] != "dynamic" && t.words[0] != "glissando") || t.words.size() != 5) continue;
+
+        // A chord: the same command in everything but the pitch, which in the patch is that of the chord's last note.
+        for (auto& m : mine)
+        {
+            if (m.time > when + 250.0) break;
+            if (m.matched || m.known || m.words.size() != 5 || m.words[0] != t.words[0] || m.words[1] != t.words[1]) continue;
+            if (std::abs (m.time - when) < 250.0
+                && std::abs (m.words[3].getDoubleValue() - t.words[3].getDoubleValue()) < 0.002
+                && std::abs (m.words[4].getDoubleValue() - t.words[4].getDoubleValue()) < 0.002)
+            {
+                t.known = true;
+                m.known = true;
+                ++c.numChordFault;
+                break;
+            }
+        }
+        if (t.known) continue;
+
+        // A glide to 0 for a note that has no breakpoints: the note-on of that pitch is Maket's.
+        if (t.words[0] == "glissando" && std::abs (t.words[3].getDoubleValue()) < 1.0e-9)
+        {
+            for (const auto& m : mine)
+            {
+                if (m.time > when + 250.0) break;
+                if (m.words[0] == "noteon" && std::abs (m.time - when) < 250.0 && m.words[1] == t.words[1]
+                    && std::abs (m.words[2].getDoubleValue() - t.words[2].getDoubleValue()) < 0.002)
+                {
+                    t.known = true;
+                    ++c.numZeroGlissandi;
+                    break;
+                }
+            }
+        }
+    }
+
     // Counts per kind of command.
     auto indexOf = [&c] (const juce::String& command)
     {
@@ -376,14 +483,14 @@ Comparison compareWithLog (const std::vector<TimedMessage>& expected, const std:
     const int shown = 12;
     for (const auto& t : theirs)
     {
-        if (t.matched) continue;
+        if (t.matched || t.known) continue;
         if (++c.numOnlyInLog <= shown) c.onlyInLog.add (timeAndText ((t.time - c.offset) / 1000.0, t.text));
 
         const Item* closest = nullptr;
         double closestDistance = 1000.0;
         for (const auto& m : mine)
         {
-            if (m.matched || m.words[0] != t.words[0] || m.words.size() < 2 || t.words.size() < 2 || m.words[1] != t.words[1]) continue;
+            if (m.matched || m.known || m.words[0] != t.words[0] || m.words.size() < 2 || t.words.size() < 2 || m.words[1] != t.words[1]) continue;
             const double distance = std::abs (t.time - c.offset - m.time);
             if (distance < closestDistance) { closest = &m; closestDistance = distance; }
         }
@@ -394,7 +501,7 @@ Comparison compareWithLog (const std::vector<TimedMessage>& expected, const std:
         }
     }
     for (const auto& m : mine)
-        if (! m.matched && ++c.numOnlyInMaket <= shown) c.onlyInMaket.add (timeAndText (m.time / 1000.0, m.text));
+        if (! m.matched && ! m.known && ++c.numOnlyInMaket <= shown) c.onlyInMaket.add (timeAndText (m.time / 1000.0, m.text));
 
     c.usable = true;
     return c;
@@ -430,6 +537,21 @@ juce::String describe (const Comparison& c)
     if (c.otherVoices.size() > 0)
         text << "The log also holds commands for voices that were not chosen here: " << c.otherVoices.joinIntoString (", ") << ".\n";
 
+    if (c.numZeroGlissandi + c.numChordFault + c.numStops > 0 || c.playersOwn.size() > 0)
+    {
+        text << "Known of the Max patch and kept apart:\n";
+        if (c.numZeroGlissandi > 0)
+            text << "  " << c.numZeroGlissandi << " times a `glissando` to 0 for a note without pitch breakpoints, which Maket does not send\n";
+        if (c.numChordFault > 0)
+            text << "  " << c.numChordFault << " commands of chords that the patch sends with the pitch of the chord's last note; Maket sends each "
+                 << "with the pitch of its own note\n";
+        if (c.numStops > 0)
+            text << "  " << (c.numStops == 1 ? juce::String ("once") : juce::String (c.numStops) + " times")
+                 << " `all_notes_off`, when playing was stopped in Max\n";
+        if (c.playersOwn.size() > 0)
+            text << "  from the ePlayer's own side in Max: " << c.playersOwn.joinIntoString (", ") << "\n";
+    }
+
     if (c.numOnlyInLog > 0)
         text << "\nOnly in the log (" << c.numOnlyInLog << "; the first):\n  " << c.onlyInLog.joinIntoString ("\n  ") << "\n";
     if (c.numOnlyInMaket > 0)
@@ -439,7 +561,7 @@ juce::String describe (const Comparison& c)
              << c.nearMisses.joinIntoString ("\n  ") << "\n";
 
     if (c.numOnlyInLog == 0 && c.numOnlyInMaket == 0)
-        text << "Nothing is left over on either side.\n";
+        text << "Nothing else is left over on either side.\n";
     return text;
 }
 
