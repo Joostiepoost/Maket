@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1f.3. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 23 Nov 2026 8:02:26pm.
+Maket 0.0.1, stage 1f.4. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 23 Nov 2026 10:59:35pm.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`1f.3`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`1f.4`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -274,8 +274,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.026 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.029 ms; the latest of all: 19.137 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.027 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.013 ms; the latest of all: 2.827 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -283,8 +283,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.003 | 0.029 | 19.137 |
-| Arrived at the listener in this program | 0.108 | 4.378 | 19.598 |
+| Left Maket | -0.010 | 0.013 | 2.827 |
+| Arrived at the listener in this program | 0.104 | 0.203 | 2.892 |
 
 ## 6. Timing tests: the measuring
 
@@ -331,14 +331,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.07 ms; the farthest 0.16 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.12 ms; the farthest 1.62 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.02 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.10 ms; the farthest 0.16 ms (earliest -0.09, latest +0.16).
-The note-ons alone: half within 0.02 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.10 ms; the farthest 0.10 ms (earliest -0.09, latest +0.10).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.07 ms, the farthest 0.16 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.01 ms after it.
+All messages: half within 0.03 ms of their time, 95 in 100 within 0.12 ms, 99 in 100 within 0.99 ms; the farthest 1.62 ms (earliest -0.10, latest +1.62).
+The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.11 ms, 99 in 100 within 0.32 ms; the farthest 1.62 ms (earliest -0.10, latest +1.62).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.12 ms, the farthest 1.62 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 1.62 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -418,6 +418,15 @@ The first note of the cello (`Vlc`) in the file: 6690 cents, 4511 ms long, veloc
 | With the glide to 0 switched on, every note without pitch breakpoints gets one more command (249 in doodsbed), the others none | yes |
 | With a spacing of 0.1 ms the five commands of the cello's first note leave at 0, 0.1, 0.2, 0.3 and 0.4 ms after its onset | yes |
 
+### A roll by number (stage 1f.4)
+
+| Check | Passed |
+| --- | --- |
+| (The cello's first note by number: program voice3 "sul tasto"; gain voice3 5.777778; ctnote 3 12 66.9 1 4511.; ctdynamic 12 16.846475 4267.; ctglissando 12 0.5 4511..) | |
+| The cello, third voice of the roll, plays on `voice3`: program and gain by that name, the note and its curves by the note's number | yes |
+| By number the roll gives the same commands at the same times as by pitch, each in its form by number; the 306 notes are numbered 1 to 306, and every note-off, dynamic and glissando carries the number of its note | yes |
+| In the viola's double stop at 19.4 s each of the two notes has its own number, and each gets its own dynamic | yes |
+
 ### Note-on options, a command in a marker, muted notes
 
 | Check | Passed |
@@ -474,6 +483,16 @@ One figure of two notes, played in several ways in turns. What the ePlayer does 
 | (The second run: 195 items, 1278 commands, 10.9 minutes.) | |
 | The second run: 8 single notes of each of the ten kinds, 20 figures of each of five ways, 15 figures after three seconds of silence; in turns, in order of time, at least half a second of silence between any two | yes |
 
+### The third run of the study (stage 1f.4)
+
+| Check | Passed |
+| --- | --- |
+| One pitch struck eight times: by pitch the note-off of an overlapping note comes 30 ms after the next note-on; where the notes meet exactly, the note-off is sent before the next note-on | yes |
+| A glide of two semitones over 1.5 s, by pitch (`glissando`) and by number (`ctglissando`) | yes |
+| A note with the number 2000000; the flute's chord-mode program by `chordon` with two pitches, ended by a note-off of the lower | yes |
+| (The third run: 124 items, 1981 commands, 4.3 minutes.) | |
+| The third run: 8 of each repeated-note and glide way, 4 of the others, each preceded by the program and gain of its voice (the cello on voice3, the flute on voice4) | yes |
+
 ## 8. Test material
 
 The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. This section lists what the program finds there; nothing is read yet. A missing file is not a failed check at this stage.
@@ -506,6 +525,8 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `Order 1f1/mapping results.txt` | 5.3 KB |
 | `Study 1f2/20261123-182406 player study plan.txt` | 3.9 KB |
 | `Study 1f2/20261123-182406 player study send log.txt` | 73.1 KB |
+| `Study 1f2/20261123-200617 player study 2 plan.txt` | 4.5 KB |
+| `Study 1f2/20261123-200617 player study 2 send log.txt` | 49.7 KB |
 | `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 97.8 KB |
 | `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v send log.txt` | 188.5 KB |
 | `Timing 1d/20261122-193138 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 98.6 KB |
@@ -576,4 +597,4 @@ Needed for the coming stages:
 | 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `support materials/1c maket log.txt` |
 | 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `support materials/1c max log.txt` |
 
-All 129 checks passed.
+All 136 checks passed.
