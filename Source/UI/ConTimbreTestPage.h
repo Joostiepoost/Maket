@@ -55,11 +55,14 @@ private:
     void compareWith (const juce::File& logFile);
 
     std::vector<int> chosenVoices() const;
+    maket::contimbre::MappingOptions options() const;   // the ways of the Max patch that are switched on
+    juce::String optionsInWords() const;
     bool readyToSend();                     // a roll, a voice, the addresses from the preferences
     void setState (State);
     void setStatus (const juce::String& text, bool isProblem = false);
     void addToView (const juce::String& text);
     juce::File folder() const;
+    void writePlayLog();                    // when every command of a run left Maket, against when it was due
 
     maket::Settings& settings;
     maket::OscScheduler& scheduler;
@@ -68,6 +71,7 @@ private:
     juce::TextButton chooseButton, playButton, stopButton, takeButton, finishButton, logButton;
     std::vector<std::unique_ptr<juce::ToggleButton>> voiceToggles;
     std::vector<int> voiceOfToggle;         // which voice of the roll each toggle stands for
+    juce::ToggleButton noteOnFirstToggle, glissandoToZeroToggle, spacingToggle;     // stage 1f.1: the ways of the Max patch
     juce::TextEditor view;
     std::unique_ptr<juce::FileChooser> chooser;
 
@@ -80,13 +84,15 @@ private:
     double playStart = 0.0, playFrom = 0.0, playEnd = 0.0;      // playStart on the send thread's clock; the others in the roll
     int numToSend = 0, numSent = 0, numRefused = 0;
     double latest = 0.0;                                        // how late the latest command left Maket, ms
+    std::vector<maket::OscScheduler::Sent> played;              // the records of the run, for its send log
+    juce::String playedHow;
     juce::File maxLogFile;
     juce::int64 lastLogSize = -1;
 
     juce::String status;
     bool statusIsProblem = false;
 
-    juce::Rectangle<int> titleArea, subtitleArea, targetArea, rollLabelArea, voicesLabelArea, fromLabelArea, statusArea, viewHeadingArea;
+    juce::Rectangle<int> titleArea, subtitleArea, targetArea, rollLabelArea, voicesLabelArea, waysLabelArea, fromLabelArea, statusArea, viewHeadingArea;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ConTimbreTestPage)
 };

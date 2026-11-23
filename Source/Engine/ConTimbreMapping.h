@@ -44,11 +44,33 @@ struct TimedMessage
     OscMessage message;
     int voice = -1;         // which voice of the roll it comes from (from 0); -1 for a marker
     double noteOnset = 0.0; // the onset of the note it belongs to; for a marker its own time
+    double moment = 0.0;    // the time it is due by the roll; `time` lies after it when the commands of a moment are spaced
+};
+
+/** The three ways in which the stream of the Max patch differs from Maket's
+    own, each to be switched on by itself (stage 1f.1, to find out whether
+    any of them is heard). All off is Maket's way. */
+struct MappingOptions
+{
+    /** The patch's order: of the notes of one voice that begin together
+        first every program and note-on, then every gain, dynamic and
+        glissando. Maket's own order is, per note: program, gain, note-on,
+        dynamic, glissando. */
+    bool noteOnFirst = false;
+
+    /** The patch sends `glissando <voice> <pitch> 0. <duration>` for every
+        note that has no pitch breakpoints. Maket sends nothing for it. */
+    bool glissandoToZero = false;
+
+    /** Milliseconds between the commands of one voice that are due at the
+        same moment. In the patch they follow each other at about 0.1 ms;
+        Maket sends them as fast as it can (about 0.03 ms apart). */
+    double spacing = 0.0;
 };
 
 /** The commands for the voices of `roll` named in `voices` (numbers from 0;
     an empty list means every voice that has a name), in order of time. */
-std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<int>& voices = {});
+std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<int>& voices = {}, const MappingOptions& options = {});
 
 /** What to send when playing begins at `from` ms instead of at the start:
     the commands of the notes that begin at or after it, and before them,
@@ -78,6 +100,12 @@ struct Comparison
     int numOnlyInLog = 0, numOnlyInMaket = 0;
     juce::StringArray otherVoices;      // voices in the log that Maket was not asked to play
 
+    // What is known of the Max patch and of the ePlayer, counted and kept out of the left-overs.
+    int numZeroGlissandi = 0;           // the patch's `glissando ... 0.` for a note without pitch breakpoints
+    int numChordFault = 0;              // commands of a chord that the patch sends with the pitch of the chord's last note
+    int numStops = 0;                   // `all_notes_off` when playing was stopped in Max
+    juce::StringArray playersOwn;       // what the ePlayer's own Max side sends: "171 set_window_titles"
+
     // Pairs in which a number is whole on one side and real on the other (60 and 60.): the
     // same value, but not the same kind of number on its way to the ePlayer.
     int numKindDifferences = 0;
@@ -92,7 +120,8 @@ struct Comparison
     timing::Spread timing;              // how far the matched ones lie from each other in time
 };
 
-/** Holds `expected` against the commands in a log of the logging patch. Two
+/** Holds `expected` against the commands in a log of the logging patch.
+    Known differences are counted apart (see Comparison). Two
     commands are the same when their words are equal and their numbers
     differ by less than 0.002; they are paired when they also lie within a
     quarter of a second of each other once the two clocks are laid together. */

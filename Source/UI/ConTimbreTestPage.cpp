@@ -9,7 +9,7 @@
 namespace
 {
     constexpr int margin = 28;
-    constexpr int minimumHeight = 740;
+    constexpr int minimumHeight = 800;
     constexpr int sendTag = 3;              // the mark on this page's messages in the send thread's records
     constexpr int toggleWidth = 112;
     constexpr int toggleHeight = 24;
@@ -74,6 +74,12 @@ ConTimbreTestPage::ConTimbreTestPage (maket::Settings& s, maket::OscScheduler& s
     finishButton.onClick = [this] { finishTake(); };
     logButton.onClick    = [this] { chooseLog(); };
 
+    noteOnFirstToggle.setButtonText ("note-on before gain, dynamic, glissando");
+    glissandoToZeroToggle.setButtonText ("glissando to 0 without breakpoints");
+    spacingToggle.setButtonText ("0.1 ms between commands");
+    for (auto* toggle : { &noteOnFirstToggle, &glissandoToZeroToggle, &spacingToggle })
+        addAndMakeVisible (*toggle);
+
     for (auto* button : { &chooseButton, &playButton, &stopButton, &takeButton, &finishButton, &logButton })
         addAndMakeVisible (*button);
 
@@ -135,6 +141,13 @@ void ConTimbreTestPage::resized()
     for (int i = 0; i < (int) voiceToggles.size(); ++i)
         voiceToggles[(size_t) i]->setBounds (voicesArea.getX() + (i % perRow) * toggleWidth, voicesArea.getY() + (i / perRow) * toggleHeight,
                                              toggleWidth - 6, toggleHeight);
+    area.removeFromTop (10);
+
+    waysLabelArea = area.removeFromTop (18).withWidth (width);
+    auto waysRow = area.removeFromTop (toggleHeight).withWidth (width);
+    noteOnFirstToggle.setBounds (waysRow.removeFromLeft (juce::jmin (300, width * 36 / 100)));
+    glissandoToZeroToggle.setBounds (waysRow.removeFromLeft (juce::jmin (270, width * 33 / 100)));
+    spacingToggle.setBounds (waysRow);
     area.removeFromTop (12);
 
     auto row = area.removeFromTop (30);
@@ -185,6 +198,7 @@ void ConTimbreTestPage::paint (juce::Graphics& g)
     g.drawText (voiceToggles.empty() ? "Voices: the voices of the roll that have a name appear here"
                                      : "Voices to play and to compare (the name must be that of a voice of the orchestra loaded in the ePlayer)",
                 voicesLabelArea, juce::Justification::centredLeft, true);
+    g.drawText ("The ways of the Max patch, for playing and comparing (all off is Maket's own way)", waysLabelArea, juce::Justification::centredLeft, true);
     g.drawText ("from, in seconds:", fromLabelArea, juce::Justification::centredRight, true);
 
     g.setColour (statusIsProblem ? Theme::warning : Theme::text);
@@ -212,6 +226,7 @@ void ConTimbreTestPage::setState (State newState)
     finishButton.setEnabled (state == State::take);
     stopButton.setEnabled (! idle);
     for (auto& toggle : voiceToggles) toggle->setEnabled (idle);
+    for (auto* toggle : { &noteOnFirstToggle, &glissandoToZeroToggle, &spacingToggle }) toggle->setEnabled (idle);
 }
 
 void ConTimbreTestPage::setStatus (const juce::String& text, bool isProblem)
@@ -234,6 +249,24 @@ std::vector<int> ConTimbreTestPage::chosenVoices() const
     for (size_t i = 0; i < voiceToggles.size(); ++i)
         if (voiceToggles[i]->getToggleState()) voices.push_back (voiceOfToggle[i]);
     return voices;
+}
+
+maket::contimbre::MappingOptions ConTimbreTestPage::options() const
+{
+    maket::contimbre::MappingOptions o;
+    o.noteOnFirst = noteOnFirstToggle.getToggleState();
+    o.glissandoToZero = glissandoToZeroToggle.getToggleState();
+    o.spacing = spacingToggle.getToggleState() ? 0.1 : 0.0;
+    return o;
+}
+
+juce::String ConTimbreTestPage::optionsInWords() const
+{
+    juce::StringArray ways;
+    if (noteOnFirstToggle.getToggleState())     ways.add ("note-on before gain, dynamic and glissando");
+    if (glissandoToZeroToggle.getToggleState()) ways.add ("a glissando to 0 for notes without pitch breakpoints");
+    if (spacingToggle.getToggleState())         ways.add ("0.1 ms between the commands of one moment");
+    return ways.isEmpty() ? juce::String ("Maket's own way") : "with the Max patch's " + ways.joinIntoString ("; ");
 }
 
 bool ConTimbreTestPage::readyToSend()
@@ -352,7 +385,10 @@ void ConTimbreTestPage::play()
         return;
     }
 
-    const auto messages = maket::contimbre::messagesFrom (maket::contimbre::messagesForRoll (roll, chosenVoices()), playFrom);
+    const auto messages = maket::contimbre::messagesFrom (maket::contimbre::messagesForRoll (roll, chosenVoices(), options()), playFrom);
+
+    addToView ("=== " + juce::Time::getCurrentTime().formatted ("%d %b %H:%M:%S") + "   Play from " + juce::String (playFrom / 1000.0, 1)
+               + " s, " + juce::String ((int) messages.size()) + " commands, " + optionsInWords() + "\n\n");
 
     playStart = maket::OscScheduler::now() + leadTime;
     for (const auto& m : messages)
@@ -361,6 +397,8 @@ void ConTimbreTestPage::play()
     numToSend = (int) messages.size();
     numSent = numRefused = 0;
     latest = 0.0;
+    played.clear();
+    playedHow = optionsInWords();
     setState (State::playing);
 }
 
@@ -369,6 +407,8 @@ void ConTimbreTestPage::stop()
     if (state == State::playing)
     {
         scheduler.clear();
+        for (const auto& s : scheduler.takeSent (sendTag)) played.push_back (s);
+        writePlayLog();
         scheduler.sendImmediately (maket::contimbre::allNotesOff(), maket::OscScheduler::toPlayer, sendTag);
         setState (State::idle);
         setStatus ("Stopped, and all notes off sent to the ePlayer.");
@@ -384,6 +424,23 @@ void ConTimbreTestPage::stop()
         setState (State::idle);
         setStatus (juce::String::fromUTF8 ("No longer waiting. When the file is there, Compare with a log file\xe2\x80\xa6 reads it."));
     }
+}
+
+void ConTimbreTestPage::writePlayLog()
+{
+    const auto dir = folder();
+    if (played.empty() || dir == juce::File() || ! dir.createDirectory()) return;
+
+    juce::String text;
+    text << "Maket playing " << rollFile.getFileName() << " from " << juce::String (playFrom / 1000.0, 1) << " s, " << playedHow << "\n"
+         << "Columns, separated by a tab: time in the roll (ms), left Maket this much after it (ms), command\n";
+    for (const auto& s : played)
+        text << juce::String (playFrom + s.due - playStart, 3) << "\t" << juce::String (s.sent - s.due, 3) << "\t" << s.text << "\n";
+
+    const auto name = juce::Time::getCurrentTime().formatted ("%Y%m%d-%H%M%S") + " "
+                      + fileSafe (rollFile.getFileNameWithoutExtension()).substring (0, 40) + " maket play send log.txt";
+    dir.getChildFile (name).replaceWithData (text.toRawUTF8(), text.getNumBytesAsUTF8());
+    played.clear();
 }
 
 // --- A ScAst take -----------------------------------------------------------------------
@@ -451,7 +508,7 @@ void ConTimbreTestPage::compareWith (const juce::File& logFile)
     }
 
     const auto voices = chosenVoices();
-    const auto expected = maket::contimbre::messagesForRoll (roll, voices);
+    const auto expected = maket::contimbre::messagesForRoll (roll, voices, options());
     const auto log = maket::timing::readCollLog (logFile.loadFileAsString());
     const auto comparison = maket::contimbre::compareWithLog (expected, log);
 
@@ -461,7 +518,7 @@ void ConTimbreTestPage::compareWith (const juce::File& logFile)
     juce::String shown;
     shown << "=== " << juce::Time::getCurrentTime().formatted ("%d %b %H:%M:%S") << "   " << rollFile.getFileName()
           << " against " << logFile.getFileName() << "\n"
-          << "Voices: " << names.joinIntoString (", ") << "\n"
+          << "Voices: " << names.joinIntoString (", ") << ". Maket's commands: " << optionsInWords() << ".\n"
           << maket::contimbre::describe (comparison) << "\n";
     addToView (shown);
 
@@ -481,7 +538,10 @@ void ConTimbreTestPage::compareWith (const juce::File& logFile)
     if (! comparison.usable)
         setStatus ("The comparison gave no result; see below.", true);
     else if (comparison.numOnlyInLog == 0 && comparison.numOnlyInMaket == 0)
-        setStatus ("The same commands on both sides: " + juce::String (comparison.matched) + "."
+        setStatus ((comparison.numZeroGlissandi + comparison.numChordFault > 0
+                        ? "Every command is the same on both sides (" + juce::String (comparison.matched) + ") or differs in a way that is known of the Max patch ("
+                              + juce::String (comparison.numZeroGlissandi + comparison.numChordFault) + ")."
+                        : "The same commands on both sides: " + juce::String (comparison.matched) + ".")
                    + (filed ? " Filed in \"mapping results.txt\" in " + dir.getFullPathName() + "." : juce::String()));
     else
         setStatus (juce::String (comparison.matched) + " commands are the same; " + juce::String (comparison.numOnlyInLog) + " only ScAst sends, "
@@ -502,12 +562,14 @@ void ConTimbreTestPage::timerCallback()
             ++numSent;
             if (! s.ok) ++numRefused;
             latest = juce::jmax (latest, s.sent - s.due);
+            played.push_back (s);
         }
 
         const double position = playFrom + juce::jmax (0.0, now - playStart);
         if (scheduler.numWaiting() == 0 && numSent >= numToSend)
         {
             setState (State::idle);
+            writePlayLog();
             if (numRefused > 0)
                 setStatus (juce::String (numRefused) + " of " + juce::String (numToSend) + " commands could not be sent: is the ePlayer's address right "
                            "on the Preferences page?", true);

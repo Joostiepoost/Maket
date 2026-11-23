@@ -16,7 +16,7 @@
 //      a listener inside this program, the punctuality of the send thread.
 //   6. Timing tests (stage 1d, in TimingTests.cpp): the passages, the
 //      reader of the Max patch's log, the comparison with known answers.
-//   7. The conTimbre mapping (stage 1e, in MappingTests.cpp): a roll's
+//   7. The conTimbre mapping (stages 1e and 1f.1, in MappingTests.cpp): a roll's
 //      notes as commands for the ePlayer; the comparison with a Max log.
 //   8. Test material: what is in the repository's Temp folder, and whether
 //      the files the coming steps need are there.
@@ -69,11 +69,14 @@ void testProgram (const juce::File& work, const juce::File& outDir)
     for (const auto& p : parts) versionOk = versionOk && isNumber (p);
     checkRow (versionOk, "The version reads as three numbers (`" + version + "`)");
 
-    // The stage: a step number, then a letter for the sub-stage (0b, 1a, 12c ...).
+    // The stage: a step number, then a letter for the sub-stage (0b, 1a, 12c ...), and where a
+    // sub-stage is built in parts a point and the number of the part (1f.1).
     const auto digits = stage.initialSectionContainingOnly ("0123456789");
-    const auto letters = stage.substring (digits.length());
-    checkRow (digits.isNotEmpty() && letters.length() <= 1 && letters.containsOnly ("abcdefghijklmnopqrstuvwxyz"),
-              "The build stage reads as a step number and a letter (`" + stage + "`)");
+    const auto letters = stage.substring (digits.length()).upToFirstOccurrenceOf (".", false, false);
+    const auto part = stage.fromFirstOccurrenceOf (".", false, false);
+    checkRow (digits.isNotEmpty() && letters.length() <= 1 && letters.containsOnly ("abcdefghijklmnopqrstuvwxyz")
+              && (! stage.containsChar ('.') || (letters.length() == 1 && isNumber (part))),
+              "The build stage reads as a step number and a letter, with the number of a part where there is one (`" + stage + "`)");
 
     // A work folder in the system's temporary folder, used by the file tests of later steps.
     {

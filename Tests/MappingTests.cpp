@@ -234,6 +234,160 @@ void testSecondRoll (const juce::File& temp)
     line();
 }
 
+/** Stage 1f.1: the three ways of the Max patch, each by its own switch. */
+void testPatchWays (const juce::File& temp)
+{
+    line ("### The ways of the Max patch, by switch (stage 1f.1)");
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+
+    Roll roll;
+    juce::StringArray remarks;
+    if (maket::readBachRollFile (material (temp, "doodsbed final v1c.txt"), roll, remarks).failed())
+    {
+        check (false, "doodsbed final v1c is in Temp and can be read");
+        line();
+        return;
+    }
+
+    const auto own = maket::contimbre::messagesForRoll (roll);
+    const double onset = 7200.802301;
+
+    // The order: note-on before gain.
+    {
+        maket::contimbre::MappingOptions o;
+        o.noteOnFirst = true;
+        const auto vlc = ofVoice (maket::contimbre::messagesForRoll (roll, {}, o), 2);
+        checkRow (vlc.size() > 5 && own.size() == maket::contimbre::messagesForRoll (roll, {}, o).size()
+                  && at (vlc[0], onset, "program Vlc \"sul tasto\"")
+                  && at (vlc[1], onset, "noteon Vlc 66.9 1")
+                  && at (vlc[2], onset, "gain Vlc 5.777778")
+                  && at (vlc[3], onset, "dynamic Vlc 66.9 16.846475 4267.")
+                  && at (vlc[4], onset, "glissando Vlc 66.9 0.5 4511."),
+                  "The patch's order: program, note-on, gain, dynamic, glissando; the same commands, none more or fewer");
+
+        // A double stop of the viola: both note-ons before either note's curves.
+        const auto vla = ofVoice (maket::contimbre::messagesForRoll (roll, {}, o), 5);
+        juce::StringArray kinds;
+        for (const auto& m : vla)
+            if (std::abs (m.time - 19372.0) < 1.0) kinds.add (m.message.address);
+        line ("| (The viola's double stop at 19.4 s in the patch's order: " + kinds.joinIntoString (", ") + ".) | |");
+        int lastNoteOn = -1, firstCurve = 1000;
+        for (int i = 0; i < kinds.size(); ++i)
+        {
+            if (kinds[i] == "noteon") lastNoteOn = i;
+            else if (kinds[i] != "program" && kinds[i] != "noteoff") firstCurve = juce::jmin (firstCurve, i);
+        }
+        checkRow (kinds.size() >= 6 && lastNoteOn >= 1 && lastNoteOn < firstCurve,
+                  "In a chord every note-on comes before the first gain, dynamic or glissando");
+    }
+
+    // A glide to 0 for every note without breakpoints.
+    {
+        maket::contimbre::MappingOptions o;
+        o.glissandoToZero = true;
+        const auto all = maket::contimbre::messagesForRoll (roll, {}, o);
+
+        int withoutBreakpoints = 0;
+        for (const auto& voice : roll.voices)
+        {
+            if (voice.name.isEmpty() || voice.isMuted()) continue;
+            for (const auto& chord : voice.chords)
+                if (! chord.isMuted())
+                    for (const auto& note : chord.notes)
+                        if (! note.isMuted() && note.breakpoints.size() < 2) ++withoutBreakpoints;
+        }
+
+        int toZero = 0;
+        for (const auto& m : all)
+            if (m.message.address == "glissando" && m.message.arguments.size() == 4 && std::abs (m.message.arguments[2].real) < 1.0e-12) ++toZero;
+        int ownToZero = 0;
+        for (const auto& m : own)
+            if (m.message.address == "glissando" && std::abs (m.message.arguments[2].real) < 1.0e-12) ++ownToZero;
+
+        checkRow (withoutBreakpoints > 200 && (int) all.size() == (int) own.size() + withoutBreakpoints && toZero - ownToZero == withoutBreakpoints,
+                  "With the glide to 0 switched on, every note without pitch breakpoints gets one more command ("
+                  + juce::String (withoutBreakpoints) + " in doodsbed), the others none");
+    }
+
+    // The commands of a moment 0.1 ms apart.
+    {
+        maket::contimbre::MappingOptions o;
+        o.spacing = 0.1;
+        const auto vlc = ofVoice (maket::contimbre::messagesForRoll (roll, {}, o), 2);
+        bool inOrder = true, momentsKept = true;
+        const auto all = maket::contimbre::messagesForRoll (roll, {}, o);
+        for (size_t i = 1; i < all.size(); ++i) inOrder = inOrder && all[i].time >= all[i - 1].time;
+        for (const auto& m : all) momentsKept = momentsKept && m.time >= m.moment && m.time - m.moment < 2.0;
+        checkRow (vlc.size() > 5 && inOrder && momentsKept
+                  && at (vlc[0], onset, "program Vlc \"sul tasto\"") && at (vlc[1], onset + 0.1, "gain Vlc 5.777778")
+                  && at (vlc[2], onset + 0.2, "noteon Vlc 66.9 1") && at (vlc[3], onset + 0.3, "dynamic Vlc 66.9 16.846475 4267.")
+                  && at (vlc[4], onset + 0.4, "glissando Vlc 66.9 0.5 4511."),
+                  "With a spacing of 0.1 ms the five commands of the cello's first note leave at 0, 0.1, 0.2, 0.3 and 0.4 ms after its onset");
+    }
+    line();
+}
+
+/** Joost's takes of 23 Nov: the logs of ScAst playing, held against Maket's commands. */
+void testJoostsTakes (const juce::File& temp)
+{
+    line ("### Joost's ScAst takes of 23 Nov, compared here");
+    line();
+    line ("The logs in `Temp/Mapping 1e`, with every voice but Mezzo (which is not a conTimbre voice).");
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+
+    struct Take { const char* rollName; const char* log; int same, zero, chord; };
+    const Take takes[] = {
+        { "doodsbed final v1c.txt",    "20261123-091638 doodsbed final v1c scast max log.txt",    1146, 238, 20 },
+        { "Bult - maquette final.txt", "20261123-121314 Bult - maquette final scast max log.txt", 2438, 971,  0 } };
+
+    for (const auto& take : takes)
+    {
+        Roll roll;
+        juce::StringArray remarks;
+        const auto logFile = temp.getChildFile ("Mapping 1e").getChildFile (take.log);
+        if (! logFile.existsAsFile() || maket::readBachRollFile (material (temp, take.rollName), roll, remarks).failed())
+        {
+            line ("| (`" + juce::String (take.log) + "` or its roll is not in Temp: not checked.) | |");
+            continue;
+        }
+
+        std::vector<int> voices;
+        for (int v = 0; v < (int) roll.voices.size(); ++v)
+            if (roll.voices[(size_t) v].name.isNotEmpty() && roll.voices[(size_t) v].name != "Mezzo") voices.push_back (v);
+
+        const auto log = maket::timing::readCollLog (logFile.loadFileAsString());
+        const auto c = maket::contimbre::compareWithLog (maket::contimbre::messagesForRoll (roll, voices), log);
+
+        line ("| (" + juce::String (take.rollName) + ": the same " + juce::String (c.matched) + " of " + juce::String (c.inMaket)
+              + "; glides to 0: " + juce::String (c.numZeroGlissandi) + "; chord commands with the last note's pitch: " + juce::String (c.numChordFault)
+              + "; stops: " + juce::String (c.numStops) + "; the ePlayer's own: " + c.playersOwn.joinIntoString (", ")
+              + "; left over: " + juce::String (c.numOnlyInLog) + " in the log, " + juce::String (c.numOnlyInMaket) + " in Maket.) | |");
+        checkRow (c.usable && c.matched == take.same && c.numZeroGlissandi == take.zero && c.numChordFault == take.chord
+                  && c.inMaket == take.same + take.chord && c.numOnlyInLog == 0 && c.numOnlyInMaket == 0,
+                  juce::String (take.rollName) + ": every command of Maket's is in ScAst's log, apart from the " + juce::String (take.chord)
+                  + " chord commands that the patch sends with another pitch; the log's " + juce::String (take.zero)
+                  + " glides to 0 are told apart; nothing else is left over");
+
+        // With the glide to 0 switched on, those are Maket's as well.
+        maket::contimbre::MappingOptions o;
+        o.glissandoToZero = true;
+        o.noteOnFirst = true;
+        const auto asPatch = maket::contimbre::compareWithLog (maket::contimbre::messagesForRoll (roll, voices, o), log);
+        checkRow (asPatch.usable && asPatch.inMaket == take.same + take.chord + take.zero
+                  && asPatch.matched + asPatch.numChordFault == asPatch.inMaket && asPatch.numZeroGlissandi == 0
+                  && asPatch.numOnlyInLog == 0 && asPatch.numOnlyInMaket == 0 && asPatch.numOrderDifferences < c.numOrderDifferences,
+                  juce::String (take.rollName) + ", with the patch's order and its glides to 0 switched on: " + juce::String (asPatch.matched)
+                  + " the same, " + juce::String (asPatch.numChordFault) + " chord commands with another pitch (the patch's glides to 0 of a chord "
+                  + "carry the last note's pitch too), nothing left over; the order within a moment differs at "
+                  + juce::String (asPatch.numOrderDifferences) + " moments instead of " + juce::String (c.numOrderDifferences));
+    }
+    line();
+}
+
 void testSmallCases()
 {
     line ("### Note-on options, a command in a marker, muted notes");
@@ -387,6 +541,8 @@ void testConTimbreMapping (const juce::File& temp)
 
     testMapping (temp);
     testSecondRoll (temp);
+    testPatchWays (temp);
     testSmallCases();
     testComparison (temp);
+    testJoostsTakes (temp);
 }

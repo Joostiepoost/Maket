@@ -51,8 +51,9 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1b | Gate: bach text writer | done |
 | 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | done |
 | 1d | Gate: timing tests of the OSC connection | done |
-| 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | built; tested by Joost on 23 Nov, findings under discussion |
-| 1f | Gate: addressing by note, chords, tuning | |
+| 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | done; tested by Joost on 23 Nov. **The gate is passed** (Joost, 23 Nov) |
+| 1f | Addressing by note, chords, tuning | in parts |
+| 1f.1 | The ways of the Max patch by switch (order, glissando to 0, spacing), to hear whether any of them matters; the comparison sets apart what is known of the patch | built, to test |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -366,6 +367,36 @@ Please keep the orchestra files (`.cePlayerOrc`) out of the repository: they hol
 Joost's four takes are in `Temp/Mapping 1e`. Every `program`, `gain`, `noteon` and `noteoff` of both pieces is the same in Maket and in ScAst. Three things differ, all on ScAst's side: ScAst sends a `glissando` to 0 for every note without pitch breakpoints; in a chord, ScAst sends every `dynamic` and `glissando` with the pitch of the chord's last note, so that the lower note of a double stop gets no curve (Maket gives each note its own); and what goes through a delay in the patch (`gain`, `dynamic`, `glissando`) comes after the note-on. The `set_window_titles` in the logs is the ePlayer's own.
 
 The test material now lives in `Temp/support materials`; the test program looks there first.
+
+## Using stage 1f.1
+
+The check of stage 1e showed three ways in which the stream of the Max patch differs from Maket's, and the recordings of the cello's opening left one thing open: over its first four notes Maket's takes were a few dB louder than ScAst's. Stage 1f.1 makes each of the three ways a switch, so that Maket can send exactly as the patch does and the difference can be looked for by ear and by measurement.
+
+- **Three switches on the conTimbre test page**, under the voices; all off is Maket's own way:
+  - *note-on before gain, dynamic, glissando*: the patch's order. Of the notes of a voice that begin together, first every program and note-on, then every gain, dynamic and glissando. Maket's own order is, per note: program, gain, note-on, dynamic, glissando.
+  - *glissando to 0 without breakpoints*: the patch sends `glissando <voice> <pitch> 0. <duration>` for every note that has no pitch breakpoints.
+  - *0.1 ms between commands*: the commands of one voice that are due at the same moment leave 0.1 ms after each other, as they do from Max. Otherwise Maket sends them as fast as it can, about 0.03 ms apart.
+- The switches hold for **Play** and for the comparison alike. What stays Maket's in every case: in a chord each note gets its own dynamic and glissando (the patch sends them with the pitch of the chord's last note).
+- **Every run writes a send log** in the *Test results* folder (`... maket play send log.txt`): its first line says which way was played, and for every command when it was due and how long after that it left Maket.
+- **The comparison keeps apart what is known of the Max patch**: its glissandi to 0, the chord commands with the last note's pitch, `all_notes_off` at a stop, and what the ePlayer's own Max side sends (`set_window_titles`, `end_dialog`). What is left over after that is new. Your takes of 23 Nov are now part of the test program: `./build.sh tests` compares both of them and expects nothing left over.
+
+### Testing stage 1f.1
+
+1. `git pull`, then `./build.sh`: `stage 1f.1`. `./build.sh tests` ends with `All 117 checks passed.`
+2. Cmd-4, Preferences, *Test results*: **Choose…** a new folder `Order 1f1` inside the repository's `Temp` folder.
+3. ScAst with doodsbed and the ePlayer with the `doodsbed kwintet` orchestra, as on 23 Nov. In Maket: **conTimbre test**, **Choose…** `Temp/support materials/doodsbed final v1c.txt`, and untick every voice but `Vlc`.
+4. Record the cello's opening nine times, in this order, each time from the start until just after the note at 35 s has begun (about 40 s), stopping at the same place every time so that the ePlayer is in the same state when the next take begins:
+
+   | Take | Played by | Switches |
+   | --- | --- | --- |
+   | S1, S2, S3 | ScAst | |
+   | A1, A2, A3 | Maket | all three off |
+   | B1, B2, B3 | Maket | all three on |
+
+   in the order S1, A1, B1, S2, A2, B2, S3, A3, B3. Names with those letters and numbers in them are enough.
+5. Send the nine recordings, and push the `Order 1f1` folder (Maket's send logs of the six runs) and `Measurements/report.md`.
+
+What the recordings will say: if the B takes lie with ScAst's and the A takes apart, one of the three ways is heard, and the switches tell which; if A and B lie together and ScAst's apart, it is something outside the commands; if all nine lie within each other's spread, the difference of 23 Nov was chance.
 
 ## The repository
 
