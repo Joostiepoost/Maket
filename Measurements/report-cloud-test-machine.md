@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1e. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 22 Nov 2026 11:14:08pm.
+Maket 0.0.1, stage 1e. Machine: Intel(R) Xeon(R) Processor @ 2.30GHz, Linux. Date: 23 Nov 2026 2:18:26pm.
 
 ## 1. The test program
 
@@ -275,7 +275,7 @@ A listener inside the test program takes the place of Max. This shows that the m
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
 | None leaves before its time (the earliest: -0.027 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.005 ms; the latest of all: 0.019 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.012 ms; the latest of all: 1.006 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -283,8 +283,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.008 | 0.005 | 0.019 |
-| Arrived at the listener in this program | 0.082 | 0.129 | 0.380 |
+| Left Maket | -0.005 | 0.012 | 1.006 |
+| Arrived at the listener in this program | 0.047 | 0.117 | 3.187 |
 
 ## 6. Timing tests: the measuring
 
@@ -331,14 +331,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.09 ms; the farthest 2.91 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.11 ms; the farthest 2.29 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.02 ms of their time, 95 in 100 within 0.09 ms, 99 in 100 within 0.69 ms; the farthest 2.91 ms (earliest -0.05, latest +2.91).
-The note-ons alone: half within 0.02 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 1.75 ms; the farthest 2.91 ms (earliest -0.05, latest +2.91).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.09 ms, the farthest 2.91 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 1.73 ms after it.
+All messages: half within 0.02 ms of their time, 95 in 100 within 0.11 ms, 99 in 100 within 0.71 ms; the farthest 2.29 ms (earliest -0.05, latest +2.29).
+The note-ons alone: half within 0.02 ms of their time, 95 in 100 within 0.11 ms, 99 in 100 within 1.68 ms; the farthest 2.29 ms (earliest -0.05, latest +2.29).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.11 ms, the farthest 2.29 ms.
+Leaving Maket: 95 in 100 within 0.03 ms of their time, the latest 0.69 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -431,13 +431,15 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 
 | File in `Temp` | Size |
 | --- | --- |
-| `01a doodsbed roll stats.txt` | 59.7 KB |
-| `01b doodsbed roll resave after dump.txt` | 56.6 KB |
-| `02a mixed_roll_example_01h roll stats` | 8.3 KB |
-| `02b mixed_roll_example_01h resave after dump.txt` | 17.2 KB |
-| `1c maket log.txt` | 3.3 KB |
-| `1c max log.txt` | 2.8 KB |
-| `Bult - maquette final.txt` | 94.2 KB |
+| `Mapping 1e/20261123-090222 doodsbed final v1c scast maket commands.txt` | 38.3 KB |
+| `Mapping 1e/20261123-090222 doodsbed final v1c scast max log.txt` | 68.3 KB |
+| `Mapping 1e/20261123-091638 doodsbed final v1c scast maket commands.txt` | 38.3 KB |
+| `Mapping 1e/20261123-091638 doodsbed final v1c scast max log.txt` | 67.9 KB |
+| `Mapping 1e/20261123-120827 Bult - maquette final scast maket commands.txt` | 68.3 KB |
+| `Mapping 1e/20261123-120827 Bult - maquette final scast max log.txt` | 152.4 KB |
+| `Mapping 1e/20261123-121314 Bult - maquette final scast maket commands.txt` | 68.3 KB |
+| `Mapping 1e/20261123-121314 Bult - maquette final scast max log.txt` | 147.4 KB |
+| `Mapping 1e/mapping results.txt` | 12.4 KB |
 | `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 97.8 KB |
 | `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v send log.txt` | 188.5 KB |
 | `Timing 1d/20261122-193138 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 98.6 KB |
@@ -479,11 +481,18 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `Timing 1d/timing passage dense.txt` | 54.1 KB |
 | `Timing 1d/timing passage long.txt` | 124.9 KB |
 | `Timing 1d/timing results.md` | 3.8 KB |
-| `cpe%.maxpat` | 9.0 KB |
-| `cpe_poly.maxpat` | 44.5 KB |
-| `doodsbed final v1c.txt` | 56.1 KB |
-| `mixed_roll_example_01h.txt` | 17.2 KB |
-| `roll tests s1b.maxpat` | 100.8 KB |
+| `support materials/01a doodsbed roll stats.txt` | 59.7 KB |
+| `support materials/01b doodsbed roll resave after dump.txt` | 56.6 KB |
+| `support materials/02a mixed_roll_example_01h roll stats` | 8.3 KB |
+| `support materials/02b mixed_roll_example_01h resave after dump.txt` | 17.2 KB |
+| `support materials/1c maket log.txt` | 3.3 KB |
+| `support materials/1c max log.txt` | 2.8 KB |
+| `support materials/Bult - maquette final.txt` | 94.2 KB |
+| `support materials/cpe%.maxpat` | 9.0 KB |
+| `support materials/cpe_poly.maxpat` | 44.5 KB |
+| `support materials/doodsbed final v1c.txt` | 56.1 KB |
+| `support materials/mixed_roll_example_01h.txt` | 17.2 KB |
+| `support materials/roll tests s1b.maxpat` | 100.8 KB |
 | `written by Maket/doodsbed final v1c.txt` | 56.1 KB |
 | `written by Maket/mixed_roll_example_01h changed by Maket.txt` | 17.2 KB |
 | `written by Maket/mixed_roll_example_01h.txt` | 17.2 KB |
@@ -492,13 +501,13 @@ Needed for the coming stages:
 
 | File | Needed for | Found |
 | --- | --- | --- |
-| doodsbed final v1c | 1a and 1b: a roll to read and to write back | yes, as `doodsbed final v1c.txt` |
-| mixed_roll_example_01h | 1a and 1b: a roll to read and to write back | yes, as `mixed_roll_example_01h.txt` |
-| 01a doodsbed roll stats | 1a: bach's own counts and its dump of every note | yes, as `01a doodsbed roll stats.txt` |
-| 02a mixed_roll_example_01h roll stats | 1a: bach's own counts and its dump of every note | yes, as `02a mixed_roll_example_01h roll stats` |
-| 01b doodsbed roll resave after dump | 1b: the roll as bach saves it again | yes, as `01b doodsbed roll resave after dump.txt` |
-| 02b mixed_roll_example_01h resave after dump | 1b: the roll as bach saves it again | yes, as `02b mixed_roll_example_01h resave after dump.txt` |
-| 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `1c maket log.txt` |
-| 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `1c max log.txt` |
+| doodsbed final v1c | 1a and 1b: a roll to read and to write back | yes, as `support materials/doodsbed final v1c.txt` |
+| mixed_roll_example_01h | 1a and 1b: a roll to read and to write back | yes, as `support materials/mixed_roll_example_01h.txt` |
+| 01a doodsbed roll stats | 1a: bach's own counts and its dump of every note | yes, as `support materials/01a doodsbed roll stats.txt` |
+| 02a mixed_roll_example_01h roll stats | 1a: bach's own counts and its dump of every note | yes, as `support materials/02a mixed_roll_example_01h roll stats` |
+| 01b doodsbed roll resave after dump | 1b: the roll as bach saves it again | yes, as `support materials/01b doodsbed roll resave after dump.txt` |
+| 02b mixed_roll_example_01h resave after dump | 1b: the roll as bach saves it again | yes, as `support materials/02b mixed_roll_example_01h resave after dump.txt` |
+| 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `support materials/1c maket log.txt` |
+| 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `support materials/1c max log.txt` |
 
 All 109 checks passed.
