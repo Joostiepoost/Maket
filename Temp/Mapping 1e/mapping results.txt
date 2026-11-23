@@ -150,3 +150,73 @@ Side by side, a command of the log and Maket's nearest one of that kind for that
   Max:      50.370 s   dynamic Vla 88.25 95.955556 911.679691
   Maket:    50.370 s   dynamic Vla 81.25 95.955556 911.679691
 
+=== 23 Nov 12:12:08   Bult - maquette final.txt against 20261123-120827 Bult - maquette final scast max log.txt
+Voices: Fl, Cl, Vla, Vlc, PnRH, PnLH
+The same command at the same time in both: 2438. Maket makes 2438 commands for the roll, the log holds 3735.
+  program       Maket   325   log   330   the same   325
+  noteon        Maket   971   log  1002   the same   971
+  gain          Maket    92   log   100   the same    92
+  noteoff       Maket   971   log  1002   the same   971
+  dynamic       Maket    79   log    79   the same    79
+  set_window_titlesMaket     0   log   220   the same     0
+  glissando     Maket     0   log  1002   the same     0
+In time, the pairs lie: half within 0.09 ms of each other, 95 in 100 within 0.43 ms, the farthest 5.74 ms.
+At 121 moments the commands of one voice that are due together come in another order in the log than Maket sends them:
+  33 times   Max: program, noteon, gain   Maket: program, gain, noteon
+  19 times   Max: noteon, gain   Maket: gain, noteon
+  17 times   Max: program, noteon, noteoff   Maket: noteoff, program, noteon
+  14 times   Max: noteon, noteoff   Maket: noteoff, noteon
+  12 times   Max: noteoff, noteon   Maket: noteon, noteoff
+  8 times   Max: program, noteon, gain, dynamic   Maket: program, gain, noteon, dynamic
+  7 times   Max: noteon, noteon, noteoff, noteoff   Maket: noteoff, noteoff, noteon, noteon
+  4 times   Max: noteoff, noteoff, noteon, noteon   Maket: noteon, noteon, noteoff, noteoff
+
+Only in the log (1297; the first):
+    -22.411 s   set_window_titles
+    -21.411 s   set_window_titles
+    -20.411 s   set_window_titles
+    -19.411 s   set_window_titles
+    -18.411 s   set_window_titles
+    -17.411 s   set_window_titles
+    -16.411 s   set_window_titles
+    -15.411 s   set_window_titles
+    -14.411 s   set_window_titles
+    -13.411 s   set_window_titles
+    -12.411 s   set_window_titles
+    -12.239 s   noteon PnLH 36. 1
+
+=== 23 Nov 12:16:44   Bult - maquette final.txt against 20261123-121314 Bult - maquette final scast max log.txt
+Voices: Fl, Cl, Vla, Vlc, PnRH, PnLH
+The same command at the same time in both: 2438. Maket makes 2438 commands for the roll, the log holds 3619.
+  program       Maket   325   log   325   the same   325
+  noteon        Maket   971   log   971   the same   971
+  gain          Maket    92   log    92   the same    92
+  noteoff       Maket   971   log   971   the same   971
+  dynamic       Maket    79   log    79   the same    79
+  set_window_titlesMaket     0   log   210   the same     0
+  glissando     Maket     0   log   971   the same     0
+In time, the pairs lie: half within 0.15 ms of each other, 95 in 100 within 2.06 ms, the farthest 3.82 ms.
+At 166 moments the commands of one voice that are due together come in another order in the log than Maket sends them:
+  53 times   Max: noteon, noteoff   Maket: noteoff, noteon
+  37 times   Max: program, noteon, noteoff   Maket: noteoff, program, noteon
+  33 times   Max: program, noteon, gain   Maket: program, gain, noteon
+  19 times   Max: noteon, gain   Maket: gain, noteon
+  9 times   Max: noteon, noteon, noteoff, noteoff   Maket: noteoff, noteoff, noteon, noteon
+  8 times   Max: program, noteon, gain, dynamic   Maket: program, gain, noteon, dynamic
+  2 times   Max: noteoff, noteon   Maket: noteon, noteoff
+  2 times   Max: noteon, gain, dynamic   Maket: gain, noteon, dynamic
+
+Only in the log (1181; the first):
+     -4.754 s   set_window_titles
+     -3.754 s   set_window_titles
+     -2.754 s   set_window_titles
+     -1.754 s   set_window_titles
+     -0.754 s   set_window_titles
+      0.246 s   set_window_titles
+      0.348 s   glissando PnRH 58. 0. 752.208983
+      0.389 s   glissando PnRH 63. 0. 732.054209
+      0.421 s   glissando PnRH 64. 0. 712.142322
+      0.451 s   glissando PnRH 70. 0. 627.801296
+      0.469 s   glissando Vla 60.75 0. 456.
+      0.473 s   glissando PnRH 82. 0. 601.
+

@@ -1,0 +1,2440 @@
+Maket's commands for Bult - maquette final.txt, voices Fl, Cl, Vla, Vlc, PnRH, PnLH
+Columns, separated by a tab: time in the roll (ms), command
+347.953	program PnRH ordLV
+347.953	noteon PnRH 58. 58
+388.980	noteon PnRH 63. 61
+420.887	noteon PnRH 64. 59
+450.550	noteon PnRH 70. 95
+469.188	program Vla sp
+469.188	gain Vla 0.
+469.188	noteon Vla 60.75 127
+472.613	noteon PnRH 82. 127
+472.708	noteon PnRH 88. 125
+472.782	noteon PnRH 75. 120
+476.831	program Cl flz
+476.831	gain Cl 0.
+476.831	noteon Cl 83.5 127
+482.473	program Fl flz
+482.473	gain Fl 0.
+482.473	noteon Fl 92.5 127
+483.043	program Vlc sp
+483.043	gain Vlc 0.
+483.043	noteon Vlc 66.75 127
+925.188	noteoff Vla 60.75
+939.043	noteoff Vlc 66.75
+965.831	noteoff Cl 83.5
+971.473	noteoff Fl 92.5
+1073.613	noteoff PnRH 82.
+1078.352	noteoff PnRH 70.
+1100.162	noteoff PnRH 58.
+1121.034	noteoff PnRH 63.
+1133.030	noteoff PnRH 64.
+1162.661	noteoff PnRH 75.
+1225.236	noteoff PnRH 88.
+1433.574	program Fl flz-whitenoise
+1433.574	noteon Fl 92.5 127
+1446.532	program Cl multiphonic
+1446.532	noteon Cl 103. 127
+1449.050	program Vla "excessive pressure"
+1449.050	noteon Vla 60.75 127
+1462.008	program Vlc pizzB-nopitch
+1462.008	noteon Vlc 66.75 127
+1912.574	noteoff Fl 92.5
+1925.532	noteoff Cl 103.
+1928.050	noteoff Vla 60.75
+1941.008	noteoff Vlc 66.75
+2914.195	noteon PnRH 58. 58
+2955.221	noteon PnRH 63. 61
+2987.129	noteon PnRH 64. 59
+3017.439	program Vla sp
+3017.439	noteon Vla 60.75 127
+3019.967	program Cl flz
+3019.967	noteon Cl 83.5 127
+3025.610	noteon Fl 92.5 127
+3027.792	noteon PnRH 70. 95
+3031.294	program Vlc sp
+3031.294	noteon Vlc 66.75 127
+3038.949	noteon PnRH 88. 125
+3039.024	noteon PnRH 75. 120
+3711.593	noteoff PnRH 70.
+3722.404	noteoff PnRH 58.
+3743.276	noteoff PnRH 63.
+3755.272	noteoff PnRH 64.
+3784.903	noteoff PnRH 75.
+3847.478	noteoff PnRH 88.
+3947.439	noteoff Vla 60.75
+3949.967	noteoff Cl 83.5
+3955.610	noteoff Fl 92.5
+3961.294	noteoff Vlc 66.75
+4203.893	program Fl flz-whitenoise
+4203.893	noteon Fl 92.5 127
+4211.264	program Vla "excessive pressure"
+4211.264	noteon Vla 60.75 127
+4216.851	program Cl multiphonic
+4216.851	noteon Cl 103. 127
+4224.222	program Vlc pizzB-nopitch
+4224.222	noteon Vlc 66.75 127
+5138.264	noteoff Vla 60.75
+5151.222	noteoff Vlc 66.75
+5180.893	noteoff Fl 92.5
+5193.851	noteoff Cl 103.
+6850.490	program PnRH ordinario
+6850.490	noteon PnRH 63. 41
+6856.571	noteon PnRH 70. 75
+6856.571	noteon PnRH 82. 75
+6856.717	noteon PnRH 88. 105
+6856.786	noteon PnRH 75. 100
+6857.378	program Cl ordinario
+6857.378	noteon Cl 83.5 107
+6862.437	noteon PnRH 64. 39
+6862.601	program Fl ordinario
+6862.601	noteon Fl 92.5 107
+6863.128	program Vlc ordinario
+6863.128	noteon Vlc 66.75 107
+6864.309	program Vla ordinario
+6864.309	noteon Vla 84.75 100
+7102.646	noteoff Cl 83.5
+7107.868	noteoff Fl 92.5
+7108.396	noteoff Vlc 66.75
+7109.577	noteoff Vla 84.75
+7109.641	noteoff PnRH 63.
+7115.722	noteoff PnRH 70.
+7115.722	noteoff PnRH 82.
+7115.867	noteoff PnRH 88.
+7115.936	noteoff PnRH 75.
+7121.587	noteoff PnRH 64.
+7432.435	noteon Vlc 74.75 125
+7437.584	noteon PnRH 64. 41
+7439.565	noteon Fl 92.5 127
+7440.102	noteon Cl 85.25 127
+7442.225	noteon Vla 86.25 125
+7443.665	noteon PnRH 70. 75
+7443.665	noteon PnRH 82. 75
+7443.811	noteon PnRH 88. 105
+7443.880	noteon PnRH 75. 100
+7449.530	noteon PnRH 65. 39
+7603.561	noteoff Vlc 74.75
+7612.816	noteoff Vla 86.25
+7694.224	noteoff Fl 92.5
+7722.668	noteoff Cl 85.25
+7731.153	noteoff PnRH 64.
+7737.234	noteoff PnRH 70.
+7737.234	noteoff PnRH 82.
+7737.380	noteoff PnRH 88.
+7737.449	noteoff PnRH 75.
+7743.099	noteoff PnRH 65.
+7989.038	noteon Fl 92.75 127
+7989.487	noteon Cl 86.75 127
+7992.694	noteon Vla 87.5 125
+7996.128	noteon Vlc 79.25 125
+8000.044	noteon PnRH 65. 41
+8006.125	noteon PnRH 71. 75
+8006.125	noteon PnRH 82. 75
+8006.271	noteon PnRH 88. 105
+8006.340	noteon PnRH 76. 100
+8011.990	noteon PnRH 66. 39
+8163.284	noteoff Vla 87.5
+8167.254	noteoff Vlc 79.25
+8170.325	noteoff Fl 92.75
+8171.787	noteoff Cl 86.75
+8180.181	noteoff PnRH 65.
+8186.263	noteoff PnRH 71.
+8186.263	noteoff PnRH 82.
+8186.408	noteoff PnRH 88.
+8186.477	noteoff PnRH 76.
+8192.128	noteoff PnRH 66.
+8382.542	noteon Fl 93. 127
+8386.338	noteon PnRH 66. 61
+8388.980	noteon Cl 88.25 127
+8389.673	noteon Vlc 82. 125
+8391.148	noteon PnRH 71. 95
+8391.148	noteon PnRH 83. 95
+8391.245	noteon Vla 88.75 125
+8391.263	noteon PnRH 88. 125
+8391.318	noteon PnRH 76. 120
+8395.787	noteon PnRH 67. 59
+8549.259	noteoff PnRH 66.
+8554.069	noteoff PnRH 71.
+8554.069	noteoff PnRH 83.
+8554.184	noteoff PnRH 88.
+8554.238	noteoff PnRH 76.
+8558.708	noteoff PnRH 67.
+8559.127	noteoff Cl 88.25
+8560.799	noteoff Vlc 82.
+8561.836	noteoff Vla 88.75
+8563.830	noteoff Fl 93.
+8709.132	noteon Vla 89.5 125
+8710.574	noteon Fl 93.25 127
+8711.635	noteon PnRH 68. 73
+8712.873	noteon Cl 89. 127
+8714.708	noteon Vlc 72. 125
+8716.444	noteon PnRH 73. 107
+8716.444	noteon PnRH 83. 107
+8716.559	noteon PnRH 88. 127
+8716.614	noteon PnRH 77. 127
+8721.083	noteon PnRH 69. 71
+8801.724	noteoff Fl 93.25
+8807.061	noteoff Cl 89.
+8808.391	noteoff PnRH 68.
+8808.862	noteoff Vlc 72.
+8809.840	noteoff Vla 89.5
+8813.201	noteoff PnRH 73.
+8813.201	noteoff PnRH 83.
+8813.316	noteoff PnRH 88.
+8813.371	noteoff PnRH 77.
+8817.840	noteoff PnRH 69.
+9005.369	noteon Cl 89.75 127
+9010.371	noteon Vlc 73.5 125
+9010.455	noteon PnRH 71. 73
+9010.814	noteon Vla 90.25 125
+9011.260	noteon Fl 93.5 127
+9015.265	noteon PnRH 75. 107
+9015.265	noteon PnRH 83. 107
+9015.380	noteon PnRH 88. 127
+9015.435	noteon PnRH 78. 127
+9019.904	noteon PnRH 72. 71
+9117.393	noteoff PnRH 71.
+9120.730	noteoff Vlc 73.5
+9122.202	noteoff PnRH 75.
+9122.202	noteoff PnRH 83.
+9122.318	noteoff PnRH 88.
+9122.372	noteoff PnRH 78.
+9122.663	noteoff Vla 90.25
+9123.865	noteoff Cl 89.75
+9126.841	noteoff PnRH 72.
+9131.781	noteoff Fl 93.5
+9359.320	noteon PnRH 75. 126
+9361.087	noteon PnRH 74. 126
+9364.757	noteon PnRH 78. 126
+9364.757	noteon PnRH 84. 126
+9364.828	noteon PnRH 88. 126
+9364.862	noteon PnRH 80. 126
+9365.364	noteon Cl 90.5 127
+9366.829	noteon Vla 90.75 125
+9367.457	noteon Vlc 74.75 125
+9369.318	noteon Fl 93.75 127
+9389.863	noteoff PnRH 75.
+9394.508	noteoff PnRH 74.
+9395.299	noteoff PnRH 78.
+9395.299	noteoff PnRH 84.
+9395.371	noteoff PnRH 88.
+9395.405	noteoff PnRH 80.
+9398.786	noteoff Cl 90.5
+9401.706	noteoff Vla 90.75
+9408.946	noteoff Vlc 74.75
+9413.880	noteoff Fl 93.75
+9559.880	noteon PnRH 77. 126
+9560.624	noteon Fl 94. 127
+9560.634	noteon Cl 90.75 127
+9561.156	noteon Vla 91.25 125
+9561.756	noteon PnRH 79. 117
+9563.868	noteon Vlc 75.5 125
+9564.756	noteon PnRH 80. 126
+9564.756	noteon PnRH 85. 126
+9564.828	noteon PnRH 88. 126
+9564.862	noteon PnRH 82. 126
+9591.423	noteoff Vla 91.25
+9593.033	noteoff Fl 94.
+9593.302	noteoff PnRH 77.
+9594.055	noteoff Cl 90.75
+9595.098	noteoff PnRH 79.
+9598.098	noteoff PnRH 80.
+9598.098	noteoff PnRH 85.
+9598.170	noteoff PnRH 88.
+9598.204	noteoff PnRH 82.
+9607.109	noteoff Vlc 75.5
+9956.449	program PnRH ordLV
+9956.449	noteon PnRH 27. 124
+9959.586	noteon PnRH 79. 127
+9960.885	noteon Cl 78.75 127
+9960.885	dynamic Cl 78.75 0. 155.325442
+10115.885	dynamic Cl 78.75 70.555556 4514.674558
+10370.586	noteoff PnRH 79.
+10725.449	noteoff PnRH 27.
+11049.062	program Vla sp
+11049.062	noteon Vla 72.75 127
+11049.062	dynamic Vla 72.75 0. 182.774509
+11051.409	noteon PnRH 73. 127
+11232.062	dynamic Vla 72.75 73.377778 3447.225491
+11462.409	noteoff PnRH 73.
+12164.044	program Vlc sp
+12164.044	noteon Vlc 64. 127
+12164.044	dynamic Vlc 64. 0. 158.627132
+12168.068	noteon PnRH 64. 127
+12323.044	dynamic Vlc 64. 79.022222 2379.372868
+12579.068	noteoff PnRH 64.
+12708.837	noteon Fl 71.5 127
+12708.837	dynamic Fl 71.5 0. 171.647515
+12712.392	noteon PnRH 72. 127
+12880.837	dynamic Fl 71.5 76.2 1820.352485
+13123.392	noteoff PnRH 72.
+14630.885	noteoff Cl 78.75
+14679.062	noteoff Vla 72.75
+14693.646	noteon PnRH 27. 124
+14700.837	noteoff Fl 71.5
+14702.044	noteoff Vlc 64.
+14706.076	noteon Cl 78.75 127
+14706.076	dynamic Cl 78.75 0. 194.932529
+14716.104	noteon PnRH 79. 127
+14901.076	dynamic Cl 78.75 79.681962 4153.067471
+14975.683	noteoff PnRH 79.
+15393.361	noteon PnRH 69. 127
+15394.030	noteon Vlc 68.5 127
+15394.030	dynamic Vlc 68.5 0. 151.35384
+15436.646	noteoff PnRH 27.
+15545.030	dynamic Vlc 68.5 81.844444 3416.64616
+15652.940	noteoff PnRH 69.
+16261.851	noteon Vla 72.75 127
+16261.851	dynamic Vla 72.75 0. 201.034582
+16265.566	noteon PnRH 73. 127
+16462.851	dynamic Vla 72.75 87.488889 2586.965418
+16525.145	noteoff PnRH 73.
+17155.397	noteon PnRH 23. 50
+17169.034	noteon Fl 71.5 127
+17173.139	noteon PnRH 72. 127
+17182.034	dynamic Fl 71.5 0. 161.146055
+17343.034	dynamic Fl 71.5 81.844444 1730.043438
+17535.397	noteoff PnRH 23.
+17539.021	noteoff PnRH 72.
+18962.030	noteoff Vlc 68.5
+19049.851	noteoff Vla 72.75
+19054.076	noteoff Cl 78.75
+19073.034	noteoff Fl 71.5
+19570.494	noteon PnRH 29. 124
+19580.768	gain Cl 0.
+19580.768	noteon Cl 77.5 127
+19580.768	dynamic Cl 77.5 0. 194.932529
+19581.075	noteon PnRH 78. 127
+19775.768	dynamic Cl 77.5 110.826029 6972.499597
+19821.568	noteoff PnRH 78.
+20258.861	noteoff PnRH 29.
+20621.471	noteon PnRH 63. 127
+20626.568	program Vlc sp
+20626.568	gain Vlc 0.
+20626.568	noteon Vlc 63.5 127
+20626.568	dynamic Vlc 63.5 0. 158.627132
+20785.568	dynamic Vlc 63.5 127. 5921.958
+20817.728	noteoff PnRH 63.
+21540.800	gain Vla 0.
+21540.800	noteon Vla 67.5 127
+21540.800	dynamic Vla 67.5 0. 201.034582
+21558.807	noteon PnRH 37. 97
+21558.906	noteon PnRH 67. 127
+21741.800	dynamic Vla 67.5 126.746117 4992.308611
+21755.163	noteoff PnRH 67.
+21944.302	noteoff PnRH 37.
+22539.778	gain Fl 0.
+22539.778	noteon Fl 70.5 127
+22548.905	noteon PnRH 70. 127
+22552.778	dynamic Fl 70.5 0. 161.146055
+22713.778	dynamic Fl 70.5 127. 4032.295583
+22745.162	noteoff PnRH 70.
+25209.248	noteon PnRH 71. 127
+25432.226	noteoff PnRH 71.
+25432.586	noteon PnRH 72. 82
+25498.249	noteoff PnRH 72.
+25498.249	noteon PnRH 71. 82
+25593.760	noteon PnRH 72. 82
+25593.760	noteoff PnRH 71.
+25671.362	noteon PnRH 71. 82
+25671.362	noteoff PnRH 72.
+25766.873	noteoff PnRH 71.
+25766.873	noteon PnRH 72. 82
+25838.506	noteoff PnRH 72.
+25838.506	noteon PnRH 71. 82
+25934.016	noteoff PnRH 71.
+25934.016	noteon PnRH 72. 82
+25993.711	noteon PnRH 71. 82
+25993.711	noteoff PnRH 72.
+26089.221	noteoff PnRH 71.
+26138.183	noteon PnRH 72. 82
+26256.171	noteoff PnRH 72.
+26256.171	noteon PnRH 71. 82
+26374.570	noteoff PnRH 71.
+26436.046	noteon PnRH 70. 101
+26613.679	noteon PnRH 71. 101
+26616.417	noteoff PnRH 70.
+26730.291	noteoff PnRH 71.
+26731.085	noteoff Vlc 63.5
+26734.143	noteoff Vla 67.5
+26735.226	noteon PnRH 24. 64
+26735.226	noteon PnRH 64. 79
+26746.031	noteoff Fl 70.5
+26747.768	dynamic Cl 77.5 107.961945 24.666952
+26754.466	gain Fl 0.
+26754.466	noteon Fl 71.5 127
+26767.466	dynamic Fl 71.5 45.155556 583.264103
+26772.867	noteoff Cl 77.5
+26772.867	gain Cl 0.
+26772.867	noteon Cl 77.5 127
+26772.867	dynamic Cl 77.5 36.688889 613.839836
+26790.798	program Vlc sptrem
+26790.798	gain Vlc 0.
+26790.798	noteon Vlc 61.25 127
+26803.798	dynamic Vlc 61.25 39.511111 400.778946
+26824.648	program Vla sptrem
+26824.648	gain Vla 0.
+26824.648	noteon Vla 67.5 127
+26837.648	dynamic Vla 67.5 39.511111 400.778946
+27120.720	noteoff PnRH 24.
+27120.720	noteoff PnRH 64.
+27204.798	dynamic Vlc 61.25 8.466667 1177.049299
+27238.648	dynamic Vla 67.5 8.466667 1177.049299
+27350.466	dynamic Fl 71.5 8.466667 994.564142
+27386.867	dynamic Cl 77.5 11.288889 922.232205
+28308.867	dynamic Cl 77.5 0. 1516.261007
+28345.466	dynamic Fl 71.5 0. 1456.613393
+28381.798	dynamic Vlc 61.25 0.418505 1384.613393
+28415.648	dynamic Vla 67.5 0.645195 1345.613393
+28726.014	gain Fl -12.
+28744.415	gain Cl -12.
+28762.346	gain Vlc -12.
+28796.196	gain Vla -12.
+30182.900	gain Vla -12.
+30188.050	gain Vlc -12.
+30223.718	gain Fl -12.
+30247.200	gain Cl -12.
+30467.696	noteoff Vla 67.5
+30472.628	noteoff Vlc 61.25
+30506.785	noteoff Fl 71.5
+30526.978	noteoff Cl 77.5
+30732.964	program Vla clbatt
+30732.964	gain Vla 0.
+30732.964	noteon Vla 67.5 114
+30733.125	program Vlc clbatt
+30733.125	gain Vlc 0.
+30733.125	noteon Vlc 61.25 114
+30733.178	program Fl ordinario
+30733.178	gain Fl 0.
+30733.178	noteon Fl 71.5 80
+30739.781	program Cl ordinario
+30739.781	gain Cl 0.
+30739.781	noteon Cl 65.5 73
+30748.686	program PnLH dampen-p-secco
+30748.686	noteon PnLH 36. 16
+30772.718	noteoff Vla 67.5
+30772.879	noteoff Vlc 61.25
+30799.206	noteoff PnLH 36.
+30801.528	noteoff Fl 71.5
+30808.131	noteoff Cl 65.5
+31218.212	noteon PnLH 37. 22
+31241.680	noteoff PnLH 37.
+31624.466	gain Vla 0.
+31624.466	noteon Vla 67.5 93
+31624.627	gain Vlc 0.
+31624.627	noteon Vlc 61.25 93
+31624.680	gain Fl 0.
+31624.680	noteon Fl 71.5 36
+31631.283	gain Cl 0.
+31631.283	noteon Cl 65.5 29
+31637.088	noteon PnLH 36. 8
+31660.555	noteoff PnLH 36.
+31664.220	noteoff Vla 67.5
+31664.381	noteoff Vlc 61.25
+31693.030	noteoff Fl 71.5
+31699.633	noteoff Cl 65.5
+32002.972	noteon PnLH 39. 25
+32044.338	noteoff PnLH 39.
+32336.590	gain Vla 0.
+32336.590	noteon Vla 67.5 93
+32336.751	gain Vlc 0.
+32336.751	noteon Vlc 61.25 93
+32336.805	gain Fl 0.
+32336.805	noteon Fl 71.5 36
+32341.072	noteon PnLH 37. 12
+32343.407	gain Cl 0.
+32343.407	noteon Cl 65.5 29
+32376.345	noteoff Vla 67.5
+32376.505	noteoff Vlc 61.25
+32382.438	noteoff PnLH 37.
+32405.155	noteoff Fl 71.5
+32411.757	noteoff Cl 65.5
+32640.554	noteon PnLH 40. 1
+32670.754	noteoff PnLH 40.
+33092.464	noteon Cl 55. 49
+33115.076	program PnLH dampen-p
+33115.076	noteon PnLH 30. 47
+33164.310	noteoff Cl 55.
+33170.030	noteon Cl 59. 1
+33241.877	noteoff Cl 59.
+33247.597	noteon Cl 61. 1
+33319.443	noteoff Cl 61.
+33325.163	noteon Cl 64. 1
+33397.010	noteoff Cl 64.
+33402.730	noteon Cl 68. 13
+33474.576	noteoff Cl 68.
+33480.296	noteon Cl 70. 19
+33500.570	noteoff PnLH 30.
+33552.143	noteoff Cl 70.
+33557.863	noteon Cl 72. 25
+33635.429	noteon Cl 74. 37
+33637.356	noteoff Cl 72.
+33706.067	noteoff Cl 74.
+33712.996	noteon Cl 75. 61
+33784.819	noteoff Cl 75.
+33790.562	noteon Cl 79. 61
+33868.128	noteon Cl 80. 61
+33872.548	noteoff Cl 79.
+33945.695	noteon Cl 82. 61
+33950.115	noteoff Cl 80.
+34023.261	noteon Cl 83. 61
+34027.681	noteoff Cl 82.
+34100.828	noteon Cl 85. 61
+34105.248	noteoff Cl 83.
+34178.394	noteon Cl 86. 62
+34182.771	program Fl multiphonic
+34182.771	noteon Fl 87. 127
+34182.814	noteoff Cl 85.
+34192.954	program Vlc pizzB-nopitch
+34192.954	noteon Vlc 71. 127
+34228.381	noteoff Cl 86.
+34230.420	program Vla "excessive pressure"
+34230.420	noteon Vla 86. 40
+34671.954	noteoff Vlc 71.
+34910.420	noteoff Vla 86.
+35236.771	noteoff Fl 87.
+35383.814	program PnLH dampen-p-secco
+35383.814	noteon PnLH 36. 1
+35399.069	program Vla clbatt
+35399.069	gain Vla 0.
+35399.069	noteon Vla 67.5 70
+35399.207	program Vlc clbatt
+35399.207	gain Vlc 0.
+35399.207	noteon Vlc 61.25 70
+35399.253	program Fl ordinario
+35399.253	gain Fl 0.
+35399.253	noteon Fl 71.5 70
+35404.937	program Cl ordinario
+35404.937	gain Cl 0.
+35404.937	noteon Cl 65.5 85
+35427.303	noteoff PnLH 36.
+35433.290	noteoff Vla 67.5
+35433.429	noteoff Vlc 61.25
+35458.090	noteoff Fl 71.5
+35463.774	noteoff Cl 65.5
+35787.994	noteon PnLH 37. 1
+35808.195	noteoff PnLH 37.
+36151.945	noteon PnLH 36. 1
+36172.473	gain Vla 0.
+36172.473	noteon Vla 67.5 42
+36172.620	gain Vlc 0.
+36172.620	noteon Vlc 61.25 42
+36172.669	gain Fl 0.
+36172.669	noteon Fl 71.5 42
+36173.464	noteoff PnLH 36.
+36178.723	gain Cl 0.
+36178.723	noteon Cl 65.5 42
+36208.926	noteoff Vla 67.5
+36209.073	noteoff Vlc 61.25
+36235.344	noteoff Fl 71.5
+36241.398	noteoff Cl 65.5
+36487.449	noteon PnLH 39. 1
+36525.380	noteoff PnLH 39.
+36797.475	noteon PnLH 37. 1
+36825.466	gain Vla 0.
+36825.466	noteon Vla 67.5 42
+36825.614	gain Vlc 0.
+36825.614	noteon Vlc 61.25 42
+36825.663	gain Fl 0.
+36825.663	noteon Fl 71.5 42
+36831.717	gain Cl 0.
+36831.717	noteon Cl 65.5 42
+36835.406	noteoff PnLH 37.
+36861.919	noteoff Vla 67.5
+36862.067	noteoff Vlc 61.25
+36888.337	noteoff Fl 71.5
+36894.391	noteoff Cl 65.5
+37134.937	noteon PnLH 40. 1
+37162.630	noteoff PnLH 40.
+37649.749	program Vla gett-sp
+37649.749	noteon Vla 55. 60
+37656.259	program PnLH dampen-p
+37656.259	noteon PnLH 30. 33
+37721.595	noteoff Vla 55.
+37727.315	noteon Vla 59. 56
+37799.162	noteoff Vla 59.
+37804.882	noteon Vla 61. 52
+37876.728	noteoff Vla 61.
+37882.448	noteon Vla 64. 48
+37954.295	noteoff Vla 64.
+37960.015	noteon Vla 68. 44
+38009.744	noteoff PnLH 30.
+38031.861	noteoff Vla 68.
+38037.581	noteon Vla 70. 40
+38109.427	noteoff Vla 70.
+38115.148	noteon Vla 72. 37
+38192.714	noteon Vla 74. 33
+38194.641	noteoff Vla 72.
+38263.352	noteoff Vla 74.
+38270.281	noteon Vla 75. 29
+38342.104	noteoff Vla 75.
+38347.847	noteon Vla 79. 25
+38425.413	noteon Vla 80. 21
+38429.833	noteoff Vla 79.
+38502.980	noteon Vla 82. 17
+38507.400	noteoff Vla 80.
+38580.546	noteon Vla 83. 13
+38584.966	noteoff Vla 82.
+38658.113	noteon Vla 85. 10
+38662.533	noteoff Vla 83.
+38728.788	program Vlc pizzB-nopitch
+38728.788	noteon Vlc 71. 127
+38735.679	noteon Vla 86. 6
+38740.099	noteoff Vla 85.
+38756.682	program Cl multiphonic
+38756.682	noteon Cl 103. 40
+38778.097	program Fl multiphonic
+38778.097	noteon Fl 87. 127
+38785.666	noteoff Vla 86.
+39207.788	noteoff Vlc 71.
+39435.682	noteoff Cl 103.
+39832.097	noteoff Fl 87.
+40281.710	program PnRH ordLV
+40281.710	noteon PnRH 29. 124
+40292.383	program Cl ordinario
+40292.383	gain Cl 0.
+40292.383	noteon Cl 77.5 127
+40292.383	dynamic Cl 77.5 0. 194.932529
+40292.702	program PnRH ordLV
+40292.702	noteon PnRH 78. 127
+40487.383	dynamic Cl 77.5 127. 7444.152983
+40542.534	noteoff PnRH 78.
+40996.810	noteoff PnRH 29.
+41373.501	noteon PnRH 63. 127
+41378.797	program Vlc sp
+41378.797	gain Vlc 0.
+41378.797	noteon Vlc 63.5 127
+41378.797	dynamic Vlc 63.5 0. 158.627132
+41537.797	dynamic Vlc 63.5 127. 6352.262585
+41577.380	noteoff PnRH 63.
+42328.532	program Vla ordinario
+42328.532	gain Vla 0.
+42328.532	noteon Vla 67.5 127
+42328.532	dynamic Vla 67.5 0. 201.034582
+42347.342	noteon PnRH 67. 127
+42529.532	dynamic Vla 67.5 127. 5363.177305
+42551.221	noteoff PnRH 67.
+43202.306	program Fl ordinario
+43202.306	gain Fl 0.
+43202.306	noteon Fl 70.5 127
+43211.788	noteon PnRH 70. 127
+43215.239	noteon PnRH 25. 97
+43215.306	dynamic Fl 70.5 0. 161.146055
+43376.306	dynamic Fl 70.5 127. 4364.368985
+43415.666	noteoff PnRH 70.
+43615.705	noteoff PnRH 25.
+46273.997	noteon PnRH 71. 127
+46466.168	noteoff PnRH 71.
+46506.478	noteon PnRH 72. 82
+46563.070	noteoff PnRH 72.
+46563.070	noteon PnRH 71. 82
+46640.003	noteon PnRH 72. 82
+46645.385	noteoff PnRH 71.
+46696.594	noteoff PnRH 72.
+46696.594	noteon PnRH 71. 82
+46778.909	noteoff PnRH 71.
+46778.909	noteon PnRH 72. 82
+46845.790	noteon PnRH 71. 82
+46845.790	noteoff PnRH 72.
+46862.165	noteoff PnRH 71.
+46930.036	noteon PnRH 72. 82
+46991.772	noteoff PnRH 72.
+46991.772	noteon PnRH 71. 82
+47074.087	noteoff PnRH 71.
+47074.087	noteon PnRH 72. 82
+47125.534	noteon PnRH 71. 82
+47125.534	noteoff PnRH 72.
+47207.849	noteoff PnRH 71.
+47250.047	noteon PnRH 72. 82
+47351.734	noteoff PnRH 72.
+47351.734	noteon PnRH 71. 82
+47456.661	noteoff PnRH 71.
+47556.648	noteon PnRH 70. 101
+47737.018	noteoff PnRH 70.
+47740.632	noteoff Fl 70.5
+47772.281	noteon PnRH 71. 101
+47888.892	noteoff PnRH 71.
+47889.686	noteoff Vlc 63.5
+47892.744	noteoff Vla 67.5
+47893.827	noteon PnRH 24. 64
+47893.827	noteon PnRH 64. 101
+47913.067	gain Fl 0.
+47913.067	noteon Fl 71.5 127
+47926.067	dynamic Fl 71.5 45.155556 583.264103
+47931.468	gain Cl 0.
+47931.468	noteon Cl 77.5 127
+47931.468	dynamic Cl 77.5 36.688889 613.839836
+47931.468	noteoff Cl 77.5
+47949.399	program Vlc sptrem
+47949.399	gain Vlc 0.
+47949.399	noteon Vlc 61.25 127
+47962.399	dynamic Vlc 61.25 39.511111 400.778946
+47983.249	program Vla sptrem
+47983.249	gain Vla 0.
+47983.249	noteon Vla 67.5 127
+47996.249	dynamic Vla 67.5 39.511111 400.778946
+48279.322	noteoff PnRH 24.
+48279.322	noteoff PnRH 64.
+48323.325	gain Fl -12.
+48341.726	gain Cl -12.
+48359.657	gain Vlc -12.
+48363.399	dynamic Vlc 61.25 8.466667 1177.049299
+48393.507	gain Vla -12.
+48397.249	dynamic Vla 67.5 8.466667 1177.049299
+48509.067	dynamic Fl 71.5 8.466667 994.564142
+48545.468	dynamic Cl 77.5 11.288889 922.232205
+49467.468	dynamic Cl 77.5 0. 1516.261007
+49504.067	dynamic Fl 71.5 0. 1456.613393
+49540.399	dynamic Vlc 61.25 0.418505 1384.613393
+49574.249	dynamic Vla 67.5 0.645195 1345.613393
+52508.118	gain Fl -20.
+52526.518	gain Cl -20.
+52544.450	gain Vlc -20.
+52578.300	gain Vla -20.
+52953.298	gain Vla -20.
+52953.298	noteoff Vla 67.5
+52958.230	gain Vlc -20.
+52958.230	noteoff Vlc 61.25
+52992.386	gain Fl -20.
+52992.386	noteoff Fl 71.5
+53012.579	gain Cl -20.
+53012.579	noteoff Cl 77.5
+53283.240	program PnLH "hit strings hand"
+53283.240	noteon PnLH 21. 85
+53323.861	program PnRH ordLV
+53323.861	noteon PnRH 60. 51
+53323.861	noteon PnRH 72. 51
+53368.348	program Vlc trem
+53368.348	gain Vlc 0.
+53368.348	noteon Vlc 60. 1
+53878.656	noteoff Vlc 60.
+53983.184	program Vlc pizz
+53983.184	noteon Vlc 60.25 36
+54166.010	program Vla pizz
+54166.010	gain Vla 0.
+54166.010	noteon Vla 61.75 28
+54241.113	noteoff Vlc 60.25
+54294.644	noteoff PnRH 60.
+54294.644	noteoff PnRH 72.
+54294.644	noteon PnRH 62. 51
+54294.644	noteon PnRH 74. 51
+54369.113	program Vlc sptrem
+54369.113	noteon Vlc 60.5 1
+54401.240	noteoff PnLH 21.
+54815.821	noteon Vla 62.25 42
+54815.821	noteoff Vla 61.75
+55107.175	noteoff Vlc 60.5
+55156.067	program Cl slap
+55156.067	gain Cl 0.
+55156.067	noteon Cl 64. 1
+55190.656	program Vlc ordinario
+55190.656	noteon Vlc 60. 1
+55265.426	noteon PnRH 60. 51
+55265.426	noteon PnRH 72. 51
+55265.426	noteoff PnRH 62.
+55265.426	noteoff PnRH 74.
+55266.437	noteoff Vla 62.25
+55266.437	program Vla ordinario
+55266.437	noteon Vla 61.5 12
+55424.335	noteoff Vla 61.5
+55424.335	noteon Vla 62.75 16
+55441.240	noteoff Vlc 60.
+55441.240	noteon Vlc 59.75 1
+55739.128	noteoff Cl 64.
+55739.128	program Cl flz
+55739.128	noteon Cl 63.5 1
+55815.437	noteoff Vla 62.75
+55815.437	program Vla sptrem
+55815.437	noteon Vla 61.75 1
+55887.305	noteoff Vlc 59.75
+55887.305	noteon Vlc 60. 16
+56136.577	noteoff Vlc 60.
+56136.577	noteon Vlc 59.5 1
+56179.816	noteon Vla 61.75 15
+56179.816	noteoff Vla 61.75
+56236.442	program Fl pizz
+56236.442	gain Fl 0.
+56236.442	noteon Fl 66.75 1
+56334.209	noteon PnRH 63. 51
+56334.209	noteon PnRH 75. 51
+56334.209	noteoff PnRH 60.
+56334.209	noteoff PnRH 72.
+56360.001	noteoff Fl 66.75
+56360.001	noteon Fl 66.25 1
+56608.030	noteoff Cl 63.5
+56608.030	program Cl ordinario
+56608.030	noteon Cl 63.5 1
+56658.735	noteoff Vlc 59.5
+56658.735	noteon Vlc 59.75 16
+56890.951	noteoff Vlc 59.75
+56890.951	noteon Vlc 59.75 1
+56960.330	noteoff Fl 66.25
+56960.330	noteon Fl 66.25 1
+57074.832	noteon Fl 66.75 1
+57074.832	noteoff Fl 66.25
+57090.621	program Cl flz
+57090.621	noteon Cl 64.25 1
+57090.621	noteoff Cl 63.5
+57304.992	noteon PnRH 61. 51
+57304.992	noteon PnRH 73. 51
+57304.992	noteoff PnRH 63.
+57304.992	noteoff PnRH 75.
+57447.450	noteoff Fl 66.75
+57447.450	program Fl ordinario
+57447.450	noteon Fl 66.5 11
+57575.392	noteoff Vla 61.75
+57575.392	program Vla gett
+57575.392	noteon Vla 62.5 41
+57637.640	noteoff Fl 66.5
+57637.640	noteon Fl 66.5 1
+57646.638	noteoff Vlc 59.75
+57646.638	program Vlc clbatt
+57646.638	noteon Vlc 60. 36
+57724.869	noteoff Cl 64.25
+57724.869	program Cl slap
+57724.869	noteon Cl 63.75 1
+57954.624	noteoff Fl 66.5
+57954.624	noteon Fl 66.25 1
+58275.775	noteoff PnRH 61.
+58275.775	noteoff PnRH 73.
+58275.775	noteon PnRH 64. 51
+58275.775	noteon PnRH 76. 51
+58448.755	noteoff Cl 63.75
+58448.755	program Cl ordinario
+58448.755	noteon Cl 63.75 1
+58570.149	program Vla pizz
+58570.149	noteon Vla 61.75 38
+58570.149	noteoff Vla 62.5
+58611.881	noteoff Fl 66.25
+58611.881	program Fl flz
+58611.881	noteon Fl 66.5 1
+58675.212	noteon Vlc 59.75 23
+58675.212	noteoff Vlc 60.
+58727.509	program Cl flz
+58727.509	noteon Cl 64.5 1
+58753.613	noteoff Cl 63.75
+59110.578	noteoff Cl 64.5
+59121.290	noteoff Vla 61.75
+59142.344	noteoff Fl 66.5
+59142.344	noteon Fl 67. 1
+59167.272	noteoff Vlc 59.75
+59280.507	noteoff PnRH 64.
+59280.507	noteoff PnRH 76.
+59413.397	noteoff Fl 67.
+60540.497	program PnLH "hit strings hand"
+60540.497	noteon PnLH 21. 98
+60558.309	noteon PnRH 60. 51
+60558.309	noteon PnRH 72. 51
+60563.744	program Vlc pizz
+60563.744	noteon Vlc 59.75 1
+61219.730	noteoff Vlc 59.75
+61219.730	noteon Vlc 60.75 1
+61529.092	noteon PnRH 61. 51
+61529.092	noteon PnRH 73. 51
+61529.092	noteoff PnRH 60.
+61529.092	noteoff PnRH 72.
+61604.748	program Vla clbatt
+61604.748	noteon Vla 61. 1
+61658.497	noteoff PnLH 21.
+61764.720	noteoff Vlc 60.75
+61764.720	program Vlc sptrem
+61764.720	noteon Vlc 60.5 1
+61842.117	noteoff Vla 61.
+61842.117	noteon Vla 61.25 36
+62050.604	noteon Vla 61.5 51
+62050.604	noteoff Vla 61.25
+62499.875	noteoff PnRH 61.
+62499.875	noteoff PnRH 73.
+62499.875	noteon PnRH 60. 51
+62499.875	noteon PnRH 72. 51
+62512.892	program Cl ordinario
+62512.892	noteon Cl 63.75 44
+62558.273	noteon Cl 62.75 6
+62558.273	noteoff Cl 63.75
+62640.959	noteoff Cl 62.75
+62640.959	noteon Cl 63.75 44
+62647.187	noteoff Vla 61.5
+62686.340	noteoff Cl 63.75
+62779.099	program Vlc pizz
+62779.099	noteon Vlc 60.25 27
+62779.099	noteoff Vlc 60.5
+62810.711	noteon Cl 63.75 44
+62856.092	noteon Cl 62.75 6
+62856.092	noteoff Cl 63.75
+62927.096	noteoff Vlc 60.25
+62927.096	noteon Vlc 60.75 1
+62950.427	noteoff Cl 62.75
+63009.132	noteon Cl 62.75 6
+63103.467	noteoff Cl 62.75
+63105.551	program Vla gett
+63105.551	noteon Vla 61.25 1
+63136.087	noteon Cl 63.75 21
+63181.468	noteoff Cl 63.75
+63181.468	noteon Cl 62.75 1
+63273.648	noteoff Cl 62.75
+63388.513	program Cl slap
+63388.513	noteon Cl 63.75 1
+63537.214	program Fl bisbigl
+63537.214	noteon Fl 66. 1
+63617.658	noteon PnRH 63. 51
+63617.658	noteon PnRH 75. 51
+63617.658	noteoff PnRH 60.
+63617.658	noteoff PnRH 72.
+63687.484	noteoff Vlc 60.75
+63687.484	program Vlc ordinario
+63687.484	noteon Vlc 60. 11
+63704.177	noteoff Cl 63.75
+63704.177	program Cl flz
+63704.177	noteon Cl 63. 1
+63839.392	program Vla clbatt
+63839.392	noteon Vla 60.25 36
+63839.392	noteoff Vla 61.25
+63946.660	noteoff Fl 66.
+64084.282	noteoff Vla 60.25
+64084.282	noteon Vla 60.5 8
+64243.582	program Fl pizz
+64243.582	noteon Fl 65.75 2
+64352.571	noteoff Fl 65.75
+64352.571	noteon Fl 65.75 1
+64436.054	program Cl slap
+64436.054	noteon Cl 62.75 72
+64436.054	noteoff Cl 63.
+64520.065	noteoff Vlc 60.
+64588.441	noteon PnRH 61. 51
+64588.441	noteon PnRH 73. 51
+64588.441	noteoff PnRH 63.
+64588.441	noteoff PnRH 75.
+64629.281	noteoff Cl 62.75
+64713.459	program Vlc trem
+64713.459	noteon Vlc 59.75 1
+64888.091	noteoff Fl 65.75
+64924.022	noteoff Vla 60.5
+64924.022	program Vla trem
+64924.022	noteon Vla 60.5 31
+64973.524	program Cl bisbigl
+64973.524	noteon Cl 63.5 1
+65032.402	noteoff Vla 60.5
+65032.402	noteon Vla 61.5 1
+65100.162	noteoff Cl 63.5
+65100.162	noteon Cl 63.5 1
+65264.851	noteoff Cl 63.5
+65358.807	noteon Fl 65.75 38
+65382.245	program Vlc sptrem
+65382.245	noteon Vlc 60.75 1
+65402.647	noteoff Vlc 59.75
+65559.224	noteoff PnRH 61.
+65559.224	noteoff PnRH 73.
+65559.224	noteon PnRH 64. 51
+65559.224	noteon PnRH 76. 51
+65593.332	noteoff Vla 61.5
+65593.332	program Vla pizz
+65593.332	noteon Vla 61.5 24
+65594.230	program Cl ordinario
+65594.230	noteon Cl 63. 1
+65748.217	noteoff Cl 63.
+65748.217	program Cl flz
+65748.217	noteon Cl 63. 1
+65821.819	noteoff Fl 65.75
+65821.819	program Fl pizz
+65821.819	noteon Fl 66. 9
+65841.426	noteon Vlc 60.5 1
+65893.653	noteoff Vla 61.5
+65893.653	noteon Vla 60.5 44
+65936.764	noteoff Vlc 60.75
+66061.015	noteoff Vlc 60.5
+66071.999	noteoff Fl 66.
+66071.999	program Fl bisbigl
+66071.999	noteon Fl 65.5 1
+66207.431	program Cl slap
+66207.431	noteon Cl 63.75 1
+66368.376	noteoff Cl 63.
+66405.248	noteon Fl 65.75 1
+66414.884	noteoff Fl 65.5
+66499.948	noteoff Vla 60.5
+66505.983	noteoff Cl 63.75
+66563.956	noteoff PnRH 64.
+66563.956	noteoff PnRH 76.
+66620.681	program Fl flz
+66620.681	noteon Fl 66. 1
+66672.358	noteoff Fl 65.75
+67079.169	noteoff Fl 66.
+68235.204	program PnRH ordLV
+68235.204	noteon PnRH 44. 47
+68235.204	noteon PnRH 80. 51
+68277.362	program Vlc pizz
+68277.362	noteon Vlc 55.75 1
+68933.349	noteoff Vlc 55.75
+68933.349	noteon Vlc 56.75 1
+69205.987	noteoff PnRH 44.
+69205.987	noteoff PnRH 80.
+69205.987	noteon PnRH 45. 47
+69205.987	noteon PnRH 81. 51
+69318.367	program Vla clbatt
+69318.367	noteon Vla 57. 1
+69478.339	noteoff Vlc 56.75
+69478.339	program Vlc sptrem
+69478.339	noteon Vlc 56.5 1
+69555.735	noteoff Vla 57.
+69555.735	noteon Vla 57.25 3
+69764.222	noteon Vla 57.5 18
+69764.222	noteoff Vla 57.25
+70176.770	noteon PnRH 44. 47
+70176.770	noteon PnRH 80. 51
+70176.770	noteoff PnRH 45.
+70176.770	noteoff PnRH 81.
+70226.510	program Cl ordinario
+70226.510	noteon Cl 59.75 11
+70271.891	noteon Cl 58.75 1
+70271.891	noteoff Cl 59.75
+70354.577	noteon Cl 59.75 11
+70354.577	noteoff Cl 58.75
+70360.806	noteoff Vla 57.5
+70399.958	noteoff Cl 59.75
+70492.718	noteoff Vlc 56.5
+70492.718	program Vlc pizz
+70492.718	noteon Vlc 56.25 1
+70524.329	noteon Cl 59.75 11
+70569.711	noteoff Cl 59.75
+70569.711	noteon Cl 58.75 1
+70640.715	noteoff Vlc 56.25
+70640.715	noteon Vlc 56.75 1
+70664.046	noteoff Cl 58.75
+70722.750	noteon Cl 58.75 1
+70817.085	noteoff Cl 58.75
+70819.169	program Vla gett
+70819.169	noteon Vla 57.25 1
+70849.705	noteon Cl 59.75 1
+70895.086	noteoff Cl 59.75
+70895.086	noteon Cl 58.75 1
+70987.267	noteoff Cl 58.75
+71102.132	program Cl slap
+71102.132	noteon Cl 59.75 1
+71245.553	noteoff PnRH 44.
+71245.553	noteoff PnRH 80.
+71245.553	noteon PnRH 47. 47
+71245.553	noteon PnRH 83. 51
+71250.832	program Fl bisbigl
+71250.832	noteon Fl 62. 1
+71401.102	noteoff Vlc 56.75
+71401.102	program Vlc ordinario
+71401.102	noteon Vlc 56. 1
+71417.796	noteoff Cl 59.75
+71417.796	program Cl flz
+71417.796	noteon Cl 59. 1
+71553.011	noteoff Vla 57.25
+71553.011	program Vla clbatt
+71553.011	noteon Vla 56.25 3
+71660.279	noteoff Fl 62.
+71797.901	noteoff Vla 56.25
+71797.901	noteon Vla 56.5 1
+71957.201	program Fl pizz
+71957.201	noteon Fl 61.75 1
+72066.190	noteoff Fl 61.75
+72066.190	noteon Fl 61.75 1
+72149.672	program Cl slap
+72149.672	noteon Cl 58.75 39
+72149.672	noteoff Cl 59.
+72216.336	noteoff PnRH 47.
+72216.336	noteoff PnRH 83.
+72216.336	noteon PnRH 45. 47
+72216.336	noteon PnRH 81. 51
+72233.683	noteoff Vlc 56.
+72342.900	noteoff Cl 58.75
+72427.077	program Vlc trem
+72427.077	noteon Vlc 55.75 1
+72601.710	noteoff Fl 61.75
+72637.641	noteoff Vla 56.5
+72637.641	program Vla trem
+72637.641	noteon Vla 56.5 1
+72687.142	program Cl bisbigl
+72687.142	noteon Cl 59.5 1
+72746.021	noteoff Vla 56.5
+72746.021	noteon Vla 57.5 1
+72813.780	noteoff Cl 59.5
+72813.780	noteon Cl 59.5 1
+72978.470	noteoff Cl 59.5
+73072.426	noteon Fl 61.75 5
+73095.863	program Vlc sptrem
+73095.863	noteon Vlc 56.75 1
+73116.265	noteoff Vlc 55.75
+73187.119	noteoff PnRH 45.
+73187.119	noteoff PnRH 81.
+73187.119	noteon PnRH 48. 47
+73187.119	noteon PnRH 84. 51
+73306.951	noteoff Vla 57.5
+73306.951	program Vla pizz
+73306.951	noteon Vla 57.5 1
+73307.848	program Cl ordinario
+73307.848	noteon Cl 59. 1
+73461.836	noteoff Cl 59.
+73461.836	program Cl flz
+73461.836	noteon Cl 59. 1
+73535.438	program Fl pizz
+73535.438	noteon Fl 62. 1
+73535.438	noteoff Fl 61.75
+73555.044	noteon Vlc 56.5 1
+73607.271	noteoff Vla 57.5
+73607.271	noteon Vla 56.5 11
+73650.382	noteoff Vlc 56.75
+73774.634	noteoff Vlc 56.5
+73785.617	noteoff Fl 62.
+73785.617	program Fl bisbigl
+73785.617	noteon Fl 61.5 1
+73921.050	program Cl slap
+73921.050	noteon Cl 59.75 1
+74081.995	noteoff Cl 59.
+74118.867	noteon Fl 61.75 1
+74128.502	noteoff Fl 61.5
+74191.851	noteoff PnRH 48.
+74191.851	noteoff PnRH 84.
+74213.566	noteoff Vla 56.5
+74219.602	noteoff Cl 59.75
+74334.299	program Fl flz
+74334.299	noteon Fl 62. 1
+74385.977	noteoff Fl 61.75
+74792.788	noteoff Fl 62.
+75483.936	noteon PnRH 44. 47
+75483.936	noteon PnRH 80. 51
+75563.561	program Vlc trem
+75563.561	gain Vlc 0.
+75563.561	noteon Vlc 56. 1
+76187.250	noteoff Vlc 56.
+76315.002	program Vlc pizz
+76315.002	noteon Vlc 56.25 3
+76499.279	noteoff PnRH 44.
+76499.279	noteoff PnRH 80.
+76499.279	noteon PnRH 46. 47
+76499.279	noteon PnRH 82. 51
+76605.603	program Vla pizz
+76605.603	gain Vla 0.
+76605.603	noteon Vla 57.75 1
+76630.239	noteoff Vlc 56.25
+76786.678	program Vlc sptrem
+76786.678	noteon Vlc 56.5 1
+77433.066	noteon Vla 58.25 9
+77433.066	noteoff Vla 57.75
+77688.724	noteoff Vlc 56.5
+77743.824	noteoff PnRH 46.
+77743.824	noteoff PnRH 82.
+77743.824	noteon PnRH 44. 47
+77743.824	noteon PnRH 80. 51
+77790.754	program Vlc ordinario
+77790.754	noteon Vlc 56. 1
+77889.490	program Cl slap
+77889.490	gain Cl 0.
+77889.490	noteon Cl 60. 1
+78006.878	noteoff Vla 58.25
+78006.878	program Vla ordinario
+78006.878	noteon Vla 57.5 1
+78097.013	noteoff Vlc 56.
+78097.013	noteon Vlc 55.75 1
+78207.944	noteon Vla 58.75 1
+78207.944	noteoff Vla 57.5
+78642.186	noteoff Vlc 55.75
+78642.186	noteon Vlc 56. 1
+78689.673	noteoff Cl 60.
+78689.673	program Cl flz
+78689.673	noteon Cl 59.5 1
+78705.969	noteoff Vla 58.75
+78705.969	program Vla sptrem
+78705.969	noteon Vla 57.75 1
+78946.842	noteon Vlc 55.5 1
+78946.842	noteoff Vlc 56.
+79169.967	noteoff Vla 57.75
+79169.967	noteon Vla 57.75 1
+79183.389	program Fl pizz
+79183.389	gain Fl 0.
+79183.389	noteon Fl 62.75 1
+79260.418	noteoff PnRH 44.
+79260.418	noteoff PnRH 80.
+79260.418	noteon PnRH 47. 47
+79260.418	noteon PnRH 83. 51
+79372.091	noteoff Fl 62.75
+79372.091	noteon Fl 62.25 1
+79585.015	noteoff Vlc 55.5
+79585.015	noteon Vlc 55.75 1
+79868.826	noteoff Vlc 55.75
+79868.826	noteon Vlc 55.75 1
+79882.140	noteoff Cl 59.5
+79882.140	program Cl ordinario
+79882.140	noteon Cl 59.5 1
+80288.922	noteon Fl 62.25 1
+80288.922	noteoff Fl 62.25
+80463.792	noteoff Fl 62.25
+80463.792	noteon Fl 62.75 1
+80513.296	noteoff PnRH 47.
+80513.296	noteoff PnRH 83.
+80513.296	noteon PnRH 45. 43
+80513.296	noteon PnRH 81. 18
+80544.439	noteoff Cl 59.5
+80544.439	program Cl flz
+80544.439	noteon Cl 60.25 1
+80792.414	program Vlc clbatt
+80792.414	noteon Vlc 56. 3
+80792.414	noteoff Vlc 55.75
+80947.081	program Vla gett
+80947.081	noteon Vla 58.5 8
+80947.081	noteoff Vla 57.75
+81032.860	noteoff Fl 62.75
+81032.860	program Fl ordinario
+81032.860	noteon Fl 62.5 1
+81323.322	noteoff Fl 62.5
+81323.322	noteon Fl 62.5 1
+81414.871	program Cl slap
+81414.871	noteon Cl 59.75 1
+81414.871	noteoff Cl 60.25
+81766.174	noteon PnRH 48. 9
+81766.174	noteon PnRH 84. 1
+81766.174	noteoff PnRH 45.
+81766.174	noteoff PnRH 81.
+81797.519	noteon Vlc 55.75 1
+81807.425	noteon Fl 62.25 1
+81807.425	noteoff Fl 62.5
+82049.519	noteoff Vlc 56.
+82213.797	noteoff Vla 58.5
+82408.320	noteoff Cl 59.75
+82408.320	program Cl ordinario
+82408.320	noteon Cl 59.75 1
+82420.644	noteoff Vlc 55.75
+82465.797	program Vla pizz
+82465.797	noteon Vla 57.75 5
+82790.878	program Cl flz
+82790.878	noteon Cl 60.5 1
+82811.198	program Fl flz
+82811.198	noteon Fl 62.5 1
+82811.198	noteoff Fl 62.25
+82826.702	noteoff Cl 59.75
+83025.940	noteoff PnRH 48.
+83025.940	noteoff PnRH 84.
+83167.615	noteoff Vla 57.75
+83316.595	noteoff Cl 60.5
+83621.330	noteoff Fl 62.5
+83621.330	noteon Fl 63. 1
+84025.985	noteoff Fl 63.
+88912.413	program Fl harmonic
+88912.413	noteon Fl 78.75 22
+88912.413	dynamic Fl 78.75 0.592105 20348.
+88921.091	program PnRH ordLV
+88921.091	noteon PnRH 21. 36
+88921.091	noteon PnRH 33. 36
+88984.588	noteon PnRH 79. 83
+89592.308	noteoff PnRH 79.
+90030.091	noteoff PnRH 21.
+90030.091	noteoff PnRH 33.
+91705.123	noteon PnRH 70. 81
+92239.734	noteoff PnRH 70.
+93501.458	noteon PnRH 73. 66
+93560.990	program Vla "sul tasto"
+93560.990	noteon Vla 72.75 1
+94036.069	noteoff PnRH 73.
+94630.486	noteon PnRH 65. 66
+95391.435	noteoff PnRH 65.
+95455.632	noteon PnRH 64. 66
+96463.232	noteon PnRH 63. 15
+96463.232	noteoff PnRH 64.
+96505.843	program Vlc "sul tasto"
+96505.843	noteon Vlc 62.5 1
+97224.181	noteoff PnRH 63.
+98085.343	noteon PnRH 64. 20
+99139.207	noteoff PnRH 64.
+99139.207	noteon PnRH 63. 20
+100211.736	noteon PnRH 66. 33
+100213.441	noteoff PnRH 63.
+100268.736	program Cl ordinario
+100268.736	noteon Cl 65.5 1
+101200.970	noteoff PnRH 66.
+101454.426	noteon PnRH 61. 33
+102065.664	noteoff PnRH 61.
+103285.911	noteon PnRH 67. 96
+103893.631	noteoff PnRH 67.
+106520.446	noteon PnRH 58. 52
+107055.057	noteoff PnRH 58.
+110411.843	noteoff Vlc 62.5
+110417.413	noteoff Fl 78.75
+110501.736	noteoff Cl 65.5
+110540.990	noteoff Vla 72.75
+113902.653	program PnRH ordinario
+113902.653	noteon PnRH 52. 68
+113902.653	noteon PnRH 57. 68
+113902.653	noteon PnRH 58. 68
+113904.672	program Vla clbatt
+113904.672	noteon Vla 60.75 122
+113904.800	program PnLH ordinario
+113904.800	noteon PnLH 33. 64
+113908.638	program Cl slap
+113908.638	noteon Cl 50.5 79
+113921.401	program Fl pizz
+113921.401	noteon Fl 66.75 127
+113922.384	program Vlc clbatt
+113922.384	noteon Vlc 53.5 114
+113953.174	noteoff PnRH 52.
+113953.174	noteoff PnRH 57.
+113953.174	noteoff PnRH 58.
+113955.321	noteoff PnLH 33.
+113957.193	noteoff Vla 60.75
+113961.159	noteoff Cl 50.5
+113973.922	noteoff Fl 66.75
+113974.904	noteoff Vlc 53.5
+114401.327	noteon PnLH 34. 70
+114410.840	noteon Fl 67.75 122
+114424.794	noteoff PnLH 34.
+114434.307	noteoff Fl 67.75
+114756.167	noteon PnRH 52. 17
+114756.167	noteon PnRH 57. 17
+114756.167	noteon PnRH 58. 17
+114806.688	noteoff PnRH 52.
+114806.688	noteoff PnRH 57.
+114806.688	noteoff PnRH 58.
+114814.378	noteon Vla 60.75 15
+114818.344	noteon Cl 50.5 7
+114820.202	noteon PnLH 33. 56
+114829.716	noteon Fl 66.75 67
+114832.089	noteon Vlc 53.5 7
+114843.669	noteoff PnLH 33.
+114853.183	noteoff Fl 66.75
+114866.899	noteoff Vla 60.75
+114870.865	noteoff Cl 50.5
+114884.610	noteoff Vlc 53.5
+115186.087	noteon PnLH 36. 73
+115195.600	noteon Fl 69.75 84
+115227.452	noteoff PnLH 36.
+115236.966	noteoff Fl 69.75
+115521.527	noteon PnRH 52. 17
+115521.527	noteon PnRH 57. 17
+115521.527	noteon PnRH 58. 17
+115524.186	noteon PnLH 34. 60
+115533.700	noteon Fl 67.75 38
+115543.390	noteon Vla 60.75 15
+115547.356	noteon Cl 50.5 7
+115561.102	noteon Vlc 53.5 7
+115565.552	noteoff PnLH 34.
+115572.048	noteoff PnRH 52.
+115572.048	noteoff PnRH 57.
+115572.048	noteoff PnRH 58.
+115575.066	noteoff Fl 67.75
+115595.911	noteoff Vla 60.75
+115599.877	noteoff Cl 50.5
+115613.622	noteoff Vlc 53.5
+115823.668	noteon PnLH 37. 49
+115833.182	noteon Fl 70.75 63
+115853.868	noteoff PnLH 37.
+115863.382	noteoff Fl 70.75
+116324.138	program Cl ordinario
+116324.138	noteon Cl 52. 71
+116342.190	noteon PnLH 27. 70
+116383.089	noteoff Cl 52.
+116387.782	noteon Cl 56. 21
+116446.733	noteoff Cl 56.
+116451.427	noteon Cl 58. 21
+116510.378	noteoff Cl 58.
+116515.071	noteon Cl 61. 21
+116574.022	noteoff Cl 61.
+116578.716	noteon Cl 65. 28
+116637.667	noteoff Cl 65.
+116642.360	noteon Cl 67. 34
+116701.311	noteoff Cl 67.
+116706.005	noteon Cl 69. 40
+116769.649	noteon Cl 71. 52
+116771.230	noteoff Cl 69.
+116827.609	noteoff Cl 71.
+116833.294	noteon Cl 72. 76
+116892.226	noteoff Cl 72.
+116896.938	noteon Cl 76. 76
+116960.583	noteon Cl 77. 76
+116964.209	noteoff Cl 76.
+117024.227	noteon Cl 79. 76
+117027.854	noteoff Cl 77.
+117087.872	noteon Cl 80. 76
+117091.498	noteoff Cl 79.
+117151.516	noteon Cl 82. 76
+117155.143	noteoff Cl 80.
+117215.161	noteon Cl 83. 77
+117218.752	program Fl multiphonic
+117218.752	noteon Fl 87. 127
+117218.787	noteoff Cl 82.
+117225.028	program Vla "excessive pressure"
+117225.028	noteon Vla 83. 69
+117227.108	program Vlc pizzB-nopitch
+117227.108	noteon Vlc 71. 127
+117256.175	noteoff Cl 83.
+117637.571	noteoff Vlc 71.
+118598.895	noteoff Fl 87.
+118636.167	program Fl pizz
+118636.167	noteon Fl 66.75 76
+118638.544	noteoff Vla 83.
+118638.624	program Vla clbatt
+118638.624	noteon Vla 60.75 61
+118642.589	program Cl slap
+118642.589	noteon Cl 50.5 18
+118655.395	program PnRH ordinario
+118655.395	noteon PnRH 52. 7
+118655.395	noteon PnRH 57. 7
+118655.395	noteon PnRH 58. 7
+118656.335	program Vlc clbatt
+118656.335	noteon Vlc 53.5 53
+118656.882	noteon PnLH 33. 76
+118690.742	noteoff Fl 66.75
+118691.145	noteoff Vla 60.75
+118695.110	noteoff Cl 50.5
+118705.916	noteoff PnRH 52.
+118705.916	noteoff PnRH 57.
+118705.916	noteoff PnRH 58.
+118708.856	noteoff Vlc 53.5
+118711.457	noteoff PnLH 33.
+118715.684	noteoff PnLH 27.
+119066.374	noteon Fl 67.75 76
+119087.089	noteon PnLH 34. 76
+119091.724	noteoff Fl 67.75
+119112.439	noteoff PnLH 34.
+119521.330	noteon Vla 60.75 54
+119523.097	noteon Fl 66.75 40
+119525.295	noteon Cl 50.5 46
+119525.909	noteon PnRH 52. 40
+119525.909	noteon PnRH 57. 40
+119525.909	noteon PnRH 58. 40
+119539.041	noteon Vlc 53.5 46
+119543.812	noteon PnLH 33. 76
+119550.101	noteoff Fl 66.75
+119570.816	noteoff PnLH 33.
+119573.851	noteoff Vla 60.75
+119576.429	noteoff PnRH 52.
+119576.429	noteoff PnRH 57.
+119576.429	noteoff PnRH 58.
+119577.816	noteoff Cl 50.5
+119591.562	noteoff Vlc 53.5
+119944.121	noteon Fl 69.75 40
+119964.836	noteon PnLH 36. 76
+119991.721	noteoff Fl 69.75
+120012.436	noteoff PnLH 36.
+120331.342	noteon Vla 60.75 87
+120333.173	noteon Fl 67.75 51
+120335.307	noteon Cl 50.5 79
+120348.269	noteon PnRH 52. 73
+120348.269	noteon PnRH 57. 73
+120348.269	noteon PnRH 58. 73
+120349.053	noteon Vlc 53.5 79
+120353.888	noteon PnLH 34. 76
+120380.773	noteoff Fl 67.75
+120383.863	noteoff Vla 60.75
+120387.828	noteoff Cl 50.5
+120398.789	noteoff PnRH 52.
+120398.789	noteoff PnRH 57.
+120398.789	noteoff PnRH 58.
+120401.488	noteoff PnLH 34.
+120401.574	noteoff Vlc 53.5
+120833.655	noteon Fl 70.75 51
+120854.370	noteon PnLH 37. 76
+120868.407	noteoff Fl 70.75
+120889.122	noteoff PnLH 37.
+121592.359	program Vla gett-sp
+121592.359	noteon Vla 52. 60
+121612.579	noteon PnLH 27. 56
+121651.068	noteoff Vla 52.
+121655.742	noteon Vla 56. 56
+121714.450	noteoff Vla 56.
+121719.125	noteon Vla 58. 52
+121777.833	noteoff Vla 58.
+121782.508	noteon Vla 61. 48
+121841.216	noteoff Vla 61.
+121845.891	noteon Vla 65. 44
+121904.599	noteoff Vla 65.
+121909.274	noteon Vla 67. 40
+121967.982	noteoff Vla 67.
+121972.657	noteon Vla 69. 37
+122036.039	noteon Vla 71. 33
+122037.614	noteoff Vla 69.
+122093.761	noteoff Vla 71.
+122099.422	noteon Vla 72. 29
+122158.113	noteoff Vla 72.
+122162.805	noteon Vla 76. 25
+122226.188	noteon Vla 77. 21
+122229.800	noteoff Vla 76.
+122289.571	noteon Vla 79. 17
+122293.183	noteoff Vla 77.
+122352.954	noteon Vla 80. 13
+122356.566	noteoff Vla 79.
+122416.337	noteon Vla 82. 10
+122419.949	noteoff Vla 80.
+122433.368	program Cl multiphonic
+122433.368	noteon Cl 103. 127
+122474.089	program Vlc pizzB-nopitch
+122474.089	noteon Vlc 71. 127
+122479.720	noteon Vla 83. 6
+122481.696	program Fl multiphonic
+122481.696	noteon Fl 87. 127
+122483.332	noteoff Vla 82.
+122520.566	noteoff Vla 83.
+122884.206	noteoff Vlc 71.
+123736.100	noteoff Cl 103.
+123760.168	noteoff PnLH 27.
+123835.844	program PnRH ordLV
+123835.844	noteon PnRH 24. 124
+123845.222	program PnRH ordLV
+123845.222	noteon PnRH 73. 127
+123869.541	program Cl ordinario
+123869.541	gain Cl 0.
+123869.541	noteon Cl 72.5 127
+123869.541	dynamic Cl 72.5 0. 194.932529
+124058.352	noteoff PnRH 73.
+124064.541	dynamic Cl 72.5 127. 6797.651089
+124445.893	noteoff PnRH 24.
+124770.515	noteoff Fl 87.
+124783.246	noteon PnRH 76. 127
+124820.617	program Fl ordinario
+124820.617	gain Fl 0.
+124820.617	noteon Fl 75.5 127
+124820.617	dynamic Fl 75.5 0. 158.627132
+124957.174	noteoff PnRH 76.
+124979.617	dynamic Fl 75.5 127. 5965.584065
+125692.025	noteon PnRH 70. 127
+125698.868	program Vla ordinario
+125698.868	gain Vla 0.
+125698.868	noteon Vla 70.5 127
+125698.868	dynamic Vla 70.5 0. 201.034582
+125865.953	noteoff PnRH 70.
+125899.868	dynamic Vla 70.5 127. 5054.497868
+126585.479	noteon PnRH 69. 127
+126611.390	program Vlc ordinario
+126611.390	gain Vlc 0.
+126611.390	noteon Vlc 68.5 127
+126624.390	dynamic Vlc 68.5 0. 161.146055
+126759.407	noteoff PnRH 69.
+126785.390	dynamic Vlc 68.5 126.29493 4160.17292
+129591.653	noteon PnRH 70. 127
+129783.825	noteoff PnRH 70.
+129824.135	noteon PnRH 71. 82
+129880.726	noteoff PnRH 71.
+129918.251	noteon PnRH 70. 82
+130000.566	noteoff PnRH 70.
+130000.566	noteon PnRH 71. 82
+130067.447	noteoff PnRH 71.
+130067.447	noteon PnRH 70. 82
+130083.822	noteoff PnRH 70.
+130151.692	noteon PnRH 71. 82
+130213.429	noteoff PnRH 71.
+130213.429	noteon PnRH 70. 82
+130295.744	noteoff PnRH 70.
+130295.744	noteon PnRH 71. 82
+130347.191	noteon PnRH 70. 82
+130347.191	noteoff PnRH 71.
+130429.506	noteoff PnRH 70.
+130471.703	noteon PnRH 71. 82
+130573.390	noteoff PnRH 71.
+130573.390	noteon PnRH 70. 82
+130678.317	noteoff PnRH 70.
+130714.304	noteon PnRH 69. 101
+130862.125	noteoff Cl 72.5
+130881.937	noteon PnRH 70. 101
+130894.675	noteoff PnRH 69.
+130944.829	noteoff Fl 75.5
+130945.519	noteoff Vlc 68.5
+130954.401	noteoff Vla 70.5
+130954.868	dynamic Vla 70.5 127. 0.
+130971.483	noteon PnRH 32. 127
+130971.483	noteon PnRH 67. 127
+130972.542	program Fl flz
+130972.542	gain Fl 0.
+130972.542	noteon Fl 75.5 127
+130977.125	program Cl flz
+130977.125	gain Cl 0.
+130977.125	noteon Cl 72.5 127
+130977.125	dynamic Cl 72.5 36.688889 613.839836
+130985.542	dynamic Fl 75.5 39.511111 400.778946
+130991.955	program Vlc sptrem
+130991.955	gain Vlc 0.
+130991.955	noteon Vlc 68.5 127
+130998.548	noteoff PnRH 70.
+131004.955	dynamic Vlc 68.5 45.155556 583.264103
+131012.906	program Vla sptrem
+131012.906	gain Vla 0.
+131012.906	noteon Vla 70.5 127
+131025.906	dynamic Vla 70.5 39.511111 400.778946
+131356.978	noteoff PnRH 32.
+131356.978	noteoff PnRH 67.
+131386.542	dynamic Fl 75.5 8.466667 1177.049299
+131426.906	dynamic Vla 70.5 8.466667 1177.049299
+131587.955	dynamic Vlc 68.5 8.466667 994.564142
+131591.125	dynamic Cl 72.5 11.288889 922.232205
+132381.490	noteon PnRH 66. 64
+132513.125	dynamic Cl 72.5 0. 1516.261007
+132563.542	dynamic Fl 75.5 0.418505 1384.613393
+132582.955	dynamic Vlc 68.5 0. 1456.613393
+132603.906	dynamic Vla 70.5 0.645195 1345.613393
+132766.985	noteoff PnRH 66.
+136207.077	gain Fl -6.666667
+136211.660	gain Cl -6.666667
+136226.490	gain Vlc -6.666667
+136247.441	gain Vla -6.666667
+138861.372	gain Fl -20.
+138862.954	gain Vla -20.
+138865.955	gain Cl -20.
+138880.785	gain Vlc -20.
+139415.372	noteoff Fl 75.5
+139416.954	noteoff Vla 70.5
+139492.236	noteoff Cl 72.5
+139505.274	noteoff Vlc 68.5
+140511.778	program Vla pizz
+140511.778	gain Vla 0.
+140511.778	noteon Vla 60.5 28
+140526.357	program Cl slap
+140526.357	gain Cl 0.
+140526.357	noteon Cl 60.25 1
+140526.860	program Fl pizz
+140526.860	gain Fl 0.
+140526.860	noteon Fl 63.25 1
+140558.819	program Vlc trem
+140558.819	gain Vlc 0.
+140558.819	noteon Vlc 60.5 1
+140709.295	noteoff Cl 60.25
+140722.354	noteoff Fl 63.25
+140722.354	noteon Fl 60.25 1
+141059.366	noteoff Vla 60.5
+141059.366	noteon Vla 63.25 42
+141070.354	noteoff Fl 60.25
+141340.813	program Cl flz
+141340.813	noteon Cl 60.5 1
+141439.096	program Vla ordinario
+141439.096	noteon Vla 60.25 12
+141439.096	noteoff Vla 63.25
+141572.155	noteon Vla 63.5 16
+141572.155	noteoff Vla 60.25
+141672.189	noteon Fl 60.25 1
+141743.450	program PnLH ordLV
+141743.450	noteon PnLH 63. 21
+141743.450	noteon PnLH 65. 21
+141743.450	noteon PnLH 67. 21
+141743.450	noteon PnLH 69. 21
+141743.450	noteon PnLH 82. 42
+141752.868	noteon PnLH 72. 31
+141752.868	noteon PnLH 76. 42
+141752.868	noteon PnLH 78. 42
+141752.868	noteon PnLH 80. 42
+141752.868	noteon PnLH 83. 42
+141853.354	noteoff Fl 60.25
+141853.354	noteon Fl 63.25 1
+141856.368	noteoff Vlc 60.5
+141901.731	noteoff Vla 63.5
+141901.731	program Vla sptrem
+141901.731	noteon Vla 60.25 1
+141952.580	program Vlc ordinario
+141952.580	noteon Vlc 63.25 1
+141987.337	noteoff Cl 60.5
+142048.023	noteoff Vlc 63.25
+142144.234	noteon Vlc 60.25 1
+142208.790	noteon Vla 60.5 15
+142208.790	noteoff Vla 60.25
+142389.188	noteoff Vlc 60.25
+142442.907	noteoff Fl 63.25
+142442.907	program Fl ordinario
+142442.907	noteon Fl 60.5 11
+142485.400	noteon Vlc 60.5 16
+142569.507	program Cl ordinario
+142569.507	noteon Cl 60.25 1
+142579.839	noteoff Vlc 60.5
+142641.317	noteoff Cl 60.25
+142676.051	noteon Vlc 63.5 1
+142743.824	noteoff Fl 60.5
+142743.824	noteon Fl 60.5 1
+142746.143	noteoff Vla 60.5
+142959.789	noteoff Fl 60.5
+142979.203	noteoff Vlc 63.5
+142989.450	noteoff PnLH 63.
+142989.450	noteoff PnLH 65.
+142989.450	noteoff PnLH 67.
+142989.450	noteoff PnLH 69.
+142989.450	noteoff PnLH 82.
+142998.868	noteoff PnLH 72.
+142998.868	noteoff PnLH 76.
+142998.868	noteoff PnLH 78.
+142998.868	noteoff PnLH 80.
+142998.868	noteoff PnLH 83.
+143075.415	noteon Vlc 60.25 16
+143156.810	noteoff Vlc 60.25
+143245.354	noteon Fl 60.25 1
+143251.928	program Cl flz
+143251.928	noteon Cl 63.25 1
+143253.022	noteon Vlc 63.25 1
+143384.825	program Vla pizzB
+143384.825	noteon Vla 63.25 1
+143734.784	noteoff Vlc 63.25
+143830.996	program Vlc clbatt
+143830.996	noteon Vlc 60.5 36
+144086.368	noteoff Cl 63.25
+144126.003	noteoff Vlc 60.5
+144148.803	program Cl slap
+144148.803	noteon Cl 60.5 1
+144223.096	noteoff Vla 63.25
+144223.096	program Vla pizz
+144223.096	noteon Vla 60.5 38
+144285.260	noteoff Fl 60.25
+144285.260	program Fl flz
+144285.260	noteon Fl 60.5 1
+144617.683	noteon Vlc 60.25 23
+145124.554	noteon Fl 63.5 1
+145172.434	program Cl ordinario
+145172.434	noteon Cl 60.5 1
+145302.614	noteoff Cl 60.5
+145302.614	program Cl flz
+145302.614	noteon Cl 63.5 1
+145498.142	noteoff Fl 60.5
+145546.022	noteoff Cl 60.5
+145553.412	noteoff Fl 63.5
+145637.165	program Vlc pizz
+145637.165	noteon Vlc 60.5 1
+145691.829	program Vla clbatt
+145691.829	noteon Vla 63.5 1
+145985.489	noteoff Vla 63.5
+145985.489	noteon Vla 63.5 36
+146010.753	noteoff Vlc 60.25
+146065.417	noteoff Vla 60.5
+146069.271	program Fl bisbigl
+146069.271	noteon Fl 63.25 1
+146120.541	noteon PnLH 72. 2
+146120.541	noteon PnLH 76. 2
+146120.541	noteon PnLH 78. 2
+146120.541	noteon PnLH 80. 2
+146120.541	noteon PnLH 83. 2
+146126.934	noteon PnLH 63. 1
+146126.934	noteon PnLH 65. 1
+146126.934	noteon PnLH 67. 1
+146126.934	noteon PnLH 69. 1
+146126.934	noteon PnLH 82. 1
+146243.418	noteoff Vla 63.5
+146243.418	noteon Vla 63.5 51
+146248.822	noteoff Cl 63.5
+146459.976	noteoff Vlc 60.5
+146459.976	noteon Vlc 63.5 1
+146715.415	program Cl ordinario
+146715.415	noteon Cl 63.5 44
+146762.499	noteoff Cl 63.5
+146762.499	noteon Cl 60.25 6
+146780.624	noteoff Fl 63.25
+146848.287	noteoff Cl 60.25
+146848.287	noteon Cl 63.5 44
+146895.371	noteoff Cl 63.5
+146981.480	noteoff Vla 63.5
+147024.408	noteon Cl 63.5 44
+147071.492	noteoff Cl 63.5
+147071.492	noteon Cl 60.25 6
+147143.563	program Vlc sptrem
+147143.563	noteon Vlc 63.25 1
+147143.563	noteoff Vlc 63.5
+147169.366	noteoff Cl 60.25
+147230.273	noteon Cl 60.25 6
+147296.483	program Fl pizz
+147296.483	noteon Fl 60.5 2
+147328.147	noteoff Cl 60.25
+147361.991	noteon Cl 63.5 21
+147366.541	noteoff PnLH 72.
+147366.541	noteoff PnLH 76.
+147366.541	noteoff PnLH 78.
+147366.541	noteoff PnLH 80.
+147366.541	noteoff PnLH 83.
+147372.934	noteoff PnLH 63.
+147372.934	noteoff PnLH 65.
+147372.934	noteoff PnLH 67.
+147372.934	noteoff PnLH 69.
+147372.934	noteoff PnLH 82.
+147409.075	noteoff Cl 63.5
+147409.075	noteon Cl 60.25 1
+147485.836	noteoff Fl 60.5
+147485.836	noteon Fl 60.5 1
+147504.713	noteoff Cl 60.25
+147548.543	program Vla gett
+147548.543	noteon Vla 63.25 1
+147623.888	program Cl slap
+147623.888	noteon Cl 63.5 1
+147951.395	noteoff Cl 63.5
+147951.395	program Cl flz
+147951.395	noteon Cl 60.5 1
+148415.908	noteoff Vlc 63.25
+148415.908	program Vlc pizz
+148415.908	noteon Vlc 60.5 27
+148416.224	noteoff Fl 60.5
+148456.413	noteoff Vla 63.25
+148456.413	program Vla clbatt
+148456.413	noteon Vla 60.25 36
+148601.542	noteoff Vlc 60.5
+148601.542	noteon Vlc 60.5 1
+148745.496	noteoff Cl 60.5
+148745.496	program Cl slap
+148745.496	noteon Cl 60.25 72
+148759.378	noteoff Vla 60.25
+148759.378	noteon Vla 60.5 8
+148968.174	noteoff Cl 60.25
+149234.024	noteon Fl 60.5 38
+149364.882	program Cl bisbigl
+149364.882	noteon Cl 63.25 1
+149510.821	noteoff Cl 63.25
+149510.821	noteon Cl 63.25 1
+149555.304	noteoff Vlc 60.5
+149555.304	program Vlc ordinario
+149555.304	noteon Vlc 60.25 11
+149700.611	noteoff Cl 63.25
+149798.260	noteoff Vla 60.5
+149798.260	program Vla trem
+149798.260	noteon Vla 60.5 31
+149932.343	noteoff Vla 60.5
+149932.343	noteon Vla 63.5 1
+150038.440	noteoff Fl 60.5
+150038.440	program Fl pizz
+150038.440	noteon Fl 63.25 9
+150080.190	program Cl ordinario
+150080.190	noteon Cl 60.5 1
+150257.647	noteoff Cl 60.5
+150257.647	program Cl flz
+150257.647	noteon Cl 60.5 1
+150473.091	noteoff Fl 63.25
+150473.091	program Fl bisbigl
+150473.091	noteon Fl 60.25 1
+150599.619	noteoff Vlc 60.25
+150626.296	noteoff Vla 63.5
+150626.296	program Vla pizz
+150626.296	noteon Vla 63.5 24
+150842.196	program Vlc trem
+150842.196	noteon Vlc 60.5 1
+150997.837	noteoff Vla 63.5
+150997.837	noteon Vla 60.5 44
+151052.063	noteoff Fl 60.25
+151052.063	noteon Fl 60.5 1
+151062.711	noteoff Cl 60.5
+151426.346	program Fl flz
+151426.346	noteon Fl 63.25 1
+151426.346	noteoff Fl 60.5
+151681.061	noteoff Vlc 60.5
+151681.061	program Vlc sptrem
+151681.061	noteon Vlc 63.25 1
+151734.778	noteoff Vla 60.5
+151734.778	program Vla gettSP
+151734.778	noteon Vla 60.25 72
+151861.977	noteoff Fl 63.25
+151910.255	program Cl slap
+151910.255	noteon Cl 63.5 1
+152222.909	noteoff Cl 63.5
+152257.016	noteoff Vlc 63.25
+152257.016	noteon Vlc 60.25 1
+152328.811	noteoff Vla 60.25
+152423.628	noteon PnLH 66. 41
+152423.628	noteon PnLH 72. 41
+152423.628	noteon PnLH 75. 41
+152423.628	noteon PnLH 81. 41
+152423.940	program Cl flz
+152423.940	noteon Cl 69.5 1
+152430.022	noteon PnLH 56. 16
+152430.022	noteon PnLH 59. 16
+152430.022	noteon PnLH 62. 40
+152456.884	program Vla pizz
+152456.884	noteon Vla 67.25 1
+152485.094	noteoff Vlc 60.25
+152490.884	program Fl pizz
+152490.884	noteon Fl 69.75 1
+152660.884	program Vlc trem
+152660.884	noteon Vlc 67.5 21
+152684.962	noteoff Vla 67.25
+152789.619	noteon Cl 67.75 1
+152797.539	noteoff Fl 69.75
+152849.557	noteoff Cl 69.5
+153021.571	program Vla sptrem
+153021.571	noteon Vla 69.5 1
+153155.297	noteoff Cl 67.75
+153355.282	program Cl ordinario
+153355.282	noteon Cl 67.5 1
+153414.884	noteoff Vlc 67.5
+153573.884	program Vlc pizz
+153573.884	noteon Vlc 69.75 1
+153586.258	noteoff Vla 69.5
+153669.628	noteoff PnLH 66.
+153669.628	noteoff PnLH 72.
+153669.628	noteoff PnLH 75.
+153669.628	noteoff PnLH 81.
+153676.022	noteoff PnLH 56.
+153676.022	noteoff PnLH 59.
+153676.022	noteoff PnLH 62.
+153779.940	program Cl slap
+153779.940	noteon Cl 69.5 1
+153841.152	program Vla trem
+153841.152	noteon Vla 67.5 1
+153920.944	noteoff Cl 67.5
+153936.884	noteoff Vlc 69.75
+154105.501	program Fl flz
+154105.501	noteon Fl 67.75 1
+154204.599	noteoff Cl 69.5
+154251.884	program Vlc trem
+154251.884	noteon Vlc 69.75 1
+154278.878	program Fl ordinario
+154278.878	noteon Fl 67.75 1
+154382.884	noteon Vlc 67.75 3
+154452.255	noteoff Fl 67.75
+154513.884	noteoff Vlc 67.75
+154565.864	program Cl flz
+154565.864	noteon Cl 67.75 10
+154660.733	noteoff Vla 67.5
+154835.158	noteon Fl 69.5 1
+154892.058	noteoff Fl 67.75
+154929.884	noteoff Vlc 69.75
+154962.460	program Vla gett
+154962.460	noteon Vla 67.25 1
+154977.742	program Fl bisbigl
+154977.742	noteon Fl 69.5 1
+155020.585	noteoff Fl 69.5
+155120.327	noteoff Fl 69.5
+155351.788	noteoff Cl 67.75
+155397.884	noteon Vlc 67.75 1
+155582.889	program Fl pizz
+155582.889	noteon Fl 67.5 44
+155693.884	program Vlc clbatt
+155693.884	noteon Vlc 67.5 8
+155800.447	noteoff Fl 67.5
+155894.296	noteon Vla 67.5 1
+155982.767	noteoff Vla 67.25
+155989.884	noteoff Vlc 67.5
+156075.663	program Vla pizz
+156075.663	noteon Vla 67.5 1
+156257.029	noteoff Vla 67.5
+156273.864	program Cl slap
+156273.864	noteon Cl 67.75 1
+156358.736	program Fl flz
+156358.736	noteon Fl 67.75 1
+156412.884	noteoff Vlc 67.75
+156458.864	noteon Cl 67.75 1
+156580.884	program Vlc sptrem
+156580.884	noteon Vlc 69.5 1
+156643.864	noteoff Cl 67.75
+156678.714	program Fl pizz
+156678.714	noteon Fl 69.75 1
+156826.132	noteoff Vla 67.5
+156888.589	noteon Fl 67.5 1
+156934.590	program Fl ordinario
+156934.590	noteon Fl 69.75 1
+156980.591	noteoff Fl 69.75
+156982.029	noteoff Fl 67.5
+156998.692	noteoff Fl 69.75
+157063.280	noteon Fl 67.5 1
+157134.582	noteoff Fl 67.75
+157158.905	noteoff Fl 67.5
+157182.864	noteoff Cl 67.75
+157218.411	noteon Fl 67.5 1
+157264.412	noteon Fl 69.75 1
+157310.414	noteoff Fl 69.75
+157314.036	noteoff Fl 67.5
+157318.759	program Vla sptrem
+157318.759	noteon Vla 69.5 1
+157436.484	noteon Fl 69.75 1
+157467.884	noteoff Vlc 69.5
+157482.486	noteoff Fl 69.75
+157520.301	noteon Fl 67.5 1
+157566.302	program Fl ordinario
+157566.302	noteon Fl 69.75 1
+157604.117	noteoff Fl 67.5
+157612.303	noteoff Fl 69.75
+157657.864	program Cl bisbigl
+157657.864	noteon Cl 69.5 1
+157856.006	noteon Vlc 69.75 23
+157986.632	noteon Vla 69.75 1
+158108.006	noteon Vlc 69.75 8
+158116.619	noteon PnLH 66. 6
+158116.619	noteon PnLH 72. 6
+158116.619	noteon PnLH 75. 6
+158116.619	noteon PnLH 81. 6
+158123.013	noteon PnLH 56. 5
+158123.013	noteon PnLH 59. 5
+158123.013	noteon PnLH 62. 5
+158352.864	noteoff Cl 69.5
+158360.006	noteoff Vlc 69.75
+158394.915	program Vlc clbatt
+158394.915	noteon Vlc 69.75 1
+158561.856	noteoff Vla 69.5
+158572.624	program Fl flz
+158572.624	noteon Fl 69.75 1
+158577.100	noteoff Vlc 69.75
+158580.864	program Cl ordinario
+158580.864	noteon Cl 69.75 1
+158654.504	noteoff Vla 69.75
+158681.824	noteoff Vlc 69.75
+158699.812	program Fl ordinario
+158699.812	noteon Fl 67.75 1
+158790.527	program Vla gett
+158790.527	noteon Vla 67.5 1
+158827.000	noteoff Fl 67.75
+158999.864	noteoff Cl 69.75
+159362.619	noteoff PnLH 66.
+159362.619	noteoff PnLH 72.
+159362.619	noteoff PnLH 75.
+159362.619	noteoff PnLH 81.
+159369.013	noteoff PnLH 56.
+159369.013	noteoff PnLH 59.
+159369.013	noteoff PnLH 62.
+159400.864	program Cl flz
+159400.864	noteon Cl 67.75 1
+159497.080	noteoff Fl 69.75
+159594.422	noteoff Vla 67.5
+159699.911	program Fl pizz
+159699.911	noteon Fl 67.75 1
+159786.573	noteon Vla 67.25 1
+160220.864	noteoff Cl 67.75
+160223.884	program Vlc pizzB
+160223.884	noteon Vlc 69.5 1
+160416.864	noteon Cl 67.5 1
+160576.169	program Fl flz
+160576.169	noteon Fl 69.5 1
+160700.010	noteoff Fl 67.75
+160906.864	noteon Cl 67.75 1
+161042.884	noteoff Vlc 69.5
+161117.864	noteoff Cl 67.75
+161200.864	program Cl ordinario
+161200.864	noteon Cl 67.75 1
+161242.902	program Fl ordinario
+161242.902	noteon Fl 67.5 1
+161313.061	noteoff Fl 67.5
+161346.175	program Vla clbatt
+161346.175	noteon Vla 67.5 8
+161372.884	program Vlc sptrem
+161372.884	noteon Vlc 67.75 1
+161391.427	noteoff Fl 69.5
+161432.864	noteoff Cl 67.5
+161494.864	noteoff Cl 67.75
+161573.619	noteoff Vla 67.25
+161634.401	noteoff Vla 67.5
+161672.884	noteon Vlc 67.5 1
+161776.864	noteon Cl 69.5 1
+161897.884	noteoff Vlc 67.75
+161910.862	noteon Vla 69.5 1
+161953.864	noteon Cl 67.5 1
+161972.884	noteoff Vlc 67.5
+161994.884	noteon Vlc 69.75 1
+162084.386	noteon Vla 67.25 1
+162124.884	program Vlc ordinario
+162124.884	noteon Vlc 67.5 1
+162130.864	noteoff Cl 67.5
+162163.910	noteoff Vla 67.25
+162254.884	noteoff Vlc 67.5
+162316.884	noteoff Vlc 69.75
+162352.864	noteoff Cl 69.5
+162381.550	noteoff Vla 69.5
+162443.350	program Fl flz
+162443.350	noteon Fl 67.75 1
+162474.569	noteon Vla 69.75 1
+162495.884	noteon Vlc 69.5 14
+162660.838	noteon Vla 67.5 1
+162753.106	noteoff Vla 67.5
+162770.753	noteoff Vla 69.75
+162866.884	noteoff Vlc 69.5
+162881.864	noteon Cl 67.5 1
+163075.011	noteoff Fl 67.75
+163221.864	noteoff Cl 67.5
+163669.441	noteon PnLH 46. 22
+163669.441	noteon PnLH 54. 22
+163669.441	noteon PnLH 55. 22
+163669.441	noteon PnLH 59. 22
+163672.327	program PnLH ordinario
+163672.327	noteon PnLH 37. 63
+163672.327	noteon PnLH 51. 22
+163672.327	noteon PnLH 57. 22
+163678.125	program Fl kn-cl
+163678.125	noteon Fl 60. 127
+163786.547	noteoff PnLH 46.
+163786.547	noteoff PnLH 54.
+163786.547	noteoff PnLH 55.
+163786.547	noteoff PnLH 59.
+163789.433	noteoff PnLH 37.
+163789.433	noteoff PnLH 51.
+163789.433	noteoff PnLH 57.
+163834.581	program Vlc fingerB
+163834.581	noteon Vlc 48. 98
+164430.419	program Cl kn-cl
+164430.419	noteon Cl 60. 127
+164577.757	program Vla clBD
+164577.757	noteon Vla 48. 127
+164647.977	noteoff Cl 60.
+164686.333	noteoff Vlc 48.
+164760.681	noteon PnLH 38. 69
+164794.678	noteoff Vla 48.
+164815.078	noteoff PnLH 38.
+165304.006	program Vlc tapB
+165304.006	noteon Vlc 48. 98
+165520.447	noteoff Fl 60.
+165530.731	noteoff Vlc 48.
+165530.731	program Vlc fingerB
+165530.731	noteon Vlc 48. 98
+165698.448	noteon Fl 60. 127
+165731.626	noteon PnLH 37. 55
+165782.120	program Cl kn-o
+165782.120	noteon Cl 60. 127
+165786.022	noteoff PnLH 37.
+165828.121	noteoff Cl 60.
+166193.590	program Vla fingerB
+166193.590	noteon Vla 48. 127
+166413.832	program Cl kn-trem
+166413.832	noteon Cl 60. 127
+166436.509	noteoff Fl 60.
+166553.899	noteoff Vla 48.
+166579.740	noteon PnLH 40. 72
+166644.748	noteoff Vlc 48.
+166675.625	noteoff PnLH 40.
+167003.573	program Fl kn-cl-tr
+167003.573	noteon Fl 60. 127
+167154.415	program Vla gettD
+167154.415	noteon Vla 48. 127
+167363.448	noteon PnLH 38. 59
+167383.833	noteoff Cl 60.
+167459.334	noteoff PnLH 38.
+167547.342	program Cl kiss
+167547.342	noteon Cl 60. 127
+167623.956	program Vlc tapB
+167623.956	noteon Vlc 48. 98
+167674.530	noteoff Cl 60.
+167911.443	noteoff Fl 60.
+168057.642	noteon PnLH 41. 47
+168113.426	noteoff PnLH 41.
+168399.565	noteoff Vla 48.
+168547.441	program Cl kiss
+168547.441	noteon Cl 60. 127
+168587.139	noteoff Vlc 48.
+168855.705	program Vlc clBD
+168855.705	noteon Vlc 48. 98
+169091.090	noteon PnLH 46. 63
+169091.090	noteon PnLH 54. 63
+169091.090	noteon PnLH 55. 63
+169091.090	noteon PnLH 59. 63
+169094.604	noteon PnLH 37. 104
+169094.604	noteon PnLH 51. 63
+169094.604	noteon PnLH 57. 63
+169233.712	noteoff PnLH 46.
+169233.712	noteoff PnLH 54.
+169233.712	noteoff PnLH 55.
+169233.712	noteoff PnLH 59.
+169237.227	noteoff PnLH 37.
+169237.227	noteoff PnLH 51.
+169237.227	noteoff PnLH 57.
+169253.290	program Fl kn-cl
+169253.290	noteon Fl 60. 127
+169387.373	noteoff Fl 60.
+169423.699	program Cl flz-whitenoise
+169423.699	noteon Cl 60. 127
+169547.540	noteoff Cl 60.
+169860.649	program Vlc tapH
+169860.649	noteon Vlc 48. 98
+170069.059	noteon PnLH 26. 40
+170144.817	noteoff PnLH 26.
+170238.957	noteoff Cl 60.
+170307.972	noteoff Vlc 48.
+170374.151	noteoff Vlc 48.
+170535.685	program Vla fingerB
+170535.685	noteon Vla 48. 127
+170711.256	program Cl kn-cl
+170711.256	noteon Cl 60. 127
+170806.699	noteoff Cl 60.
+170991.824	program Vlc fingerB
+170991.824	noteon Vlc 48. 98
+171051.615	noteon PnLH 25. 26
+171134.321	noteoff PnLH 25.
+171387.436	noteoff Vla 48.
+171774.109	program Vla tapB
+171774.109	noteon Vla 48. 127
+171843.576	noteoff Vlc 48.
+171848.629	noteon PnLH 28. 43
+171911.913	program Fl kn-o
+171911.913	noteon Fl 60. 127
+171931.335	noteoff PnLH 28.
+172000.834	noteoff Vla 48.
+172139.992	noteoff Fl 60.
+172461.249	program Vlc tapB
+172461.249	noteon Vlc 48. 98
+172476.601	program Fl kn-cl-trem
+172476.601	noteon Fl 60. 127
+172687.974	noteoff Vlc 48.
+172733.727	noteon PnLH 26. 30
+172826.881	noteoff PnLH 26.
+172914.359	program Cl kn-trem
+172914.359	noteon Cl 60. 127
+173041.288	noteoff Fl 60.
+173702.817	noteon PnLH 30. 22
+173797.501	noteoff PnLH 30.
+173933.841	program Cl flz-whitenoise
+173933.841	noteon Cl 60. 56
+174085.078	program Vlc clBD
+174085.078	noteon Vlc 48. 98
+174301.999	noteoff Vlc 48.
+174307.429	noteoff Cl 60.
+174417.490	program Fl kn-o
+174417.490	noteon Fl 60. 127
+174619.339	noteon PnLH 29. 41
+174695.097	noteoff PnLH 29.
+174756.652	noteoff Cl 60.
+174787.060	program Vla gettD
+174787.060	noteon Vla 48. 127
+175437.797	noteoff Fl 60.
+175469.911	program Vlc fingerB
+175469.911	noteon Vlc 48. 98
+175530.692	program Fl kn-cl
+175530.692	noteon Fl 60. 127
+175579.807	program PnLH ordLV
+175579.807	noteon PnLH 37. 23
+175579.807	noteon PnLH 51. 18
+175579.807	noteon PnLH 57. 18
+175624.313	noteon PnLH 46. 18
+175624.313	noteon PnLH 54. 18
+175624.313	noteon PnLH 55. 18
+175624.313	noteon PnLH 59. 18
+175712.059	noteoff Fl 60.
+175750.242	noteoff Vla 48.
+175807.807	noteoff PnLH 37.
+175807.807	noteoff PnLH 51.
+175807.807	noteoff PnLH 57.
+175808.679	program Vla tapH
+175808.679	noteon Vla 48. 127
+175830.220	noteoff Vlc 48.
+175830.239	program Cl kn-trem
+175830.239	noteon Cl 60. 127
+175852.313	noteoff PnLH 46.
+175852.313	noteoff PnLH 54.
+175852.313	noteoff PnLH 55.
+175852.313	noteoff PnLH 59.
+175968.736	program Vlc trash
+175968.736	noteon Vlc 48. 98
+176501.923	noteoff Vla 48.
+177102.585	noteoff Cl 60.
+177213.886	noteoff Vlc 48.
+177213.886	program Vlc fingerB
+177213.886	noteon Vlc 48. 98
+177441.661	program Fl kn-o-trem
+177441.661	noteon Fl 60. 127
+178109.534	noteoff Fl 60.
+178313.981	program Cl kiss
+178313.981	noteon Cl 60. 127
+178666.153	noteoff Vlc 48.
+179358.295	noteoff Cl 60.
+179379.720	program Vla fingerB
+179379.720	noteon Vla 48. 127
+179746.900	noteoff Vla 48.
+180850.550	program PnRH ordinario
+180850.550	noteon PnRH 58. 54
+180891.577	noteon PnRH 63. 54
+180923.484	noteon PnRH 64. 54
+180953.147	noteon PnRH 70. 80
+180971.785	program Vla pizz
+180971.785	noteon Vla 60.75 64
+180975.210	noteon PnRH 82. 64
+180975.304	noteon PnRH 88. 62
+180975.379	noteon PnRH 75. 57
+180979.428	program Cl flz
+180979.428	noteon Cl 83.5 64
+180985.070	program Fl flz
+180985.070	noteon Fl 92.5 64
+180985.640	program Vlc pizz
+180985.640	noteon Vlc 66.75 64
+181064.785	noteoff Vla 60.75
+181071.210	noteoff PnRH 82.
+181075.949	noteoff PnRH 70.
+181078.640	noteoff Vlc 66.75
+181097.759	noteoff PnRH 58.
+181105.428	noteoff Cl 83.5
+181111.070	noteoff Fl 92.5
+181118.631	noteoff PnRH 63.
+181130.627	noteoff PnRH 64.
+181160.258	noteoff PnRH 75.
+181222.833	noteoff PnRH 88.
+183606.194	noteon PnRH 58. 114
+183647.221	noteon PnRH 63. 117
+183679.129	noteon PnRH 64. 115
+183709.439	program Vla pizz
+183709.439	noteon Vla 60.75 127
+183711.967	program Cl flz
+183711.967	noteon Cl 83.5 127
+183717.609	program Fl flz
+183717.609	noteon Fl 92.5 127
+183719.792	noteon PnRH 70. 127
+183723.194	noteoff PnRH 58.
+183723.294	program Vlc pizz
+183723.294	noteon Vlc 66.75 127
+183730.949	noteon PnRH 88. 127
+183731.023	noteon PnRH 75. 127
+183764.221	noteoff PnRH 63.
+183796.129	noteoff PnRH 64.
+183826.439	noteoff Vla 60.75
+183828.967	noteoff Cl 83.5
+183834.609	noteoff Fl 92.5
+183836.792	noteoff PnRH 70.
+183840.294	noteoff Vlc 66.75
+183847.949	noteoff PnRH 88.
+183848.023	noteoff PnRH 75.
+185184.732	program PnRH ordinario
+185184.732	noteon PnRH 63. 41
+185190.558	noteon PnRH 70. 75
+185190.558	noteon PnRH 82. 75
+185190.697	noteon PnRH 88. 105
+185190.763	noteon PnRH 75. 100
+185191.331	program Cl ordinario
+185191.331	noteon Cl 83.5 107
+185196.176	noteon PnRH 64. 39
+185196.333	program Fl ordinario
+185196.333	noteon Fl 92.5 107
+185196.839	program Vlc ordinario
+185196.839	noteon Vlc 66.75 107
+185197.970	program Vla ordinario
+185197.970	noteon Vla 84.75 100
+185484.584	noteoff Cl 83.5
+185489.587	noteoff Fl 92.5
+185490.092	noteoff Vlc 66.75
+185491.224	noteoff Vla 84.75
+185491.285	noteoff PnRH 63.
+185497.110	noteoff PnRH 70.
+185497.110	noteoff PnRH 82.
+185497.249	noteoff PnRH 88.
+185497.315	noteoff PnRH 75.
+185502.728	noteoff PnRH 64.
+185742.177	noteon Vlc 74.75 125
+185747.108	noteon PnRH 64. 41
+185749.006	noteon Fl 92.5 127
+185749.520	noteon Cl 85.25 127
+185751.555	noteon Vla 86.25 125
+185752.934	noteon PnRH 70. 75
+185752.934	noteon PnRH 82. 75
+185753.073	noteon PnRH 88. 105
+185753.139	noteon PnRH 75. 100
+185758.552	noteon PnRH 65. 39
+185906.098	noteoff Vlc 74.75
+185914.963	noteoff Vla 86.25
+185992.944	noteoff Fl 92.5
+186020.190	noteoff Cl 85.25
+186028.318	noteoff PnRH 64.
+186034.143	noteoff PnRH 70.
+186034.143	noteoff PnRH 82.
+186034.282	noteoff PnRH 88.
+186034.348	noteoff PnRH 75.
+186039.761	noteoff PnRH 65.
+186248.524	noteon Fl 92.75 127
+186248.954	noteon Cl 86.75 127
+186252.026	noteon Vla 87.5 125
+186255.316	noteon Vlc 79.25 125
+186259.067	noteon PnRH 65. 41
+186264.892	noteon PnRH 71. 75
+186264.892	noteon PnRH 82. 75
+186265.031	noteon PnRH 88. 105
+186265.098	noteon PnRH 76. 100
+186270.510	noteon PnRH 66. 39
+186415.435	noteoff Vla 87.5
+186419.237	noteoff Vlc 79.25
+186422.179	noteoff Fl 92.75
+186423.579	noteoff Cl 86.75
+186431.620	noteoff PnRH 65.
+186437.445	noteoff PnRH 71.
+186437.445	noteoff PnRH 82.
+186437.585	noteoff PnRH 88.
+186437.651	noteoff PnRH 76.
+186443.064	noteoff PnRH 66.
+186598.640	noteon Fl 93. 127
+186602.276	noteon PnRH 66. 61
+186604.807	noteon Cl 88.25 127
+186605.471	noteon Vlc 82. 125
+186606.883	noteon PnRH 71. 95
+186606.883	noteon PnRH 83. 95
+186606.977	noteon Vla 88.75 125
+186606.994	noteon PnRH 88. 125
+186607.046	noteon PnRH 76. 120
+186611.327	noteon PnRH 67. 59
+186758.338	noteoff PnRH 66.
+186762.945	noteoff PnRH 71.
+186762.945	noteoff PnRH 83.
+186763.055	noteoff PnRH 88.
+186763.108	noteoff PnRH 76.
+186767.389	noteoff PnRH 67.
+186767.791	noteoff Cl 88.25
+186769.392	noteoff Vlc 82.
+186770.385	noteoff Vla 88.75
+186772.295	noteoff Fl 93.
+186911.480	noteon Vla 89.5 125
+186912.861	noteon Fl 93.25 127
+186913.877	noteon PnRH 68. 73
+186915.063	noteon Cl 89. 127
+186916.821	noteon Vlc 72. 125
+186918.484	noteon PnRH 73. 107
+186918.484	noteon PnRH 83. 107
+186918.595	noteon PnRH 88. 127
+186918.647	noteon PnRH 77. 127
+186922.928	noteon PnRH 69. 71
+187000.174	noteoff Fl 93.25
+187005.286	noteoff Cl 89.
+187006.560	noteoff PnRH 68.
+187007.011	noteoff Vlc 72.
+187007.948	noteoff Vla 89.5
+187011.167	noteoff PnRH 73.
+187011.167	noteoff PnRH 83.
+187011.278	noteoff PnRH 88.
+187011.330	noteoff PnRH 77.
+187015.611	noteoff PnRH 69.
+187195.245	noteon Cl 89.75 127
+187200.036	noteon Vlc 73.5 125
+187200.117	noteon PnRH 71. 73
+187200.461	noteon Vla 90.25 125
+187200.888	noteon Fl 93.5 127
+187204.724	noteon PnRH 75. 107
+187204.724	noteon PnRH 83. 107
+187204.834	noteon PnRH 88. 127
+187204.886	noteon PnRH 78. 127
+187209.168	noteon PnRH 72. 71
+187302.552	noteoff PnRH 71.
+187305.749	noteoff Vlc 73.5
+187307.159	noteoff PnRH 75.
+187307.159	noteoff PnRH 83.
+187307.270	noteoff PnRH 88.
+187307.322	noteoff PnRH 78.
+187307.601	noteoff Vla 90.25
+187308.751	noteoff Cl 89.75
+187311.603	noteoff PnRH 72.
+187316.335	noteoff Fl 93.5
+187507.473	noteon PnRH 75. 126
+187509.165	noteon PnRH 74. 126
+187512.680	noteon PnRH 78. 126
+187512.680	noteon PnRH 84. 126
+187512.749	noteon PnRH 88. 126
+187512.782	noteon PnRH 80. 126
+187513.262	noteon Cl 90.5 127
+187514.665	noteon Vla 90.75 125
+187515.267	noteon Vlc 74.75 125
+187517.049	noteon Fl 93.75 127
+187536.730	noteoff PnRH 75.
+187541.180	noteoff PnRH 74.
+187541.937	noteoff PnRH 78.
+187541.937	noteoff PnRH 84.
+187542.006	noteoff PnRH 88.
+187542.038	noteoff PnRH 80.
+187545.277	noteoff Cl 90.5
+187548.074	noteoff Vla 90.75
+187555.010	noteoff Vlc 74.75
+187559.736	noteoff Fl 93.75
+187699.589	noteon PnRH 77. 126
+187700.301	noteon Fl 94. 127
+187700.311	noteon Cl 90.75 127
+187700.811	noteon Vla 91.25 125
+187701.386	noteon PnRH 79. 117
+187703.408	noteon Vlc 75.5 125
+187704.259	noteon PnRH 80. 126
+187704.259	noteon PnRH 85. 126
+187704.328	noteon PnRH 88. 126
+187704.361	noteon PnRH 82. 126
+187729.804	noteoff Vla 91.25
+187731.346	noteoff Fl 94.
+187731.603	noteoff PnRH 77.
+187732.325	noteoff Cl 90.75
+187733.324	noteoff PnRH 79.
+187736.198	noteoff PnRH 80.
+187736.198	noteoff PnRH 85.
+187736.266	noteoff PnRH 88.
+187736.299	noteoff PnRH 82.
+187744.829	noteoff Vlc 75.5
+188824.243	program PnLH dampen-p
+188824.243	noteon PnLH 21. 127
+188824.302	program Vla pizzB
+188824.302	noteon Vla 57. 127
+188862.061	program Cl slap
+188862.061	noteon Cl 57. 127
+188869.840	program Fl jet
+188869.840	noteon Fl 69. 127
+188899.924	program Vlc pizzB
+188899.924	noteon Vlc 45. 127
+189660.025	noteoff PnLH 21.
+191442.822	noteoff Vla 57.
+191479.269	noteoff Cl 57.
+191486.777	noteoff Fl 69.
+191515.815	noteoff Vlc 45.
