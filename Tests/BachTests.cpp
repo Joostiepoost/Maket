@@ -520,12 +520,12 @@ void testBachReading (const juce::File& temp)
     line();
 
     testRoll ("doodsbed final v1c",
-              temp.getChildFile ("doodsbed final v1c.txt"),
-              temp.getChildFile ("01a doodsbed roll stats.txt"),
-              temp.getChildFile ("01b doodsbed roll resave after dump.txt"));
+              material (temp, "doodsbed final v1c.txt"),
+              material (temp, "01a doodsbed roll stats.txt"),
+              material (temp, "01b doodsbed roll resave after dump.txt"));
 
     testRoll ("mixed_roll_example_01h",
-              temp.getChildFile ("mixed_roll_example_01h.txt"),
-              temp.getChildFile ("02a mixed_roll_example_01h roll stats"),
-              temp.getChildFile ("02b mixed_roll_example_01h resave after dump.txt"));
+              material (temp, "mixed_roll_example_01h.txt"),
+              material (temp, "02a mixed_roll_example_01h roll stats"),
+              material (temp, "02b mixed_roll_example_01h resave after dump.txt"));
 }

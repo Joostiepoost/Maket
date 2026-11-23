@@ -51,7 +51,7 @@ void testMapping (const juce::File& temp)
 
     Roll roll;
     juce::StringArray remarks;
-    const auto file = temp.getChildFile ("doodsbed final v1c.txt");
+    const auto file = material (temp, "doodsbed final v1c.txt");
     if (maket::readBachRollFile (file, roll, remarks).failed())
     {
         check (false, "doodsbed final v1c is in Temp and can be read");
@@ -204,7 +204,7 @@ void testSecondRoll (const juce::File& temp)
 
     Roll roll;
     juce::StringArray remarks;
-    const auto file = temp.getChildFile ("Bult - maquette final.txt");
+    const auto file = material (temp, "Bult - maquette final.txt");
     if (! file.existsAsFile() || maket::readBachRollFile (file, roll, remarks).failed())
     {
         line ("| (`Bult - maquette final.txt` is not in Temp, or cannot be read: not checked.) | |");
@@ -276,7 +276,7 @@ void testComparison (const juce::File& temp)
 
     Roll roll;
     juce::StringArray remarks;
-    if (maket::readBachRollFile (temp.getChildFile ("doodsbed final v1c.txt"), roll, remarks).failed())
+    if (maket::readBachRollFile (material (temp, "doodsbed final v1c.txt"), roll, remarks).failed())
     {
         check (false, "doodsbed final v1c is in Temp and can be read");
         line();

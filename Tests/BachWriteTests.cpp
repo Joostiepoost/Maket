@@ -433,13 +433,13 @@ void testBachWriting (const juce::File& temp)
 
     const auto copies = temp.getChildFile ("written by Maket");
 
-    testRollWriting ("doodsbed final v1c", temp.getChildFile ("doodsbed final v1c.txt"), copies);
-    testRollWriting ("mixed_roll_example_01h", temp.getChildFile ("mixed_roll_example_01h.txt"), copies);
+    testRollWriting ("doodsbed final v1c", material (temp, "doodsbed final v1c.txt"), copies);
+    testRollWriting ("mixed_roll_example_01h", material (temp, "mixed_roll_example_01h.txt"), copies);
 
-    testChangedRoll (temp.getChildFile ("mixed_roll_example_01h.txt"), copies);
+    testChangedRoll (material (temp, "mixed_roll_example_01h.txt"), copies);
 
     line ("The same for the two files as bach saved them again (for doodsbed that is the file with the longer header of the newer bach):");
     line();
-    testRollWriting ("doodsbed, re-saved by bach", temp.getChildFile ("01b doodsbed roll resave after dump.txt"), {});
-    testRollWriting ("mixed example, re-saved by bach", temp.getChildFile ("02b mixed_roll_example_01h resave after dump.txt"), {});
+    testRollWriting ("doodsbed, re-saved by bach", material (temp, "01b doodsbed roll resave after dump.txt"), {});
+    testRollWriting ("mixed example, re-saved by bach", material (temp, "02b mixed_roll_example_01h resave after dump.txt"), {});
 }

@@ -88,8 +88,8 @@ void testLogReading (const juce::File& temp)
     line ("### Reading the logs, and the logs of 22 Nov");
     line();
 
-    const auto maxFile = temp.getChildFile ("1c max log.txt");
-    const auto maketFile = temp.getChildFile ("1c maket log.txt");
+    const auto maxFile = material (temp, "1c max log.txt");
+    const auto maketFile = material (temp, "1c maket log.txt");
     if (! maxFile.existsAsFile() || ! maketFile.existsAsFile())
     {
         check (false, "The two logs of stage 1c are in Temp");

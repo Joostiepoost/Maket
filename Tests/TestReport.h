@@ -49,6 +49,14 @@ void testOsc();
     tests (Tests/TimingTests.cpp). `temp` holds the two logs of stage 1c. */
 void testTiming (const juce::File& temp);
 
+/** A file of Joost's test material: in `Temp/support materials`, where he keeps
+    it since 23 Nov, or straight in `Temp`, where it was before. */
+inline juce::File material (const juce::File& temp, const juce::String& name)
+{
+    const auto moved = temp.getChildFile ("support materials").getChildFile (name);
+    return moved.exists() ? moved : temp.getChildFile (name);
+}
+
 /** Stage 1e: a roll's notes as commands for the conTimbre ePlayer, and the
     comparison with a log from Max (Tests/MappingTests.cpp). */
 void testConTimbreMapping (const juce::File& temp);

@@ -51,7 +51,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1b | Gate: bach text writer | done |
 | 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | done |
 | 1d | Gate: timing tests of the OSC connection | done |
-| 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | built, to test |
+| 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | built; tested by Joost on 23 Nov, findings under discussion |
 | 1f | Gate: addressing by note, chords, tuning | |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
@@ -345,7 +345,7 @@ Before the tests:
 
 **Test 1, the check, command by command:**
 
-4. In Maket: Cmd-4, **conTimbre test**, **Choose…** `Temp/doodsbed final v1c.txt`. It must be the roll that is open in ScAst; if that one has changed since, save it from ScAst and choose that file. The table should list eight voices, 306 notes in all.
+4. In Maket: Cmd-4, **conTimbre test**, **Choose…** `Temp/support materials/doodsbed final v1c.txt`. It must be the roll that is open in ScAst; if that one has changed since, save it from ScAst and choose that file. The table should list eight voices, 306 notes in all.
 5. **Start a ScAst take.** In the logging patch the switch of the tap goes on.
 6. In ScAst: play the roll from its very start to its end, as you usually do.
 7. In Maket: **Finish the ScAst take.** The result appears under *Results*, and the status line says in one sentence how it went: either *The same commands on both sides*, or how many differ.
@@ -360,6 +360,12 @@ Before the tests:
 After the tests: push the `Mapping 1e` folder and `Measurements/report.md`. Whatever the check shows, the files say exactly what differs, so there is nothing you need to write down beyond what you hear.
 
 Please keep the orchestra files (`.cePlayerOrc`) out of the repository: they hold conTimbre's sample names and the repository is public. Git now ignores files with that ending.
+
+### After the test of 23 Nov
+
+Joost's four takes are in `Temp/Mapping 1e`. Every `program`, `gain`, `noteon` and `noteoff` of both pieces is the same in Maket and in ScAst. Three things differ, all on ScAst's side: ScAst sends a `glissando` to 0 for every note without pitch breakpoints; in a chord, ScAst sends every `dynamic` and `glissando` with the pitch of the chord's last note, so that the lower note of a double stop gets no curve (Maket gives each note its own); and what goes through a delay in the patch (`gain`, `dynamic`, `glissando`) comes after the note-on. The `set_window_titles` in the logs is the ePlayer's own.
+
+The test material now lives in `Temp/support materials`; the test program looks there first.
 
 ## The repository
 
