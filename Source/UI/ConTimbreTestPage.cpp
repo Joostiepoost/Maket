@@ -9,7 +9,7 @@
 namespace
 {
     constexpr int margin = 28;
-    constexpr int minimumHeight = 800;
+    constexpr int minimumHeight = 850;
     constexpr int sendTag = 3;              // the mark on this page's messages in the send thread's records
     constexpr int toggleWidth = 112;
     constexpr int toggleHeight = 24;
@@ -77,7 +77,8 @@ ConTimbreTestPage::ConTimbreTestPage (maket::Settings& s, maket::OscScheduler& s
     noteOnFirstToggle.setButtonText ("note-on before gain, dynamic, glissando");
     glissandoToZeroToggle.setButtonText ("glissando to 0 without breakpoints");
     spacingToggle.setButtonText ("0.1 ms between commands");
-    for (auto* toggle : { &noteOnFirstToggle, &glissandoToZeroToggle, &spacingToggle })
+    byNumberToggle.setButtonText ("by number: each note by a number of its own, the voice at place k of the roll on the ePlayer's voice named voice + k");
+    for (auto* toggle : { &byNumberToggle, &noteOnFirstToggle, &glissandoToZeroToggle, &spacingToggle })
         addAndMakeVisible (*toggle);
 
     for (auto* button : { &chooseButton, &playButton, &stopButton, &takeButton, &finishButton, &logButton })
@@ -143,6 +144,10 @@ void ConTimbreTestPage::resized()
                                              toggleWidth - 6, toggleHeight);
     area.removeFromTop (10);
 
+    numberLabelArea = area.removeFromTop (18).withWidth (width);
+    byNumberToggle.setBounds (area.removeFromTop (toggleHeight).withWidth (width));
+    area.removeFromTop (8);
+
     waysLabelArea = area.removeFromTop (18).withWidth (width);
     auto waysRow = area.removeFromTop (toggleHeight).withWidth (width);
     noteOnFirstToggle.setBounds (waysRow.removeFromLeft (juce::jmin (300, width * 36 / 100)));
@@ -198,6 +203,7 @@ void ConTimbreTestPage::paint (juce::Graphics& g)
     g.drawText (voiceToggles.empty() ? "Voices: the voices of the roll that have a name appear here"
                                      : "Voices to play and to compare (the name must be that of a voice of the orchestra loaded in the ePlayer)",
                 voicesLabelArea, juce::Justification::centredLeft, true);
+    g.drawText ("How the notes are addressed (off: by voice name and pitch, as ScAst does)", numberLabelArea, juce::Justification::centredLeft, true);
     g.drawText ("The ways of the Max patch, for playing and comparing (all off is Maket's own way)", waysLabelArea, juce::Justification::centredLeft, true);
     g.drawText ("from, in seconds:", fromLabelArea, juce::Justification::centredRight, true);
 
@@ -226,7 +232,7 @@ void ConTimbreTestPage::setState (State newState)
     finishButton.setEnabled (state == State::take);
     stopButton.setEnabled (! idle);
     for (auto& toggle : voiceToggles) toggle->setEnabled (idle);
-    for (auto* toggle : { &noteOnFirstToggle, &glissandoToZeroToggle, &spacingToggle }) toggle->setEnabled (idle);
+    for (auto* toggle : { &byNumberToggle, &noteOnFirstToggle, &glissandoToZeroToggle, &spacingToggle }) toggle->setEnabled (idle);
 }
 
 void ConTimbreTestPage::setStatus (const juce::String& text, bool isProblem)
@@ -257,6 +263,7 @@ maket::contimbre::MappingOptions ConTimbreTestPage::options() const
     o.noteOnFirst = noteOnFirstToggle.getToggleState();
     o.glissandoToZero = glissandoToZeroToggle.getToggleState();
     o.spacing = spacingToggle.getToggleState() ? 0.1 : 0.0;
+    o.byNumber = byNumberToggle.getToggleState();
     return o;
 }
 
@@ -266,7 +273,8 @@ juce::String ConTimbreTestPage::optionsInWords() const
     if (noteOnFirstToggle.getToggleState())     ways.add ("note-on before gain, dynamic and glissando");
     if (glissandoToZeroToggle.getToggleState()) ways.add ("a glissando to 0 for notes without pitch breakpoints");
     if (spacingToggle.getToggleState())         ways.add ("0.1 ms between the commands of one moment");
-    return ways.isEmpty() ? juce::String ("Maket's own way") : "with the Max patch's " + ways.joinIntoString ("; ");
+    const juce::String how = byNumberToggle.getToggleState() ? "by number, " : "by pitch, ";
+    return how + (ways.isEmpty() ? juce::String ("Maket's own way") : "with the Max patch's " + ways.joinIntoString ("; "));
 }
 
 bool ConTimbreTestPage::readyToSend()

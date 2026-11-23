@@ -51,6 +51,21 @@ struct Way
     int singleVelocity = 0;     // above 0: not the figure but one note of 1.5 s at this velocity, without any dynamic
     double restBefore = 0.0;    // ms of silence added before it, on top of the 0.6 s between figures
     double share = 1.0;         // how many of it are played, as a part of Options::repetitions
+
+    // The third run (stage 1f.4):
+    int voiceNumber = 0;        // above 0: on this voice instead of the one of the options
+    juce::String program;       // not empty: this program instead of the one of the options
+    double gain = 0.0;          // dB of that voice (used with `program`)
+    int repeatCount = 0;        // above 0: one pitch struck this many times, velocity 90
+    double period = 0.0;        //   ms from one note-on to the next
+    double overlap = 0.0;       //   ms a note goes on after the next has begun (minus: it ends before)
+    double glide = 0.0;         // not 0: one note of 2 s, velocity 80, that glides this many semitones over 1.5 s
+    int fixedNumber = 0;        // above 0: the note gets this number instead of the next one
+    bool chord = false;         // `chordon` with the two pitches 60 and 79, ended by a note-off of 60
+    double singlePitch = 67.4;  // the pitch of a single note
+
+    double soundLength() const;     // ms from its first note-on to its last note-off
+    double itemLength() const;      // ms it takes in the run, silence after it included
 };
 
 struct Options
@@ -73,7 +88,13 @@ struct Options
     louder as such?); the figure by number in four timings (which of the two
     distances matters?) beside the figure by pitch; and the figure by pitch
     after three seconds of silence (do the slow starts come from the note
-    before?). */
+    before?).
+    Run 3 (stage 1f.4), on the orchestra "doodsbed by number" (cello on
+    voice3, flute on voice4): one pitch struck eight times fast, by pitch
+    and by number, the notes overlapping, meeting, or apart; a glide of two
+    semitones by pitch and by number; a note with a very large number; and
+    the flute's `harmonic` program, which is in chord mode, by `chordon` and
+    by a plain note-on. */
 std::vector<Way> ways (const Options&, int run = 1);
 
 constexpr double singleNoteLength = 1500.0;         // ms

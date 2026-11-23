@@ -9,6 +9,7 @@
 
 #include <JuceHeader.h>
 #include <cmath>
+#include <set>
 #include <vector>
 
 #include "TestReport.h"
@@ -329,6 +330,80 @@ void testPatchWays (const juce::File& temp)
     line();
 }
 
+/** Stage 1f.4: every note of a roll addressed by number. */
+void testByNumber (const juce::File& temp)
+{
+    line ("### A roll by number (stage 1f.4)");
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+
+    Roll roll;
+    juce::StringArray remarks;
+    if (maket::readBachRollFile (material (temp, "doodsbed final v1c.txt"), roll, remarks).failed())
+    {
+        check (false, "doodsbed final v1c is in Temp and can be read");
+        line();
+        return;
+    }
+
+    maket::contimbre::MappingOptions o;
+    o.byNumber = true;
+    const auto byPitch = maket::contimbre::messagesForRoll (roll);
+    const auto all = maket::contimbre::messagesForRoll (roll, {}, o);
+    const auto vlc = ofVoice (all, 2);
+    const double onset = 7200.802301;
+
+    // The cello is the third voice of the roll: voice3. Its first note is note number 12 (after the eleven of Mezzo).
+    juce::String first;
+    for (size_t i = 0; i < 5 && i < vlc.size(); ++i) first << vlc[i].message.toText() << (i < 4 ? "; " : "");
+    line ("| (The cello's first note by number: " + first + ".) | |");
+    checkRow (vlc.size() > 5 && at (vlc[0], onset, "program voice3 \"sul tasto\"") && at (vlc[1], onset, "gain voice3 5.777778")
+              && at (vlc[2], onset, "ctnote 3 12 66.9 1 4511.") && at (vlc[3], onset, "ctdynamic 12 16.846475 4267.")
+              && at (vlc[4], onset, "ctglissando 12 0.5 4511."),
+              "The cello, third voice of the roll, plays on `voice3`: program and gain by that name, the note and its curves by the note's number");
+
+    // The same number of commands, at the same times, kind for kind.
+    bool sameShape = all.size() == byPitch.size();
+    for (size_t i = 0; sameShape && i < all.size(); ++i)
+    {
+        const auto a = byPitch[i].message.address, b = all[i].message.address;
+        sameShape = std::abs (all[i].time - byPitch[i].time) < 1.0e-9
+                    && (b == a || b == "ct" + a || (a == "noteon" && b == "ctnote") || (a == "noteoff" && b == "ctnoteoff"));
+    }
+
+    // Every note-on has a number of its own, and its note-off, dynamics and glissandi carry that number.
+    std::set<int> numbers;
+    int noteOns = 0;
+    bool known = true;
+    for (const auto& m : all)
+    {
+        const auto& a = m.message.arguments;
+        if (m.message.address == "ctnote") { ++noteOns; numbers.insert ((int) a[1].integer); }
+    }
+    for (const auto& m : all)
+        if (m.message.address == "ctnoteoff" || m.message.address == "ctdynamic" || m.message.address == "ctglissando")
+            known = known && numbers.count ((int) m.message.arguments[0].integer) == 1;
+
+    checkRow (sameShape && noteOns == 306 && (int) numbers.size() == 306 && *numbers.begin() == 1 && *numbers.rbegin() == 306 && known,
+              "By number the roll gives the same commands at the same times as by pitch, each in its form by number; the 306 notes are "
+              "numbered 1 to 306, and every note-off, dynamic and glissando carries the number of its note");
+
+    // The viola's double stop: two notes of one moment, each with its own number and its own curve.
+    {
+        const auto vla = ofVoice (all, 5);
+        std::set<int> on, curved;
+        for (const auto& m : vla)
+            if (std::abs (m.time - 19372.0) < 1.0)
+            {
+                if (m.message.address == "ctnote") on.insert ((int) m.message.arguments[1].integer);
+                if (m.message.address == "ctdynamic") curved.insert ((int) m.message.arguments[0].integer);
+            }
+        checkRow (on.size() == 2 && curved == on, "In the viola's double stop at 19.4 s each of the two notes has its own number, and each gets its own dynamic");
+    }
+    line();
+}
+
 /** Joost's takes of 23 Nov: the logs of ScAst playing, held against Maket's commands. */
 void testJoostsTakes (const juce::File& temp)
 {
@@ -542,6 +617,7 @@ void testConTimbreMapping (const juce::File& temp)
     testMapping (temp);
     testSecondRoll (temp);
     testPatchWays (temp);
+    testByNumber (temp);
     testSmallCases();
     testComparison (temp);
     testJoostsTakes (temp);

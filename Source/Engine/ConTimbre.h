@@ -15,6 +15,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <vector>
 #include "Osc.h"
 
 namespace maket::contimbre
@@ -50,6 +51,12 @@ OscMessage ctNote (int voiceNumber, int noteNumber, double pitch, int dynamic, d
 OscMessage ctNoteOff (int noteNumber);
 OscMessage ctDynamic (int noteNumber, double target, double duration);
 OscMessage ctGlissando (int noteNumber, double interval, double duration);
+
+/** `chordon <voice> <pitch> <pitch> ...`: for a program in the player's
+    "interpret chords" mode (multiphonics, play and sing, harmonics). It is
+    switched off by a note-off with one of its pitches. Only by voice name;
+    the manual has no form by number. First tried at stage 1f.4. */
+OscMessage chordOn (const juce::String& voice, const std::vector<double>& pitches);
 
 /** `dynamic_correction 1|0`: on is the player's default (its dynamics then
     depend on the MIDI volume); its manual advises off for commands sent directly. */

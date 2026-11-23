@@ -71,6 +71,7 @@ private:
     juce::TextButton chooseButton, playButton, stopButton, takeButton, finishButton, logButton;
     std::vector<std::unique_ptr<juce::ToggleButton>> voiceToggles;
     std::vector<int> voiceOfToggle;         // which voice of the roll each toggle stands for
+    juce::ToggleButton byNumberToggle;       // stage 1f.4: every note by a number of its own, on the voices voice1, voice2 ...
     juce::ToggleButton noteOnFirstToggle, glissandoToZeroToggle, spacingToggle;     // stage 1f.1: the ways of the Max patch
     juce::TextEditor view;
     std::unique_ptr<juce::FileChooser> chooser;
@@ -92,7 +93,7 @@ private:
     juce::String status;
     bool statusIsProblem = false;
 
-    juce::Rectangle<int> titleArea, subtitleArea, targetArea, rollLabelArea, voicesLabelArea, waysLabelArea, fromLabelArea, statusArea, viewHeadingArea;
+    juce::Rectangle<int> titleArea, subtitleArea, targetArea, rollLabelArea, voicesLabelArea, numberLabelArea, waysLabelArea, fromLabelArea, statusArea, viewHeadingArea;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ConTimbreTestPage)
 };

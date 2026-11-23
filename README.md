@@ -55,7 +55,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1f | Addressing by note, chords, tuning | in parts |
 | 1f.1 | The ways of the Max patch by switch (order, glissando to 0, spacing), to hear whether any of them matters; the comparison sets apart what is known of the patch | done; tested by Joost on 23 Nov: no difference, Maket keeps its own way |
 | 1f.2 | A study of the ePlayer: one figure sent in ten ways (by pitch or by number, timing of the dynamics, dynamic correction), to find out what makes it follow its ramps | done; run by Joost on 23 Nov |
-| 1f.3 | The second run of the study: is a note by number louder as such; which part of the timing matters by number; do slow starts come from the note before | built, to test |
+| 1f.3 | The second run of the study: is a note by number louder as such; which part of the timing matters by number; do slow starts come from the note before | done; run by Joost on 23 Nov |
+| 1f.4 | A roll played by number (Maket's default from here on); the third run of the study: fast repeated notes, a glide by number, a chord-mode program | built, to test |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -454,6 +455,29 @@ Files: `... player study 2 plan.txt` and `... player study 2 send log.txt` in th
 2. *Test results* may stay on `Study 1f2`. In the ePlayer: the orchestra `Maket test 1f2`, as for 1f.2.
 3. Start a recording, then Cmd-4, **ePlayer study**, **Run the second study**. Stop the recording when the status says the run is over.
 4. Send the recording, and push the folder and `Measurements/report.md`.
+
+### After the run of 1f.3 (23 Nov)
+
+- Without a dynamic the ePlayer plays a note exactly the same every time (eight repeats within 0.1 dB), and by number exactly as by pitch. All unevenness lies in its dynamic ramps; nothing Maket sends differently changes it.
+- A ramp does not end where a note struck at that value lies: a note struck at 15 and ramped to 60 ends about 12 dB up (by number about 17 dB), where a note struck at 60 is 5.4 dB up.
+- **Decided by Joost on 23 Nov: by number is Maket's default way of addressing conTimbre**, by pitch the fallback. Maket is for new pieces; older ones stay with ScAst.
+
+## Using stage 1f.4
+
+- **A roll by number.** On the conTimbre test page, the switch *by number* sends every note with a number of its own (`ctnote`, `ctdynamic`, `ctglissando`, `ctnoteoff`). The voice at place k of the roll then plays on the ePlayer's voice named `voice` + k, whatever its name in the roll; `program` and `gain` go to that name. For doodsbed: the cello on `voice3`, flute `voice4`, clarinet `voice5`, viola `voice6`, the piano's hands `voice7` and `voice8`. Where instruments get their voice number in the finished Maket is a matter for step 7.
+- **The third run of the study** (**Run the third study** on the ePlayer study page, 4 minutes 20), on the same orchestra:
+  - one pitch struck eight times, every 120 ms and every 70 ms, the notes overlapping by 30 ms, meeting exactly, or 20 ms apart, by pitch and by number;
+  - a glide of two semitones by pitch (`glissando`) and by number (`ctglissando`);
+  - a note with the number 2000000;
+  - the flute's program `harmonic`, which is in chord mode: `chordon voice4 60. 79.` beside a plain note-on.
+
+### Testing stage 1f.4
+
+1. `git pull`, then `./build.sh`: `stage 1f.4`. `./build.sh tests` ends with `All 136 checks passed.`
+2. In the ePlayer: load the orchestra `doodsbed by number`, which Claude made from your doodsbed orchestra and sent in the chat (not in this repository): the same voices and programs, named `voice3` to `voice8`.
+3. **By ear:** conTimbre test page, the doodsbed roll, untick `Mezzo`, tick *by number*, **Play**. It should be doodsbed as you know it, with stronger dynamic curves. Listen for the piano's repeated notes and anything that hangs or is cut short. **Stop** in the middle: silence at once?
+4. **The run:** start a recording, ePlayer study page, **Run the third study**; stop the recording when the status says the run is over.
+5. Send the recording and what you heard at step 3; push the *Test results* folder and `Measurements/report.md`.
 
 ## The repository
 

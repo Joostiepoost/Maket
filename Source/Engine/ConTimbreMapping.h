@@ -66,6 +66,15 @@ struct MappingOptions
         same moment. In the patch they follow each other at about 0.1 ms;
         Maket sends them as fast as it can (about 0.03 ms apart). */
     double spacing = 0.0;
+
+    /** Every note addressed by a number of its own (`ctnote`, `ctdynamic`,
+        `ctglissando`, `ctnoteoff`) instead of by its pitch: Maket's default
+        way from stage 1f.4 on (decided by Joost on 23 Nov 2026), because two
+        sounding notes of one pitch can then be told apart. The voice at
+        place k of the roll (from 1) is played on the ePlayer's voice named
+        "voice" + k, whatever its name in the roll; program and gain go to
+        that name. The notes are numbered from 1 in the order of the roll. */
+    bool byNumber = false;
 };
 
 /** The commands for the voices of `roll` named in `voices` (numbers from 0;

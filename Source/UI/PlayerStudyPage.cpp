@@ -46,6 +46,8 @@ PlayerStudyPage::PlayerStudyPage (maket::Settings& s, maket::OscScheduler& sch) 
     runButton.setButtonText ("Run the study");
     secondRunButton.setButtonText ("Run the second study");
     secondRunButton.onClick = [this] { start (-1, 2); };
+    thirdRunButton.setButtonText ("Run the third study");
+    thirdRunButton.onClick = [this] { start (-1, 3); };
     stopButton.setButtonText ("Stop");
 
     tryPitchButton.onClick  = [this] { start (0); };
@@ -53,7 +55,7 @@ PlayerStudyPage::PlayerStudyPage (maket::Settings& s, maket::OscScheduler& sch) 
     runButton.onClick       = [this] { start (-1); };
     stopButton.onClick      = [this] { stop(); };
 
-    for (auto* button : { &tryPitchButton, &tryNumberButton, &runButton, &secondRunButton, &stopButton })
+    for (auto* button : { &tryPitchButton, &tryNumberButton, &runButton, &secondRunButton, &thirdRunButton, &stopButton })
         addAndMakeVisible (*button);
 
     view.setMultiLine (true);
@@ -103,11 +105,15 @@ void PlayerStudyPage::resized()
     row.removeFromLeft (8);
     tryNumberButton.setBounds (row.removeFromLeft (190));
     row.removeFromLeft (24);
-    runButton.setBounds (row.removeFromLeft (120));
-    row.removeFromLeft (8);
-    secondRunButton.setBounds (row.removeFromLeft (170));
-    row.removeFromLeft (8);
     stopButton.setBounds (row.removeFromLeft (70));
+
+    area.removeFromTop (8);
+    auto row2 = area.removeFromTop (30);
+    runButton.setBounds (row2.removeFromLeft (130));
+    row2.removeFromLeft (8);
+    secondRunButton.setBounds (row2.removeFromLeft (170));
+    row2.removeFromLeft (8);
+    thirdRunButton.setBounds (row2.removeFromLeft (160));
 
     area.removeFromTop (8);
     statusArea = area.removeFromTop (38);
@@ -155,7 +161,7 @@ void PlayerStudyPage::setRunning (bool isRunning)
 {
     running = isRunning;
     for (auto* c : std::initializer_list<juce::Component*> { &voiceField, &programField, &repetitionsField, &numberToggle, &correctionToggle,
-                                                              &tryPitchButton, &runButton, &secondRunButton })
+                                                              &tryPitchButton, &runButton, &secondRunButton, &thirdRunButton })
         c->setEnabled (! running);
     tryNumberButton.setEnabled (! running && numberToggle.getToggleState());
     stopButton.setEnabled (running);
@@ -216,6 +222,14 @@ void PlayerStudyPage::showWays()
         text << "  " << second.ways[i].name << "\n";
     text << "The whole second run: " << (int) second.repetitions.size() << " notes and figures, " << asClock (second.length) << " minutes, "
          << (int) second.messages.size() << " commands.\n";
+
+    const auto third = maket::study::makePlan (o, -1, 3);
+    text << "\nThe third study (stage 1f.4), on the orchestra \"doodsbed by number\" (cello on voice3, flute on voice4), played in turns:\n"
+         << "  one pitch struck eight times, every 120 or 70 ms, the notes overlapping, meeting or apart, by pitch and by number\n"
+         << "  a glide of two semitones, by pitch and by number; a note with the number 2000000;\n"
+         << "  the flute's program harmonic (chord mode) by chordon and by a plain note-on\n"
+         << "The whole third run: " << (int) third.repetitions.size() << " items, " << asClock (third.length) << " minutes, "
+         << (int) third.messages.size() << " commands.\n";
     view.setText (text, false);
 }
 
@@ -244,7 +258,7 @@ void PlayerStudyPage::start (int onlyWay, int run)
             return;
         }
         const auto text = maket::study::planAsText (plan);
-        dir.getChildFile (stamp + (plan.run == 2 ? " player study 2 plan.txt" : " player study plan.txt")).replaceWithData (text.toRawUTF8(), text.getNumBytesAsUTF8());
+        dir.getChildFile (stamp + (" player study" + juce::String (plan.run > 1 ? " " + juce::String (plan.run) : juce::String()) + " plan.txt")).replaceWithData (text.toRawUTF8(), text.getNumBytesAsUTF8());
     }
 
     runStart = maket::OscScheduler::now() + leadTime;
@@ -283,7 +297,7 @@ void PlayerStudyPage::finish (bool stopped)
              << "Columns, separated by a tab: time in the run (ms), left Maket this much after it (ms), command\n";
         for (const auto& s : sent)
             text << juce::String (s.due - runStart, 3) << "\t" << juce::String (s.sent - s.due, 3) << "\t" << s.text << "\n";
-        filed = dir.getChildFile (stamp + (plan.run == 2 ? " player study 2 send log.txt" : " player study send log.txt")).replaceWithData (text.toRawUTF8(), text.getNumBytesAsUTF8());
+        filed = dir.getChildFile (stamp + (" player study" + juce::String (plan.run > 1 ? " " + juce::String (plan.run) : juce::String()) + " send log.txt")).replaceWithData (text.toRawUTF8(), text.getNumBytesAsUTF8());
     }
 
     if (numRefused > 0)

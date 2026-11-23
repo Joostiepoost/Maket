@@ -183,4 +183,64 @@ void testPlayerStudy()
                   "of silence; in turns, in order of time, at least half a second of silence between any two");
     }
     line();
+
+    // --- The third run (stage 1f.4) ---
+    line ("### The third run of the study (stage 1f.4)");
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+    {
+        const auto w3 = maket::study::ways (o, 3);
+        int number = 1;
+        // way 1: by pitch, every 120 ms, overlapping by 30 ms; way 4: by number, every 120 ms, meeting exactly
+        const auto overlapping = maket::study::figure (o, w3[0], 0.0, number);
+        number = 1;
+        const auto meeting = maket::study::figure (o, w3[3], 0.0, number);
+        checkRow (w3.size() == 17 && overlapping.size() == 16 && meeting.size() == 16
+                  && at (overlapping[0], 0.0, "noteon voice3 67.4 90") && at (overlapping[1], 120.0, "noteon voice3 67.4 90")
+                  && at (overlapping[2], 150.0, "noteoff voice3 67.4")
+                  && at (meeting[0], 0.0, "ctnote 3 1 67.4 90 120.") && at (meeting[1], 120.0, "ctnoteoff 1")
+                  && at (meeting[2], 120.0, "ctnote 3 2 67.4 90 120.") && at (meeting[15], 960.0, "ctnoteoff 8"),
+                  "One pitch struck eight times: by pitch the note-off of an overlapping note comes 30 ms after the next note-on; "
+                  "where the notes meet exactly, the note-off is sent before the next note-on");
+
+        number = 5;
+        const auto glidePitch = maket::study::figure (o, w3[12], 0.0, number);
+        const auto glideNumber = maket::study::figure (o, w3[13], 0.0, number);
+        checkRow (glidePitch.size() == 3 && glideNumber.size() == 3
+                  && at (glidePitch[1], 0.0, "glissando voice3 67.4 2. 1500.") && at (glideNumber[0], 0.0, "ctnote 3 6 67.4 80 2000.")
+                  && at (glideNumber[1], 0.0, "ctglissando 6 2. 1500.") && at (glideNumber[2], 2000.0, "ctnoteoff 6"),
+                  "A glide of two semitones over 1.5 s, by pitch (`glissando`) and by number (`ctglissando`)");
+
+        const auto big = maket::study::figure (o, w3[14], 0.0, number);
+        const auto chord = maket::study::figure (o, w3[15], 0.0, number);
+        const auto plain = maket::study::figure (o, w3[16], 0.0, number);
+        checkRow (big.size() == 2 && at (big[0], 0.0, "ctnote 3 2000000 67.4 80 1500.") && at (big[1], 1500.0, "ctnoteoff 2000000")
+                  && chord.size() == 2 && at (chord[0], 0.0, "chordon voice4 60. 79.") && at (chord[1], 1500.0, "noteoff voice4 60.")
+                  && plain.size() == 2 && at (plain[0], 0.0, "noteon voice4 79. 80"),
+                  "A note with the number 2000000; the flute's chord-mode program by `chordon` with two pitches, ended by a note-off of the lower");
+
+        const auto plan = maket::study::makePlan (o, -1, 3);
+        std::vector<int> perWay (w3.size(), 0);
+        bool inOrder = true, programs = true;
+        for (size_t i = 1; i < plan.messages.size(); ++i) inOrder = inOrder && plan.messages[i].time >= plan.messages[i - 1].time;
+        for (const auto& r : plan.repetitions) ++perWay[(size_t) r.way];
+        bool counts = true;
+        for (int w = 0; w < 14; ++w) counts = counts && perWay[(size_t) w] == 8;
+        for (int w = 14; w < 17; ++w) counts = counts && perWay[(size_t) w] == 4;
+        int programCommands = 0;
+        for (const auto& m : plan.messages)
+            if (m.message.address == "program")
+            {
+                ++programCommands;
+                const auto t = m.message.toText();
+                programs = programs && (t == "program voice3 ordinario" || t == "program voice4 harmonic");
+            }
+        line ("| (The third run: " + juce::String ((int) plan.repetitions.size()) + " items, " + juce::String ((int) plan.messages.size())
+              + " commands, " + juce::String (plan.length / 60000.0, 1) + " minutes.) | |");
+        checkRow (counts && inOrder && programs && programCommands == (int) plan.repetitions.size() && plan.repetitions.size() == 124,
+                  "The third run: 8 of each repeated-note and glide way, 4 of the others, each preceded by the program and gain of its voice "
+                  "(the cello on voice3, the flute on voice4)");
+    }
+    line();
 }

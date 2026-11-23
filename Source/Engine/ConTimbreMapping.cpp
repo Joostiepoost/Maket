@@ -36,8 +36,10 @@ namespace
     enum class Part { all, programAndNote, curves };
 
     void addNote (std::vector<TimedMessage>& out, const juce::String& voice, int voiceIndex, double onset, const Note& note,
-                  Part part, bool glissandoToZero)
+                  Part part, bool glissandoToZero, int number = 0, int voiceNumber = 0)
     {
+        // number above 0: the note is addressed by that number, on the voice "voice" + voiceNumber.
+        const bool byNumber = number > 0;
         const double pitch = note.cents / 100.0;
         auto add = [&] (double time, OscMessage message) { out.push_back ({ time, std::move (message), voiceIndex, onset, time }); };
 
@@ -61,12 +63,12 @@ namespace
         // The note itself, with the first two items of slot 4 when there are any.
         if (start)
         {
-            auto on = noteOn (voice, pitch, note.velocity);
+            auto on = byNumber ? ctNote (voiceNumber, number, pitch, note.velocity, note.duration) : noteOn (voice, pitch, note.velocity);
             if (const auto* slot = note.slot (4))
                 for (int i = 0; i < std::min (2, slot->content.size()); ++i)
                     addAtom (on, slot->content[i]);
             add (onset, std::move (on));
-            add (onset + note.duration, noteOff (voice, pitch));
+            add (onset + note.duration, byNumber ? ctNoteOff (number) : noteOff (voice, pitch));
         }
 
         if (! curves) return;
@@ -77,7 +79,8 @@ namespace
         {
             const auto points = pointsOf (slot->content);
             for (size_t i = 0; i + 1 < points.size(); ++i)
-                add (onset + std::round (points[i].x), dynamic (voice, pitch, points[i + 1].y, points[i + 1].x - points[i].x));
+                add (onset + std::round (points[i].x), byNumber ? ctDynamic (number, points[i + 1].y, points[i + 1].x - points[i].x)
+                                                               : dynamic (voice, pitch, points[i + 1].y, points[i + 1].x - points[i].x));
         }
 
         // The pitch breakpoints: from every one to the next. Their places run from 0 to 1 along the note.
@@ -85,12 +88,13 @@ namespace
         {
             const double from = note.breakpoints[i].position * note.duration;
             const double to = note.breakpoints[i + 1].position * note.duration;
-            add (onset + std::round (from), glissando (voice, pitch, note.breakpoints[i + 1].cents / 100.0, to - from));
+            add (onset + std::round (from), byNumber ? ctGlissando (number, note.breakpoints[i + 1].cents / 100.0, to - from)
+                                                     : glissando (voice, pitch, note.breakpoints[i + 1].cents / 100.0, to - from));
         }
 
         // The Max patch: a note without breakpoints still gets a glide, to where it is.
         if (glissandoToZero && note.breakpoints.size() < 2)
-            add (onset, glissando (voice, pitch, 0.0, note.duration));
+            add (onset, byNumber ? ctGlissando (number, 0.0, note.duration) : glissando (voice, pitch, 0.0, note.duration));
     }
 
     /** The command a marker holds, when its name begins with `cpe`. */
@@ -114,6 +118,7 @@ namespace
 std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<int>& voices, const MappingOptions& options)
 {
     std::vector<TimedMessage> out;
+    int nextNumber = 1;
 
     for (size_t v = 0; v < roll.voices.size(); ++v)
     {
@@ -125,21 +130,22 @@ std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<i
         {
             if (chord.isMuted()) continue;
 
-            if (options.noteOnFirst)
+            // By number: every note of the chord gets its number first, so that both halves of the patch's order use the same.
+            const int voiceNumber = (int) v + 1;
+            const auto voiceLabel = options.byNumber ? "voice" + juce::String (voiceNumber) : voice.name;
+            std::vector<int> numbers;
+            for (const auto& note : chord.notes)
+                numbers.push_back (options.byNumber && ! note.isMuted() ? nextNumber++ : 0);
+
+            auto each = [&] (Part part)
             {
-                for (const auto& note : chord.notes)
-                    if (! note.isMuted())
-                        addNote (out, voice.name, (int) v, chord.onset, note, Part::programAndNote, options.glissandoToZero);
-                for (const auto& note : chord.notes)
-                    if (! note.isMuted())
-                        addNote (out, voice.name, (int) v, chord.onset, note, Part::curves, options.glissandoToZero);
-            }
-            else
-            {
-                for (const auto& note : chord.notes)
-                    if (! note.isMuted())
-                        addNote (out, voice.name, (int) v, chord.onset, note, Part::all, options.glissandoToZero);
-            }
+                for (size_t n = 0; n < chord.notes.size(); ++n)
+                    if (! chord.notes[n].isMuted())
+                        addNote (out, voiceLabel, (int) v, chord.onset, chord.notes[n], part, options.glissandoToZero, numbers[n], voiceNumber);
+            };
+
+            if (options.noteOnFirst)    { each (Part::programAndNote); each (Part::curves); }
+            else                        each (Part::all);
         }
     }
 

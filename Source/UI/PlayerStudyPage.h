@@ -20,7 +20,7 @@ public:
     PlayerStudyPage (maket::Settings&, maket::OscScheduler&);
     ~PlayerStudyPage() override;
 
-    int getHeightFor (int) const    { return 720; }
+    int getHeightFor (int) const    { return 860; }
 
     void paint (juce::Graphics&) override;
     void resized() override;
@@ -41,7 +41,7 @@ private:
 
     juce::TextEditor voiceField, programField, repetitionsField;
     juce::ToggleButton numberToggle, correctionToggle;
-    juce::TextButton tryPitchButton, tryNumberButton, runButton, secondRunButton, stopButton;
+    juce::TextButton tryPitchButton, tryNumberButton, runButton, secondRunButton, thirdRunButton, stopButton;
     juce::TextEditor view;
 
     maket::study::Plan plan;

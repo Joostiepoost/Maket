@@ -55,6 +55,14 @@ OscMessage ctGlissando (int noteNumber, double interval, double duration)
     return OscMessage ("ctglissando").addInteger (noteNumber).addReal (interval).addReal (duration);
 }
 
+OscMessage chordOn (const juce::String& voice, const std::vector<double>& pitches)
+{
+    OscMessage m ("chordon");
+    m.addText (voice);
+    for (double p : pitches) m.addReal (p);
+    return m;
+}
+
 OscMessage dynamicCorrection (bool on)
 {
     return OscMessage ("dynamic_correction").addInteger (on ? 1 : 0);
