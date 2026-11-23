@@ -54,7 +54,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | done; tested by Joost on 23 Nov. **The gate is passed** (Joost, 23 Nov) |
 | 1f | Addressing by note, chords, tuning | in parts |
 | 1f.1 | The ways of the Max patch by switch (order, glissando to 0, spacing), to hear whether any of them matters; the comparison sets apart what is known of the patch | done; tested by Joost on 23 Nov: no difference, Maket keeps its own way |
-| 1f.2 | A study of the ePlayer: one figure sent in ten ways (by pitch or by number, timing of the dynamics, dynamic correction), to find out what makes it follow its ramps | built, to test |
+| 1f.2 | A study of the ePlayer: one figure sent in ten ways (by pitch or by number, timing of the dynamics, dynamic correction), to find out what makes it follow its ramps | done; run by Joost on 23 Nov |
+| 1f.3 | The second run of the study: is a note by number louder as such; which part of the timing matters by number; do slow starts come from the note before | built, to test |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -428,6 +429,31 @@ The ePlayer makes about one dynamic ramp in five only in part, whoever sends it.
    - **Try one figure by number**: the same should sound. If nothing sounds, or the ePlayer complains: untick *with the ways that address a note by number* and say so; the study then runs with the other ways.
 5. Start a recording, then **Run the study**: 200 figures, 13 minutes 20. It needs no attention; the status line says where it is. Stop the recording when the status says the run is over.
 6. Send the recording, and push the `Study 1f2` folder and `Measurements/report.md`. Afterwards load your own orchestra in the ePlayer again.
+
+### After the run of 1f.2 (23 Nov)
+
+- The ePlayer takes a note by number over OSC (`ctnote`, `ctdynamic`, `ctnoteoff`) as Maket sends it.
+- The dynamic correction makes no measurable difference; it stays at its default.
+- By pitch, when the dynamics are sent does not help: none of the timings makes the figures more regular.
+- By number a note starts far more evenly (10 % of the figures low early in the first note, against 31 % by pitch), and with Maket's own tight timing it is the most regular way of all (2 of 20 figures low anywhere); timed as ScAst it is the least regular (13 of 20).
+- By number sounds louder at soft dynamics (about 7 dB early in the first note, equal at the top of the crescendo).
+
+## Using stage 1f.3
+
+A second run on the same page, **Run the second study**, to settle what the first left open. Played in turns, 10 minutes 56:
+
+- **Single notes without any dynamic**, 1.5 s long, at the velocities 15, 36, 60, 100 and 127, by pitch and by number: is a note by number louder as such, or does its crescendo set in sooner?
+- **The figure by number in four timings**, beside the figure by pitch: as Maket sends now; timed as ScAst; only the first `dynamic` as ScAst (0.7 ms after the note-on); only the next ramps as ScAst (1.4 ms before the end of the one before). Which of the two distances makes it irregular?
+- **The figure by pitch after three seconds of silence**: do the slow starts come from the note before?
+
+Files: `... player study 2 plan.txt` and `... player study 2 send log.txt` in the *Test results* folder.
+
+### Testing stage 1f.3
+
+1. `git pull`, then `./build.sh`: `stage 1f.3`. `./build.sh tests` ends with `All 129 checks passed.`
+2. *Test results* may stay on `Study 1f2`. In the ePlayer: the orchestra `Maket test 1f2`, as for 1f.2.
+3. Start a recording, then Cmd-4, **ePlayer study**, **Run the second study**. Stop the recording when the status says the run is over.
+4. Send the recording, and push the folder and `Measurements/report.md`.
 
 ## The repository
 

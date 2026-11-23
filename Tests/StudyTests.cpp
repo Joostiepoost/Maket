@@ -126,4 +126,61 @@ void testPlayerStudy()
                   "The plan as a text file lists the ways and when each of the 200 figures begins");
     }
     line();
+
+    // --- The second run (stage 1f.3) ---
+    line ("### The second run of the study (stage 1f.3)");
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+    {
+        const auto w2 = maket::study::ways (o, 2);
+        int number = 3;
+        const auto byPitch = maket::study::figure (o, w2[6], 100.0, number);     // one note by pitch, velocity 100
+        const auto byNumber = maket::study::figure (o, w2[7], 100.0, number);    // the same by number
+        checkRow (w2.size() == 16 && byPitch.size() == 2 && byNumber.size() == 2
+                  && at (byPitch[0], 100.0, "noteon voice1 67.4 100") && at (byPitch[1], 1600.0, "noteoff voice1 67.4")
+                  && at (byNumber[0], 100.0, "ctnote 1 4 67.4 100 1500.") && at (byNumber[1], 1600.0, "ctnoteoff 4"),
+                  "A single note without any dynamic, 1.5 s long, the same by pitch and by number");
+
+        number = 1;
+        const auto firstOnly = maket::study::figure (o, w2[13], 0.0, number);    // by number, only the first dynamic as ScAst
+        const auto nextOnly = maket::study::figure (o, w2[14], 0.0, number);     // by number, only the next ramps as ScAst
+        checkRow (firstOnly.size() == 8 && nextOnly.size() == 8
+                  && at (firstOnly[1], 0.7, "ctdynamic 1 60. 1500.") && at (firstOnly[5], 2200.4, "ctdynamic 2 100. 600.")
+                  && at (nextOnly[1], 0.0, "ctdynamic 3 60. 1500.") && at (nextOnly[5], 2198.6, "ctdynamic 4 100. 600."),
+                  "The two distances of ScAst's timing can be had one at a time: the first dynamic 0.7 ms after the note-on, "
+                  "or each next ramp 1.4 ms before the end of the one before");
+
+        const auto plan = maket::study::makePlan (o, -1, 2);
+        std::vector<int> perWay (w2.size(), 0);
+        bool inOrder = true, restKept = true, apart = true;
+        for (size_t i = 1; i < plan.messages.size(); ++i) inOrder = inOrder && plan.messages[i].time >= plan.messages[i - 1].time;
+        for (size_t i = 0; i < plan.repetitions.size(); ++i)
+        {
+            const auto& r = plan.repetitions[i];
+            ++perWay[(size_t) r.way];
+            if (i == 0) continue;
+            const auto& before = plan.repetitions[i - 1];
+            const bool beforeSingle = plan.ways[(size_t) before.way].singleVelocity > 0;
+            const double silence = r.start - (before.start + (beforeSingle ? 1500.0 : 3400.0));
+            apart = apart && silence >= 499.0;
+            if (r.way == 15) restKept = restKept && silence >= 2899.0;
+        }
+        bool counts = perWay[15] == 15;
+        for (int w = 0; w < 10; ++w) counts = counts && perWay[(size_t) w] == 8;
+        for (int w = 10; w < 15; ++w) counts = counts && perWay[(size_t) w] == 20;
+
+        int dynamicsOfSingles = 0;
+        for (const auto& m : plan.messages)
+            if ((m.message.address == "dynamic" || m.message.address == "ctdynamic") && m.message.arguments.size() > 0) ++dynamicsOfSingles;
+
+        line ("| (The second run: " + juce::String ((int) plan.repetitions.size()) + " items, " + juce::String ((int) plan.messages.size())
+              + " commands, " + juce::String (plan.length / 60000.0, 1) + " minutes.) | |");
+        checkRow (counts && inOrder && apart && restKept && plan.repetitions.size() == 195
+                  && dynamicsOfSingles == 115 * 4 && plan.messages.back().message.toText() == "dynamic_correction 1"
+                  && maket::study::planAsText (plan).contains ("run 2 (stage 1f.3)"),
+                  "The second run: 8 single notes of each of the ten kinds, 20 figures of each of five ways, 15 figures after three seconds "
+                  "of silence; in turns, in order of time, at least half a second of silence between any two");
+    }
+    line();
 }

@@ -46,6 +46,11 @@ struct Way
     double firstDelay = 0.0;    // ms from a note-on to its first `dynamic`
     double lead = 0.3;          // the next ramp's command comes this many ms before the ramp before it ends (minus: after)
     bool correction = true;     // the player's dynamic correction
+
+    // The second run (stage 1f.3):
+    int singleVelocity = 0;     // above 0: not the figure but one note of 1.5 s at this velocity, without any dynamic
+    double restBefore = 0.0;    // ms of silence added before it, on top of the 0.6 s between figures
+    double share = 1.0;         // how many of it are played, as a part of Options::repetitions
 };
 
 struct Options
@@ -60,8 +65,19 @@ struct Options
     juce::String voiceName() const          { return "voice" + juce::String (voiceNumber); }
 };
 
-/** The ways the study compares, in their fixed order. The first is Maket's own way as it sends now. */
-std::vector<Way> ways (const Options&);
+/** The ways the study compares, in their fixed order. The first is Maket's own way as it sends now.
+
+    Run 1 (stage 1f.2): the figure in ten ways.
+    Run 2 (stage 1f.3), after what run 1 showed: single notes without any
+    dynamic at five velocities, by pitch and by number (is a note by number
+    louder as such?); the figure by number in four timings (which of the two
+    distances matters?) beside the figure by pitch; and the figure by pitch
+    after three seconds of silence (do the slow starts come from the note
+    before?). */
+std::vector<Way> ways (const Options&, int run = 1);
+
+constexpr double singleNoteLength = 1500.0;         // ms
+constexpr double singleRepetitionLength = 2000.0;
 
 constexpr double figureLength = 3400.0;     // ms, from the first note-on to the last note-off
 constexpr double repetitionLength = 4000.0;
@@ -83,10 +99,11 @@ struct Plan
     std::vector<Repetition> repetitions;
     std::vector<contimbre::TimedMessage> messages;      // in order of time; ends with the correction back on
     double length = 0.0;                                // ms
+    int run = 1;
 };
 
 /** The whole run. With `onlyWay` 0 or more: one figure of that way alone (to try the sound). */
-Plan makePlan (const Options&, int onlyWay = -1);
+Plan makePlan (const Options&, int onlyWay = -1, int run = 1);
 
 /** The plan as a text file: what was asked, the ways, and when each repetition begins. */
 juce::String planAsText (const Plan&);

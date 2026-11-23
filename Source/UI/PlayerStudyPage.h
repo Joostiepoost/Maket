@@ -29,7 +29,7 @@ private:
     void timerCallback() override;
 
     bool readOptions (maket::study::Options&);
-    void start (int onlyWay);               // -1: the whole run
+    void start (int onlyWay, int run = 1);  // onlyWay -1: the whole run; run 2: the second study (stage 1f.3)
     void stop();
     void finish (bool stopped);
     void setRunning (bool);
@@ -41,7 +41,7 @@ private:
 
     juce::TextEditor voiceField, programField, repetitionsField;
     juce::ToggleButton numberToggle, correctionToggle;
-    juce::TextButton tryPitchButton, tryNumberButton, runButton, stopButton;
+    juce::TextButton tryPitchButton, tryNumberButton, runButton, secondRunButton, stopButton;
     juce::TextEditor view;
 
     maket::study::Plan plan;
