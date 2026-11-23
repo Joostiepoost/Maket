@@ -13,6 +13,7 @@
 #include "OscTestPage.h"
 #include "TimingTestPage.h"
 #include "ConTimbreTestPage.h"
+#include "PlayerStudyPage.h"
 #include "../Model/Settings.h"
 
 class UtilitiesPage : public juce::Component
@@ -47,6 +48,7 @@ private:
     OscTestPage oscTest;
     TimingTestPage timingTest;
     ConTimbreTestPage conTimbreTest;
+    PlayerStudyPage playerStudy;
     juce::Viewport viewport;        // the page scrolls when the window is low
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UtilitiesPage)

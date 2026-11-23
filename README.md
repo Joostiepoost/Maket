@@ -53,7 +53,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1d | Gate: timing tests of the OSC connection | done |
 | 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | done; tested by Joost on 23 Nov. **The gate is passed** (Joost, 23 Nov) |
 | 1f | Addressing by note, chords, tuning | in parts |
-| 1f.1 | The ways of the Max patch by switch (order, glissando to 0, spacing), to hear whether any of them matters; the comparison sets apart what is known of the patch | built, to test |
+| 1f.1 | The ways of the Max patch by switch (order, glissando to 0, spacing), to hear whether any of them matters; the comparison sets apart what is known of the patch | done; tested by Joost on 23 Nov: no difference, Maket keeps its own way |
+| 1f.2 | A study of the ePlayer: one figure sent in ten ways (by pitch or by number, timing of the dynamics, dynamic correction), to find out what makes it follow its ramps | built, to test |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -397,6 +398,36 @@ The check of stage 1e showed three ways in which the stream of the Max patch dif
 5. Send the nine recordings, and push the `Order 1f1` folder (Maket's send logs of the six runs) and `Measurements/report.md`.
 
 What the recordings will say: if the B takes lie with ScAst's and the A takes apart, one of the three ways is heard, and the switches tell which; if A and B lie together and ScAst's apart, it is something outside the commands; if all nine lie within each other's spread, the difference of 23 Nov was chance.
+
+### After the test of 1f.1 (23 Nov)
+
+Nine recordings of the cello's opening (three from ScAst, three from Maket its own way, three from Maket in the patch's ways) cannot be told apart by group: two takes of one kind lie as far from each other as takes of different kinds, and in each kind about one dynamic ramp in five ends 5 dB or more short of the best take. Maket keeps its own way. The switches stay on the conTimbre test page for now.
+
+## Using stage 1f.2
+
+The ePlayer makes about one dynamic ramp in five only in part, whoever sends it. Stage 1f.2 is a study of that: Maket plays one short figure many times and changes one thing at a time, so that one recording shows whether anything on Maket's side makes the player follow more surely. It is also the first time Maket addresses a note by a number of its own.
+
+- **The ePlayer study page**, a new entry in the list of the Utilities tab.
+- **The figure**: two notes of one voice, the second beginning while the first still sounds, each with a crescendo (the second in three ramps). Four seconds per figure.
+- **Ten ways of sending it**, played in turns:
+  - by pitch as Maket sends now; timed as ScAst (the first `dynamic` 0.7 ms after the note-on, each next ramp 1.4 ms before the end of the one before);
+  - the first `dynamic` 5 ms and 20 ms after the note-on;
+  - each next ramp 0.6 ms after, and 5 ms before, the end of the one before;
+  - the note addressed by number (`ctnote`, `ctdynamic`, `ctnoteoff`), as Maket sends now and timed as ScAst;
+  - by pitch and by number with the player's dynamic correction off. Maket sends `dynamic_correction` before every figure and switches it back on at the end of the run and at Stop.
+- **Addressing by number** needs a voice whose name is `voice` and a number. The study plays on `voice1` with the program `sul tasto`; both can be changed on the page.
+- **Files** in the *Test results* folder: `... player study plan.txt` (the ways, and when each figure begins) and `... player study send log.txt` (when each command left).
+
+### Testing stage 1f.2
+
+1. `git pull`, then `./build.sh`: `stage 1f.2`. `./build.sh tests` ends with `All 126 checks passed.`
+2. Cmd-4, Preferences, *Test results*: **Choose…** a new folder `Study 1f2` inside the repository's `Temp` folder.
+3. In the ePlayer: load the orchestra `Maket test 1f2`, which Claude made from your own doodsbed orchestra and sent in the chat (not in this repository). It has two voices with the same cello programs, `Vlc` and `voice1`. Leave the dynamic correction at its default.
+4. In Maket: Cmd-4, **ePlayer study**.
+   - **Try one figure by pitch**: two notes, each growing louder.
+   - **Try one figure by number**: the same should sound. If nothing sounds, or the ePlayer complains: untick *with the ways that address a note by number* and say so; the study then runs with the other ways.
+5. Start a recording, then **Run the study**: 200 figures, 13 minutes 20. It needs no attention; the status line says where it is. Stop the recording when the status says the run is over.
+6. Send the recording, and push the `Study 1f2` folder and `Measurements/report.md`. Afterwards load your own orchestra in the ePlayer again.
 
 ## The repository
 

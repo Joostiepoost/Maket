@@ -35,6 +35,31 @@ OscMessage gain (const juce::String& voice, double decibels)
     return OscMessage ("gain").addText (voice).addReal (decibels);
 }
 
+OscMessage ctNote (int voiceNumber, int noteNumber, double pitch, int dynamic, double duration)
+{
+    return OscMessage ("ctnote").addInteger (voiceNumber).addInteger (noteNumber).addReal (pitch).addInteger (dynamic).addReal (duration);
+}
+
+OscMessage ctNoteOff (int noteNumber)
+{
+    return OscMessage ("ctnoteoff").addInteger (noteNumber);
+}
+
+OscMessage ctDynamic (int noteNumber, double target, double duration)
+{
+    return OscMessage ("ctdynamic").addInteger (noteNumber).addReal (target).addReal (duration);
+}
+
+OscMessage ctGlissando (int noteNumber, double interval, double duration)
+{
+    return OscMessage ("ctglissando").addInteger (noteNumber).addReal (interval).addReal (duration);
+}
+
+OscMessage dynamicCorrection (bool on)
+{
+    return OscMessage ("dynamic_correction").addInteger (on ? 1 : 0);
+}
+
 OscMessage glissando (const juce::String& voice, double pitch, double interval, double duration)
 {
     return OscMessage ("glissando").addText (voice).addReal (pitch).addReal (interval).addReal (duration);

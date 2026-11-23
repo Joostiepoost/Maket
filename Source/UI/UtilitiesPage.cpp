@@ -21,13 +21,15 @@ namespace
         { "Preferences",  ""        },
         { "OSC test",     ""        },
         { "Timing test",  ""        },
-        { "conTimbre test", ""      }
+        { "conTimbre test", ""      },
+        { "ePlayer study", ""       }
     };
 
     constexpr int preferencesIndex = 5;
     constexpr int oscTestIndex = 6;
     constexpr int timingTestIndex = 7;
     constexpr int conTimbreTestIndex = 8;
+    constexpr int playerStudyIndex = 9;
     constexpr int entryHeight = 30;
     constexpr int listTop = 14;
 
@@ -36,7 +38,8 @@ namespace
 
 UtilitiesPage::UtilitiesPage (maket::Settings& settings, maket::OscScheduler& scheduler)
     : currentPage (preferencesIndex), preferences (settings), oscTest (settings, scheduler), timingTest (settings, scheduler),
-      conTimbreTest (settings, scheduler)
+      conTimbreTest (settings, scheduler),
+      playerStudy (settings, scheduler)
 {
     setOpaque (true);
 
@@ -60,6 +63,7 @@ void UtilitiesPage::showPage (int index)
     if (index == oscTestIndex)          viewport.setViewedComponent (&oscTest, false);
     else if (index == timingTestIndex)  viewport.setViewedComponent (&timingTest, false);
     else if (index == conTimbreTestIndex) viewport.setViewedComponent (&conTimbreTest, false);
+    else if (index == playerStudyIndex) viewport.setViewedComponent (&playerStudy, false);
     else                                viewport.setViewedComponent (&preferences, false);
 
     resized();
@@ -96,6 +100,8 @@ void UtilitiesPage::resized()
         timingTest.setSize (width, juce::jmax (height, timingTest.getHeightFor (width)));
     else if (currentPage == conTimbreTestIndex)
         conTimbreTest.setSize (width, juce::jmax (height, conTimbreTest.getHeightFor (width)));
+    else if (currentPage == playerStudyIndex)
+        playerStudy.setSize (width, juce::jmax (height, playerStudy.getHeightFor (width)));
     else
         preferences.setSize (width, juce::jmax (height, preferences.getHeightFor (width)));
 }

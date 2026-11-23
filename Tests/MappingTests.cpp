@@ -545,4 +545,5 @@ void testConTimbreMapping (const juce::File& temp)
     testSmallCases();
     testComparison (temp);
     testJoostsTakes (temp);
+    testPlayerStudy();
 }

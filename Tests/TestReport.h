@@ -60,3 +60,6 @@ inline juce::File material (const juce::File& temp, const juce::String& name)
 /** Stage 1e: a roll's notes as commands for the conTimbre ePlayer, and the
     comparison with a log from Max (Tests/MappingTests.cpp). */
 void testConTimbreMapping (const juce::File& temp);
+
+/** Stage 1f.2: the plan of the ePlayer study (Tests/StudyTests.cpp). */
+void testPlayerStudy();

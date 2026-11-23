@@ -37,6 +37,24 @@ OscMessage dynamic (const juce::String& voice, double pitch, double target, doub
 /** The gain of a whole voice, in dB, at once. */
 OscMessage gain (const juce::String& voice, double decibels);
 
+// --- A note addressed by a number of its own (the ePlayer's `ct` commands) --------------
+//
+// The voice is then given by its number: the ePlayer plays on the voice named
+// "voice" + that number (`voice1`). The number of the note is the sender's to
+// choose; it tells two sounding notes of the same pitch apart. First tried
+// against the player at stage 1f.2.
+
+/** `ctnote <voice number> <note number> <pitch> <dynamic> <duration>`; the
+    manual marks the duration (ms) as unused. */
+OscMessage ctNote (int voiceNumber, int noteNumber, double pitch, int dynamic, double duration);
+OscMessage ctNoteOff (int noteNumber);
+OscMessage ctDynamic (int noteNumber, double target, double duration);
+OscMessage ctGlissando (int noteNumber, double interval, double duration);
+
+/** `dynamic_correction 1|0`: on is the player's default (its dynamics then
+    depend on the MIDI volume); its manual advises off for commands sent directly. */
+OscMessage dynamicCorrection (bool on);
+
 /** A glide of the note of that pitch: to `interval` semitones from the
     pitch it began on, over `duration` ms. */
 OscMessage glissando (const juce::String& voice, double pitch, double interval, double duration);
