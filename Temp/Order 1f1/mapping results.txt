@@ -1,0 +1,99 @@
+=== 23 Nov 17:12:36   doodsbed final v1c.txt against 20261123-171128 doodsbed final v1c scast max log.txt
+Voices: Vlc. Maket's commands: Maket's own way.
+The same command at the same time in both: 97. Maket makes 220 commands for the roll, the log holds 102.
+  program       Maket    20   log     6   the same     6
+  gain          Maket    35   log    17   the same    17
+  noteon        Maket    46   log    13   the same    13
+  dynamic       Maket    57   log    40   the same    40
+  glissando     Maket    16   log    13   the same     8
+  noteoff       Maket    46   log    13   the same    13
+In time, the pairs lie: half within 0.12 ms of each other, 95 in 100 within 1.36 ms, the farthest 1.59 ms.
+At 6 moments the commands of one voice that are due together come in another order in the log than Maket sends them:
+  2 times   Max: program, noteon, gain, dynamic   Maket: program, gain, noteon, dynamic
+  2 times   Max: program, noteon, gain, dynamic, glissando   Maket: program, gain, noteon, dynamic, glissando
+  1 times   Max: noteoff, noteon, gain   Maket: noteoff, gain, noteon
+  1 times   Max: noteoff, noteon, gain, dynamic   Maket: noteoff, gain, noteon, dynamic
+Known of the Max patch and kept apart:
+  5 times a `glissando` to 0 for a note without pitch breakpoints, which Maket does not send
+  from the ePlayer's own side in Max: 68 set_window_titles
+
+Only in Maket (123; the first):
+     79.303 s   program Vlc pizz
+     79.303 s   noteon Vlc 45.75 7
+     79.307 s   gain Vlc 5.777778
+     79.799 s   noteoff Vlc 45.75
+     79.799 s   noteon Vlc 53.5 42
+     80.294 s   noteoff Vlc 53.5
+     80.294 s   program Vlc pizz.natharm
+     80.294 s   noteon Vlc 60. 53
+     80.789 s   noteon Vlc 67. 49
+     80.789 s   noteoff Vlc 60.
+     81.337 s   noteoff Vlc 67.
+     81.408 s   noteon Vlc 67. 28
+
+=== 23 Nov 17:14:15   doodsbed final v1c.txt against 20261123-171307 doodsbed final v1c scast max log.txt
+Voices: Vlc. Maket's commands: Maket's own way.
+The same command at the same time in both: 97. Maket makes 220 commands for the roll, the log holds 102.
+  program       Maket    20   log     6   the same     6
+  gain          Maket    35   log    17   the same    17
+  noteon        Maket    46   log    13   the same    13
+  dynamic       Maket    57   log    40   the same    40
+  glissando     Maket    16   log    13   the same     8
+  noteoff       Maket    46   log    13   the same    13
+In time, the pairs lie: half within 0.10 ms of each other, 95 in 100 within 1.45 ms, the farthest 1.57 ms.
+At 6 moments the commands of one voice that are due together come in another order in the log than Maket sends them:
+  2 times   Max: program, noteon, gain, dynamic   Maket: program, gain, noteon, dynamic
+  2 times   Max: program, noteon, gain, dynamic, glissando   Maket: program, gain, noteon, dynamic, glissando
+  1 times   Max: noteoff, noteon, gain   Maket: noteoff, gain, noteon
+  1 times   Max: noteoff, noteon, gain, dynamic   Maket: noteoff, gain, noteon, dynamic
+Known of the Max patch and kept apart:
+  5 times a `glissando` to 0 for a note without pitch breakpoints, which Maket does not send
+  from the ePlayer's own side in Max: 68 set_window_titles
+
+Only in Maket (123; the first):
+     79.303 s   program Vlc pizz
+     79.303 s   noteon Vlc 45.75 7
+     79.307 s   gain Vlc 5.777778
+     79.799 s   noteoff Vlc 45.75
+     79.799 s   noteon Vlc 53.5 42
+     80.294 s   noteoff Vlc 53.5
+     80.294 s   program Vlc pizz.natharm
+     80.294 s   noteon Vlc 60. 53
+     80.789 s   noteon Vlc 67. 49
+     80.789 s   noteoff Vlc 60.
+     81.337 s   noteoff Vlc 67.
+     81.408 s   noteon Vlc 67. 28
+
+=== 23 Nov 17:15:47   doodsbed final v1c.txt against 20261123-171439 doodsbed final v1c scast max log.txt
+Voices: Vlc. Maket's commands: Maket's own way.
+The same command at the same time in both: 97. Maket makes 220 commands for the roll, the log holds 102.
+  program       Maket    20   log     6   the same     6
+  gain          Maket    35   log    17   the same    17
+  noteon        Maket    46   log    13   the same    13
+  dynamic       Maket    57   log    40   the same    40
+  glissando     Maket    16   log    13   the same     8
+  noteoff       Maket    46   log    13   the same    13
+In time, the pairs lie: half within 0.10 ms of each other, 95 in 100 within 1.47 ms, the farthest 1.61 ms.
+At 6 moments the commands of one voice that are due together come in another order in the log than Maket sends them:
+  2 times   Max: program, noteon, gain, dynamic   Maket: program, gain, noteon, dynamic
+  2 times   Max: program, noteon, gain, dynamic, glissando   Maket: program, gain, noteon, dynamic, glissando
+  1 times   Max: noteoff, noteon, gain   Maket: noteoff, gain, noteon
+  1 times   Max: noteoff, noteon, gain, dynamic   Maket: noteoff, gain, noteon, dynamic
+Known of the Max patch and kept apart:
+  5 times a `glissando` to 0 for a note without pitch breakpoints, which Maket does not send
+  from the ePlayer's own side in Max: 68 set_window_titles
+
+Only in Maket (123; the first):
+     79.303 s   program Vlc pizz
+     79.303 s   noteon Vlc 45.75 7
+     79.307 s   gain Vlc 5.777778
+     79.799 s   noteoff Vlc 45.75
+     79.799 s   noteon Vlc 53.5 42
+     80.294 s   noteoff Vlc 53.5
+     80.294 s   program Vlc pizz.natharm
+     80.294 s   noteon Vlc 60. 53
+     80.789 s   noteon Vlc 67. 49
+     80.789 s   noteoff Vlc 60.
+     81.337 s   noteoff Vlc 67.
+     81.408 s   noteon Vlc 67. 28
+
