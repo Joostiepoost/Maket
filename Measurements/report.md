@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1f.1. Machine: Apple M4, Mac OSX 27.2.1. Date: 23 Nov 2026 5:04:03pm.
+Maket 0.0.1, stage 1f.2. Machine: Apple M4, Mac OSX 27.2.1. Date: 23 Nov 2026 6:17:22pm.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`1f.1`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`1f.2`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -274,8 +274,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.025 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.003 ms; the latest of all: 0.012 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.027 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.004 ms; the latest of all: 0.009 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -283,8 +283,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.008 | 0.003 | 0.012 |
-| Arrived at the listener in this program | 0.124 | 0.186 | 0.357 |
+| Left Maket | -0.008 | 0.004 | 0.009 |
+| Arrived at the listener in this program | 0.114 | 0.170 | 0.309 |
 
 ## 6. Timing tests: the measuring
 
@@ -331,14 +331,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.08 ms; the farthest 0.20 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.10 ms; the farthest 0.12 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.04 ms of their time, 95 in 100 within 0.08 ms, 99 in 100 within 0.09 ms; the farthest 0.20 ms (earliest -0.09, latest +0.20).
-The note-ons alone: half within 0.04 ms of their time, 95 in 100 within 0.08 ms, 99 in 100 within 0.09 ms; the farthest 0.20 ms (earliest -0.09, latest +0.20).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.08 ms, the farthest 0.20 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.01 ms after it.
+All messages: half within 0.04 ms of their time, 95 in 100 within 0.10 ms, 99 in 100 within 0.12 ms; the farthest 0.12 ms (earliest -0.12, latest +0.12).
+The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.10 ms, 99 in 100 within 0.12 ms; the farthest 0.12 ms (earliest -0.12, latest +0.10).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.10 ms, the farthest 0.12 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.03 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -448,6 +448,23 @@ The logs in `Temp/Mapping 1e`, with every voice but Mezzo (which is not a conTim
 | Bult - maquette final.txt: every command of Maket's is in ScAst's log, apart from the 0 chord commands that the patch sends with another pitch; the log's 971 glides to 0 are told apart; nothing else is left over | yes |
 | Bult - maquette final.txt, with the patch's order and its glides to 0 switched on: 3312 the same, 97 chord commands with another pitch (the patch's glides to 0 of a chord carry the last note's pitch too), nothing left over; the order within a moment differs at 123 moments instead of 166 | yes |
 
+### The study of the ePlayer (stage 1f.2)
+
+One figure of two notes, played in several ways in turns. What the ePlayer does with it is heard and measured on Joost's Mac; checked here is that the plan holds what it should.
+
+| Check | Passed |
+| --- | --- |
+| The figure by pitch, timed as ScAst: two notes that overlap by 0.2 s, the first dynamic 0.7 ms after each note-on, each next ramp 1.4 ms before the end of the one before | yes |
+| The figure by number: `ctnote`, `ctdynamic` and `ctnoteoff` with a number of its own for each note | yes |
+| (The run: 10 ways, 20 figures of each, 1803 commands, 13.3 minutes.) | |
+| Every way is played as often as every other, the figures follow each other at 4 seconds, the commands are in order of time; program and gain of the voice come first | yes |
+| The ways are played in turns, and a way does not always follow the same one | yes |
+| Every note addressed by number has a number no other note has | yes |
+| The dynamic correction is set before every figure, and the last command of the run switches it back on | yes |
+| With both switched off, the run holds the six ways by pitch only, and never switches the correction off | yes |
+| A single figure of one way can be played by itself, and leaves the correction on | yes |
+| The plan as a text file lists the ways and when each of the 200 figures begins | yes |
+
 ## 8. Test material
 
 The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. This section lists what the program finds there; nothing is read yet. A missing file is not a failed check at this stage.
@@ -463,6 +480,21 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `Mapping 1e/20261123-121314 Bult - maquette final scast maket commands.txt` | 68.3 KB |
 | `Mapping 1e/20261123-121314 Bult - maquette final scast max log.txt` | 147.4 KB |
 | `Mapping 1e/mapping results.txt` | 12.4 KB |
+| `Order 1f1/20261123-171128 doodsbed final v1c scast maket commands.txt` | 7.6 KB |
+| `Order 1f1/20261123-171128 doodsbed final v1c scast max log.txt` | 6.9 KB |
+| `Order 1f1/20261123-171307 doodsbed final v1c scast maket commands.txt` | 7.6 KB |
+| `Order 1f1/20261123-171307 doodsbed final v1c scast max log.txt` | 6.9 KB |
+| `Order 1f1/20261123-171439 doodsbed final v1c scast maket commands.txt` | 7.6 KB |
+| `Order 1f1/20261123-171439 doodsbed final v1c scast max log.txt` | 6.9 KB |
+| `Order 1f1/20261123-171748 doodsbed final v1c maket play send log.txt` | 4.3 KB |
+| `Order 1f1/20261123-171922 doodsbed final v1c maket play send log.txt` | 4.3 KB |
+| `Order 1f1/20261123-172051 doodsbed final v1c maket play send log.txt` | 4.3 KB |
+| `Order 1f1/20261123-172231 doodsbed final v1c maket play send log.txt` | 4.7 KB |
+| `Order 1f1/20261123-172402 doodsbed final v1c maket play send log.txt` | 4.7 KB |
+| `Order 1f1/20261123-172528 doodsbed final v1c maket play send log.txt` | 4.7 KB |
+| `Order 1f1/20261123-174650 doodsbed final v1c maket play send log.txt` | 4.7 KB |
+| `Order 1f1/20261123-174806 doodsbed final v1c maket play send log.txt` | 4.3 KB |
+| `Order 1f1/mapping results.txt` | 5.3 KB |
 | `support materials/01a doodsbed roll stats.txt` | 59.7 KB |
 | `support materials/01b doodsbed roll resave after dump.txt` | 56.6 KB |
 | `support materials/02a mixed_roll_example_01h roll stats` | 8.3 KB |
@@ -539,4 +571,4 @@ Needed for the coming stages:
 | 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `support materials/1c maket log.txt` |
 | 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `support materials/1c max log.txt` |
 
-All 117 checks passed.
+All 126 checks passed.
