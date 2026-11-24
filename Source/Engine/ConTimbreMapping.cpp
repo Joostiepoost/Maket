@@ -36,7 +36,7 @@ namespace
     enum class Part { all, programAndNote, curves };
 
     void addNote (std::vector<TimedMessage>& out, const juce::String& voice, int voiceIndex, double onset, const Note& note,
-                  Part part, bool glissandoToZero, int number = 0, int voiceNumber = 0, bool wholeTargets = false, bool relativeRamps = false)
+                  Part part, bool glissandoToZero, int number = 0, int voiceNumber = 0, bool normalizedTargets = true)
     {
         // number above 0: the note is addressed by that number, on the voice "voice" + voiceNumber.
         const bool byNumber = number > 0;
@@ -78,23 +78,13 @@ namespace
         if (const auto* slot = note.slot (2))
         {
             const auto points = pointsOf (slot->content);
-            // By number with steps: each ramp as the way from the level before it; the note begins at its velocity.
-            // With whole numbers the steps are those between the rounded targets, so that they add up exactly.
-            double before = (double) note.velocity;
             for (size_t i = 0; i + 1 < points.size(); ++i)
             {
                 const double length = points[i + 1].x - points[i].x;
-                if (byNumber && relativeRamps)
-                {
-                    const double to = wholeTargets ? std::round (points[i + 1].y) : points[i + 1].y;
-                    add (onset + std::round (points[i].x), ctDynamic (number, to - before, length, wholeTargets));
-                    before = to;
-                }
-                else
-                {
-                    add (onset + std::round (points[i].x), byNumber ? ctDynamic (number, points[i + 1].y, length, wholeTargets)
-                                                                   : dynamic (voice, pitch, points[i + 1].y, length));
-                }
+                const double target = points[i + 1].y;
+                // By number the ePlayer takes the target from 0. to 1.
+                add (onset + std::round (points[i].x), byNumber ? ctDynamic (number, normalizedTargets ? juce::jlimit (0.0, 1.0, target / 127.0) : target, length)
+                                                               : dynamic (voice, pitch, target, length));
             }
         }
 
@@ -156,7 +146,7 @@ std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<i
             {
                 for (size_t n = 0; n < chord.notes.size(); ++n)
                     if (! chord.notes[n].isMuted())
-                        addNote (out, voiceLabel, (int) v, chord.onset, chord.notes[n], part, options.glissandoToZero, numbers[n], voiceNumber, options.wholeTargets, options.relativeRamps);
+                        addNote (out, voiceLabel, (int) v, chord.onset, chord.notes[n], part, options.glissandoToZero, numbers[n], voiceNumber, options.normalizedTargets);
             };
 
             if (options.noteOnFirst)    { each (Part::programAndNote); each (Part::curves); }

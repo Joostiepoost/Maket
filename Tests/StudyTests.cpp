@@ -354,4 +354,58 @@ void testPlayerStudy()
                   "3 struck notes without a ramp, 8 plucked ways");
     }
     line();
+
+    // --- The sixth run (stage 1f.7) ---
+    line ("### The sixth run of the study (stage 1f.7)");
+    line();
+    line ("Joost found (24 Nov) that `ctdynamic` goes to an absolute target after all, on a scale from 0. to 1. The sixth run holds a ramp "
+          "by number to a target on that scale beside the ramp by pitch to 127 times it, on the cello and on the bass clarinet.");
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+    {
+        const auto w6 = maket::study::ways (o, 6);
+        int number = 1;
+        const auto byNumber = maket::study::figure (o, w6[6], 0.0, number);       // cello, struck 40, to 0.5
+        number = 1;
+        const auto byPitch = maket::study::figure (o, w6[7], 0.0, number);        // the same by pitch: to 63.5
+        number = 1;
+        const auto sequence = maket::study::figure (o, w6[20], 0.0, number);      // cello: 0.25, 0.75, 0.25
+        number = 1;
+        const auto clarinet = maket::study::figure (o, w6[22 + 10], 0.0, number); // bass clarinet, struck 40, to 1
+        checkRow (w6.size() == 52
+                  && byNumber.size() == 3 && at (byNumber[0], 0.0, "ctnote 3 1 67.4 40 1900.") && at (byNumber[1], 200.0, "ctdynamic 1 0.5 800.")
+                  && at (byNumber[2], 1900.0, "ctnoteoff 1")
+                  && byPitch.size() == 3 && at (byPitch[0], 0.0, "noteon voice3 67.4 40") && at (byPitch[1], 200.0, "dynamic voice3 67.4 63.5 800.")
+                  && sequence.size() == 5 && at (sequence[1], 200.0, "ctdynamic 1 0.25 600.") && at (sequence[2], 1100.0, "ctdynamic 1 0.75 600.")
+                  && at (sequence[3], 2000.0, "ctdynamic 1 0.25 600.")
+                  && clarinet.size() == 3 && at (clarinet[0], 0.0, "ctnote 5 1 50. 40 1900.") && at (clarinet[1], 200.0, "ctdynamic 1 1. 800."),
+                  "A note with one ramp by number to a target from 0 to 1 (`ctdynamic 1 0.5 800.`) and the same by pitch to 127 times it "
+                  "(`dynamic voice3 67.4 63.5 800.`); a sequence of three targets; the same on the bass clarinet (voice5, pitch 50)");
+
+        const auto plan = maket::study::makePlan (o, -1, 6);
+        std::vector<int> perWay (w6.size(), 0);
+        bool inOrder = true, counts = true, inRange = true, programs = true;
+        for (size_t i = 1; i < plan.messages.size(); ++i) inOrder = inOrder && plan.messages[i].time >= plan.messages[i - 1].time;
+        for (const auto& r : plan.repetitions) ++perWay[(size_t) r.way];
+        for (int w = 0; w < 44; ++w) counts = counts && perWay[(size_t) w] == 3;
+        for (int w = 44; w < 52; ++w) counts = counts && perWay[(size_t) w] == 4;
+        for (const auto& m : plan.messages)
+        {
+            if (m.message.address == "ctdynamic")
+                inRange = inRange && m.message.arguments[1].kind == maket::OscArgument::Kind::real
+                          && m.message.arguments[1].real >= 0.0 && m.message.arguments[1].real <= 1.0;
+            if (m.message.address == "program")
+            {
+                const auto t = m.message.toText();
+                programs = programs && (t == "program voice3 \"sul tasto\"" || t == "program voice3 pizz" || t == "program voice5 ordinario");
+            }
+        }
+        line ("| (The sixth run: " + juce::String ((int) plan.repetitions.size()) + " items, " + juce::String ((int) plan.messages.size())
+              + " commands, " + juce::String (plan.length / 60000.0, 1) + " minutes.) | |");
+        checkRow (counts && inOrder && inRange && programs && plan.repetitions.size() == 164,
+                  "The sixth run: 3 of each of the 44 ramp ways (22 on the cello, 22 on the bass clarinet) and 4 of each of the 8 plucked ways, "
+                  "in turns; every target by number lies from 0 to 1");
+    }
+    line();
 }

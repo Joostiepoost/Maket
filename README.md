@@ -58,7 +58,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1f.3 | The second run of the study: is a note by number louder as such; which part of the timing matters by number; do slow starts come from the note before | done; run by Joost on 23 Nov |
 | 1f.4 | A roll played by number (Maket's default from here on); the third run of the study: fast repeated notes, a glide by number, a chord-mode program | done; run by Joost on 24 Nov |
 | 1f.5 | By number, the target of a dynamic ramp as a whole number; any command typed on the OSC test page; the fourth run of the study: one ramp per note in each form, plucked repeated notes | done; tried by Joost on 24 Nov: the form makes no difference, a ramp by number is a step from where the note is |
-| 1f.6 | By number, a dynamic ramp sent as a step from the level before; the fifth run of the study: how such steps behave (it replaces the fourth run) | built, to test |
+| 1f.6 | By number, a dynamic ramp sent as a step from the level before; the fifth run of the study: how such steps behave (it replaces the fourth run) | set aside on 24 Nov: the idea of steps did not hold (see 1f.7) |
+| 1f.7 | By number, the target of a dynamic ramp on the ePlayer's scale from 0 to 1; the sixth run of the study: that scale beside the ramps by pitch, on the cello and the bass clarinet (it replaces runs four and five) | built, to test |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -541,6 +542,28 @@ Joost, by ear with the typed line, on a note struck at 33: `ctdynamic 1 20 1000.
 4. **The run:** start a recording, ePlayer study page, **Run the fifth study**; stop the recording when the status says the run is over.
 5. The chord forms of 1f.5, step 6, if not yet tried.
 6. Send the recording and what you heard; push the *Test results* folder and `Measurements/report.md`.
+
+### After the tries of 24 Nov (Joost, by hand with the typed line)
+
+- **`ctdynamic` goes to an absolute target, as the manual says, but on a scale from 0. to 1.**, not from 0 to 127 as `dynamic`. That accounts for everything seen that day: any target of 1 or more is the top (the doodsbed recording by number; "20 makes it louder"), anything under 0 is the bottom ("-40 makes it softer"; the bass clarinet that knew only its softest and its loudest), and 0 is silence. The ideas of 1f.5 (the form of the number) and 1f.6 (steps from the level before) are set aside; their study runs stay in the code but left the page.
+- **Chord mode is abandoned.** `chordon` takes whole numbers only, so only tempered pitches, which does not fit multiphonics. Joost keeps such programs in note mode and picks the key by hand, as in ScAst. Maket will not send `chordon`.
+
+## Using stage 1f.7
+
+- **By number, a ramp's target from 0 to 1.** Maket divides the roll's target (0 to 127) by 127 when it sends `ctdynamic`; the roll itself is not changed. On the conTimbre test page this is the one switch under *by number*, on by default (off: the roll's target as it stands, as in 1f.4).
+- **The sixth run of the study** (**Run the sixth study**, 6 minutes 37), on the orchestra `doodsbed by number`: the cello on `voice3` (`sul tasto`) and the bass clarinet on `voice5` (`ordinario`, pitch 50). On each:
+  - a note struck at 40 with one ramp by number to 0, 0.1, 0.25, 0.5, 0.75 or 1, and beside each the ramp by pitch to 127 times that (0, 12.7, 31.75, 63.5, 95.25, 127); the same from a note struck at 100 to 0.1, 0.5 and 1;
+  - the notes struck at 40 and at 100 alone;
+  - by number, three ramps in a row to 0.25, 0.75, 0.25 (does it come back) and to 0.5, 0.5, 0.5 (does it stay).
+  And the cello's pitch plucked eight times (`pizz`), every 120 or 70 ms, overlapping or apart, by pitch and by number. Three of each ramp, four of each plucked way, in turns.
+
+### Testing stage 1f.7
+
+1. `git pull`, then `./build.sh`: `stage 1f.7`. `./build.sh tests` ends with `All 147 checks passed.`
+2. In the ePlayer: the orchestra `doodsbed by number`.
+3. **By ear:** conTimbre test page, the doodsbed roll, untick `Mezzo`, tick *by number* (the switch under it stays on), **Play**. Are the dynamics those you know from ScAst?
+4. **The run:** start a recording, ePlayer study page, **Run the sixth study**; stop the recording when the status says the run is over.
+5. Send the recording and what you heard at step 3; push the *Test results* folder and `Measurements/report.md`.
 
 ## The repository
 

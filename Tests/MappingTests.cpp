@@ -360,7 +360,9 @@ void testByNumber (const juce::File& temp)
     for (size_t i = 0; i < 5 && i < vlc.size(); ++i) first << vlc[i].message.toText() << (i < 4 ? "; " : "");
     line ("| (The cello's first note by number: " + first + ".) | |");
     checkRow (vlc.size() > 5 && at (vlc[0], onset, "program voice3 \"sul tasto\"") && at (vlc[1], onset, "gain voice3 5.777778")
-              && at (vlc[2], onset, "ctnote 3 12 66.9 1 4511.") && at (vlc[3], onset, "ctdynamic 12 17 4267.")
+              && at (vlc[2], onset, "ctnote 3 12 66.9 1 4511.") && vlc[3].message.address == "ctdynamic" && vlc[3].message.arguments.size() == 3
+              && vlc[3].message.arguments[0].integer == 12 && std::abs (vlc[3].message.arguments[1].real - 16.846475 / 127.0) < 1.0e-6
+              && std::abs (vlc[3].message.arguments[2].real - 4267.0) < 0.5
               && at (vlc[4], onset, "ctglissando 12 0.5 4511."),
               "The cello, third voice of the roll, plays on `voice3`: program and gain by that name, the note and its curves by the note's number");
 
@@ -390,61 +392,32 @@ void testByNumber (const juce::File& temp)
               "By number the roll gives the same commands at the same times as by pitch, each in its form by number; the 306 notes are "
               "numbered 1 to 306, and every note-off, dynamic and glissando carries the number of its note");
 
-    // A ramp's target by number: a whole number, the rounded target of the same ramp by pitch; with the switch off, as by pitch.
+    // A ramp's target by number: on the ePlayer's scale from 0 to 1, the target by pitch divided by 127; with the switch off, as by pitch.
     {
-        auto real = o;
-        real.wholeTargets = false;
-        const auto asReal = maket::contimbre::messagesForRoll (roll, {}, real);
+        auto plain = o;
+        plain.normalizedTargets = false;
+        const auto asPlain = maket::contimbre::messagesForRoll (roll, {}, plain);
         using Kind = maket::OscArgument::Kind;
-        bool whole = true, rounded = true, realOnes = asReal.size() == all.size();
+        bool real = true, scaled = true, inRange = true, plainOnes = asPlain.size() == all.size();
         int ramps = 0;
-        for (size_t i = 0; i < all.size() && i < byPitch.size() && realOnes; ++i)
+        double highest = 0.0;
+        for (size_t i = 0; i < all.size() && i < byPitch.size() && plainOnes; ++i)
             if (all[i].message.address == "ctdynamic")
             {
                 ++ramps;
                 const auto& t = all[i].message.arguments[1];
                 const auto& p = byPitch[i].message.arguments[2];
-                const auto& r = asReal[i].message.arguments[1];
-                whole = whole && t.kind == Kind::integer;
-                rounded = rounded && t.integer == juce::roundToInt (p.real);
-                realOnes = realOnes && r.kind == Kind::real && std::abs (r.real - p.real) < 1.0e-9;
+                const auto& r = asPlain[i].message.arguments[1];
+                real = real && t.kind == Kind::real;
+                scaled = scaled && std::abs (t.real - p.real / 127.0) < 1.0e-9;
+                inRange = inRange && t.real >= 0.0 && t.real <= 1.0;
+                highest = juce::jmax (highest, t.real);
+                plainOnes = plainOnes && r.kind == Kind::real && std::abs (r.real - p.real) < 1.0e-9;
             }
-        checkRow (ramps == 218 && whole && rounded && realOnes,
-                  "By number the target of each of the 218 dynamic ramps is sent as a whole number, the target by pitch rounded; "
-                  "with the switch off it is the real number as by pitch (stage 1f.5)");
-    }
-
-    // Ramps as steps from the level before: each note's steps, added to its velocity, end on its last target.
-    {
-        auto steps = o;
-        steps.relativeRamps = true;
-        const auto asSteps = maket::contimbre::messagesForRoll (roll, {}, steps);
-        std::map<int, int> level, lastTarget;
-        bool sameShape2 = asSteps.size() == all.size(), wholeSteps = true;
-        int below = 0;
-        for (size_t i = 0; i < asSteps.size() && sameShape2; ++i)
-        {
-            const auto& m = asSteps[i].message;
-            sameShape2 = m.address == all[i].message.address && std::abs (asSteps[i].time - all[i].time) < 1.0e-9;
-            if (m.address == "ctnote") level[(int) m.arguments[1].integer] = (int) m.arguments[3].integer;
-            if (m.address == "ctdynamic")
-            {
-                const int id = (int) m.arguments[0].integer;
-                wholeSteps = wholeSteps && m.arguments[1].kind == maket::OscArgument::Kind::integer;
-                level[id] += (int) m.arguments[1].integer;
-                if (m.arguments[1].integer < 0) ++below;
-                lastTarget[id] = (int) all[i].message.arguments[1].integer;
-            }
-        }
-        bool arrive = ! lastTarget.empty();
-        for (const auto& [id, target] : lastTarget) arrive = arrive && level[id] == target;
-
-        const auto vlcSteps = ofVoice (asSteps, 2);
-        line ("| (As steps, the cello's first ramp: " + (vlcSteps.size() > 3 ? vlcSteps[3].message.toText() : juce::String ("?")) + "; "
-              + juce::String (below) + " of the 218 steps go down.) | |");
-        checkRow (sameShape2 && wholeSteps && arrive && vlcSteps.size() > 3 && at (vlcSteps[3], onset, "ctdynamic 12 16 4267.") && below > 50,
-                  "By number with ramps as steps (stage 1f.6): the same commands at the same times, each ramp as the way from the level before "
-                  "(the cello's first note, struck at 1, to 17: a step of 16); for every note the velocity and its steps add up to its last target");
+        line ("| (The highest of the 218 targets by number: " + juce::String (highest, 3) + ".) | |");
+        checkRow (ramps == 218 && real && scaled && inRange && plainOnes,
+                  "By number the target of each of the 218 dynamic ramps is sent from 0 to 1, the target by pitch divided by 127; "
+                  "with the switch off it is the roll's own target (stage 1f.7)");
     }
 
     // The viola's double stop: two notes of one moment, each with its own number and its own curve.

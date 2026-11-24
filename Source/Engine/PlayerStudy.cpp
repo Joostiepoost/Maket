@@ -32,6 +32,70 @@ std::vector<Way> ways (const Options& o, int run)
 {
     std::vector<Way> all;
 
+    if (run == 6)
+    {
+        struct Instrument { int voice; const char* program; double pitch; double gain; const char* name; };
+        const Instrument instruments[] = { { 3, "sul tasto", 67.4, o.gain, "cello" }, { 5, "ordinario", 50.0, -6.0, "bass clarinet" } };
+
+        for (const auto& in : instruments)
+        {
+            auto base = [&] (int from, bool byNumber)
+            {
+                Way w;
+                w.byNumber = byNumber;
+                w.voiceNumber = in.voice;  w.program = in.program;  w.gain = in.gain;  w.singlePitch = in.pitch;
+                w.rampFrom = from;
+                w.share = 0.15;
+                return w;
+            };
+            auto pair = [&] (int from, double target)
+            {
+                auto n = base (from, true);
+                n.steps = { target };  n.realSteps = true;
+                n.name = juce::String (in.name) + ", struck at " + juce::String (from) + ", by number, ramp to " + juce::String (target, 2);
+                all.push_back (n);
+
+                auto p = base (from, false);
+                p.rampTarget = 127.0 * target;
+                p.name = juce::String (in.name) + ", struck at " + juce::String (from) + ", by pitch, ramp to " + juce::String (127.0 * target, 1);
+                all.push_back (p);
+            };
+
+            for (double target : { 0.0, 0.1, 0.25, 0.5, 0.75, 1.0 })   pair (40, target);       // 12 ways
+            for (double target : { 0.1, 0.5, 1.0 })                    pair (100, target);      // 6
+            for (int from : { 40, 100 })                                                        // 2
+            {
+                auto w = base (from, true);
+                w.name = juce::String (in.name) + ", struck at " + juce::String (from) + ", by number, no ramp";
+                all.push_back (w);
+            }
+            {
+                auto w = base (40, true);                                                       // 2 sequences
+                w.steps = { 0.25, 0.75, 0.25 };  w.realSteps = true;  w.stepLength = 600.0;  w.stepEvery = 900.0;
+                w.name = juce::String (in.name) + ", struck at 40, by number, ramps to 0.25, 0.75, 0.25 (does it come back?)";
+                all.push_back (w);
+                w.steps = { 0.5, 0.5, 0.5 };
+                w.name = juce::String (in.name) + ", struck at 40, by number, ramps to 0.5, 0.5, 0.5 (does it stay?)";
+                all.push_back (w);
+            }
+        }
+
+        for (double period : { 120.0, 70.0 })                                                   // 8 plucked ways
+            for (double overlap : { 30.0, -20.0 })
+                for (bool byNumber : { false, true })
+                {
+                    Way w;
+                    w.name = juce::String ("plucked note repeated ") + (byNumber ? "by number" : "by pitch") + ", one every " + juce::String ((int) period)
+                             + " ms, " + (overlap > 0.0 ? "overlapping by 30 ms" : "20 ms apart");
+                    w.byNumber = byNumber;
+                    w.voiceNumber = 3;  w.program = "pizz";  w.gain = o.gain;
+                    w.repeatCount = 8;  w.period = period;  w.overlap = overlap;
+                    w.share = 0.2;
+                    all.push_back (w);
+                }
+        return all;
+    }
+
     if (run == 5)
     {
         const int cello = 3;
@@ -297,7 +361,7 @@ std::vector<contimbre::TimedMessage> figure (const Options& o, const Way& way, d
     // One note with at most one ramp (run 4).
     if (way.rampFrom > 0)
     {
-        const double pitch = 67.4;
+        const double pitch = way.singlePitch;
         const int number = nextNumber++;
         const double length = way.soundLength();
         addPlain (start, way.byNumber ? contimbre::ctNote (voiceNumber, number, pitch, way.rampFrom, length) : contimbre::noteOn (voice, pitch, way.rampFrom));
@@ -442,7 +506,7 @@ Plan makePlan (const Options& o, int onlyWay, int run)
 juce::String planAsText (const Plan& plan)
 {
     juce::String text;
-    text << "Maket, study of the ePlayer, run " << plan.run << (plan.run == 5 ? " (stage 1f.6)\n" : plan.run == 4 ? " (stage 1f.5)\n" : plan.run == 3 ? " (stage 1f.4)\n" : plan.run == 2 ? " (stage 1f.3)\n" : " (stage 1f.2)\n")
+    text << "Maket, study of the ePlayer, run " << plan.run << (plan.run == 6 ? " (stage 1f.7)\n" : plan.run == 5 ? " (stage 1f.6)\n" : plan.run == 4 ? " (stage 1f.5)\n" : plan.run == 3 ? " (stage 1f.4)\n" : plan.run == 2 ? " (stage 1f.3)\n" : " (stage 1f.2)\n")
          << "voice\t" << plan.options.voiceName() << "\n"
          << "program\t" << plan.options.program << "\n"
          << "gain\t" << juce::String (plan.options.gain, 6) << "\n"
@@ -453,7 +517,8 @@ juce::String planAsText (const Plan& plan)
             "next ramp's command before the end of the ramp before (ms), dynamic correction, name, "
             "velocity of a single note (0: the figure), silence added before (ms), voice, repeated notes, their period (ms), "
             "their overlap (ms), glide (semitones), chord, struck at (run 4; 0: not a ramp note), ramp target (-1: none), target sent as, "
-            "steps by number (run 5; - when none), ms each step's ramp takes, ms from one step to the next, steps sent as\n";
+            "numbers of ctdynamic one after the other (run 5: steps; run 6: targets from 0 to 1; - when none), ms each ramp takes, "
+            "ms from one to the next, sent as, pitch of the note\n";
 
     for (size_t i = 0; i < plan.ways.size(); ++i)
     {
@@ -465,8 +530,8 @@ juce::String planAsText (const Plan& plan)
              << juce::String (w.overlap, 1) << "\t" << juce::String (w.glide, 1) << "\t" << (w.chord ? 1 : 0) << "\t"
              << w.rampFrom << "\t" << juce::String (w.rampTarget, 1) << "\t" << (w.wholeTarget ? "whole" : "real") << "\t";
         if (w.steps.empty()) text << "-";
-        for (size_t k = 0; k < w.steps.size(); ++k) text << (k > 0 ? " " : "") << juce::roundToInt (w.steps[k]);
-        text << "\t" << juce::String (w.stepLength, 1) << "\t" << juce::String (w.stepEvery, 1) << "\t" << (w.realSteps ? "real" : "whole") << "\n";
+        for (size_t k = 0; k < w.steps.size(); ++k) text << (k > 0 ? " " : "") << (std::abs (w.steps[k] - std::round (w.steps[k])) < 1.0e-9 ? juce::String (juce::roundToInt (w.steps[k])) : juce::String (w.steps[k], 3));
+        text << "\t" << juce::String (w.stepLength, 1) << "\t" << juce::String (w.stepEvery, 1) << "\t" << (w.realSteps ? "real" : "whole") << "\t" << juce::String (w.singlePitch, 2) << "\n";
     }
 
     text << "\nRepetitions. Columns, separated by a tab: number, way, begins at (ms from the first command)\n";

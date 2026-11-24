@@ -122,7 +122,14 @@ struct Options
     a step over 0.2 and over 1.5 s, six sequences of three steps (do they
     add up, come back, stop at the top and at the bottom, and what does 0
     do), beside the ramps by pitch to the same levels and the struck notes
-    alone; and the plucked repeated notes of run 4. It replaces run 4. */
+    alone; and the plucked repeated notes of run 4. It replaces run 4.
+    Run 6 (stage 1f.7), after Joost found that `ctdynamic` takes its
+    target from 0. to 1.: on the cello (`sul tasto`) and on the bass
+    clarinet (`ordinario`, voice5), a note struck at 40 or 100 with one ramp
+    by number to 0, 0.1, 0.25, 0.5, 0.75 or 1, beside the ramp by pitch to
+    127 times that; the struck notes alone; two sequences by number (0.25,
+    0.75, 0.25: does it come back; 0.5 three times: does it stay); and the
+    plucked repeated notes. It replaces runs 4 and 5. */
 std::vector<Way> ways (const Options&, int run = 1);
 
 constexpr double singleNoteLength = 1500.0;         // ms

@@ -49,10 +49,11 @@ OscMessage gain (const juce::String& voice, double decibels);
     manual marks the duration (ms) as unused. */
 OscMessage ctNote (int voiceNumber, int noteNumber, double pitch, int dynamic, double duration);
 OscMessage ctNoteOff (int noteNumber);
-/** `wholeTarget`: the target rounded and sent as a whole number (stage
-    1f.5). The doodsbed recording by number of 24 Nov 2026 points to the
-    ePlayer taking a `ctdynamic` target that is sent as a real number for
-    the top, whatever its value; only 0 came out as 0. */
+/** The ePlayer takes the target of `ctdynamic` from 0. to 1. (found by
+    Joost, 24 Nov 2026), not from 0 to 127 as that of `dynamic`; the caller
+    gives it on that scale. `wholeTarget`: the target rounded and sent as a
+    whole number, for the study's fourth and fifth runs, which tried other
+    ideas. */
 OscMessage ctDynamic (int noteNumber, double target, double duration, bool wholeTarget = false);
 OscMessage ctGlissando (int noteNumber, double interval, double duration);
 

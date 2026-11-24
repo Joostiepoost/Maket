@@ -41,7 +41,7 @@ private:
 
     juce::TextEditor voiceField, programField, repetitionsField;
     juce::ToggleButton numberToggle, correctionToggle;
-    juce::TextButton tryPitchButton, tryNumberButton, runButton, secondRunButton, thirdRunButton, fourthRunButton, fifthRunButton, stopButton;
+    juce::TextButton tryPitchButton, tryNumberButton, runButton, secondRunButton, thirdRunButton, sixthRunButton, stopButton;
     juce::TextEditor view;
 
     maket::study::Plan plan;

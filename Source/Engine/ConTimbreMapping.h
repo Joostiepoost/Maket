@@ -76,21 +76,13 @@ struct MappingOptions
         that name. The notes are numbered from 1 in the order of the roll. */
     bool byNumber = false;
 
-    /** By number: the target of a dynamic ramp rounded and sent as a whole
-        number (stage 1f.5). In the recording of doodsbed by number of
-        24 Nov 2026 every ramp whose target was sent as a real number went
-        to about the same loud level, whatever the target, and only a ramp
-        to 0 came down. To be confirmed by the fourth run of the study. */
-    bool wholeTargets = true;
-
-    /** By number: a dynamic ramp sent as a step from the level before it
-        (the target minus the target before; for a note's first ramp, minus
-        its velocity) instead of as the target itself (stage 1f.6). Found by
-        Joost by ear on 24 Nov 2026: `ctdynamic` moved the note up for a
-        number above 0 and down for one below 0, from where it was, unlike
-        what the manual says. Assumes that a step counts in the same units
-        as a velocity; the fifth run of the study measures that. */
-    bool relativeRamps = false;
+    /** By number: the target of a dynamic ramp on the ePlayer's own scale
+        for `ctdynamic`, from 0. to 1.: the roll's target (0 to 127) divided
+        by 127 (stage 1f.7). Found by Joost on 24 Nov 2026: `ctdynamic` goes
+        to an absolute target, as the manual says, but takes 1 for the top,
+        so every roll target of 1 or more came out as the top. Off: the
+        roll's target as it stands, as sent in 1f.4. */
+    bool normalizedTargets = true;
 };
 
 /** The commands for the voices of `roll` named in `voices` (numbers from 0;

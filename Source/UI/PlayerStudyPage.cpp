@@ -48,10 +48,9 @@ PlayerStudyPage::PlayerStudyPage (maket::Settings& s, maket::OscScheduler& sch) 
     secondRunButton.onClick = [this] { start (-1, 2); };
     thirdRunButton.setButtonText ("Run the third study");
     thirdRunButton.onClick = [this] { start (-1, 3); };
-    fourthRunButton.setButtonText ("Run the fourth study");
-    fourthRunButton.onClick = [this] { start (-1, 4); };
-    fifthRunButton.setButtonText ("Run the fifth study");
-    fifthRunButton.onClick = [this] { start (-1, 5); };
+    // The fourth and fifth runs (stages 1f.5, 1f.6) tried ideas about ctdynamic that the sixth replaces; they stay in the engine and its tests.
+    sixthRunButton.setButtonText ("Run the sixth study");
+    sixthRunButton.onClick = [this] { start (-1, 6); };
     stopButton.setButtonText ("Stop");
 
     tryPitchButton.onClick  = [this] { start (0); };
@@ -59,7 +58,7 @@ PlayerStudyPage::PlayerStudyPage (maket::Settings& s, maket::OscScheduler& sch) 
     runButton.onClick       = [this] { start (-1); };
     stopButton.onClick      = [this] { stop(); };
 
-    for (auto* button : { &tryPitchButton, &tryNumberButton, &runButton, &secondRunButton, &thirdRunButton, &fourthRunButton, &fifthRunButton, &stopButton })
+    for (auto* button : { &tryPitchButton, &tryNumberButton, &runButton, &secondRunButton, &thirdRunButton, &sixthRunButton, &stopButton })
         addAndMakeVisible (*button);
 
     view.setMultiLine (true);
@@ -119,9 +118,7 @@ void PlayerStudyPage::resized()
     row2.removeFromLeft (8);
     thirdRunButton.setBounds (row2.removeFromLeft (160));
     row2.removeFromLeft (8);
-    fourthRunButton.setBounds (row2.removeFromLeft (170));
-    row2.removeFromLeft (8);
-    fifthRunButton.setBounds (row2.removeFromLeft (160));
+    sixthRunButton.setBounds (row2.removeFromLeft (170));
 
     area.removeFromTop (8);
     statusArea = area.removeFromTop (38);
@@ -169,7 +166,7 @@ void PlayerStudyPage::setRunning (bool isRunning)
 {
     running = isRunning;
     for (auto* c : std::initializer_list<juce::Component*> { &voiceField, &programField, &repetitionsField, &numberToggle, &correctionToggle,
-                                                              &tryPitchButton, &runButton, &secondRunButton, &thirdRunButton, &fourthRunButton, &fifthRunButton })
+                                                              &tryPitchButton, &runButton, &secondRunButton, &thirdRunButton, &sixthRunButton })
         c->setEnabled (! running);
     tryNumberButton.setEnabled (! running && numberToggle.getToggleState());
     stopButton.setEnabled (running);
@@ -239,21 +236,13 @@ void PlayerStudyPage::showWays()
          << "The whole third run: " << (int) third.repetitions.size() << " items, " << asClock (third.length) << " minutes, "
          << (int) third.messages.size() << " commands.\n";
 
-    const auto fourth = maket::study::makePlan (o, -1, 4);
-    text << "\nThe fourth study (stage 1f.5), on the orchestra \"doodsbed by number\" (cello on voice3), played in turns:\n"
-         << "  one note of 1.9 s struck at 40 or 100; 0.2 s later one ramp over 0.8 s to 0, 10, 40, 80 or 127:\n"
-         << "    by pitch; by number with the target as a whole number; by number with the target as a real number (as sent until now);\n"
-         << "    and the struck note without a ramp\n"
-         << "  one pitch plucked eight times (program pizz), every 120 or 70 ms, overlapping or apart, by pitch and by number\n"
-         << "The whole fourth run: " << (int) fourth.repetitions.size() << " items, " << asClock (fourth.length) << " minutes, "
-         << (int) fourth.messages.size() << " commands.\n";
-
-    const auto fifth = maket::study::makePlan (o, -1, 5);
-    text << "\nThe fifth study (stage 1f.6), on the same orchestra, cello on voice3; it replaces the fourth. Does ctdynamic move a note from where it is?\n";
-    for (size_t i = 0; i < fifth.ways.size(); ++i)
-        text << "  " << juce::String ((int) i + 1).paddedLeft (' ', 2) << "  " << fifth.ways[i].name << "\n";
-    text << "The whole fifth run: " << (int) fifth.repetitions.size() << " items, " << asClock (fifth.length) << " minutes, "
-         << (int) fifth.messages.size() << " commands.\n";
+    const auto sixth = maket::study::makePlan (o, -1, 6);
+    text << "\nThe sixth study (stage 1f.7), on the orchestra \"doodsbed by number\": cello on voice3, bass clarinet on voice5.\n"
+         << "Does ctdynamic take its target from 0 to 1, and is that the same loudness as dynamic by pitch to 127 times it?\n";
+    for (size_t i = 0; i < sixth.ways.size(); ++i)
+        text << "  " << juce::String ((int) i + 1).paddedLeft (' ', 2) << "  " << sixth.ways[i].name << "\n";
+    text << "The whole sixth run: " << (int) sixth.repetitions.size() << " items, " << asClock (sixth.length) << " minutes, "
+         << (int) sixth.messages.size() << " commands.\n";
     view.setText (text, false);
 }
 
