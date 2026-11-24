@@ -78,9 +78,11 @@ ConTimbreTestPage::ConTimbreTestPage (maket::Settings& s, maket::OscScheduler& s
     glissandoToZeroToggle.setButtonText ("glissando to 0 without breakpoints");
     spacingToggle.setButtonText ("0.1 ms between commands");
     byNumberToggle.setButtonText ("by number: each note by a number of its own, the voice at place k of the roll on the ePlayer's voice named voice + k");
-    wholeTargetsToggle.setButtonText ("by number: the target of a dynamic ramp as a whole number (22 instead of 22.4)");
+    wholeTargetsToggle.setButtonText ("by number: the number of a dynamic ramp as a whole number (22 instead of 22.4)");
     wholeTargetsToggle.setToggleState (true, juce::dontSendNotification);
-    for (auto* toggle : { &byNumberToggle, &wholeTargetsToggle, &noteOnFirstToggle, &glissandoToZeroToggle, &spacingToggle })
+    relativeRampsToggle.setButtonText ("by number: a dynamic ramp as a step from the level before (to 22 after 70 is sent as -48)");
+    relativeRampsToggle.setToggleState (true, juce::dontSendNotification);
+    for (auto* toggle : { &byNumberToggle, &relativeRampsToggle, &wholeTargetsToggle, &noteOnFirstToggle, &glissandoToZeroToggle, &spacingToggle })
         addAndMakeVisible (*toggle);
 
     for (auto* button : { &chooseButton, &playButton, &stopButton, &takeButton, &finishButton, &logButton })
@@ -148,6 +150,7 @@ void ConTimbreTestPage::resized()
 
     numberLabelArea = area.removeFromTop (18).withWidth (width);
     byNumberToggle.setBounds (area.removeFromTop (toggleHeight).withWidth (width));
+    relativeRampsToggle.setBounds (area.removeFromTop (toggleHeight).withWidth (width));
     wholeTargetsToggle.setBounds (area.removeFromTop (toggleHeight).withWidth (width));
     area.removeFromTop (8);
 
@@ -235,7 +238,7 @@ void ConTimbreTestPage::setState (State newState)
     finishButton.setEnabled (state == State::take);
     stopButton.setEnabled (! idle);
     for (auto& toggle : voiceToggles) toggle->setEnabled (idle);
-    for (auto* toggle : { &byNumberToggle, &wholeTargetsToggle, &noteOnFirstToggle, &glissandoToZeroToggle, &spacingToggle }) toggle->setEnabled (idle);
+    for (auto* toggle : { &byNumberToggle, &relativeRampsToggle, &wholeTargetsToggle, &noteOnFirstToggle, &glissandoToZeroToggle, &spacingToggle }) toggle->setEnabled (idle);
 }
 
 void ConTimbreTestPage::setStatus (const juce::String& text, bool isProblem)
@@ -268,6 +271,7 @@ maket::contimbre::MappingOptions ConTimbreTestPage::options() const
     o.spacing = spacingToggle.getToggleState() ? 0.1 : 0.0;
     o.byNumber = byNumberToggle.getToggleState();
     o.wholeTargets = wholeTargetsToggle.getToggleState();
+    o.relativeRamps = relativeRampsToggle.getToggleState();
     return o;
 }
 
@@ -278,7 +282,8 @@ juce::String ConTimbreTestPage::optionsInWords() const
     if (glissandoToZeroToggle.getToggleState()) ways.add ("a glissando to 0 for notes without pitch breakpoints");
     if (spacingToggle.getToggleState())         ways.add ("0.1 ms between the commands of one moment");
     const juce::String how = ! byNumberToggle.getToggleState() ? "by pitch, "
-                           : wholeTargetsToggle.getToggleState() ? "by number (ramp targets whole), " : "by number (ramp targets real), ";
+                           : juce::String ("by number (ramps as ") + (relativeRampsToggle.getToggleState() ? "steps from the level before" : "targets")
+                                 + (wholeTargetsToggle.getToggleState() ? ", whole numbers), " : ", real numbers), ");
     return how + (ways.isEmpty() ? juce::String ("Maket's own way") : "with the Max patch's " + ways.joinIntoString ("; "));
 }
 

@@ -9,6 +9,7 @@
 
 #include <JuceHeader.h>
 #include <cmath>
+#include <map>
 #include <set>
 #include <vector>
 
@@ -411,6 +412,39 @@ void testByNumber (const juce::File& temp)
         checkRow (ramps == 218 && whole && rounded && realOnes,
                   "By number the target of each of the 218 dynamic ramps is sent as a whole number, the target by pitch rounded; "
                   "with the switch off it is the real number as by pitch (stage 1f.5)");
+    }
+
+    // Ramps as steps from the level before: each note's steps, added to its velocity, end on its last target.
+    {
+        auto steps = o;
+        steps.relativeRamps = true;
+        const auto asSteps = maket::contimbre::messagesForRoll (roll, {}, steps);
+        std::map<int, int> level, lastTarget;
+        bool sameShape2 = asSteps.size() == all.size(), wholeSteps = true;
+        int below = 0;
+        for (size_t i = 0; i < asSteps.size() && sameShape2; ++i)
+        {
+            const auto& m = asSteps[i].message;
+            sameShape2 = m.address == all[i].message.address && std::abs (asSteps[i].time - all[i].time) < 1.0e-9;
+            if (m.address == "ctnote") level[(int) m.arguments[1].integer] = (int) m.arguments[3].integer;
+            if (m.address == "ctdynamic")
+            {
+                const int id = (int) m.arguments[0].integer;
+                wholeSteps = wholeSteps && m.arguments[1].kind == maket::OscArgument::Kind::integer;
+                level[id] += (int) m.arguments[1].integer;
+                if (m.arguments[1].integer < 0) ++below;
+                lastTarget[id] = (int) all[i].message.arguments[1].integer;
+            }
+        }
+        bool arrive = ! lastTarget.empty();
+        for (const auto& [id, target] : lastTarget) arrive = arrive && level[id] == target;
+
+        const auto vlcSteps = ofVoice (asSteps, 2);
+        line ("| (As steps, the cello's first ramp: " + (vlcSteps.size() > 3 ? vlcSteps[3].message.toText() : juce::String ("?")) + "; "
+              + juce::String (below) + " of the 218 steps go down.) | |");
+        checkRow (sameShape2 && wholeSteps && arrive && vlcSteps.size() > 3 && at (vlcSteps[3], onset, "ctdynamic 12 16 4267.") && below > 50,
+                  "By number with ramps as steps (stage 1f.6): the same commands at the same times, each ramp as the way from the level before "
+                  "(the cello's first note, struck at 1, to 17: a step of 16); for every note the velocity and its steps add up to its last target");
     }
 
     // The viola's double stop: two notes of one moment, each with its own number and its own curve.

@@ -305,4 +305,53 @@ void testPlayerStudy()
                   "whole target, 20 with a real one");
     }
     line();
+
+    // --- The fifth run (stage 1f.6) ---
+    line ("### The fifth run of the study (stage 1f.6)");
+    line();
+    line ("Joost found by ear (24 Nov) that `ctdynamic` moves a note from where it is: up for a number above 0, down for one below, "
+          "unlike the manual. The fifth run measures it: single steps, sequences of steps, and the ramps by pitch to the same levels.");
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+    {
+        const auto w5 = maket::study::ways (o, 5);
+        int number = 1;
+        const auto down = maket::study::figure (o, w5[1], 0.0, number);          // struck 60, one step of -40
+        const auto real = maket::study::figure (o, w5[16], 0.0, number);         // -20 as a real number
+        const auto slow = maket::study::figure (o, w5[18], 0.0, number);         // +40 over 1.5 s
+        const auto back = maket::study::figure (o, w5[21], 0.0, number);         // -30, -30, +60
+        const auto pitch = maket::study::figure (o, w5[25], 0.0, number);        // by pitch to 0
+        checkRow (w5.size() == 44
+                  && down.size() == 3 && at (down[0], 0.0, "ctnote 3 1 67.4 60 1900.") && at (down[1], 200.0, "ctdynamic 1 -40 800.") && at (down[2], 1900.0, "ctnoteoff 1")
+                  && real.size() == 3 && at (real[1], 200.0, "ctdynamic 2 -20. 800.")
+                  && slow.size() == 3 && at (slow[1], 200.0, "ctdynamic 3 40 1500.")
+                  && back.size() == 5 && at (back[0], 0.0, "ctnote 3 4 67.4 60 3300.") && at (back[1], 200.0, "ctdynamic 4 -30 600.")
+                  && at (back[2], 1100.0, "ctdynamic 4 -30 600.") && at (back[3], 2000.0, "ctdynamic 4 60 600.") && at (back[4], 3300.0, "ctnoteoff 4")
+                  && pitch.size() == 3 && at (pitch[0], 0.0, "noteon voice3 67.4 60") && at (pitch[1], 200.0, "dynamic voice3 67.4 0. 800."),
+                  "A note struck at 60 with one step by number (`ctdynamic 1 -40 800.`), the same as a real number, over 1.5 s, "
+                  "three steps one after the other (-30, -30, +60, each over 0.6 s, 0.9 s apart), and the ramp by pitch beside them");
+
+        const auto plan = maket::study::makePlan (o, -1, 5);
+        std::vector<int> perWay (w5.size(), 0);
+        bool inOrder = true, counts = true;
+        for (size_t i = 1; i < plan.messages.size(); ++i) inOrder = inOrder && plan.messages[i].time >= plan.messages[i - 1].time;
+        for (const auto& r : plan.repetitions) ++perWay[(size_t) r.way];
+        for (int c : perWay) counts = counts && c == 4;
+        int negative = 0, steps = 0;
+        for (const auto& m : plan.messages)
+            if (m.message.address == "ctdynamic")
+            {
+                ++steps;
+                const auto& a = m.message.arguments[1];
+                if ((a.kind == maket::OscArgument::Kind::integer ? (double) a.integer : a.real) < 0.0) ++negative;
+            }
+        line ("| (The fifth run: " + juce::String ((int) plan.repetitions.size()) + " items, " + juce::String ((int) plan.messages.size())
+              + " commands, " + juce::String (plan.length / 60000.0, 1) + " minutes; " + juce::String (steps) + " steps by number, "
+              + juce::String (negative) + " of them down.) | |");
+        checkRow (counts && inOrder && plan.repetitions.size() == 176 && steps == 4 * (19 + 18) && negative == 4 * (4 + 3 + 1 + 6),
+                  "The fifth run: 4 of each of its 44 ways, in turns: 19 single steps, 6 sequences of three, 8 ramps by pitch, "
+                  "3 struck notes without a ramp, 8 plucked ways");
+    }
+    line();
 }

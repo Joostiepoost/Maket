@@ -69,6 +69,13 @@ struct Way
     double rampTarget = -1.0;   //   0 or more: 0.2 s after the note-on a ramp to this target over 0.8 s
     bool wholeTarget = false;   //   the target sent as a whole number instead of a real one
 
+    // The fifth run (stage 1f.6): with `rampFrom`, by number, `ctdynamic` with these numbers one after the other,
+    // the first 0.2 s after the note-on.
+    std::vector<double> steps;
+    double stepLength = 800.0;  //   ms each ramp takes
+    double stepEvery = 900.0;   //   ms from one command to the next
+    bool realSteps = false;     //   the numbers sent as real numbers instead of whole ones
+
     double soundLength() const;     // ms from its first note-on to its last note-off
     double itemLength() const;      // ms it takes in the run, silence after it included
 };
@@ -107,7 +114,15 @@ struct Options
     struck at 40 or 100 with one ramp to 0, 10, 40, 80 or 127, by pitch and
     by number, the target by number as a whole number and as a real one
     (the form of a number is the suspect); and the repeated notes of run 3
-    once more on a plucked program, where each attack can be counted. */
+    once more on a plucked program, where each attack can be counted.
+    Run 5 (stage 1f.6), after Joost found by ear that `ctdynamic` moves a
+    note from where it is (up for a number above 0, down for one below):
+    one step of -60 to +60 from a note struck at 60, steps from 30 and
+    from 100 that land on the same sums, the same step as a real number,
+    a step over 0.2 and over 1.5 s, six sequences of three steps (do they
+    add up, come back, stop at the top and at the bottom, and what does 0
+    do), beside the ramps by pitch to the same levels and the struck notes
+    alone; and the plucked repeated notes of run 4. It replaces run 4. */
 std::vector<Way> ways (const Options&, int run = 1);
 
 constexpr double singleNoteLength = 1500.0;         // ms

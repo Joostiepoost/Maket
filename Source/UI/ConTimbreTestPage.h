@@ -71,6 +71,7 @@ private:
     juce::TextButton chooseButton, playButton, stopButton, takeButton, finishButton, logButton;
     std::vector<std::unique_ptr<juce::ToggleButton>> voiceToggles;
     std::vector<int> voiceOfToggle;         // which voice of the roll each toggle stands for
+    juce::ToggleButton relativeRampsToggle;  // stage 1f.6: by number, a ramp as a step from the level before
     juce::ToggleButton wholeTargetsToggle;   // stage 1f.5: by number, a ramp's target as a whole number
     juce::ToggleButton byNumberToggle;       // stage 1f.4: every note by a number of its own, on the voices voice1, voice2 ...
     juce::ToggleButton noteOnFirstToggle, glissandoToZeroToggle, spacingToggle;     // stage 1f.1: the ways of the Max patch
