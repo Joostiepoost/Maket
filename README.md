@@ -59,7 +59,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1f.4 | A roll played by number (Maket's default from here on); the third run of the study: fast repeated notes, a glide by number, a chord-mode program | done; run by Joost on 24 Nov |
 | 1f.5 | By number, the target of a dynamic ramp as a whole number; any command typed on the OSC test page; the fourth run of the study: one ramp per note in each form, plucked repeated notes | done; tried by Joost on 24 Nov: the form makes no difference, a ramp by number is a step from where the note is |
 | 1f.6 | By number, a dynamic ramp sent as a step from the level before; the fifth run of the study: how such steps behave (it replaces the fourth run) | set aside on 24 Nov: the idea of steps did not hold (see 1f.7) |
-| 1f.7 | By number, the target of a dynamic ramp on the ePlayer's scale from 0 to 1; the sixth run of the study: that scale beside the ramps by pitch, on the cello and the bass clarinet (it replaces runs four and five) | built, to test |
+| 1f.7 | By number, the target of a dynamic ramp on the ePlayer's scale from 0 to 1; the sixth run of the study: that scale beside the ramps by pitch, on the cello and the bass clarinet (it replaces runs four and five) | done; run by Joost on 24 Nov: by number and by pitch give the same dynamics |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -564,6 +564,15 @@ Joost, by ear with the typed line, on a note struck at 33: `ctdynamic 1 20 1000.
 3. **By ear:** conTimbre test page, the doodsbed roll, untick `Mezzo`, tick *by number* (the switch under it stays on), **Play**. Are the dynamics those you know from ScAst?
 4. **The run:** start a recording, ePlayer study page, **Run the sixth study**; stop the recording when the status says the run is over.
 5. Send the recording and what you heard at step 3; push the *Test results* folder and `Measurements/report.md`.
+
+### After the run of 1f.7 (24 Nov)
+
+- **The scale holds.** A ramp by number to a target from 0 to 1 lands where the ramp by pitch to 127 times it lands: over the 18 pairs the difference is -0.2 dB in the middle, and 0.0 to 0.6 dB wherever the takes are steady. The bass clarinet is graded like the cello.
+- **Doodsbed by number and by pitch are the same** within what two takes of one way differ: -0.2 dB in the middle, within 3 dB for 86 % of the time, one place of half a second further apart.
+- **Ramps stray equally in both ways:** 9 of 54 by number and 11 of 54 by pitch end 3 dB or more from the middle of their kind. It is the ePlayer's own variation, known since 1e.
+- **Where a ramp ends depends on its target only**, not on the velocity the note was struck at; and a ramp to 0 is not silence but the softest dynamic (on the cello about 2 dB under a note struck at 40, on the bass clarinet 9 dB).
+- **A later ramp goes to its own target** from wherever the note is (0.25, 0.75, 0.25 comes back); a repeated target leaves the note where it is.
+- **Plucked repeated notes:** all eight attacks sound in every item, every 120 and every 70 ms, by pitch and by number alike. With the bowed notes of 1f.4, no measurement shows by number to repeat notes better or worse than by pitch.
 
 ## The repository
 
