@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1f.8. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 24 Nov 2026 3:58:19pm.
+Maket 0.0.1, stage 2a. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 24 Nov 2026 6:37:46pm.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`1f.8`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`2a`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -276,8 +276,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.028 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.006 ms; the latest of all: 0.219 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.027 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.007 ms; the latest of all: 0.014 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -285,8 +285,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.009 | 0.006 | 0.219 |
-| Arrived at the listener in this program | 0.080 | 0.127 | 2.770 |
+| Left Maket | -0.009 | 0.007 | 0.014 |
+| Arrived at the listener in this program | 0.067 | 0.123 | 0.619 |
 
 ### A command from a typed line (stage 1f.5)
 
@@ -341,14 +341,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.08 ms; the farthest 2.63 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.07 ms; the farthest 1.60 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.02 ms of their time, 95 in 100 within 0.08 ms, 99 in 100 within 0.54 ms; the farthest 2.63 ms (earliest -0.07, latest +2.63).
-The note-ons alone: half within 0.02 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.40 ms; the farthest 0.54 ms (earliest -0.07, latest +0.54).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.08 ms, the farthest 2.63 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.54 ms after it.
+All messages: half within 0.02 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.19 ms; the farthest 1.60 ms (earliest -0.07, latest +1.60).
+The note-ons alone: half within 0.02 ms of their time, 95 in 100 within 0.05 ms, 99 in 100 within 0.11 ms; the farthest 0.12 ms (earliest -0.07, latest +0.12).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.07 ms, the farthest 1.60 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 1.57 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -546,7 +546,40 @@ Joost found (24 Nov) that `ctdynamic` goes to an absolute target after all, on a
 | 24 notes of the A on the cello, each 145 ms after its `kammerton` (442, 440, 430, 415.3, 466.16; 440 and 430 also as whole numbers); three notes get a second `kammerton` while they sound; the run ends with the standard pitch of the settings | yes |
 | `kammerton` is sent as a real number (`kammerton 442.`, `kammerton 440.5`) | yes |
 
-## 8. Test material
+## 8. Notation: where notes sit on the staves (stage 2a)
+
+The roll view draws a note with the note name bach gives it, on the staves bach gives the voice. These checks are on that reckoning, which has no interface code; what the view draws from it is judged by eye against bach.roll.
+
+| Check | Passed |
+| --- | --- |
+| 34 pitches get bach's note and accidental: C sharp, E flat, F sharp, A flat, B flat for the black keys; a quarter and three eighths above a white key, three eighths to one eighth under the next; on the grids of 8, 4 and 2 steps to the tone | yes |
+| Over four octaves of eighth tones every spelling stands for its own pitch, with an accidental of a semitone at most | yes |
+| 17 of bach's clefs: the number of staves, the top and bottom line, and middle C at the height bach reckons (112 units under the voice's offset for FFGG, 70 for G and FG, 34 for F, 52 for Alto ...) | yes |
+| Ledger lines: middle C between the staves of a piano system has one; a note between two staves takes the lines of the nearer staff; none for a note on a staff or in the space next to it | yes |
+| The eight voices of `doodsbed final v1c` are stacked by its clefs (None, None, FG, G8vb, F, Alto, FFGG, FFGG), 17 units between them as its header names no spacing: offsets 17, 76, 135, 236, 295, 354, 413 and 598 units | yes |
+| The same roll as saved by today's bach (`Roll view 2/roll txt/Doodsbed.txt`) is stacked by the voice spacing in its header (17, 17, 20, 17, 29.3, 17 ...): offsets 17, 76, 138, 239, 310.3, 369.3, 428.3 and 613.3 units | yes |
+
+The rolls Joost gave for the roll view (`Temp/Roll view 2/roll txt`), read and written back:
+
+| Roll | Voices | Staves | Chords | Notes | Markers | Clefs | Lowest and highest note | Length | Written back |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `Bult.txt` | 11 | 29 | 1067 | 1189 | 39 | None, GG, FGG, FG, FFGG | 1825 to 10300 | 191.5 s | byte for byte |
+| `Capriccio nazin.txt` | 17 | 32 | 475 | 483 | 14 | G, FG, FFGG, FF | 2100 to 9000 | 44.7 s | byte for byte |
+| `Capriccio voorzin.txt` | 18 | 25 | 231 | 246 | 0 | None, FG, FFG, G, F, Tenor | 1400 to 9000 | 53.9 s | byte for byte |
+| `Doodsbed.txt` | 8 | 15 | 252 | 307 | 49 | None, FG, G8vb, F, Alto, FFGG | 2100 to 9500 | 179.2 s | byte for byte |
+| `Draaikolk.txt` | 19 | 25 | 548 | 577 | 21 | G, FFG, FG, GG, F | 1700 to 10100 | 25.1 s | byte for byte |
+| `FMmod.txt` | 1 | 4 | 8 | 77 | 0 | FFGG | 1428 to 10550 | 8.0 s | byte for byte |
+| `Mexican Bird.txt` | 1 | 2 | 454 | 595 | 0 | GG | 8820 to 10546 | 15.6 s | byte for byte |
+| `Mixed_roll_example_01h.txt` | 18 | 18 | 25 | 25 | 0 | Percussion, G, F | 4600 to 8325 | 7.6 s | byte for byte |
+| `Priem boventonen.txt` | 5 | 10 | 19 | 68 | 0 | FFGG, G, FG, F | 3425 to 9650 | 18.5 s | byte for byte |
+
+| Check | Passed |
+| --- | --- |
+| 9 rolls are read | yes |
+| Each of them, written back, is byte for byte the file (the test of stage 1b on new files) | yes |
+| Every clef in them is one Maket knows, and every note gets a spelling within half a grid step of its pitch | yes |
+
+## 9. Test material
 
 The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. This section lists what the program finds there; nothing is read yet. A missing file is not a failed check at this stage.
 
@@ -576,6 +609,35 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `Order 1f1/20261123-174650 doodsbed final v1c maket play send log.txt` | 4.7 KB |
 | `Order 1f1/20261123-174806 doodsbed final v1c maket play send log.txt` | 4.3 KB |
 | `Order 1f1/mapping results.txt` | 5.3 KB |
+| `Roll view 2/roll txt/Bult.txt` | 95.3 KB |
+| `Roll view 2/roll txt/Capriccio nazin.txt` | 54.4 KB |
+| `Roll view 2/roll txt/Capriccio voorzin.txt` | 32.5 KB |
+| `Roll view 2/roll txt/Doodsbed.txt` | 57.1 KB |
+| `Roll view 2/roll txt/Draaikolk.txt` | 51.5 KB |
+| `Roll view 2/roll txt/FMmod.txt` | 11.0 KB |
+| `Roll view 2/roll txt/Mexican Bird.txt` | 30.7 KB |
+| `Roll view 2/roll txt/Mixed_roll_example_01h.txt` | 17.2 KB |
+| `Roll view 2/roll txt/Priem boventonen.txt` | 12.0 KB |
+| `Roll view 2/screenshots/Bult pic1.jpg` | 1.3 MB |
+| `Roll view 2/screenshots/Bult pic2.jpg` | 1.3 MB |
+| `Roll view 2/screenshots/Bult pic3.jpg` | 1.9 MB |
+| `Roll view 2/screenshots/Bult pic4 (detail).jpg` | 1.3 MB |
+| `Roll view 2/screenshots/Capriccio nazin pic1.jpg` | 1.6 MB |
+| `Roll view 2/screenshots/Capriccio voorzin pic1.jpg` | 2.0 MB |
+| `Roll view 2/screenshots/Doodsbed pic1.jpg` | 1.6 MB |
+| `Roll view 2/screenshots/Doodsbed pic2.jpg` | 1.7 MB |
+| `Roll view 2/screenshots/Doodsbed pic3 (detail).jpg` | 1.3 MB |
+| `Roll view 2/screenshots/Draaikolk pic1.jpg` | 1.9 MB |
+| `Roll view 2/screenshots/FMmod pic1.jpg` | 976.4 KB |
+| `Roll view 2/screenshots/Mexican Bird pic1.jpg` | 952.9 KB |
+| `Roll view 2/screenshots/Mexican Bird pic2 (detail with selection scaling rectangle).jpg` | 665.8 KB |
+| `Roll view 2/screenshots/Mix_roll_example_01h pic1.jpg` | 1.4 MB |
+| `Roll view 2/screenshots/Mix_roll_example_01h pic2.jpg` | 1.4 MB |
+| `Roll view 2/screenshots/Mix_roll_example_01h pic3.jpg` | 1.4 MB |
+| `Roll view 2/screenshots/Mix_roll_example_01h pic4 (detail 2).jpg` | 1.1 MB |
+| `Roll view 2/screenshots/Mix_roll_example_01h pic4 (detail).jpg` | 1.1 MB |
+| `Roll view 2/screenshots/Mix_roll_example_01h pic4.jpg` | 1.4 MB |
+| `Roll view 2/screenshots/Priem boventonen pic1.jpg` | 2.0 MB |
 | `Study 1f2/20261123-182406 player study plan.txt` | 3.9 KB |
 | `Study 1f2/20261123-182406 player study send log.txt` | 73.1 KB |
 | `Study 1f2/20261123-200617 player study 2 plan.txt` | 4.5 KB |
@@ -599,6 +661,15 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `Study 1f2/20261124-135816 doodsbed final v1c maket play send log.txt` | 45.4 KB |
 | `Study 1f2/20261124-141044 player study 6 plan.txt` | 10.4 KB |
 | `Study 1f2/20261124-141044 player study 6 send log.txt` | 53.1 KB |
+| `Study 1f2/20261124-154002 doodsbed final v1c maket play send log.txt` | 5.3 KB |
+| `Study 1f2/20261124-162037 player study 7 plan.txt` | 2.6 KB |
+| `Study 1f2/20261124-162037 player study 7 send log.txt` | 2.9 KB |
+| `Study 1f2/20261124-162110 player study 7 plan.txt` | 2.6 KB |
+| `Study 1f2/20261124-162110 player study 7 send log.txt` | 5.4 KB |
+| `Study 1f2/20261124-162450 doodsbed final v1c maket play send log.txt` | 25.3 KB |
+| `Study 1f2/20261124-162554 doodsbed final v1c maket play send log.txt` | 6.9 KB |
+| `Study 1f2/20261124-162622 doodsbed final v1c maket play send log.txt` | 6.9 KB |
+| `Study 1f2/temp notes.txt` | 2.2 KB |
 | `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 97.8 KB |
 | `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v send log.txt` | 188.5 KB |
 | `Timing 1d/20261122-193138 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 98.6 KB |
@@ -661,7 +732,7 @@ Needed for the coming stages:
 | File | Needed for | Found |
 | --- | --- | --- |
 | doodsbed final v1c | 1a and 1b: a roll to read and to write back | yes, as `support materials/doodsbed final v1c.txt` |
-| mixed_roll_example_01h | 1a and 1b: a roll to read and to write back | yes, as `support materials/mixed_roll_example_01h.txt` |
+| mixed_roll_example_01h | 1a and 1b: a roll to read and to write back | yes, as `Roll view 2/roll txt/Mixed_roll_example_01h.txt` |
 | 01a doodsbed roll stats | 1a: bach's own counts and its dump of every note | yes, as `support materials/01a doodsbed roll stats.txt` |
 | 02a mixed_roll_example_01h roll stats | 1a: bach's own counts and its dump of every note | yes, as `support materials/02a mixed_roll_example_01h roll stats` |
 | 01b doodsbed roll resave after dump | 1b: the roll as bach saves it again | yes, as `support materials/01b doodsbed roll resave after dump.txt` |
@@ -669,4 +740,4 @@ Needed for the coming stages:
 | 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `support materials/1c maket log.txt` |
 | 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `support materials/1c max log.txt` |
 
-All 150 checks passed.
+All 159 checks passed.
