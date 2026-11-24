@@ -76,6 +76,11 @@ struct Way
     double stepEvery = 900.0;   //   ms from one command to the next
     bool realSteps = false;     //   the numbers sent as real numbers instead of whole ones
 
+    // The tuning check (stage 1f.8):
+    double kammerton = 0.0;         // above 0: `kammerton` with this frequency just before the note
+    bool kammertonWhole = false;    //   sent as a whole number instead of a real one
+    double kammertonDuring = 0.0;   // above 0: `kammerton` with this frequency 0.7 s into the note
+
     double soundLength() const;     // ms from its first note-on to its last note-off
     double itemLength() const;      // ms it takes in the run, silence after it included
 };
@@ -88,6 +93,7 @@ struct Options
     int repetitions = 20;                   // of every way
     bool withNumber = true;                 // the ways that address the note by number
     bool withCorrectionOff = true;          // the ways with the dynamic correction off
+    double standardPitch = 442.0;           // run 7 ends by sending this as the kammerton
 
 
     juce::String voiceName() const          { return "voice" + juce::String (voiceNumber); }
@@ -129,7 +135,12 @@ struct Options
     by number to 0, 0.1, 0.25, 0.5, 0.75 or 1, beside the ramp by pitch to
     127 times that; the struck notes alone; two sequences by number (0.25,
     0.75, 0.25: does it come back; 0.5 three times: does it stay); and the
-    plucked repeated notes. It replaces runs 4 and 5. */
+    plucked repeated notes. It replaces runs 4 and 5.
+    Run 7 (stage 1f.8), the tuning check: the A above middle C (pitch 69)
+    on the cello, each time after `kammerton` with another frequency, as a
+    real number and as a whole one, and once with the command sent while
+    the note sounds. The A must sound at the frequency sent. At the end
+    the standard pitch of the settings is sent again. */
 std::vector<Way> ways (const Options&, int run = 1);
 
 constexpr double singleNoteLength = 1500.0;         // ms

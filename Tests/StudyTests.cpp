@@ -5,6 +5,7 @@
 #include <set>
 
 #include "TestReport.h"
+#include "../Source/Engine/ConTimbre.h"
 #include "../Source/Engine/PlayerStudy.h"
 
 using namespace testreport;
@@ -406,6 +407,51 @@ void testPlayerStudy()
         checkRow (counts && inOrder && inRange && programs && plan.repetitions.size() == 164,
                   "The sixth run: 3 of each of the 44 ramp ways (22 on the cello, 22 on the bass clarinet) and 4 of each of the 8 plucked ways, "
                   "in turns; every target by number lies from 0 to 1");
+    }
+    line();
+
+    // --- The tuning check (stage 1f.8) ---
+    line ("### The tuning check (stage 1f.8)");
+    line();
+    line ("`kammerton <Hz>` sets the ePlayer's standard pitch. The check plays the A above middle C after `kammerton` with several "
+          "frequencies, as a real number and as a whole one, and once sends it while the note sounds.");
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+    {
+        auto withPitch = o;
+        withPitch.standardPitch = 441.0;
+        const auto plan = maket::study::makePlan (withPitch, -1, 7);
+        juce::StringArray tunings;
+        bool before = true;
+        double lastNote = -1.0e9;
+        for (size_t i = 0; i < plan.messages.size(); ++i)
+        {
+            const auto& m = plan.messages[i];
+            if (m.message.address == "kammerton") tunings.add (m.message.toText());
+            if (m.message.address == "ctnote")
+            {
+                lastNote = m.time;
+                // the command before this note: a kammerton 145 ms earlier
+                bool found = false;
+                for (size_t k = 0; k < i; ++k)
+                    found = found || (plan.messages[k].message.address == "kammerton" && std::abs (plan.messages[k].time - (m.time - 145.0)) < 1.0e-6);
+                before = before && found && m.message.toText().startsWith ("ctnote 3 ") && m.message.toText().contains (" 69. 80 ");
+            }
+        }
+        juce::ignoreUnused (lastNote);
+        const auto last = plan.messages.back().message.toText();
+        line ("| (The tuning check: " + juce::String ((int) plan.repetitions.size()) + " notes, " + juce::String (plan.length / 1000.0, 0)
+              + " seconds. First commands: " + tunings[0] + "; " + tunings[1] + "; " + tunings[2] + ".) | |");
+        checkRow (plan.ways.size() == 8 && plan.repetitions.size() == 24 && before && tunings.size() == 24 + 3 + 1
+                  && tunings.contains ("kammerton 442.") && tunings.contains ("kammerton 440.") && tunings.contains ("kammerton 440")
+                  && tunings.contains ("kammerton 430") && tunings.contains ("kammerton 415.3") && tunings.contains ("kammerton 466.16")
+                  && last == "kammerton 441.",
+                  "24 notes of the A on the cello, each 145 ms after its `kammerton` (442, 440, 430, 415.3, 466.16; 440 and 430 also as whole "
+                  "numbers); three notes get a second `kammerton` while they sound; the run ends with the standard pitch of the settings");
+        checkRow (maket::contimbre::kammerton (442.0).toText() == "kammerton 442." && maket::contimbre::kammerton (440.5).toText() == "kammerton 440.5"
+                  && maket::contimbre::kammerton (440.0, true).toText() == "kammerton 440",
+                  "`kammerton` is sent as a real number (`kammerton 442.`, `kammerton 440.5`)");
     }
     line();
 }

@@ -67,6 +67,13 @@ OscMessage chordOn (const juce::String& voice, const std::vector<double>& pitche
     return m;
 }
 
+OscMessage kammerton (double hz, bool whole)
+{
+    auto m = OscMessage ("kammerton");
+    if (whole) m.addInteger (juce::roundToInt (hz)); else m.addReal (hz);
+    return m;
+}
+
 OscMessage dynamicCorrection (bool on)
 {
     return OscMessage ("dynamic_correction").addInteger (on ? 1 : 0);

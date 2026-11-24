@@ -197,6 +197,7 @@ void ConTimbreTestPage::paint (juce::Graphics& g)
                       subtitleArea, juce::Justification::topLeft, 2, 1.0f);
 
     g.drawText ("ePlayer: " + settings.get ("ePlayerHost") + ", port " + settings.get ("ePlayerPort")
+                + juce::String::fromUTF8 ("  \xc2\xb7  standard pitch ") + settings.get ("standardPitch") + " Hz"
                 + juce::String::fromUTF8 ("  \xc2\xb7  logging patch: port ") + settings.get ("logPatchPort")
                 + juce::String::fromUTF8 ("  \xc2\xb7  files in ") + settings.get ("timingFolder"),
                 targetArea, juce::Justification::centredLeft, true);
@@ -404,10 +405,13 @@ void ConTimbreTestPage::play()
                + " s, " + juce::String ((int) messages.size()) + " commands, " + optionsInWords() + "\n\n");
 
     playStart = maket::OscScheduler::now() + leadTime;
+
+    // The standard pitch first, well before the first note (stage 1f.8).
+    scheduler.sendAt (playStart - 0.8 * leadTime, maket::contimbre::kammerton (settings.getDouble ("standardPitch")), maket::OscScheduler::toPlayer, sendTag);
     for (const auto& m : messages)
         scheduler.sendAt (playStart + (m.time - playFrom), m.message, maket::OscScheduler::toPlayer, sendTag);
 
-    numToSend = (int) messages.size();
+    numToSend = (int) messages.size() + 1;
     numSent = numRefused = 0;
     latest = 0.0;
     played.clear();

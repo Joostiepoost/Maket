@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1f.7. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 24 Nov 2026 1:30:05pm.
+Maket 0.0.1, stage 1f.8. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 24 Nov 2026 3:58:19pm.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`1f.7`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`1f.8`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -28,6 +28,7 @@ The settings and their defaults:
 | Folders: conTimbre search data | folder | not set | `contimbreDataFolder` |
 | conTimbre ePlayer (OSC): Host | host | `127.0.0.1` | `ePlayerHost` |
 | conTimbre ePlayer (OSC): Port | port | `46001` | `ePlayerPort` |
+| Tuning: Standard pitch (Hz) | frequency | `442` | `standardPitch` |
 | Tests: Logging patch port | port | `46002` | `logPatchPort` |
 | Tests: Test results | folder | `~/Documents/Maket/Exports/Timing` | `timingFolder` |
 
@@ -40,6 +41,7 @@ The settings and their defaults:
 | The file is JSON on several lines and holds every setting by name | yes |
 | Thirteen values that make no sense (port 0 or 65536, a host with a space, a folder that is not a whole path ...) are refused and change nothing | yes |
 | The edges are accepted: ports 1 and 65535, the host `localhost`, conTimbre's folder left unset | yes |
+| The standard pitch is 442 Hz by default, takes 380 to 480 with up to three decimals (a comma is read as a point), is kept in the file as a number, and refuses seven values that make no sense | yes |
 | A setting put back to its default has it again, and the others keep their values | yes |
 | An entry this version does not know is left in the file when it is written again | yes |
 | A value in the file that makes no sense is replaced by its default and reported; the rest is read | yes |
@@ -274,8 +276,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.027 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.011 ms; the latest of all: 1.814 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.028 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.006 ms; the latest of all: 0.219 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -283,8 +285,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.010 | 0.011 | 1.814 |
-| Arrived at the listener in this program | 0.074 | 0.144 | 3.798 |
+| Left Maket | -0.009 | 0.006 | 0.219 |
+| Arrived at the listener in this program | 0.080 | 0.127 | 2.770 |
 
 ### A command from a typed line (stage 1f.5)
 
@@ -339,14 +341,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.10 ms; the farthest 2.88 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.08 ms; the farthest 2.63 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.02 ms of their time, 95 in 100 within 0.10 ms, 99 in 100 within 0.34 ms; the farthest 2.88 ms (earliest -0.06, latest +2.88).
-The note-ons alone: half within 0.02 ms of their time, 95 in 100 within 0.06 ms, 99 in 100 within 0.14 ms; the farthest 0.18 ms (earliest -0.06, latest +0.18).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.10 ms, the farthest 2.88 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 2.86 ms after it.
+All messages: half within 0.02 ms of their time, 95 in 100 within 0.08 ms, 99 in 100 within 0.54 ms; the farthest 2.63 ms (earliest -0.07, latest +2.63).
+The note-ons alone: half within 0.02 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.40 ms; the farthest 0.54 ms (earliest -0.07, latest +0.54).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.08 ms, the farthest 2.63 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.54 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -534,6 +536,16 @@ Joost found (24 Nov) that `ctdynamic` goes to an absolute target after all, on a
 | (The sixth run: 164 items, 1413 commands, 6.6 minutes.) | |
 | The sixth run: 3 of each of the 44 ramp ways (22 on the cello, 22 on the bass clarinet) and 4 of each of the 8 plucked ways, in turns; every target by number lies from 0 to 1 | yes |
 
+### The tuning check (stage 1f.8)
+
+`kammerton <Hz>` sets the ePlayer's standard pitch. The check plays the A above middle C after `kammerton` with several frequencies, as a real number and as a whole one, and once sends it while the note sounds.
+
+| Check | Passed |
+| --- | --- |
+| (The tuning check: 24 notes, 48.3 seconds. First commands: kammerton 442.; kammerton 440.; kammerton 440.) | |
+| 24 notes of the A on the cello, each 145 ms after its `kammerton` (442, 440, 430, 415.3, 466.16; 440 and 430 also as whole numbers); three notes get a second `kammerton` while they sound; the run ends with the standard pitch of the settings | yes |
+| `kammerton` is sent as a real number (`kammerton 442.`, `kammerton 440.5`) | yes |
+
 ## 8. Test material
 
 The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. This section lists what the program finds there; nothing is read yet. A missing file is not a failed check at this stage.
@@ -579,6 +591,14 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `Study 1f2/20261124-114506 doodsbed final v1c maket play send log.txt` | 752 bytes |
 | `Study 1f2/20261124-114721 doodsbed final v1c maket play send log.txt` | 7.0 KB |
 | `Study 1f2/20261124-115012 doodsbed final v1c maket play send log.txt` | 22.3 KB |
+| `Study 1f2/20261124-134621 doodsbed final v1c maket play send log.txt` | 7.4 KB |
+| `Study 1f2/20261124-134813 doodsbed final v1c maket play send log.txt` | 2.8 KB |
+| `Study 1f2/20261124-134920 doodsbed final v1c maket play send log.txt` | 15.3 KB |
+| `Study 1f2/20261124-135303 doodsbed final v1c maket play send log.txt` | 47.7 KB |
+| `Study 1f2/20261124-135421 doodsbed final v1c maket play send log.txt` | 2.4 KB |
+| `Study 1f2/20261124-135816 doodsbed final v1c maket play send log.txt` | 45.4 KB |
+| `Study 1f2/20261124-141044 player study 6 plan.txt` | 10.4 KB |
+| `Study 1f2/20261124-141044 player study 6 send log.txt` | 53.1 KB |
 | `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 97.8 KB |
 | `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v send log.txt` | 188.5 KB |
 | `Timing 1d/20261122-193138 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 98.6 KB |
@@ -649,4 +669,4 @@ Needed for the coming stages:
 | 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `support materials/1c maket log.txt` |
 | 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `support materials/1c max log.txt` |
 
-All 147 checks passed.
+All 150 checks passed.
