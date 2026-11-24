@@ -502,7 +502,7 @@ Files: `... player study 2 plan.txt` and `... player study 2 send log.txt` in th
 2. In the ePlayer: the orchestra `doodsbed by number`, as for 1f.4.
 3. **By ear, one minute** (OSC test page, the typed line; Return after each):
    - `program voice3 "sul tasto"`
-   - `ctnote 3 1 60. 60 0.` : a cello note that goes on sounding;
+   - `ctnote 3 1 60. 60 20000.` : a cello note that goes on sounding;
    - `ctdynamic 1 20 1000.` : it should get softer over a second;
    - `ctdynamic 1 20. 1000.` : the same target with a point. If the idea is right, it now gets loud instead;
    - `ctdynamic 1 20 1000.` once more, then `ctnoteoff 1`.
