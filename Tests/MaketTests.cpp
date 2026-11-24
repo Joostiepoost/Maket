@@ -26,6 +26,7 @@
 // The program ends with status 0 when every check passed and 1 otherwise.
 
 #include <JuceHeader.h>
+#include <cmath>
 #include "../Source/Model/AppInfo.h"
 #include "../Source/Model/Settings.h"
 #include "../Source/Engine/ConTimbreMapping.h"
@@ -135,7 +136,8 @@ void testSettings (const juce::File& work)
     line ("| --- | --- | --- | --- |");
     for (const auto& s : Settings::all())
     {
-        const juce::String kind = s.kind == SettingKind::folder ? "folder" : s.kind == SettingKind::host ? "host" : "port";
+        const juce::String kind = s.kind == SettingKind::folder ? "folder" : s.kind == SettingKind::host ? "host"
+                                : s.kind == SettingKind::frequency ? "frequency" : "port";
         const juce::String def (s.defaultValue);
         line ("| " + juce::String (s.group) + ": " + s.label + " | " + kind + " | "
               + (def.isEmpty() ? "not set" : "`" + def + "`") + " | `" + s.key + "` |");
@@ -232,6 +234,26 @@ void testSettings (const juce::File& work)
         checkRow (c.set ("contimbreDataFolder", "").wasOk() && c.set ("ePlayerPort", "1").wasOk()
                      && c.set ("ePlayerPort", "65535").wasOk() && c.set ("ePlayerHost", "localhost").wasOk(),
                   "The edges are accepted: ports 1 and 65535, the host `localhost`, conTimbre's folder left unset");
+    }
+
+    // The standard pitch (stage 1f.8).
+    {
+        Settings t (file);
+        t.load();
+        bool ok = std::abs (t.getDouble ("standardPitch") - 442.0) < 1.0e-9 && t.isDefault ("standardPitch");
+        ok = ok && t.set ("standardPitch", " 440,50 ").wasOk() && t.get ("standardPitch") == "440.5" && t.save().wasOk();
+        Settings u (file);
+        juce::var root;
+        ok = ok && u.load().wasOk() && std::abs (u.getDouble ("standardPitch") - 440.5) < 1.0e-9
+                && juce::JSON::parse (file.loadFileAsString(), root).wasOk() && root["standardPitch"].isDouble();
+        for (const auto* bad : { "", "379.9", "480.1", "44o", "4.4.2", "-442", "A" })
+            ok = ok && u.set ("standardPitch", bad).failed();
+        ok = ok && u.get ("standardPitch") == "440.5" && u.set ("standardPitch", "380").wasOk() && u.set ("standardPitch", "480.000").wasOk()
+                && u.get ("standardPitch") == "480";
+        u.reset ("standardPitch");
+        ok = ok && u.save().wasOk();
+        checkRow (ok, "The standard pitch is 442 Hz by default, takes 380 to 480 with up to three decimals (a comma is read as a point), "
+                      "is kept in the file as a number, and refuses seven values that make no sense");
     }
 
     // Back to the default.

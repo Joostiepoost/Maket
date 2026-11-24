@@ -44,6 +44,10 @@ const std::vector<SettingInfo>& Settings::all()
         { "ePlayerPort", "conTimbre ePlayer (OSC)", "Port", SettingKind::port, "46001", false,
           "The port on which the Max patch listens for the ePlayer's messages (its udpreceive object)." },
 
+        { "standardPitch", "Tuning", "Standard pitch (Hz)", SettingKind::frequency, "442", false,
+          "The frequency of the A above middle C. Maket sends it to the ePlayer (as kammerton) at the start of every play; "
+          "442 is the ePlayer's own default. For now one value for all of Maket; it moves into the project when projects come." },
+
         { "logPatchPort", "Tests", "Logging patch port", SettingKind::port, "46002", false,
           "The port of Maket's logging patch in Max (Max/Maket OSC log.maxpat), which notes when each message "
           "arrives. Used by the OSC test page. It must differ from the ePlayer's port." },
@@ -132,6 +136,20 @@ juce::Result Settings::validate (const SettingInfo& info, const juce::String& va
             tidied = juce::String (text.getIntValue());
             return juce::Result::ok();
         }
+
+        case SettingKind::frequency:
+        {
+            const auto number = text.replaceCharacter (',', '.');
+            const double hz = number.getDoubleValue();
+            if (! number.containsOnly ("0123456789.") || number.indexOfChar ('.') != number.lastIndexOfChar ('.')
+                || ! number.containsAnyOf ("0123456789") || hz < 380.0 || hz > 480.0)
+                return juce::Result::fail ("A standard pitch is a number of Hz from 380 to 480, such as 442 or 440.5.");
+            // At most three decimals, and no zeros at the end: 442, 440.5.
+            tidied = juce::String (hz, 3);
+            while (tidied.endsWithChar ('0')) tidied = tidied.dropLastCharacters (1);
+            if (tidied.endsWithChar ('.')) tidied = tidied.dropLastCharacters (1);
+            return juce::Result::ok();
+        }
     }
 
     return juce::Result::fail ("Unknown kind of setting.");
@@ -153,6 +171,11 @@ juce::String Settings::get (const juce::String& key) const
 int Settings::getInt (const juce::String& key) const
 {
     return values[key].getIntValue();
+}
+
+double Settings::getDouble (const juce::String& key) const
+{
+    return values[key].getDoubleValue();
 }
 
 juce::File Settings::getFolder (const juce::String& key) const
@@ -236,7 +259,8 @@ juce::Result Settings::save() const
     object->setProperty (formatKey, formatNumber);
     for (const auto& s : all())
     {
-        if (s.kind == SettingKind::port) object->setProperty (s.key, getInt (s.key));
+        if (s.kind == SettingKind::port)            object->setProperty (s.key, getInt (s.key));
+        else if (s.kind == SettingKind::frequency)  object->setProperty (s.key, getDouble (s.key));
         else                             object->setProperty (s.key, get (s.key));
     }
     if (auto* unknown = others.getDynamicObject())

@@ -25,7 +25,8 @@ enum class SettingKind
 {
     folder,     // a folder on disk; a path inside the home folder is kept as ~/...
     host,       // the name or address of a computer
-    port        // a network port, 1 to 65535
+    port,       // a network port, 1 to 65535
+    frequency   // a standard pitch in Hz, 380 to 480, with at most three decimals
 };
 
 struct SettingInfo
@@ -70,6 +71,9 @@ public:
 
     /** A port (or any whole number) as a number. */
     int getInt (const juce::String& key) const;
+
+    /** A frequency (or any number) as a number. */
+    double getDouble (const juce::String& key) const;
 
     /** A folder setting as a folder, with ~ expanded. An empty setting gives
         an invalid File. */

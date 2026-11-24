@@ -67,6 +67,12 @@ OscMessage chordOn (const juce::String& voice, const std::vector<double>& pitche
     depend on the MIDI volume); its manual advises off for commands sent directly. */
 OscMessage dynamicCorrection (bool on);
 
+/** `kammerton <Hz>`: the ePlayer's standard pitch, the frequency of the A
+    above middle C (its own default: 442). Sent as a real number; `whole`
+    sends a whole number instead, for the tuning check of stage 1f.8, which
+    finds out which form the player takes. */
+OscMessage kammerton (double hz, bool whole = false);
+
 /** A glide of the note of that pitch: to `interval` semitones from the
     pitch it began on, over `duration` ms. */
 OscMessage glissando (const juce::String& voice, double pitch, double interval, double duration);

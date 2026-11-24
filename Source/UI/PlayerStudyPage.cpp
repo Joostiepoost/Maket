@@ -51,6 +51,8 @@ PlayerStudyPage::PlayerStudyPage (maket::Settings& s, maket::OscScheduler& sch) 
     // The fourth and fifth runs (stages 1f.5, 1f.6) tried ideas about ctdynamic that the sixth replaces; they stay in the engine and its tests.
     sixthRunButton.setButtonText ("Run the sixth study");
     sixthRunButton.onClick = [this] { start (-1, 6); };
+    tuningButton.setButtonText ("Run the tuning check");
+    tuningButton.onClick = [this] { start (-1, 7); };
     stopButton.setButtonText ("Stop");
 
     tryPitchButton.onClick  = [this] { start (0); };
@@ -58,7 +60,7 @@ PlayerStudyPage::PlayerStudyPage (maket::Settings& s, maket::OscScheduler& sch) 
     runButton.onClick       = [this] { start (-1); };
     stopButton.onClick      = [this] { stop(); };
 
-    for (auto* button : { &tryPitchButton, &tryNumberButton, &runButton, &secondRunButton, &thirdRunButton, &sixthRunButton, &stopButton })
+    for (auto* button : { &tryPitchButton, &tryNumberButton, &runButton, &secondRunButton, &thirdRunButton, &sixthRunButton, &tuningButton, &stopButton })
         addAndMakeVisible (*button);
 
     view.setMultiLine (true);
@@ -119,6 +121,8 @@ void PlayerStudyPage::resized()
     thirdRunButton.setBounds (row2.removeFromLeft (160));
     row2.removeFromLeft (8);
     sixthRunButton.setBounds (row2.removeFromLeft (170));
+    row2.removeFromLeft (8);
+    tuningButton.setBounds (row2.removeFromLeft (180));
 
     area.removeFromTop (8);
     statusArea = area.removeFromTop (38);
@@ -166,7 +170,7 @@ void PlayerStudyPage::setRunning (bool isRunning)
 {
     running = isRunning;
     for (auto* c : std::initializer_list<juce::Component*> { &voiceField, &programField, &repetitionsField, &numberToggle, &correctionToggle,
-                                                              &tryPitchButton, &runButton, &secondRunButton, &thirdRunButton, &sixthRunButton })
+                                                              &tryPitchButton, &runButton, &secondRunButton, &thirdRunButton, &sixthRunButton, &tuningButton })
         c->setEnabled (! running);
     tryNumberButton.setEnabled (! running && numberToggle.getToggleState());
     stopButton.setEnabled (running);
@@ -198,6 +202,7 @@ bool PlayerStudyPage::readOptions (maket::study::Options& o)
     o.repetitions = repetitions.getIntValue();
     o.withNumber = numberToggle.getToggleState();
     o.withCorrectionOff = correctionToggle.getToggleState();
+    o.standardPitch = settings.getDouble ("standardPitch");
     return true;
 }
 
@@ -243,6 +248,13 @@ void PlayerStudyPage::showWays()
         text << "  " << juce::String ((int) i + 1).paddedLeft (' ', 2) << "  " << sixth.ways[i].name << "\n";
     text << "The whole sixth run: " << (int) sixth.repetitions.size() << " items, " << asClock (sixth.length) << " minutes, "
          << (int) sixth.messages.size() << " commands.\n";
+
+    const auto tuning = maket::study::makePlan (o, -1, 7);
+    text << "\nThe tuning check (stage 1f.8), on the orchestra \"doodsbed by number\", cello on voice3 (ordinario):\n";
+    for (size_t i = 0; i < tuning.ways.size(); ++i)
+        text << "  " << juce::String ((int) i + 1).paddedLeft (' ', 2) << "  " << tuning.ways[i].name << "\n";
+    text << "The whole check: " << (int) tuning.repetitions.size() << " notes, " << asClock (tuning.length) << " minutes; at its end kammerton "
+         << settings.get ("standardPitch") << " (the standard pitch of the Preferences) is sent again.\n";
     view.setText (text, false);
 }
 
@@ -293,6 +305,8 @@ void PlayerStudyPage::stop()
     for (const auto& s : scheduler.takeSent (sendTag)) sent.push_back (s);
     scheduler.sendImmediately (maket::contimbre::allNotesOff(), maket::OscScheduler::toPlayer, sendTag);
     scheduler.sendImmediately (maket::contimbre::dynamicCorrection (true), maket::OscScheduler::toPlayer, sendTag);
+    if (plan.run == 7)      // the tuning check changes the player's standard pitch: put it back
+        scheduler.sendImmediately (maket::contimbre::kammerton (settings.getDouble ("standardPitch")), maket::OscScheduler::toPlayer, sendTag);
     finish (true);
 }
 

@@ -32,6 +32,32 @@ std::vector<Way> ways (const Options& o, int run)
 {
     std::vector<Way> all;
 
+    if (run == 7)
+    {
+        auto tuned = [&] (double hz, bool whole, double during = 0.0)
+        {
+            Way w;
+            const auto asText = [] (double v) { return std::abs (v - std::round (v)) < 1.0e-9 ? juce::String (juce::roundToInt (v)) : juce::String (v, 2); };
+            w.name = "the A (69) after kammerton " + asText (hz) + (whole ? " as a whole number" : " as a real number")
+                     + (during > 0.0 ? ", and kammerton " + asText (during) + " while it sounds" : juce::String());
+            w.byNumber = true;
+            w.voiceNumber = 3;  w.program = "ordinario";  w.gain = o.gain;
+            w.singleVelocity = 80;  w.singlePitch = 69.0;
+            w.kammerton = hz;  w.kammertonWhole = whole;  w.kammertonDuring = during;
+            w.share = 0.15;
+            all.push_back (w);
+        };
+        tuned (442.0, false);
+        tuned (440.0, false);
+        tuned (440.0, true);
+        tuned (430.0, false);
+        tuned (430.0, true);
+        tuned (415.3, false);       // a semitone under 440
+        tuned (466.16, false);      // a semitone over 440
+        tuned (442.0, false, 430.0);
+        return all;
+    }
+
     if (run == 6)
     {
         struct Instrument { int voice; const char* program; double pitch; double gain; const char* name; };
@@ -480,6 +506,8 @@ Plan makePlan (const Options& o, int onlyWay, int run)
         const auto& way = plan.ways[(size_t) w];
         start += way.restBefore;
         add (start - 150.0, contimbre::dynamicCorrection (way.correction));
+        if (way.kammerton > 0.0)        add (start - 145.0, contimbre::kammerton (way.kammerton, way.kammertonWhole));
+        if (way.kammertonDuring > 0.0)  add (start + 700.0, contimbre::kammerton (way.kammertonDuring));
         if (way.program.isNotEmpty())
         {
             const auto voice = "voice" + juce::String (way.voiceNumber > 0 ? way.voiceNumber : o.voiceNumber);
@@ -498,6 +526,7 @@ Plan makePlan (const Options& o, int onlyWay, int run)
     // The player is left as it was found: the correction on.
     plan.length = end + 300.0;
     add (plan.length, contimbre::dynamicCorrection (true));
+    if (run == 7) add (plan.length, contimbre::kammerton (o.standardPitch));
 
     std::stable_sort (plan.messages.begin(), plan.messages.end(), [] (const auto& a, const auto& b) { return a.time < b.time; });
     return plan;
@@ -506,7 +535,7 @@ Plan makePlan (const Options& o, int onlyWay, int run)
 juce::String planAsText (const Plan& plan)
 {
     juce::String text;
-    text << "Maket, study of the ePlayer, run " << plan.run << (plan.run == 6 ? " (stage 1f.7)\n" : plan.run == 5 ? " (stage 1f.6)\n" : plan.run == 4 ? " (stage 1f.5)\n" : plan.run == 3 ? " (stage 1f.4)\n" : plan.run == 2 ? " (stage 1f.3)\n" : " (stage 1f.2)\n")
+    text << "Maket, study of the ePlayer, run " << plan.run << (plan.run == 7 ? " (stage 1f.8, the tuning check)\n" : plan.run == 6 ? " (stage 1f.7)\n" : plan.run == 5 ? " (stage 1f.6)\n" : plan.run == 4 ? " (stage 1f.5)\n" : plan.run == 3 ? " (stage 1f.4)\n" : plan.run == 2 ? " (stage 1f.3)\n" : " (stage 1f.2)\n")
          << "voice\t" << plan.options.voiceName() << "\n"
          << "program\t" << plan.options.program << "\n"
          << "gain\t" << juce::String (plan.options.gain, 6) << "\n"
@@ -518,7 +547,7 @@ juce::String planAsText (const Plan& plan)
             "velocity of a single note (0: the figure), silence added before (ms), voice, repeated notes, their period (ms), "
             "their overlap (ms), glide (semitones), chord, struck at (run 4; 0: not a ramp note), ramp target (-1: none), target sent as, "
             "numbers of ctdynamic one after the other (run 5: steps; run 6: targets from 0 to 1; - when none), ms each ramp takes, "
-            "ms from one to the next, sent as, pitch of the note\n";
+            "ms from one to the next, sent as, pitch of the note, kammerton before the note (Hz; 0: none), sent as, kammerton 0.7 s into the note (Hz; 0: none)\n";
 
     for (size_t i = 0; i < plan.ways.size(); ++i)
     {
@@ -531,7 +560,8 @@ juce::String planAsText (const Plan& plan)
              << w.rampFrom << "\t" << juce::String (w.rampTarget, 1) << "\t" << (w.wholeTarget ? "whole" : "real") << "\t";
         if (w.steps.empty()) text << "-";
         for (size_t k = 0; k < w.steps.size(); ++k) text << (k > 0 ? " " : "") << (std::abs (w.steps[k] - std::round (w.steps[k])) < 1.0e-9 ? juce::String (juce::roundToInt (w.steps[k])) : juce::String (w.steps[k], 3));
-        text << "\t" << juce::String (w.stepLength, 1) << "\t" << juce::String (w.stepEvery, 1) << "\t" << (w.realSteps ? "real" : "whole") << "\t" << juce::String (w.singlePitch, 2) << "\n";
+        text << "\t" << juce::String (w.stepLength, 1) << "\t" << juce::String (w.stepEvery, 1) << "\t" << (w.realSteps ? "real" : "whole") << "\t" << juce::String (w.singlePitch, 2) << "\t"
+             << juce::String (w.kammerton, 2) << "\t" << (w.kammertonWhole ? "whole" : "real") << "\t" << juce::String (w.kammertonDuring, 2) << "\n";
     }
 
     text << "\nRepetitions. Columns, separated by a tab: number, way, begins at (ms from the first command)\n";
