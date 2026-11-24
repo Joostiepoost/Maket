@@ -1,0 +1,26 @@
+Maket playing doodsbed final v1c.txt from 0.0 s, by number (ramp targets whole), Maket's own way
+Columns, separated by a tab: time in the roll (ms), left Maket this much after it (ms), command
+0.000	0.008	program voice7 ordLV
+0.000	0.219	gain voice7 0.
+0.000	0.281	ctnote 7 202 67. 101 1221.623308
+603.575	0.006	ctnote 7 203 66. 61 663.892687
+696.788	-0.001	ctnote 7 204 64. 47 524.522922
+697.063	-0.016	ctnote 7 205 63. 56 570.076532
+789.400	0.033	ctnote 7 206 62. 50 431.571882
+835.871	0.023	ctnote 7 207 61. 70 384.715817
+881.798	-0.001	ctnote 7 208 60. 66 339.350297
+928.830	0.006	ctnote 7 209 58. 79 292.635798
+1220.587	-0.019	ctnoteoff 207
+1220.972	-0.009	ctnoteoff 206
+1221.149	-0.023	ctnoteoff 208
+1221.311	-0.022	ctnoteoff 204
+1221.466	-0.020	ctnoteoff 209
+1221.623	-0.015	ctnoteoff 202
+1267.139	0.002	ctnoteoff 205
+1267.468	-0.024	ctnoteoff 203
+4541.945	-0.013	program voice6 "col legno tratto"
+4541.945	0.111	gain voice6 0.
+4541.945	0.134	ctnote 6 121 78. 1 5264.453507
+4541.945	0.148	ctdynamic 121 28 737.155457
+4541.945	0.165	ctglissando 121 0. 2571.906645
+5278.945	0.000	ctdynamic 121 79 1909.830404

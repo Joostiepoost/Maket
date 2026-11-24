@@ -1,0 +1,20 @@
+Maket playing doodsbed final v1c.txt from 0.0 s, by pitch, Maket's own way
+Columns, separated by a tab: time in the roll (ms), left Maket this much after it (ms), command
+0.000	0.018	program PnRH ordLV
+0.000	0.257	gain PnRH 0.
+0.000	0.308	noteon PnRH 67. 101
+603.575	0.003	noteon PnRH 66. 61
+696.788	0.004	noteon PnRH 64. 47
+697.063	-0.010	noteon PnRH 63. 56
+789.400	0.002	noteon PnRH 62. 50
+835.871	0.023	noteon PnRH 61. 70
+881.798	0.019	noteon PnRH 60. 66
+928.830	0.019	noteon PnRH 58. 79
+1220.587	0.021	noteoff PnRH 61.
+1220.972	0.003	noteoff PnRH 62.
+1221.149	-0.007	noteoff PnRH 60.
+1221.311	-0.020	noteoff PnRH 64.
+1221.466	-0.003	noteoff PnRH 58.
+1221.623	-0.010	noteoff PnRH 67.
+1267.139	0.007	noteoff PnRH 63.
+1267.468	-0.017	noteoff PnRH 66.
