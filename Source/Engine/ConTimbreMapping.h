@@ -75,6 +75,13 @@ struct MappingOptions
         "voice" + k, whatever its name in the roll; program and gain go to
         that name. The notes are numbered from 1 in the order of the roll. */
     bool byNumber = false;
+
+    /** By number: the target of a dynamic ramp rounded and sent as a whole
+        number (stage 1f.5). In the recording of doodsbed by number of
+        24 Nov 2026 every ramp whose target was sent as a real number went
+        to about the same loud level, whatever the target, and only a ramp
+        to 0 came down. To be confirmed by the fourth run of the study. */
+    bool wholeTargets = true;
 };
 
 /** The commands for the voices of `roll` named in `voices` (numbers from 0;

@@ -57,6 +57,10 @@ private:
     juce::TextEditor voiceField, programField, pitchField, dynamicField, durationField;
     juce::ToggleButton copyToggle;
     juce::TextButton noteButton, runButton, offButton, clearButton, saveButton;
+    juce::TextEditor commandField;          // stage 1f.5: any command, typed
+    juce::TextButton sendButton;
+    juce::Rectangle<int> commandLabelArea;
+    void sendTyped();
     juce::TextEditor logView;
     std::unique_ptr<juce::FileChooser> chooser;
 

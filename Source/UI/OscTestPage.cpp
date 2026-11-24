@@ -65,6 +65,14 @@ OscTestPage::OscTestPage (maket::Settings& s, maket::OscScheduler& sch) : settin
     clearButton.onClick = [this] { clearLog(); };
     saveButton.onClick  = [this] { saveLog(); };
 
+    commandField.setFont (Theme::mono (13.5f));
+    commandField.setTextToShowWhenEmpty ("any command, for example: ctdynamic 1 20 1000.   (several at once: with ; between them)", Theme::textMuted);
+    commandField.onReturnKey = [this] { sendTyped(); };
+    addAndMakeVisible (commandField);
+    sendButton.setButtonText ("Send");
+    sendButton.onClick = [this] { sendTyped(); };
+    addAndMakeVisible (sendButton);
+
     for (auto* button : { &noteButton, &runButton, &offButton, &clearButton, &saveButton })
         addAndMakeVisible (*button);
 
@@ -138,6 +146,13 @@ void OscTestPage::resized()
     buttons.removeFromLeft (8);
     saveButton.setBounds (buttons.removeFromLeft (110));
 
+    area.removeFromTop (14);
+    commandLabelArea = area.removeFromTop (18);
+    auto commandRow = area.removeFromTop (28).withWidth (juce::jmin (area.getWidth(), 760));
+    sendButton.setBounds (commandRow.removeFromRight (80));
+    commandRow.removeFromRight (8);
+    commandField.setBounds (commandRow);
+
     area.removeFromTop (8);
     problemArea = area.removeFromTop (20);
     area.removeFromTop (8);
@@ -189,6 +204,12 @@ void OscTestPage::paint (juce::Graphics& g)
         g.drawText (saved, problemArea, juce::Justification::centredLeft, true);
     }
 
+    g.setColour (Theme::text);
+    g.setFont (Theme::font (15.0f, true));
+    g.setColour (Theme::textMuted);
+    g.setFont (Theme::font (12.0f));
+    g.drawText ("Any command, typed: 20 is a whole number, 20. a real one, the rest text (in \"quotes\" when it has spaces); several with ; between them. Return sends.",
+                commandLabelArea, juce::Justification::centredLeft, true);
     g.setColour (Theme::text);
     g.setFont (Theme::font (15.0f, true));
     g.drawText ("Sent by Maket", logHeadingArea, juce::Justification::centredLeft, true);
@@ -291,6 +312,27 @@ void OscTestPage::allNotesOff()
 
     scheduler.clear();      // note-ons and note-offs that still wait are dropped
     scheduler.sendAt (maket::OscScheduler::now(), maket::contimbre::allNotesOff(), targets(), sendTag);
+    repaint();
+}
+
+void OscTestPage::sendTyped()
+{
+    problem.clear();
+    saved.clear();
+
+    std::vector<maket::OscMessage> messages;
+    if (! maket::OscMessage::severalFromText (commandField.getText(), messages))
+    {
+        problem = "Type a command first, such as: gain voice3 0. (and close any quote that is open).";
+        repaint();
+        return;
+    }
+
+    applyTargets();
+    const double now = maket::OscScheduler::now();
+    for (const auto& message : messages)
+        scheduler.sendAt (now, message, targets(), sendTag);       // all at the same moment, in the order typed
+    commandField.selectAll();
     repaint();
 }
 

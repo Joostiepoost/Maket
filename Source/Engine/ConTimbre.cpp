@@ -25,9 +25,11 @@ OscMessage allNotesOff()
     return OscMessage ("all_notes_off");
 }
 
-OscMessage dynamic (const juce::String& voice, double pitch, double target, double duration)
+OscMessage dynamic (const juce::String& voice, double pitch, double target, double duration, bool wholeTarget)
 {
-    return OscMessage ("dynamic").addText (voice).addReal (pitch).addReal (target).addReal (duration);
+    auto m = OscMessage ("dynamic").addText (voice).addReal (pitch);
+    if (wholeTarget) m.addInteger (juce::roundToInt (target)); else m.addReal (target);
+    return m.addReal (duration);
 }
 
 OscMessage gain (const juce::String& voice, double decibels)
@@ -45,9 +47,11 @@ OscMessage ctNoteOff (int noteNumber)
     return OscMessage ("ctnoteoff").addInteger (noteNumber);
 }
 
-OscMessage ctDynamic (int noteNumber, double target, double duration)
+OscMessage ctDynamic (int noteNumber, double target, double duration, bool wholeTarget)
 {
-    return OscMessage ("ctdynamic").addInteger (noteNumber).addReal (target).addReal (duration);
+    auto m = OscMessage ("ctdynamic").addInteger (noteNumber);
+    if (wholeTarget) m.addInteger (juce::roundToInt (target)); else m.addReal (target);
+    return m.addReal (duration);
 }
 
 OscMessage ctGlissando (int noteNumber, double interval, double duration)

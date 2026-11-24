@@ -33,7 +33,7 @@ OscMessage allNotesOff();
 
 /** A change of loudness with its change of timbre, for the note of that
     pitch: to `target` (0 to 127) over `duration` ms. */
-OscMessage dynamic (const juce::String& voice, double pitch, double target, double duration);
+OscMessage dynamic (const juce::String& voice, double pitch, double target, double duration, bool wholeTarget = false);
 
 /** The gain of a whole voice, in dB, at once. */
 OscMessage gain (const juce::String& voice, double decibels);
@@ -49,7 +49,11 @@ OscMessage gain (const juce::String& voice, double decibels);
     manual marks the duration (ms) as unused. */
 OscMessage ctNote (int voiceNumber, int noteNumber, double pitch, int dynamic, double duration);
 OscMessage ctNoteOff (int noteNumber);
-OscMessage ctDynamic (int noteNumber, double target, double duration);
+/** `wholeTarget`: the target rounded and sent as a whole number (stage
+    1f.5). The doodsbed recording by number of 24 Nov 2026 points to the
+    ePlayer taking a `ctdynamic` target that is sent as a real number for
+    the top, whatever its value; only 0 came out as 0. */
+OscMessage ctDynamic (int noteNumber, double target, double duration, bool wholeTarget = false);
 OscMessage ctGlissando (int noteNumber, double interval, double duration);
 
 /** `chordon <voice> <pitch> <pitch> ...`: for a program in the player's

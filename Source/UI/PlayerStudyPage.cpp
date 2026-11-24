@@ -48,6 +48,8 @@ PlayerStudyPage::PlayerStudyPage (maket::Settings& s, maket::OscScheduler& sch) 
     secondRunButton.onClick = [this] { start (-1, 2); };
     thirdRunButton.setButtonText ("Run the third study");
     thirdRunButton.onClick = [this] { start (-1, 3); };
+    fourthRunButton.setButtonText ("Run the fourth study");
+    fourthRunButton.onClick = [this] { start (-1, 4); };
     stopButton.setButtonText ("Stop");
 
     tryPitchButton.onClick  = [this] { start (0); };
@@ -55,7 +57,7 @@ PlayerStudyPage::PlayerStudyPage (maket::Settings& s, maket::OscScheduler& sch) 
     runButton.onClick       = [this] { start (-1); };
     stopButton.onClick      = [this] { stop(); };
 
-    for (auto* button : { &tryPitchButton, &tryNumberButton, &runButton, &secondRunButton, &thirdRunButton, &stopButton })
+    for (auto* button : { &tryPitchButton, &tryNumberButton, &runButton, &secondRunButton, &thirdRunButton, &fourthRunButton, &stopButton })
         addAndMakeVisible (*button);
 
     view.setMultiLine (true);
@@ -114,6 +116,8 @@ void PlayerStudyPage::resized()
     secondRunButton.setBounds (row2.removeFromLeft (170));
     row2.removeFromLeft (8);
     thirdRunButton.setBounds (row2.removeFromLeft (160));
+    row2.removeFromLeft (8);
+    fourthRunButton.setBounds (row2.removeFromLeft (170));
 
     area.removeFromTop (8);
     statusArea = area.removeFromTop (38);
@@ -161,7 +165,7 @@ void PlayerStudyPage::setRunning (bool isRunning)
 {
     running = isRunning;
     for (auto* c : std::initializer_list<juce::Component*> { &voiceField, &programField, &repetitionsField, &numberToggle, &correctionToggle,
-                                                              &tryPitchButton, &runButton, &secondRunButton, &thirdRunButton })
+                                                              &tryPitchButton, &runButton, &secondRunButton, &thirdRunButton, &fourthRunButton })
         c->setEnabled (! running);
     tryNumberButton.setEnabled (! running && numberToggle.getToggleState());
     stopButton.setEnabled (running);
@@ -230,6 +234,15 @@ void PlayerStudyPage::showWays()
          << "  the flute's program harmonic (chord mode) by chordon and by a plain note-on\n"
          << "The whole third run: " << (int) third.repetitions.size() << " items, " << asClock (third.length) << " minutes, "
          << (int) third.messages.size() << " commands.\n";
+
+    const auto fourth = maket::study::makePlan (o, -1, 4);
+    text << "\nThe fourth study (stage 1f.5), on the orchestra \"doodsbed by number\" (cello on voice3), played in turns:\n"
+         << "  one note of 1.9 s struck at 40 or 100; 0.2 s later one ramp over 0.8 s to 0, 10, 40, 80 or 127:\n"
+         << "    by pitch; by number with the target as a whole number; by number with the target as a real number (as sent until now);\n"
+         << "    and the struck note without a ramp\n"
+         << "  one pitch plucked eight times (program pizz), every 120 or 70 ms, overlapping or apart, by pitch and by number\n"
+         << "The whole fourth run: " << (int) fourth.repetitions.size() << " items, " << asClock (fourth.length) << " minutes, "
+         << (int) fourth.messages.size() << " commands.\n";
     view.setText (text, false);
 }
 

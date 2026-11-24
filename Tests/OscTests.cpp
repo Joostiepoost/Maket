@@ -278,6 +278,43 @@ void testSending()
 
 } // namespace
 
+static void testTypedCommands()
+{
+    line ("### A command from a typed line (stage 1f.5)");
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+
+    using maket::OscMessage;
+    using Kind = maket::OscArgument::Kind;
+    OscMessage m, n, bad;
+    const bool read = OscMessage::fromText ("chordon voice4 60 79. 80 \"sul tasto\" -3 -0.5 1e3 \"12\"", m);
+    checkRow (read && m.address == "chordon" && m.arguments.size() == 9
+              && m.arguments[0].kind == Kind::text && m.arguments[0].text == "voice4"
+              && m.arguments[1].kind == Kind::integer && m.arguments[1].integer == 60
+              && m.arguments[2].kind == Kind::real && std::abs (m.arguments[2].real - 79.0) < 1.0e-9
+              && m.arguments[4].kind == Kind::text && m.arguments[4].text == "sul tasto"
+              && m.arguments[5].kind == Kind::integer && m.arguments[5].integer == -3
+              && m.arguments[6].kind == Kind::real && std::abs (m.arguments[6].real + 0.5) < 1.0e-9
+              && m.arguments[7].kind == Kind::real && std::abs (m.arguments[7].real - 1000.0) < 1.0e-9
+              && m.arguments[8].kind == Kind::text && m.arguments[8].text == "12",
+              "A typed line becomes a command: a word of digits a whole number, a number with a point a real one, the rest text; "
+              "quotes keep a text with spaces together and make a number a text");
+    // A text that looks like a number prints without quotes, as in Max, so it is left out of the way back.
+    OscMessage plain;
+    const bool readPlain = OscMessage::fromText ("chordon voice4 60 79. 80 \"sul tasto\" -3 -0.5 1e3", plain);
+    checkRow (readPlain && OscMessage::fromText (plain.toText(), n) && n == plain && OscMessage::fromText ("all_notes_off", n) && n.arguments.empty()
+              && ! OscMessage::fromText ("   ", bad) && ! OscMessage::fromText ("program Vlc \"sul tasto", bad),
+              "What a command prints as can be typed back to the same command; an empty line and an open quote are refused");
+    std::vector<OscMessage> several, none;
+    checkRow (OscMessage::severalFromText ("noteon voice4 60. 80 ; noteon voice4 79. 80;", several) && several.size() == 2
+              && several[0].toText() == "noteon voice4 60. 80" && several[1].toText() == "noteon voice4 79. 80"
+              && OscMessage::severalFromText ("program voice3 \"a;b\"", several) && several.size() == 1 && several[0].arguments[1].text == "a;b"
+              && ! OscMessage::severalFromText (" ; ", none) && none.empty(),
+              "Several commands on one line, with a semicolon between them, are read in their order; a semicolon inside quotes is text");
+    line();
+}
+
 void testOsc()
 {
     line ("## 5. OSC: messages and sending");
@@ -288,4 +325,5 @@ void testOsc()
 
     testBytes();
     testSending();
+    testTypedCommands();
 }

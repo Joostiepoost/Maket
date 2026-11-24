@@ -36,7 +36,7 @@ namespace
     enum class Part { all, programAndNote, curves };
 
     void addNote (std::vector<TimedMessage>& out, const juce::String& voice, int voiceIndex, double onset, const Note& note,
-                  Part part, bool glissandoToZero, int number = 0, int voiceNumber = 0)
+                  Part part, bool glissandoToZero, int number = 0, int voiceNumber = 0, bool wholeTargets = false)
     {
         // number above 0: the note is addressed by that number, on the voice "voice" + voiceNumber.
         const bool byNumber = number > 0;
@@ -79,7 +79,7 @@ namespace
         {
             const auto points = pointsOf (slot->content);
             for (size_t i = 0; i + 1 < points.size(); ++i)
-                add (onset + std::round (points[i].x), byNumber ? ctDynamic (number, points[i + 1].y, points[i + 1].x - points[i].x)
+                add (onset + std::round (points[i].x), byNumber ? ctDynamic (number, points[i + 1].y, points[i + 1].x - points[i].x, wholeTargets)
                                                                : dynamic (voice, pitch, points[i + 1].y, points[i + 1].x - points[i].x));
         }
 
@@ -141,7 +141,7 @@ std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<i
             {
                 for (size_t n = 0; n < chord.notes.size(); ++n)
                     if (! chord.notes[n].isMuted())
-                        addNote (out, voiceLabel, (int) v, chord.onset, chord.notes[n], part, options.glissandoToZero, numbers[n], voiceNumber);
+                        addNote (out, voiceLabel, (int) v, chord.onset, chord.notes[n], part, options.glissandoToZero, numbers[n], voiceNumber, options.wholeTargets);
             };
 
             if (options.noteOnFirst)    { each (Part::programAndNote); each (Part::curves); }

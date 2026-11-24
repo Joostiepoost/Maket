@@ -64,6 +64,11 @@ struct Way
     bool chord = false;         // `chordon` with the two pitches 60 and 79, ended by a note-off of 60
     double singlePitch = 67.4;  // the pitch of a single note
 
+    // The fourth run (stage 1f.5):
+    int rampFrom = 0;           // above 0: one note of 1.9 s struck at this velocity, with at most one ramp
+    double rampTarget = -1.0;   //   0 or more: 0.2 s after the note-on a ramp to this target over 0.8 s
+    bool wholeTarget = false;   //   the target sent as a whole number instead of a real one
+
     double soundLength() const;     // ms from its first note-on to its last note-off
     double itemLength() const;      // ms it takes in the run, silence after it included
 };
@@ -76,6 +81,7 @@ struct Options
     int repetitions = 20;                   // of every way
     bool withNumber = true;                 // the ways that address the note by number
     bool withCorrectionOff = true;          // the ways with the dynamic correction off
+
 
     juce::String voiceName() const          { return "voice" + juce::String (voiceNumber); }
 };
@@ -94,11 +100,22 @@ struct Options
     and by number, the notes overlapping, meeting, or apart; a glide of two
     semitones by pitch and by number; a note with a very large number; and
     the flute's `harmonic` program, which is in chord mode, by `chordon` and
-    by a plain note-on. */
+    by a plain note-on.
+    Run 4 (stage 1f.5), on the same orchestra, after the recording of
+    doodsbed by number (every ramp by number went to about the same loud
+    level, whatever its target; only a ramp to 0 came down): one note
+    struck at 40 or 100 with one ramp to 0, 10, 40, 80 or 127, by pitch and
+    by number, the target by number as a whole number and as a real one
+    (the form of a number is the suspect); and the repeated notes of run 3
+    once more on a plucked program, where each attack can be counted. */
 std::vector<Way> ways (const Options&, int run = 1);
 
 constexpr double singleNoteLength = 1500.0;         // ms
 constexpr double singleRepetitionLength = 2000.0;
+
+constexpr double rampNoteLength = 1900.0;           // run 4: a note with one ramp
+constexpr double rampRepetitionLength = 2400.0;
+constexpr double rampDelay = 200.0, rampLength = 800.0;
 
 constexpr double figureLength = 3400.0;     // ms, from the first note-on to the last note-off
 constexpr double repetitionLength = 4000.0;

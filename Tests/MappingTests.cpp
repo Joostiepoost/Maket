@@ -359,7 +359,7 @@ void testByNumber (const juce::File& temp)
     for (size_t i = 0; i < 5 && i < vlc.size(); ++i) first << vlc[i].message.toText() << (i < 4 ? "; " : "");
     line ("| (The cello's first note by number: " + first + ".) | |");
     checkRow (vlc.size() > 5 && at (vlc[0], onset, "program voice3 \"sul tasto\"") && at (vlc[1], onset, "gain voice3 5.777778")
-              && at (vlc[2], onset, "ctnote 3 12 66.9 1 4511.") && at (vlc[3], onset, "ctdynamic 12 16.846475 4267.")
+              && at (vlc[2], onset, "ctnote 3 12 66.9 1 4511.") && at (vlc[3], onset, "ctdynamic 12 17 4267.")
               && at (vlc[4], onset, "ctglissando 12 0.5 4511."),
               "The cello, third voice of the roll, plays on `voice3`: program and gain by that name, the note and its curves by the note's number");
 
@@ -388,6 +388,30 @@ void testByNumber (const juce::File& temp)
     checkRow (sameShape && noteOns == 306 && (int) numbers.size() == 306 && *numbers.begin() == 1 && *numbers.rbegin() == 306 && known,
               "By number the roll gives the same commands at the same times as by pitch, each in its form by number; the 306 notes are "
               "numbered 1 to 306, and every note-off, dynamic and glissando carries the number of its note");
+
+    // A ramp's target by number: a whole number, the rounded target of the same ramp by pitch; with the switch off, as by pitch.
+    {
+        auto real = o;
+        real.wholeTargets = false;
+        const auto asReal = maket::contimbre::messagesForRoll (roll, {}, real);
+        using Kind = maket::OscArgument::Kind;
+        bool whole = true, rounded = true, realOnes = asReal.size() == all.size();
+        int ramps = 0;
+        for (size_t i = 0; i < all.size() && i < byPitch.size() && realOnes; ++i)
+            if (all[i].message.address == "ctdynamic")
+            {
+                ++ramps;
+                const auto& t = all[i].message.arguments[1];
+                const auto& p = byPitch[i].message.arguments[2];
+                const auto& r = asReal[i].message.arguments[1];
+                whole = whole && t.kind == Kind::integer;
+                rounded = rounded && t.integer == juce::roundToInt (p.real);
+                realOnes = realOnes && r.kind == Kind::real && std::abs (r.real - p.real) < 1.0e-9;
+            }
+        checkRow (ramps == 218 && whole && rounded && realOnes,
+                  "By number the target of each of the 218 dynamic ramps is sent as a whole number, the target by pitch rounded; "
+                  "with the switch off it is the real number as by pitch (stage 1f.5)");
+    }
 
     // The viola's double stop: two notes of one moment, each with its own number and its own curve.
     {

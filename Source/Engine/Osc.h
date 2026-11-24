@@ -62,6 +62,18 @@ struct OscMessage
     /** The message on one line, as it shows in the Max window: noteon Fl 60. 100 */
     juce::String toText() const;
 
+    /** A message from one typed line, the other way round from toText: the
+        first word is the command, a word of digits a whole number, a number
+        with a point (or an exponent) a real one, anything else a text; a
+        text with spaces goes in double quotes. False when the line is
+        empty or a quote is left open. */
+    static bool fromText (const juce::String& line, OscMessage& result);
+
+    /** Several commands typed on one line, with a semicolon between them
+        (a semicolon inside quotes is text). False, and nothing in `result`,
+        when one of them cannot be read or the line holds none. */
+    static bool severalFromText (const juce::String& line, std::vector<OscMessage>& result);
+
     bool operator== (const OscMessage& other) const;
     bool operator!= (const OscMessage& other) const     { return ! (*this == other); }
 };

@@ -12,6 +12,7 @@ namespace maket::study
 double Way::soundLength() const
 {
     if (repeatCount > 0)    return (repeatCount - 1) * period + juce::jmax (20.0, period + overlap);
+    if (rampFrom > 0)       return rampNoteLength;
     if (std::abs (glide) > 0.0)   return 2000.0;
     if (singleVelocity > 0 || chord) return singleNoteLength;
     return figureLength;
@@ -19,6 +20,7 @@ double Way::soundLength() const
 
 double Way::itemLength() const
 {
+    if (rampFrom > 0) return rampRepetitionLength;
     if (repeatCount > 0 || singleVelocity > 0 || chord) return singleRepetitionLength;
     if (std::abs (glide) > 0.0) return 2800.0;
     return repetitionLength;
@@ -27,6 +29,50 @@ double Way::itemLength() const
 std::vector<Way> ways (const Options& o, int run)
 {
     std::vector<Way> all;
+
+    if (run == 4)
+    {
+        const int cello = 3;
+        auto ramp = [&] (bool byNumber, int from, double target, bool whole)
+        {
+            Way w;
+            w.name = juce::String ("note struck at ") + juce::String (from)
+                     + (target < 0.0 ? juce::String (", no ramp")
+                                     : ", ramp to " + juce::String (juce::roundToInt (target)) + (whole ? " (whole number)" : " (real number)"))
+                     + (byNumber ? ", by number" : ", by pitch");
+            w.byNumber = byNumber;
+            w.voiceNumber = cello;  w.program = "sul tasto";  w.gain = o.gain;
+            w.rampFrom = from;  w.rampTarget = target;  w.wholeTarget = whole;
+            w.share = 0.2;
+            all.push_back (w);
+        };
+
+        for (int from : { 40, 100 })
+            for (double target : { 0.0, 10.0, 40.0, 80.0, 127.0 })
+            {
+                ramp (false, from, target, false);      // by pitch, as ScAst and Maket send it
+                ramp (true,  from, target, true);       // by number, the target a whole number
+            }
+        for (double target : { 10.0, 40.0, 80.0 })  ramp (true, 40, target, false);     // by number, the target real, as sent until 1f.4
+        for (double target : { 10.0, 40.0 })        ramp (true, 100, target, false);
+        for (double target : { 10.0, 80.0 })        ramp (false, 40, target, true);     // by pitch with a whole target: does the form matter there?
+        for (int from : { 40, 100 })                ramp (true, from, -1.0, false);     // no ramp: the struck note itself
+
+        for (double period : { 120.0, 70.0 })
+            for (double overlap : { 30.0, -20.0 })
+                for (bool byNumber : { false, true })
+                {
+                    Way w;
+                    w.name = juce::String ("plucked note repeated ") + (byNumber ? "by number" : "by pitch") + ", one every " + juce::String ((int) period)
+                             + " ms, " + (overlap > 0.0 ? "overlapping by 30 ms" : "20 ms apart");
+                    w.byNumber = byNumber;
+                    w.voiceNumber = cello;  w.program = "pizz";  w.gain = o.gain;
+                    w.repeatCount = 8;  w.period = period;  w.overlap = overlap;
+                    w.share = 0.3;
+                    all.push_back (w);
+                }
+        return all;
+    }
 
     if (run == 3)
     {
@@ -172,6 +218,19 @@ std::vector<contimbre::TimedMessage> figure (const Options& o, const Way& way, d
         return out;
     }
 
+    // One note with at most one ramp (run 4).
+    if (way.rampFrom > 0)
+    {
+        const double pitch = 67.4;
+        const int number = nextNumber++;
+        addPlain (start, way.byNumber ? contimbre::ctNote (voiceNumber, number, pitch, way.rampFrom, rampNoteLength) : contimbre::noteOn (voice, pitch, way.rampFrom));
+        if (way.rampTarget >= 0.0)
+            addPlain (start + rampDelay, way.byNumber ? contimbre::ctDynamic (number, way.rampTarget, rampLength, way.wholeTarget)
+                                                      : contimbre::dynamic (voice, pitch, way.rampTarget, rampLength, way.wholeTarget));
+        addPlain (start + rampNoteLength, way.byNumber ? contimbre::ctNoteOff (number) : contimbre::noteOff (voice, pitch));
+        return out;
+    }
+
     // One pitch struck several times. A note-off that falls at the moment of the next note-on is sent before it.
     if (way.repeatCount > 0)
     {
@@ -233,7 +292,7 @@ Plan makePlan (const Options& o, int onlyWay, int run)
 
     // The voice as the figure needs it, half a second before the first note.
     const double lead = 500.0;
-    if (run != 3)
+    if (run < 3)
     {
         add (0.0, contimbre::program (o.voiceName(), o.program));
         add (0.0, contimbre::gain (o.voiceName(), o.gain));
@@ -299,7 +358,7 @@ Plan makePlan (const Options& o, int onlyWay, int run)
 juce::String planAsText (const Plan& plan)
 {
     juce::String text;
-    text << "Maket, study of the ePlayer, run " << plan.run << (plan.run == 3 ? " (stage 1f.4)\n" : plan.run == 2 ? " (stage 1f.3)\n" : " (stage 1f.2)\n")
+    text << "Maket, study of the ePlayer, run " << plan.run << (plan.run == 4 ? " (stage 1f.5)\n" : plan.run == 3 ? " (stage 1f.4)\n" : plan.run == 2 ? " (stage 1f.3)\n" : " (stage 1f.2)\n")
          << "voice\t" << plan.options.voiceName() << "\n"
          << "program\t" << plan.options.program << "\n"
          << "gain\t" << juce::String (plan.options.gain, 6) << "\n"
@@ -309,7 +368,7 @@ juce::String planAsText (const Plan& plan)
          << "\nWays. Columns, separated by a tab: number, by pitch or number, first dynamic after the note-on (ms), "
             "next ramp's command before the end of the ramp before (ms), dynamic correction, name, "
             "velocity of a single note (0: the figure), silence added before (ms), voice, repeated notes, their period (ms), "
-            "their overlap (ms), glide (semitones), chord\n";
+            "their overlap (ms), glide (semitones), chord, struck at (run 4; 0: not a ramp note), ramp target (-1: none), target sent as\n";
 
     for (size_t i = 0; i < plan.ways.size(); ++i)
     {
@@ -318,7 +377,8 @@ juce::String planAsText (const Plan& plan)
              << juce::String (w.lead, 1) << "\t" << (w.correction ? "on" : "off") << "\t" << w.name << "\t"
              << w.singleVelocity << "\t" << juce::String (w.restBefore, 1) << "\t"
              << (w.voiceNumber > 0 ? w.voiceNumber : plan.options.voiceNumber) << "\t" << w.repeatCount << "\t" << juce::String (w.period, 1) << "\t"
-             << juce::String (w.overlap, 1) << "\t" << juce::String (w.glide, 1) << "\t" << (w.chord ? 1 : 0) << "\n";
+             << juce::String (w.overlap, 1) << "\t" << juce::String (w.glide, 1) << "\t" << (w.chord ? 1 : 0) << "\t"
+             << w.rampFrom << "\t" << juce::String (w.rampTarget, 1) << "\t" << (w.wholeTarget ? "whole" : "real") << "\n";
     }
 
     text << "\nRepetitions. Columns, separated by a tab: number, way, begins at (ms from the first command)\n";

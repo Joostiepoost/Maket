@@ -56,7 +56,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1f.1 | The ways of the Max patch by switch (order, glissando to 0, spacing), to hear whether any of them matters; the comparison sets apart what is known of the patch | done; tested by Joost on 23 Nov: no difference, Maket keeps its own way |
 | 1f.2 | A study of the ePlayer: one figure sent in ten ways (by pitch or by number, timing of the dynamics, dynamic correction), to find out what makes it follow its ramps | done; run by Joost on 23 Nov |
 | 1f.3 | The second run of the study: is a note by number louder as such; which part of the timing matters by number; do slow starts come from the note before | done; run by Joost on 23 Nov |
-| 1f.4 | A roll played by number (Maket's default from here on); the third run of the study: fast repeated notes, a glide by number, a chord-mode program | built, to test |
+| 1f.4 | A roll played by number (Maket's default from here on); the third run of the study: fast repeated notes, a glide by number, a chord-mode program | done; run by Joost on 24 Nov |
+| 1f.5 | By number, the target of a dynamic ramp as a whole number; any command typed on the OSC test page; the fourth run of the study: one ramp per note in each form, plucked repeated notes | built, to test |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -478,6 +479,42 @@ Files: `... player study 2 plan.txt` and `... player study 2 send log.txt` in th
 3. **By ear:** conTimbre test page, the doodsbed roll, untick `Mezzo`, tick *by number*, **Play**. It should be doodsbed as you know it, with stronger dynamic curves. Listen for the piano's repeated notes and anything that hangs or is cut short. **Stop** in the middle: silence at once?
 4. **The run:** start a recording, ePlayer study page, **Run the third study**; stop the recording when the status says the run is over.
 5. Send the recording and what you heard at step 3; push the *Test results* folder and `Measurements/report.md`.
+
+### After the run of 1f.4 (24 Nov)
+
+- **Dynamics by number went wrong, and the form of a number is the suspect.** In the recording of doodsbed by number, a note that has a dynamic curve goes to about the same loud level after every ramp, whatever the ramp's target; only a ramp to 0 comes down. The cello's low note at 62 s (struck at 70, ramps to 22, 14, 11, 2) sounds 20 to 30 dB louder than by pitch. Maket sent the target of `ctdynamic` as a real number (`22.4`), as it does for `dynamic` by pitch; the measurements fit a player that takes such a target for the top. The second run fits it too: there the ramps by number lay about 5 dB over those by pitch at the start of a crescendo and met them at its top. So "the ramps by number are stronger and start more evenly", reported after 1f.2 and 1f.3, was this fault and no gain. Stage 1f.5 sends the target as a whole number and tests it.
+- Notes without a curve are right by number (piano, short notes), no note hung after the end, and all 295 notes got their note-off.
+- A glide by number equals a glide by pitch (both two semitones, the same course in all 16). A note with the number 2000000 sounds and ends as any other.
+- Repeated notes on a bowed sound: where the notes do not overlap, by pitch and by number are the same sound to 0.0 dB at one note every 120 ms; at one every 70 ms a few items of both have a hole (5 of 16 by pitch, 2 of 16 by number: too few to tell them apart). Where the notes overlap by 30 ms, by pitch is steady and by number varies from item to item (two notes of one sample sound at once and add up differently each time). A bowed sound has no attacks to count, so this goes once more on a plucked one in 1f.5.
+- `chordon voice4 60. 79.` was refused by the ePlayer ("chord_on: bad parameters"), and a plain note-on on the chord-mode program gave silence. The right form is not known; the typed command line of 1f.5 is there to try forms by hand.
+
+## Using stage 1f.5
+
+- **The target of a ramp by number as a whole number.** On the conTimbre test page, under *by number*, a second switch (on by default): a ramp to 22.4 is sent as `ctdynamic <number> 22 <duration>`. Off: as a real number, as in 1f.4.
+- **Any command, typed** (OSC test page): a line such as `ctdynamic 1 20 1000.` is sent as it stands when you press Return. `20` is a whole number, `20.` a real one, anything else text; a text with spaces goes in double quotes (`program voice3 "sul tasto"`). Several commands with `;` between them leave at the same moment, in the order typed. The list under it shows what was sent.
+- **The fourth run of the study** (**Run the fourth study**, 6 minutes 14), on the orchestra `doodsbed by number`:
+  - one note of 1.9 s on the cello (`sul tasto`), struck at 40 or at 100; 0.2 s later one ramp over 0.8 s to 0, 10, 40, 80 or 127: by pitch, by number with the target as a whole number, by number with the target as a real number, and the struck note without any ramp (4 of each);
+  - one pitch plucked eight times (`pizz`), every 120 or 70 ms, overlapping by 30 ms or 20 ms apart, by pitch and by number (6 of each).
+
+### Testing stage 1f.5
+
+1. `git pull`, then `./build.sh`: `stage 1f.5`. `./build.sh tests` ends with `All 143 checks passed.`
+2. In the ePlayer: the orchestra `doodsbed by number`, as for 1f.4.
+3. **By ear, one minute** (OSC test page, the typed line; Return after each):
+   - `program voice3 "sul tasto"`
+   - `ctnote 3 1 60. 60 0.` : a cello note that goes on sounding;
+   - `ctdynamic 1 20 1000.` : it should get softer over a second;
+   - `ctdynamic 1 20. 1000.` : the same target with a point. If the idea is right, it now gets loud instead;
+   - `ctdynamic 1 20 1000.` once more, then `ctnoteoff 1`.
+4. **By ear:** conTimbre test page, the doodsbed roll, untick `Mezzo`, tick *by number* (the switch under it stays on), **Play**. Are the dynamics now those you know from ScAst?
+5. **The run:** start a recording, ePlayer study page, **Run the fourth study**; stop the recording when the status says the run is over.
+6. **Chords, if you have five minutes** (the typed line again; `All notes off` between tries). Which of these gives the flute's harmonic, and what does the ePlayer say to each?
+   - `program voice4 harmonic` first;
+   - `noteon voice4 60. 80 ; noteon voice4 79. 80` (two plain note-ons at the same moment);
+   - `chordon voice4 60 79`
+   - `chordon voice4 60. 79. 80`
+   - `chordon voice4 80 60. 79.`
+7. Send the recording and what you heard at steps 3, 4 and 6; push the *Test results* folder and `Measurements/report.md`.
 
 ## The repository
 
