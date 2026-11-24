@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1f.5. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 24 Nov 2026 8:51:48am.
+Maket 0.0.1, stage 1f.6. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 24 Nov 2026 10:01:45am.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`1f.5`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`1f.6`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -275,7 +275,7 @@ A listener inside the test program takes the place of Max. This shows that the m
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
 | None leaves before its time (the earliest: -0.025 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.010 ms; the latest of all: 0.570 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.006 ms; the latest of all: 0.012 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -283,8 +283,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.007 | 0.010 | 0.570 |
-| Arrived at the listener in this program | 0.130 | 0.179 | 1.246 |
+| Left Maket | -0.010 | 0.006 | 0.012 |
+| Arrived at the listener in this program | 0.102 | 0.194 | 1.992 |
 
 ### A command from a typed line (stage 1f.5)
 
@@ -339,14 +339,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.12 ms; the farthest 3.27 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.07 ms; the farthest 2.18 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.03 ms of their time, 95 in 100 within 0.12 ms, 99 in 100 within 1.64 ms; the farthest 3.27 ms (earliest -0.09, latest +3.27).
-The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.09 ms, 99 in 100 within 1.20 ms; the farthest 1.64 ms (earliest -0.09, latest +1.64).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.12 ms, the farthest 3.27 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 3.24 ms after it.
+All messages: half within 0.02 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.39 ms; the farthest 2.18 ms (earliest -0.07, latest +2.18).
+The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.44 ms; the farthest 2.18 ms (earliest -0.07, latest +2.18).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.07 ms, the farthest 2.18 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.35 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -434,6 +434,8 @@ The first note of the cello (`Vlc`) in the file: 6690 cents, 4511 ms long, veloc
 | The cello, third voice of the roll, plays on `voice3`: program and gain by that name, the note and its curves by the note's number | yes |
 | By number the roll gives the same commands at the same times as by pitch, each in its form by number; the 306 notes are numbered 1 to 306, and every note-off, dynamic and glissando carries the number of its note | yes |
 | By number the target of each of the 218 dynamic ramps is sent as a whole number, the target by pitch rounded; with the switch off it is the real number as by pitch (stage 1f.5) | yes |
+| (As steps, the cello's first ramp: ctdynamic 12 16 4267.; 132 of the 218 steps go down.) | |
+| By number with ramps as steps (stage 1f.6): the same commands at the same times, each ramp as the way from the level before (the cello's first note, struck at 1, to 17: a step of 16); for every note the velocity and its steps add up to its last target | yes |
 | In the viola's double stop at 19.4 s each of the two notes has its own number, and each gets its own dynamic | yes |
 
 ### Note-on options, a command in a marker, muted notes
@@ -512,6 +514,16 @@ After the recording of doodsbed by number (24 Nov): every ramp by number went to
 | The repeated notes on the plucked program `pizz`, by pitch and by number, every 120 or 70 ms, overlapping or apart | yes |
 | (The fourth run: 164 items, 1601 commands, 6.2 minutes.) | |
 | The fourth run: 4 of each of the 29 ramp ways and 6 of each of the 8 plucked ways, in turns; 40 ramps by number with a whole target, 20 with a real one | yes |
+
+### The fifth run of the study (stage 1f.6)
+
+Joost found by ear (24 Nov) that `ctdynamic` moves a note from where it is: up for a number above 0, down for one below, unlike the manual. The fifth run measures it: single steps, sequences of steps, and the ramps by pitch to the same levels.
+
+| Check | Passed |
+| --- | --- |
+| A note struck at 60 with one step by number (`ctdynamic 1 -40 800.`), the same as a real number, over 1.5 s, three steps one after the other (-30, -30, +60, each over 0.6 s, 0.9 s apart), and the ramp by pitch beside them | yes |
+| (The fifth run: 176 items, 1509 commands, 7.4 minutes; 148 steps by number, 56 of them down.) | |
+| The fifth run: 4 of each of its 44 ways, in turns: 19 single steps, 6 sequences of three, 8 ramps by pitch, 3 struck notes without a ramp, 8 plucked ways | yes |
 
 ## 8. Test material
 
@@ -622,4 +634,4 @@ Needed for the coming stages:
 | 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `support materials/1c maket log.txt` |
 | 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `support materials/1c max log.txt` |
 
-All 143 checks passed.
+All 146 checks passed.

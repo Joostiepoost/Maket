@@ -82,6 +82,15 @@ struct MappingOptions
         to about the same loud level, whatever the target, and only a ramp
         to 0 came down. To be confirmed by the fourth run of the study. */
     bool wholeTargets = true;
+
+    /** By number: a dynamic ramp sent as a step from the level before it
+        (the target minus the target before; for a note's first ramp, minus
+        its velocity) instead of as the target itself (stage 1f.6). Found by
+        Joost by ear on 24 Nov 2026: `ctdynamic` moved the note up for a
+        number above 0 and down for one below 0, from where it was, unlike
+        what the manual says. Assumes that a step counts in the same units
+        as a velocity; the fifth run of the study measures that. */
+    bool relativeRamps = false;
 };
 
 /** The commands for the voices of `roll` named in `voices` (numbers from 0;

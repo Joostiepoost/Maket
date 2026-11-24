@@ -50,6 +50,8 @@ PlayerStudyPage::PlayerStudyPage (maket::Settings& s, maket::OscScheduler& sch) 
     thirdRunButton.onClick = [this] { start (-1, 3); };
     fourthRunButton.setButtonText ("Run the fourth study");
     fourthRunButton.onClick = [this] { start (-1, 4); };
+    fifthRunButton.setButtonText ("Run the fifth study");
+    fifthRunButton.onClick = [this] { start (-1, 5); };
     stopButton.setButtonText ("Stop");
 
     tryPitchButton.onClick  = [this] { start (0); };
@@ -57,7 +59,7 @@ PlayerStudyPage::PlayerStudyPage (maket::Settings& s, maket::OscScheduler& sch) 
     runButton.onClick       = [this] { start (-1); };
     stopButton.onClick      = [this] { stop(); };
 
-    for (auto* button : { &tryPitchButton, &tryNumberButton, &runButton, &secondRunButton, &thirdRunButton, &fourthRunButton, &stopButton })
+    for (auto* button : { &tryPitchButton, &tryNumberButton, &runButton, &secondRunButton, &thirdRunButton, &fourthRunButton, &fifthRunButton, &stopButton })
         addAndMakeVisible (*button);
 
     view.setMultiLine (true);
@@ -118,6 +120,8 @@ void PlayerStudyPage::resized()
     thirdRunButton.setBounds (row2.removeFromLeft (160));
     row2.removeFromLeft (8);
     fourthRunButton.setBounds (row2.removeFromLeft (170));
+    row2.removeFromLeft (8);
+    fifthRunButton.setBounds (row2.removeFromLeft (160));
 
     area.removeFromTop (8);
     statusArea = area.removeFromTop (38);
@@ -165,7 +169,7 @@ void PlayerStudyPage::setRunning (bool isRunning)
 {
     running = isRunning;
     for (auto* c : std::initializer_list<juce::Component*> { &voiceField, &programField, &repetitionsField, &numberToggle, &correctionToggle,
-                                                              &tryPitchButton, &runButton, &secondRunButton, &thirdRunButton, &fourthRunButton })
+                                                              &tryPitchButton, &runButton, &secondRunButton, &thirdRunButton, &fourthRunButton, &fifthRunButton })
         c->setEnabled (! running);
     tryNumberButton.setEnabled (! running && numberToggle.getToggleState());
     stopButton.setEnabled (running);
@@ -243,6 +247,13 @@ void PlayerStudyPage::showWays()
          << "  one pitch plucked eight times (program pizz), every 120 or 70 ms, overlapping or apart, by pitch and by number\n"
          << "The whole fourth run: " << (int) fourth.repetitions.size() << " items, " << asClock (fourth.length) << " minutes, "
          << (int) fourth.messages.size() << " commands.\n";
+
+    const auto fifth = maket::study::makePlan (o, -1, 5);
+    text << "\nThe fifth study (stage 1f.6), on the same orchestra, cello on voice3; it replaces the fourth. Does ctdynamic move a note from where it is?\n";
+    for (size_t i = 0; i < fifth.ways.size(); ++i)
+        text << "  " << juce::String ((int) i + 1).paddedLeft (' ', 2) << "  " << fifth.ways[i].name << "\n";
+    text << "The whole fifth run: " << (int) fifth.repetitions.size() << " items, " << asClock (fifth.length) << " minutes, "
+         << (int) fifth.messages.size() << " commands.\n";
     view.setText (text, false);
 }
 
