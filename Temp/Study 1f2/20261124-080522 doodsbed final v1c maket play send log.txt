@@ -1,0 +1,5 @@
+Maket playing doodsbed final v1c.txt from 0.0 s, by number, Maket's own way
+Columns, separated by a tab: time in the roll (ms), left Maket this much after it (ms), command
+0.000	0.000	program voice7 ordLV
+0.000	0.221	gain voice7 0.
+0.000	0.282	ctnote 7 202 67. 101 1221.623308
