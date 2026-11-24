@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 1f.4. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 23 Nov 2026 10:59:35pm.
+Maket 0.0.1, stage 1f.5. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 24 Nov 2026 8:51:48am.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`1f.4`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`1f.5`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -274,8 +274,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.027 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.013 ms; the latest of all: 2.827 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.025 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.010 ms; the latest of all: 0.570 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -283,8 +283,16 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.010 | 0.013 | 2.827 |
-| Arrived at the listener in this program | 0.104 | 0.203 | 2.892 |
+| Left Maket | -0.007 | 0.010 | 0.570 |
+| Arrived at the listener in this program | 0.130 | 0.179 | 1.246 |
+
+### A command from a typed line (stage 1f.5)
+
+| Check | Passed |
+| --- | --- |
+| A typed line becomes a command: a word of digits a whole number, a number with a point a real one, the rest text; quotes keep a text with spaces together and make a number a text | yes |
+| What a command prints as can be typed back to the same command; an empty line and an open quote are refused | yes |
+| Several commands on one line, with a semicolon between them, are read in their order; a semicolon inside quotes is text | yes |
 
 ## 6. Timing tests: the measuring
 
@@ -331,14 +339,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.12 ms; the farthest 1.62 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.12 ms; the farthest 3.27 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.03 ms of their time, 95 in 100 within 0.12 ms, 99 in 100 within 0.99 ms; the farthest 1.62 ms (earliest -0.10, latest +1.62).
-The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.11 ms, 99 in 100 within 0.32 ms; the farthest 1.62 ms (earliest -0.10, latest +1.62).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.12 ms, the farthest 1.62 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 1.62 ms after it.
+All messages: half within 0.03 ms of their time, 95 in 100 within 0.12 ms, 99 in 100 within 1.64 ms; the farthest 3.27 ms (earliest -0.09, latest +3.27).
+The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.09 ms, 99 in 100 within 1.20 ms; the farthest 1.64 ms (earliest -0.09, latest +1.64).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.12 ms, the farthest 3.27 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 3.24 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -422,9 +430,10 @@ The first note of the cello (`Vlc`) in the file: 6690 cents, 4511 ms long, veloc
 
 | Check | Passed |
 | --- | --- |
-| (The cello's first note by number: program voice3 "sul tasto"; gain voice3 5.777778; ctnote 3 12 66.9 1 4511.; ctdynamic 12 16.846475 4267.; ctglissando 12 0.5 4511..) | |
+| (The cello's first note by number: program voice3 "sul tasto"; gain voice3 5.777778; ctnote 3 12 66.9 1 4511.; ctdynamic 12 17 4267.; ctglissando 12 0.5 4511..) | |
 | The cello, third voice of the roll, plays on `voice3`: program and gain by that name, the note and its curves by the note's number | yes |
 | By number the roll gives the same commands at the same times as by pitch, each in its form by number; the 306 notes are numbered 1 to 306, and every note-off, dynamic and glissando carries the number of its note | yes |
+| By number the target of each of the 218 dynamic ramps is sent as a whole number, the target by pitch rounded; with the switch off it is the real number as by pitch (stage 1f.5) | yes |
 | In the viola's double stop at 19.4 s each of the two notes has its own number, and each gets its own dynamic | yes |
 
 ### Note-on options, a command in a marker, muted notes
@@ -493,6 +502,17 @@ One figure of two notes, played in several ways in turns. What the ePlayer does 
 | (The third run: 124 items, 1981 commands, 4.3 minutes.) | |
 | The third run: 8 of each repeated-note and glide way, 4 of the others, each preceded by the program and gain of its voice (the cello on voice3, the flute on voice4) | yes |
 
+### The fourth run of the study (stage 1f.5)
+
+After the recording of doodsbed by number (24 Nov): every ramp by number went to about the same loud level whatever its target, and only a ramp to 0 came down. The suspect is the form of the target, sent as a real number. One note with one ramp, in each form; and the repeated notes once more, plucked.
+
+| Check | Passed |
+| --- | --- |
+| One note with one ramp, 0.2 s after the note-on, over 0.8 s: by pitch, by number with the target as a whole number (`ctdynamic 1 10 800.`) and as a real one (`ctdynamic 2 10. 800.`), by pitch with a whole target, and the note without a ramp | yes |
+| The repeated notes on the plucked program `pizz`, by pitch and by number, every 120 or 70 ms, overlapping or apart | yes |
+| (The fourth run: 164 items, 1601 commands, 6.2 minutes.) | |
+| The fourth run: 4 of each of the 29 ramp ways and 6 of each of the 8 plucked ways, in turns; 40 ramps by number with a whole target, 20 with a real one | yes |
+
 ## 8. Test material
 
 The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. This section lists what the program finds there; nothing is read yet. A missing file is not a failed check at this stage.
@@ -527,6 +547,11 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `Study 1f2/20261123-182406 player study send log.txt` | 73.1 KB |
 | `Study 1f2/20261123-200617 player study 2 plan.txt` | 4.5 KB |
 | `Study 1f2/20261123-200617 player study 2 send log.txt` | 49.7 KB |
+| `Study 1f2/20261124-080034 doodsbed final v1c maket play send log.txt` | 20.1 KB |
+| `Study 1f2/20261124-080404 doodsbed final v1c maket play send log.txt` | 47.8 KB |
+| `Study 1f2/20261124-080522 doodsbed final v1c maket play send log.txt` | 277 bytes |
+| `Study 1f2/20261124-080814 player study 3 plan.txt` | 4.1 KB |
+| `Study 1f2/20261124-080814 player study 3 send log.txt` | 73.0 KB |
 | `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 97.8 KB |
 | `Timing 1d/20261122-192950 dense maket test1 - overdrive IO vector 512 Signal v send log.txt` | 188.5 KB |
 | `Timing 1d/20261122-193138 dense maket test1 - overdrive IO vector 512 Signal v max log.txt` | 98.6 KB |
@@ -597,4 +622,4 @@ Needed for the coming stages:
 | 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `support materials/1c maket log.txt` |
 | 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `support materials/1c max log.txt` |
 
-All 136 checks passed.
+All 143 checks passed.
