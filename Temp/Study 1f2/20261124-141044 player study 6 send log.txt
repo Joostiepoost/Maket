@@ -1,0 +1,1415 @@
+Maket, study of the ePlayer, run 6: when every command left.
+Columns, separated by a tab: time in the run (ms), left Maket this much after it (ms), command
+350.000	-0.008	dynamic_correction 1
+360.000	-0.018	program voice3 "sul tasto"
+360.000	0.073	gain voice3 5.777778
+500.000	0.009	ctnote 3 1 67.4 40 1900.
+700.000	0.006	ctdynamic 1 0. 800.
+2400.000	0.009	ctnoteoff 1
+2750.000	-0.010	dynamic_correction 1
+2760.000	-0.011	program voice3 "sul tasto"
+2760.000	0.091	gain voice3 5.777778
+2900.000	0.002	noteon voice3 67.4 40
+3100.000	0.007	dynamic voice3 67.4 0. 800.
+4800.000	-0.002	noteoff voice3 67.4
+5150.000	-0.013	dynamic_correction 1
+5160.000	-0.011	program voice3 "sul tasto"
+5160.000	0.131	gain voice3 5.777778
+5300.000	0.014	ctnote 3 3 67.4 40 1900.
+5500.000	-0.002	ctdynamic 3 0.1 800.
+7200.000	-0.008	ctnoteoff 3
+7550.000	-0.016	dynamic_correction 1
+7560.000	-0.020	program voice3 "sul tasto"
+7560.000	0.114	gain voice3 5.777778
+7700.000	0.009	noteon voice3 67.4 40
+7900.000	0.007	dynamic voice3 67.4 12.7 800.
+9600.000	0.004	noteoff voice3 67.4
+9950.000	0.001	dynamic_correction 1
+9960.000	-0.009	program voice3 "sul tasto"
+9960.000	0.113	gain voice3 5.777778
+10100.000	-0.004	ctnote 3 5 67.4 40 1900.
+10300.000	0.025	ctdynamic 5 0.25 800.
+12000.000	0.000	ctnoteoff 5
+12350.000	-0.009	dynamic_correction 1
+12360.000	-0.016	program voice3 "sul tasto"
+12360.000	0.039	gain voice3 5.777778
+12500.000	0.001	noteon voice3 67.4 40
+12700.000	0.006	dynamic voice3 67.4 31.75 800.
+14400.000	0.026	noteoff voice3 67.4
+14750.000	0.013	dynamic_correction 1
+14760.000	0.008	program voice3 "sul tasto"
+14760.000	0.098	gain voice3 5.777778
+14900.000	0.008	ctnote 3 7 67.4 40 1900.
+15100.000	0.028	ctdynamic 7 0.5 800.
+16800.000	-0.018	ctnoteoff 7
+17150.000	-0.016	dynamic_correction 1
+17160.000	-0.006	program voice3 "sul tasto"
+17160.000	0.138	gain voice3 5.777778
+17300.000	-0.008	noteon voice3 67.4 40
+17500.000	0.017	dynamic voice3 67.4 63.5 800.
+19200.000	0.023	noteoff voice3 67.4
+19550.000	-0.007	dynamic_correction 1
+19560.000	-0.002	program voice3 "sul tasto"
+19560.000	0.053	gain voice3 5.777778
+19700.000	0.007	ctnote 3 9 67.4 40 1900.
+19900.000	-0.003	ctdynamic 9 0.75 800.
+21600.000	-0.017	ctnoteoff 9
+21950.000	-0.002	dynamic_correction 1
+21960.000	-0.013	program voice3 "sul tasto"
+21960.000	0.089	gain voice3 5.777778
+22100.000	0.013	noteon voice3 67.4 40
+22300.000	0.023	dynamic voice3 67.4 95.25 800.
+24000.000	0.017	noteoff voice3 67.4
+24350.000	-0.010	dynamic_correction 1
+24360.000	-0.003	program voice3 "sul tasto"
+24360.000	0.082	gain voice3 5.777778
+24500.000	0.007	ctnote 3 11 67.4 40 1900.
+24700.000	0.018	ctdynamic 11 1. 800.
+26400.000	-0.017	ctnoteoff 11
+26750.000	-0.013	dynamic_correction 1
+26760.000	0.013	program voice3 "sul tasto"
+26760.000	0.109	gain voice3 5.777778
+26900.000	0.017	noteon voice3 67.4 40
+27100.000	0.011	dynamic voice3 67.4 127. 800.
+28800.000	0.019	noteoff voice3 67.4
+29150.000	0.012	dynamic_correction 1
+29160.000	0.004	program voice3 "sul tasto"
+29160.000	0.119	gain voice3 5.777778
+29300.000	0.011	ctnote 3 13 67.4 100 1900.
+29500.000	0.028	ctdynamic 13 0.1 800.
+31200.000	-0.019	ctnoteoff 13
+31550.000	-0.008	dynamic_correction 1
+31560.000	0.015	program voice3 "sul tasto"
+31560.000	0.097	gain voice3 5.777778
+31700.000	-0.009	noteon voice3 67.4 100
+31900.000	0.022	dynamic voice3 67.4 12.7 800.
+33600.000	-0.002	noteoff voice3 67.4
+33950.000	-0.002	dynamic_correction 1
+33960.000	-0.014	program voice3 "sul tasto"
+33960.000	0.060	gain voice3 5.777778
+34100.000	0.007	ctnote 3 15 67.4 100 1900.
+34300.000	0.015	ctdynamic 15 0.5 800.
+36000.000	-0.011	ctnoteoff 15
+36350.000	0.004	dynamic_correction 1
+36360.000	-0.001	program voice3 "sul tasto"
+36360.000	0.091	gain voice3 5.777778
+36500.000	-0.002	noteon voice3 67.4 100
+36700.000	0.005	dynamic voice3 67.4 63.5 800.
+38400.000	0.001	noteoff voice3 67.4
+38750.000	-0.007	dynamic_correction 1
+38760.000	-0.018	program voice3 "sul tasto"
+38760.000	0.046	gain voice3 5.777778
+38900.000	-0.000	ctnote 3 17 67.4 100 1900.
+39100.000	0.014	ctdynamic 17 1. 800.
+40800.000	-0.015	ctnoteoff 17
+41150.000	0.001	dynamic_correction 1
+41160.000	0.003	program voice3 "sul tasto"
+41160.000	0.086	gain voice3 5.777778
+41300.000	-0.009	noteon voice3 67.4 100
+41500.000	0.020	dynamic voice3 67.4 127. 800.
+43200.000	0.032	noteoff voice3 67.4
+43550.000	-0.016	dynamic_correction 1
+43560.000	-0.012	program voice3 "sul tasto"
+43560.000	0.086	gain voice3 5.777778
+43700.000	0.008	ctnote 3 19 67.4 40 1900.
+45600.000	-0.009	ctnoteoff 19
+45950.000	0.004	dynamic_correction 1
+45960.000	-0.019	program voice3 "sul tasto"
+45960.000	0.088	gain voice3 5.777778
+46100.000	0.002	ctnote 3 20 67.4 100 1900.
+48000.000	-0.002	ctnoteoff 20
+48350.000	-0.001	dynamic_correction 1
+48360.000	-0.013	program voice3 "sul tasto"
+48360.000	0.080	gain voice3 5.777778
+48500.000	0.008	ctnote 3 21 67.4 40 3300.
+48700.000	0.012	ctdynamic 21 0.25 600.
+49600.000	0.005	ctdynamic 21 0.75 600.
+50500.000	0.005	ctdynamic 21 0.25 600.
+51800.000	0.002	ctnoteoff 21
+52150.000	-0.007	dynamic_correction 1
+52160.000	-0.006	program voice3 "sul tasto"
+52160.000	0.092	gain voice3 5.777778
+52300.000	-0.003	ctnote 3 22 67.4 40 3300.
+52500.000	0.004	ctdynamic 22 0.5 600.
+53400.000	0.034	ctdynamic 22 0.5 600.
+54300.000	0.031	ctdynamic 22 0.5 600.
+55600.000	-0.019	ctnoteoff 22
+55950.000	-0.014	dynamic_correction 1
+55960.000	0.001	program voice5 ordinario
+55960.000	0.147	gain voice5 -6.
+56100.000	0.032	ctnote 5 23 50. 40 1900.
+56300.000	0.030	ctdynamic 23 0. 800.
+58000.000	-0.022	ctnoteoff 23
+58350.000	-0.017	dynamic_correction 1
+58360.000	-0.001	program voice5 ordinario
+58360.000	0.094	gain voice5 -6.
+58500.000	0.001	noteon voice5 50. 40
+58700.000	0.017	dynamic voice5 50. 0. 800.
+60400.000	0.016	noteoff voice5 50.
+60750.000	-0.003	dynamic_correction 1
+60760.000	-0.020	program voice5 ordinario
+60760.000	0.095	gain voice5 -6.
+60900.000	0.002	ctnote 5 25 50. 40 1900.
+61100.000	-0.004	ctdynamic 25 0.1 800.
+62800.000	-0.002	ctnoteoff 25
+63150.000	-0.002	dynamic_correction 1
+63160.000	-0.005	program voice5 ordinario
+63160.000	0.158	gain voice5 -6.
+63300.000	0.006	noteon voice5 50. 40
+63500.000	0.030	dynamic voice5 50. 12.7 800.
+65200.000	0.032	noteoff voice5 50.
+65550.000	-0.016	dynamic_correction 1
+65560.000	-0.005	program voice5 ordinario
+65560.000	0.108	gain voice5 -6.
+65700.000	0.021	ctnote 5 27 50. 40 1900.
+65900.000	0.026	ctdynamic 27 0.25 800.
+67600.000	-0.000	ctnoteoff 27
+67950.000	0.003	dynamic_correction 1
+67960.000	-0.013	program voice5 ordinario
+67960.000	0.098	gain voice5 -6.
+68100.000	0.016	noteon voice5 50. 40
+68300.000	0.029	dynamic voice5 50. 31.75 800.
+70000.000	0.015	noteoff voice5 50.
+70350.000	0.006	dynamic_correction 1
+70360.000	-0.004	program voice5 ordinario
+70360.000	0.084	gain voice5 -6.
+70500.000	0.015	ctnote 5 29 50. 40 1900.
+70700.000	0.021	ctdynamic 29 0.5 800.
+72400.000	0.009	ctnoteoff 29
+72750.000	0.006	dynamic_correction 1
+72760.000	-0.015	program voice5 ordinario
+72760.000	0.104	gain voice5 -6.
+72900.000	0.020	noteon voice5 50. 40
+73100.000	0.034	dynamic voice5 50. 63.5 800.
+74800.000	0.008	noteoff voice5 50.
+75150.000	-0.006	dynamic_correction 1
+75160.000	-0.011	program voice5 ordinario
+75160.000	0.159	gain voice5 -6.
+75300.000	0.017	ctnote 5 31 50. 40 1900.
+75500.000	0.018	ctdynamic 31 0.75 800.
+77200.000	-0.005	ctnoteoff 31
+77550.000	0.003	dynamic_correction 1
+77560.000	-0.001	program voice5 ordinario
+77560.000	0.145	gain voice5 -6.
+77700.000	0.022	noteon voice5 50. 40
+77900.000	0.024	dynamic voice5 50. 95.25 800.
+79600.000	0.021	noteoff voice5 50.
+79950.000	-0.007	dynamic_correction 1
+79960.000	-0.016	program voice5 ordinario
+79960.000	0.105	gain voice5 -6.
+80100.000	0.026	ctnote 5 33 50. 40 1900.
+80300.000	0.018	ctdynamic 33 1. 800.
+82000.000	-0.008	ctnoteoff 33
+82350.000	0.001	dynamic_correction 1
+82360.000	0.002	program voice5 ordinario
+82360.000	0.084	gain voice5 -6.
+82500.000	0.017	noteon voice5 50. 40
+82700.000	0.019	dynamic voice5 50. 127. 800.
+84400.000	0.018	noteoff voice5 50.
+84750.000	-0.001	dynamic_correction 1
+84760.000	0.002	program voice5 ordinario
+84760.000	0.090	gain voice5 -6.
+84900.000	0.018	ctnote 5 35 50. 100 1900.
+85100.000	0.040	ctdynamic 35 0.1 800.
+86800.000	-0.004	ctnoteoff 35
+87150.000	0.001	dynamic_correction 1
+87160.000	0.002	program voice5 ordinario
+87160.000	0.095	gain voice5 -6.
+87300.000	0.023	noteon voice5 50. 100
+87500.000	0.035	dynamic voice5 50. 12.7 800.
+89200.000	0.022	noteoff voice5 50.
+89550.000	-0.008	dynamic_correction 1
+89560.000	-0.006	program voice5 ordinario
+89560.000	0.066	gain voice5 -6.
+89700.000	0.008	ctnote 5 37 50. 100 1900.
+89900.000	0.024	ctdynamic 37 0.5 800.
+91600.000	0.011	ctnoteoff 37
+91950.000	-0.008	dynamic_correction 1
+91960.000	0.010	program voice5 ordinario
+91960.000	0.111	gain voice5 -6.
+92100.000	0.004	noteon voice5 50. 100
+92300.000	0.023	dynamic voice5 50. 63.5 800.
+94000.000	0.015	noteoff voice5 50.
+94350.000	0.015	dynamic_correction 1
+94360.000	0.002	program voice5 ordinario
+94360.000	0.096	gain voice5 -6.
+94500.000	0.008	ctnote 5 39 50. 100 1900.
+94700.000	0.025	ctdynamic 39 1. 800.
+96400.000	0.016	ctnoteoff 39
+96750.000	-0.012	dynamic_correction 1
+96760.000	-0.003	program voice5 ordinario
+96760.000	0.099	gain voice5 -6.
+96900.000	0.023	noteon voice5 50. 100
+97100.000	0.041	dynamic voice5 50. 127. 800.
+98800.000	0.023	noteoff voice5 50.
+99150.000	0.013	dynamic_correction 1
+99160.000	-0.014	program voice5 ordinario
+99160.000	0.067	gain voice5 -6.
+99300.000	0.009	ctnote 5 41 50. 40 1900.
+101200.000	-0.002	ctnoteoff 41
+101550.000	0.011	dynamic_correction 1
+101560.000	-0.017	program voice5 ordinario
+101560.000	0.122	gain voice5 -6.
+101700.000	0.004	ctnote 5 42 50. 100 1900.
+103600.000	0.001	ctnoteoff 42
+103950.000	-0.008	dynamic_correction 1
+103960.000	-0.006	program voice5 ordinario
+103960.000	0.133	gain voice5 -6.
+104100.000	0.031	ctnote 5 43 50. 40 3300.
+104300.000	0.028	ctdynamic 43 0.25 600.
+105200.000	0.021	ctdynamic 43 0.75 600.
+106100.000	0.014	ctdynamic 43 0.25 600.
+107400.000	-0.016	ctnoteoff 43
+107750.000	-0.009	dynamic_correction 1
+107760.000	-0.008	program voice5 ordinario
+107760.000	0.072	gain voice5 -6.
+107900.000	0.014	ctnote 5 44 50. 40 3300.
+108100.000	0.034	ctdynamic 44 0.5 600.
+109000.000	0.037	ctdynamic 44 0.5 600.
+109900.000	0.043	ctdynamic 44 0.5 600.
+111200.000	-0.002	ctnoteoff 44
+111550.000	0.002	dynamic_correction 1
+111560.000	0.008	program voice3 pizz
+111560.000	0.085	gain voice3 5.777778
+111700.000	0.019	noteon voice3 67.4 90
+111820.000	0.025	noteon voice3 67.4 90
+111850.000	0.003	noteoff voice3 67.4
+111940.000	0.015	noteon voice3 67.4 90
+111970.000	0.019	noteoff voice3 67.4
+112060.000	0.005	noteon voice3 67.4 90
+112090.000	0.022	noteoff voice3 67.4
+112180.000	0.009	noteon voice3 67.4 90
+112210.000	0.015	noteoff voice3 67.4
+112300.000	0.038	noteon voice3 67.4 90
+112330.000	0.006	noteoff voice3 67.4
+112420.000	0.022	noteon voice3 67.4 90
+112450.000	-0.012	noteoff voice3 67.4
+112540.000	0.014	noteon voice3 67.4 90
+112570.000	0.016	noteoff voice3 67.4
+112690.000	0.008	noteoff voice3 67.4
+113550.000	-0.012	dynamic_correction 1
+113560.000	-0.002	program voice3 pizz
+113560.000	0.098	gain voice3 5.777778
+113700.000	0.016	ctnote 3 53 67.4 90 150.
+113820.000	0.016	ctnote 3 54 67.4 90 150.
+113850.000	-0.013	ctnoteoff 53
+113940.000	0.021	ctnote 3 55 67.4 90 150.
+113970.000	-0.007	ctnoteoff 54
+114060.000	0.010	ctnote 3 56 67.4 90 150.
+114090.000	0.004	ctnoteoff 55
+114180.000	0.026	ctnote 3 57 67.4 90 150.
+114210.000	-0.010	ctnoteoff 56
+114300.000	0.035	ctnote 3 58 67.4 90 150.
+114330.000	0.007	ctnoteoff 57
+114420.000	0.009	ctnote 3 59 67.4 90 150.
+114450.000	0.007	ctnoteoff 58
+114540.000	0.009	ctnote 3 60 67.4 90 150.
+114570.000	-0.022	ctnoteoff 59
+114690.000	-0.023	ctnoteoff 60
+115550.000	-0.007	dynamic_correction 1
+115560.000	-0.001	program voice3 pizz
+115560.000	0.128	gain voice3 5.777778
+115700.000	0.015	noteon voice3 67.4 90
+115800.000	0.011	noteoff voice3 67.4
+115820.000	0.017	noteon voice3 67.4 90
+115920.000	0.014	noteoff voice3 67.4
+115940.000	0.018	noteon voice3 67.4 90
+116040.000	0.006	noteoff voice3 67.4
+116060.000	-0.005	noteon voice3 67.4 90
+116160.000	0.011	noteoff voice3 67.4
+116180.000	0.010	noteon voice3 67.4 90
+116280.000	-0.007	noteoff voice3 67.4
+116300.000	-0.011	noteon voice3 67.4 90
+116400.000	-0.007	noteoff voice3 67.4
+116420.000	-0.005	noteon voice3 67.4 90
+116520.000	0.012	noteoff voice3 67.4
+116540.000	-0.014	noteon voice3 67.4 90
+116640.000	-0.007	noteoff voice3 67.4
+117550.000	-0.018	dynamic_correction 1
+117560.000	-0.022	program voice3 pizz
+117560.000	0.083	gain voice3 5.777778
+117700.000	0.009	ctnote 3 69 67.4 90 100.
+117800.000	-0.014	ctnoteoff 69
+117820.000	0.017	ctnote 3 70 67.4 90 100.
+117920.000	0.008	ctnoteoff 70
+117940.000	0.021	ctnote 3 71 67.4 90 100.
+118040.000	0.005	ctnoteoff 71
+118060.000	0.016	ctnote 3 72 67.4 90 100.
+118160.000	-0.010	ctnoteoff 72
+118180.000	0.002	ctnote 3 73 67.4 90 100.
+118280.000	0.011	ctnoteoff 73
+118300.000	0.015	ctnote 3 74 67.4 90 100.
+118400.000	0.005	ctnoteoff 74
+118420.000	0.007	ctnote 3 75 67.4 90 100.
+118520.000	-0.007	ctnoteoff 75
+118540.000	-0.005	ctnote 3 76 67.4 90 100.
+118640.000	-0.021	ctnoteoff 76
+119550.000	0.001	dynamic_correction 1
+119560.000	0.007	program voice3 pizz
+119560.000	0.090	gain voice3 5.777778
+119700.000	0.001	noteon voice3 67.4 90
+119770.000	0.003	noteon voice3 67.4 90
+119800.000	0.009	noteoff voice3 67.4
+119840.000	0.004	noteon voice3 67.4 90
+119870.000	-0.017	noteoff voice3 67.4
+119910.000	0.017	noteon voice3 67.4 90
+119940.000	0.013	noteoff voice3 67.4
+119980.000	0.017	noteon voice3 67.4 90
+120010.000	0.019	noteoff voice3 67.4
+120050.000	0.022	noteon voice3 67.4 90
+120080.000	0.008	noteoff voice3 67.4
+120120.000	0.010	noteon voice3 67.4 90
+120150.000	0.032	noteoff voice3 67.4
+120190.000	0.016	noteon voice3 67.4 90
+120220.000	0.002	noteoff voice3 67.4
+120290.000	0.012	noteoff voice3 67.4
+121550.000	-0.008	dynamic_correction 1
+121560.000	-0.013	program voice3 pizz
+121560.000	0.093	gain voice3 5.777778
+121700.000	0.038	ctnote 3 85 67.4 90 100.
+121770.000	0.018	ctnote 3 86 67.4 90 100.
+121800.000	-0.011	ctnoteoff 85
+121840.000	0.014	ctnote 3 87 67.4 90 100.
+121870.000	-0.022	ctnoteoff 86
+121910.000	0.030	ctnote 3 88 67.4 90 100.
+121940.000	0.002	ctnoteoff 87
+121980.000	0.013	ctnote 3 89 67.4 90 100.
+122010.000	-0.010	ctnoteoff 88
+122050.000	0.030	ctnote 3 90 67.4 90 100.
+122080.000	-0.017	ctnoteoff 89
+122120.000	0.023	ctnote 3 91 67.4 90 100.
+122150.000	-0.014	ctnoteoff 90
+122190.000	0.022	ctnote 3 92 67.4 90 100.
+122220.000	-0.007	ctnoteoff 91
+122290.000	-0.010	ctnoteoff 92
+123550.000	0.003	dynamic_correction 1
+123560.000	-0.015	program voice3 pizz
+123560.000	0.084	gain voice3 5.777778
+123700.000	0.021	noteon voice3 67.4 90
+123750.000	-0.009	noteoff voice3 67.4
+123770.000	-0.009	noteon voice3 67.4 90
+123820.000	0.003	noteoff voice3 67.4
+123840.000	0.009	noteon voice3 67.4 90
+123890.000	0.016	noteoff voice3 67.4
+123910.000	0.013	noteon voice3 67.4 90
+123960.000	0.019	noteoff voice3 67.4
+123980.000	0.003	noteon voice3 67.4 90
+124030.000	0.020	noteoff voice3 67.4
+124050.000	0.020	noteon voice3 67.4 90
+124100.000	0.024	noteoff voice3 67.4
+124120.000	-0.006	noteon voice3 67.4 90
+124170.000	0.025	noteoff voice3 67.4
+124190.000	0.017	noteon voice3 67.4 90
+124240.000	0.017	noteoff voice3 67.4
+125550.000	0.011	dynamic_correction 1
+125560.000	-0.003	program voice3 pizz
+125560.000	0.112	gain voice3 5.777778
+125700.000	0.022	ctnote 3 101 67.4 90 50.
+125750.000	0.008	ctnoteoff 101
+125770.000	0.013	ctnote 3 102 67.4 90 50.
+125820.000	-0.024	ctnoteoff 102
+125840.000	0.021	ctnote 3 103 67.4 90 50.
+125890.000	-0.006	ctnoteoff 103
+125910.000	0.021	ctnote 3 104 67.4 90 50.
+125960.000	-0.010	ctnoteoff 104
+125980.000	0.008	ctnote 3 105 67.4 90 50.
+126030.000	-0.007	ctnoteoff 105
+126050.000	0.035	ctnote 3 106 67.4 90 50.
+126100.000	-0.012	ctnoteoff 106
+126120.000	0.025	ctnote 3 107 67.4 90 50.
+126170.000	-0.019	ctnoteoff 107
+126190.000	0.015	ctnote 3 108 67.4 90 50.
+126240.000	-0.009	ctnoteoff 108
+127550.000	0.001	dynamic_correction 1
+127560.000	0.007	program voice3 "sul tasto"
+127560.000	0.094	gain voice3 5.777778
+127700.000	0.025	noteon voice3 67.4 40
+127900.000	0.030	dynamic voice3 67.4 0. 800.
+129600.000	0.010	noteoff voice3 67.4
+129950.000	-0.013	dynamic_correction 1
+129960.000	-0.006	program voice3 "sul tasto"
+129960.000	0.107	gain voice3 5.777778
+130100.000	0.024	ctnote 3 110 67.4 40 1900.
+130300.000	0.029	ctdynamic 110 0.1 800.
+132000.000	-0.011	ctnoteoff 110
+132350.000	0.011	dynamic_correction 1
+132360.000	-0.010	program voice3 "sul tasto"
+132360.000	0.083	gain voice3 5.777778
+132500.000	0.022	noteon voice3 67.4 40
+132700.000	0.027	dynamic voice3 67.4 12.7 800.
+134400.000	0.008	noteoff voice3 67.4
+134750.000	0.019	dynamic_correction 1
+134760.000	-0.005	program voice3 "sul tasto"
+134760.000	0.079	gain voice3 5.777778
+134900.000	0.037	ctnote 3 112 67.4 40 1900.
+135100.000	0.023	ctdynamic 112 0.25 800.
+136800.000	-0.009	ctnoteoff 112
+137150.000	-0.001	dynamic_correction 1
+137160.000	0.002	program voice3 "sul tasto"
+137160.000	0.087	gain voice3 5.777778
+137300.000	0.017	noteon voice3 67.4 40
+137500.000	0.025	dynamic voice3 67.4 31.75 800.
+139200.000	0.023	noteoff voice3 67.4
+139550.000	-0.005	dynamic_correction 1
+139560.000	-0.020	program voice3 "sul tasto"
+139560.000	0.105	gain voice3 5.777778
+139700.000	0.025	ctnote 3 114 67.4 40 1900.
+139900.000	0.022	ctdynamic 114 0.5 800.
+141600.000	-0.007	ctnoteoff 114
+141950.000	0.009	dynamic_correction 1
+141960.000	0.002	program voice3 "sul tasto"
+141960.000	0.150	gain voice3 5.777778
+142100.000	0.014	noteon voice3 67.4 40
+142300.000	0.030	dynamic voice3 67.4 63.5 800.
+144000.000	0.010	noteoff voice3 67.4
+144350.000	0.013	dynamic_correction 1
+144360.000	-0.002	program voice3 "sul tasto"
+144360.000	0.085	gain voice3 5.777778
+144500.000	0.017	ctnote 3 116 67.4 40 1900.
+144700.000	0.038	ctdynamic 116 0.75 800.
+146400.000	-0.016	ctnoteoff 116
+146750.000	0.004	dynamic_correction 1
+146760.000	-0.006	program voice3 "sul tasto"
+146760.000	0.078	gain voice3 5.777778
+146900.000	0.004	noteon voice3 67.4 40
+147100.000	0.014	dynamic voice3 67.4 95.25 800.
+148800.000	0.025	noteoff voice3 67.4
+149150.000	0.016	dynamic_correction 1
+149160.000	0.012	program voice3 "sul tasto"
+149160.000	0.125	gain voice3 5.777778
+149300.000	0.035	ctnote 3 118 67.4 40 1900.
+149500.000	0.003	ctdynamic 118 1. 800.
+151200.000	-0.002	ctnoteoff 118
+151550.000	-0.007	dynamic_correction 1
+151560.000	0.001	program voice3 "sul tasto"
+151560.000	0.062	gain voice3 5.777778
+151700.000	-0.002	noteon voice3 67.4 40
+151900.000	0.044	dynamic voice3 67.4 127. 800.
+153600.000	0.032	noteoff voice3 67.4
+153950.000	-0.009	dynamic_correction 1
+153960.000	-0.006	program voice3 "sul tasto"
+153960.000	0.135	gain voice3 5.777778
+154100.000	0.018	ctnote 3 120 67.4 100 1900.
+154300.000	0.010	ctdynamic 120 0.1 800.
+156000.000	0.016	ctnoteoff 120
+156350.000	0.010	dynamic_correction 1
+156360.000	0.005	program voice3 "sul tasto"
+156360.000	0.134	gain voice3 5.777778
+156500.000	0.021	noteon voice3 67.4 100
+156700.000	0.031	dynamic voice3 67.4 12.7 800.
+158400.000	0.037	noteoff voice3 67.4
+158750.000	-0.003	dynamic_correction 1
+158760.000	0.001	program voice3 "sul tasto"
+158760.000	0.129	gain voice3 5.777778
+158900.000	0.023	ctnote 3 122 67.4 100 1900.
+159100.000	0.026	ctdynamic 122 0.5 800.
+160800.000	-0.006	ctnoteoff 122
+161150.000	0.009	dynamic_correction 1
+161160.000	0.010	program voice3 "sul tasto"
+161160.000	0.090	gain voice3 5.777778
+161300.000	0.017	noteon voice3 67.4 100
+161500.000	0.013	dynamic voice3 67.4 63.5 800.
+163200.000	0.022	noteoff voice3 67.4
+163550.000	0.005	dynamic_correction 1
+163560.000	-0.008	program voice3 "sul tasto"
+163560.000	0.090	gain voice3 5.777778
+163700.000	0.013	ctnote 3 124 67.4 100 1900.
+163900.000	0.023	ctdynamic 124 1. 800.
+165600.000	-0.007	ctnoteoff 124
+165950.000	0.000	dynamic_correction 1
+165960.000	0.004	program voice3 "sul tasto"
+165960.000	0.098	gain voice3 5.777778
+166100.000	0.024	noteon voice3 67.4 100
+166300.000	0.018	dynamic voice3 67.4 127. 800.
+168000.000	0.010	noteoff voice3 67.4
+168350.000	-0.006	dynamic_correction 1
+168360.000	-0.012	program voice3 "sul tasto"
+168360.000	0.070	gain voice3 5.777778
+168500.000	0.011	ctnote 3 126 67.4 40 1900.
+170400.000	0.003	ctnoteoff 126
+170750.000	-0.005	dynamic_correction 1
+170760.000	-0.012	program voice3 "sul tasto"
+170760.000	0.066	gain voice3 5.777778
+170900.000	0.017	ctnote 3 127 67.4 100 1900.
+172800.000	-0.010	ctnoteoff 127
+173150.000	0.008	dynamic_correction 1
+173160.000	-0.001	program voice3 "sul tasto"
+173160.000	0.095	gain voice3 5.777778
+173300.000	0.009	ctnote 3 128 67.4 40 3300.
+173500.000	0.002	ctdynamic 128 0.25 600.
+174400.000	0.020	ctdynamic 128 0.75 600.
+175300.000	0.036	ctdynamic 128 0.25 600.
+176600.000	-0.009	ctnoteoff 128
+176950.000	0.010	dynamic_correction 1
+176960.000	-0.005	program voice3 "sul tasto"
+176960.000	0.087	gain voice3 5.777778
+177100.000	0.030	ctnote 3 129 67.4 40 3300.
+177300.000	0.033	ctdynamic 129 0.5 600.
+178200.000	0.013	ctdynamic 129 0.5 600.
+179100.000	0.035	ctdynamic 129 0.5 600.
+180400.000	0.012	ctnoteoff 129
+180750.000	-0.003	dynamic_correction 1
+180760.000	0.009	program voice5 ordinario
+180760.000	0.107	gain voice5 -6.
+180900.000	0.019	ctnote 5 130 50. 40 1900.
+181100.000	0.019	ctdynamic 130 0. 800.
+182800.000	-0.000	ctnoteoff 130
+183150.000	-0.007	dynamic_correction 1
+183160.000	0.003	program voice5 ordinario
+183160.000	0.092	gain voice5 -6.
+183300.000	0.014	noteon voice5 50. 40
+183500.000	0.019	dynamic voice5 50. 0. 800.
+185200.000	0.007	noteoff voice5 50.
+185550.000	0.011	dynamic_correction 1
+185560.000	-0.004	program voice5 ordinario
+185560.000	0.100	gain voice5 -6.
+185700.000	0.004	ctnote 5 132 50. 40 1900.
+185900.000	0.013	ctdynamic 132 0.1 800.
+187600.000	0.005	ctnoteoff 132
+187950.000	-0.014	dynamic_correction 1
+187960.000	-0.015	program voice5 ordinario
+187960.000	0.107	gain voice5 -6.
+188100.000	0.031	noteon voice5 50. 40
+188300.000	0.020	dynamic voice5 50. 12.7 800.
+190000.000	0.006	noteoff voice5 50.
+190350.000	-0.009	dynamic_correction 1
+190360.000	0.003	program voice5 ordinario
+190360.000	0.083	gain voice5 -6.
+190500.000	0.016	ctnote 5 134 50. 40 1900.
+190700.000	0.019	ctdynamic 134 0.25 800.
+192400.000	-0.009	ctnoteoff 134
+192750.000	-0.000	dynamic_correction 1
+192760.000	0.008	program voice5 ordinario
+192760.000	0.130	gain voice5 -6.
+192900.000	0.009	noteon voice5 50. 40
+193100.000	0.027	dynamic voice5 50. 31.75 800.
+194800.000	0.010	noteoff voice5 50.
+195150.000	-0.010	dynamic_correction 1
+195160.000	0.007	program voice5 ordinario
+195160.000	0.096	gain voice5 -6.
+195300.000	0.032	ctnote 5 136 50. 40 1900.
+195500.000	0.017	ctdynamic 136 0.5 800.
+197200.000	-0.006	ctnoteoff 136
+197550.000	-0.016	dynamic_correction 1
+197560.000	-0.015	program voice5 ordinario
+197560.000	0.131	gain voice5 -6.
+197700.000	0.017	noteon voice5 50. 40
+197900.000	0.031	dynamic voice5 50. 63.5 800.
+199600.000	0.006	noteoff voice5 50.
+199950.000	0.003	dynamic_correction 1
+199960.000	0.011	program voice5 ordinario
+199960.000	0.116	gain voice5 -6.
+200100.000	0.022	ctnote 5 138 50. 40 1900.
+200300.000	0.023	ctdynamic 138 0.75 800.
+202000.000	-0.019	ctnoteoff 138
+202350.000	0.006	dynamic_correction 1
+202360.000	0.005	program voice5 ordinario
+202360.000	0.099	gain voice5 -6.
+202500.000	0.017	noteon voice5 50. 40
+202700.000	0.014	dynamic voice5 50. 95.25 800.
+204400.000	0.025	noteoff voice5 50.
+204750.000	0.002	dynamic_correction 1
+204760.000	-0.008	program voice5 ordinario
+204760.000	0.095	gain voice5 -6.
+204900.000	0.003	ctnote 5 140 50. 40 1900.
+205100.000	0.019	ctdynamic 140 1. 800.
+206800.000	-0.016	ctnoteoff 140
+207150.000	0.001	dynamic_correction 1
+207160.000	0.008	program voice5 ordinario
+207160.000	0.127	gain voice5 -6.
+207300.000	-0.001	noteon voice5 50. 40
+207500.000	0.029	dynamic voice5 50. 127. 800.
+209200.000	0.037	noteoff voice5 50.
+209550.000	-0.011	dynamic_correction 1
+209560.000	-0.018	program voice5 ordinario
+209560.000	0.060	gain voice5 -6.
+209700.000	0.039	ctnote 5 142 50. 100 1900.
+209900.000	0.023	ctdynamic 142 0.1 800.
+211600.000	-0.019	ctnoteoff 142
+211950.000	0.014	dynamic_correction 1
+211960.000	-0.009	program voice5 ordinario
+211960.000	0.093	gain voice5 -6.
+212100.000	0.021	noteon voice5 50. 100
+212300.000	0.021	dynamic voice5 50. 12.7 800.
+214000.000	0.010	noteoff voice5 50.
+214350.000	0.002	dynamic_correction 1
+214360.000	-0.022	program voice5 ordinario
+214360.000	0.059	gain voice5 -6.
+214500.000	0.004	ctnote 5 144 50. 100 1900.
+214700.000	0.013	ctdynamic 144 0.5 800.
+216400.000	0.001	ctnoteoff 144
+216750.000	-0.010	dynamic_correction 1
+216760.000	0.013	program voice5 ordinario
+216760.000	0.110	gain voice5 -6.
+216900.000	0.001	noteon voice5 50. 100
+217100.000	0.015	dynamic voice5 50. 63.5 800.
+218800.000	0.022	noteoff voice5 50.
+219150.000	0.001	dynamic_correction 1
+219160.000	0.008	program voice5 ordinario
+219160.000	0.101	gain voice5 -6.
+219300.000	0.023	ctnote 5 146 50. 100 1900.
+219500.000	0.008	ctdynamic 146 1. 800.
+221200.000	0.005	ctnoteoff 146
+221550.000	0.006	dynamic_correction 1
+221560.000	-0.018	program voice5 ordinario
+221560.000	0.060	gain voice5 -6.
+221700.000	0.015	noteon voice5 50. 100
+221900.000	0.022	dynamic voice5 50. 127. 800.
+223600.000	0.015	noteoff voice5 50.
+223950.000	0.007	dynamic_correction 1
+223960.000	-0.003	program voice5 ordinario
+223960.000	0.096	gain voice5 -6.
+224100.000	0.027	ctnote 5 148 50. 40 1900.
+226000.000	0.009	ctnoteoff 148
+226350.000	0.014	dynamic_correction 1
+226360.000	-0.014	program voice5 ordinario
+226360.000	0.079	gain voice5 -6.
+226500.000	0.011	ctnote 5 149 50. 100 1900.
+228400.000	-0.014	ctnoteoff 149
+228750.000	-0.005	dynamic_correction 1
+228760.000	-0.006	program voice5 ordinario
+228760.000	0.088	gain voice5 -6.
+228900.000	0.013	ctnote 5 150 50. 40 3300.
+229100.000	0.011	ctdynamic 150 0.25 600.
+230000.000	0.021	ctdynamic 150 0.75 600.
+230900.000	0.044	ctdynamic 150 0.25 600.
+232200.000	0.014	ctnoteoff 150
+232550.000	-0.009	dynamic_correction 1
+232560.000	-0.009	program voice5 ordinario
+232560.000	0.072	gain voice5 -6.
+232700.000	0.034	ctnote 5 151 50. 40 3300.
+232900.000	0.012	ctdynamic 151 0.5 600.
+233800.000	0.033	ctdynamic 151 0.5 600.
+234700.000	0.023	ctdynamic 151 0.5 600.
+236000.000	-0.003	ctnoteoff 151
+236350.000	-0.003	dynamic_correction 1
+236360.000	-0.005	program voice3 pizz
+236360.000	0.082	gain voice3 5.777778
+236500.000	0.010	noteon voice3 67.4 90
+236620.000	0.003	noteon voice3 67.4 90
+236650.000	0.003	noteoff voice3 67.4
+236740.000	0.014	noteon voice3 67.4 90
+236770.000	-0.003	noteoff voice3 67.4
+236860.000	0.006	noteon voice3 67.4 90
+236890.000	0.003	noteoff voice3 67.4
+236980.000	0.020	noteon voice3 67.4 90
+237010.000	0.002	noteoff voice3 67.4
+237100.000	0.023	noteon voice3 67.4 90
+237130.000	0.013	noteoff voice3 67.4
+237220.000	0.016	noteon voice3 67.4 90
+237250.000	0.024	noteoff voice3 67.4
+237340.000	0.022	noteon voice3 67.4 90
+237370.000	0.014	noteoff voice3 67.4
+237490.000	0.026	noteoff voice3 67.4
+238350.000	0.012	dynamic_correction 1
+238360.000	-0.019	program voice3 pizz
+238360.000	0.062	gain voice3 5.777778
+238500.000	0.004	ctnote 3 160 67.4 90 150.
+238620.000	0.025	ctnote 3 161 67.4 90 150.
+238650.000	-0.006	ctnoteoff 160
+238740.000	0.004	ctnote 3 162 67.4 90 150.
+238770.000	-0.015	ctnoteoff 161
+238860.000	0.005	ctnote 3 163 67.4 90 150.
+238890.000	0.007	ctnoteoff 162
+238980.000	0.033	ctnote 3 164 67.4 90 150.
+239010.000	0.008	ctnoteoff 163
+239100.000	0.035	ctnote 3 165 67.4 90 150.
+239130.000	0.005	ctnoteoff 164
+239220.000	0.049	ctnote 3 166 67.4 90 150.
+239250.000	0.003	ctnoteoff 165
+239340.000	0.020	ctnote 3 167 67.4 90 150.
+239370.000	-0.015	ctnoteoff 166
+239490.000	0.006	ctnoteoff 167
+240350.000	-0.010	dynamic_correction 1
+240360.000	0.008	program voice3 pizz
+240360.000	0.122	gain voice3 5.777778
+240500.000	0.019	noteon voice3 67.4 90
+240600.000	0.022	noteoff voice3 67.4
+240620.000	-0.009	noteon voice3 67.4 90
+240720.000	0.015	noteoff voice3 67.4
+240740.000	0.012	noteon voice3 67.4 90
+240840.000	0.022	noteoff voice3 67.4
+240860.000	0.003	noteon voice3 67.4 90
+240960.000	0.021	noteoff voice3 67.4
+240980.000	0.001	noteon voice3 67.4 90
+241080.000	0.015	noteoff voice3 67.4
+241100.000	-0.005	noteon voice3 67.4 90
+241200.000	0.013	noteoff voice3 67.4
+241220.000	0.021	noteon voice3 67.4 90
+241320.000	0.004	noteoff voice3 67.4
+241340.000	-0.003	noteon voice3 67.4 90
+241440.000	0.015	noteoff voice3 67.4
+242350.000	0.009	dynamic_correction 1
+242360.000	-0.018	program voice3 pizz
+242360.000	0.069	gain voice3 5.777778
+242500.000	0.032	ctnote 3 176 67.4 90 100.
+242600.000	0.000	ctnoteoff 176
+242620.000	0.030	ctnote 3 177 67.4 90 100.
+242720.000	-0.010	ctnoteoff 177
+242740.000	0.017	ctnote 3 178 67.4 90 100.
+242840.000	-0.022	ctnoteoff 178
+242860.000	0.013	ctnote 3 179 67.4 90 100.
+242960.000	0.005	ctnoteoff 179
+242980.000	0.011	ctnote 3 180 67.4 90 100.
+243080.000	-0.014	ctnoteoff 180
+243100.000	0.030	ctnote 3 181 67.4 90 100.
+243200.000	-0.001	ctnoteoff 181
+243220.000	0.016	ctnote 3 182 67.4 90 100.
+243320.000	0.005	ctnoteoff 182
+243340.000	0.036	ctnote 3 183 67.4 90 100.
+243440.000	-0.016	ctnoteoff 183
+244350.000	0.001	dynamic_correction 1
+244360.000	-0.010	program voice3 pizz
+244360.000	0.083	gain voice3 5.777778
+244500.000	0.019	noteon voice3 67.4 90
+244570.000	0.001	noteon voice3 67.4 90
+244600.000	0.017	noteoff voice3 67.4
+244640.000	-0.005	noteon voice3 67.4 90
+244670.000	0.007	noteoff voice3 67.4
+244710.000	0.003	noteon voice3 67.4 90
+244740.000	0.002	noteoff voice3 67.4
+244780.000	0.013	noteon voice3 67.4 90
+244810.000	-0.005	noteoff voice3 67.4
+244850.000	0.002	noteon voice3 67.4 90
+244880.000	-0.004	noteoff voice3 67.4
+244920.000	-0.003	noteon voice3 67.4 90
+244950.000	-0.002	noteoff voice3 67.4
+244990.000	0.002	noteon voice3 67.4 90
+245020.000	0.003	noteoff voice3 67.4
+245090.000	-0.009	noteoff voice3 67.4
+246350.000	0.000	dynamic_correction 1
+246360.000	-0.002	program voice3 pizz
+246360.000	0.143	gain voice3 5.777778
+246500.000	0.032	ctnote 3 192 67.4 90 100.
+246570.000	-0.003	ctnote 3 193 67.4 90 100.
+246600.000	-0.013	ctnoteoff 192
+246640.000	0.015	ctnote 3 194 67.4 90 100.
+246670.000	-0.023	ctnoteoff 193
+246710.000	0.010	ctnote 3 195 67.4 90 100.
+246740.000	0.000	ctnoteoff 194
+246780.000	0.013	ctnote 3 196 67.4 90 100.
+246810.000	-0.013	ctnoteoff 195
+246850.000	0.025	ctnote 3 197 67.4 90 100.
+246880.000	-0.007	ctnoteoff 196
+246920.000	0.025	ctnote 3 198 67.4 90 100.
+246950.000	-0.008	ctnoteoff 197
+246990.000	0.023	ctnote 3 199 67.4 90 100.
+247020.000	0.015	ctnoteoff 198
+247090.000	0.009	ctnoteoff 199
+248350.000	-0.001	dynamic_correction 1
+248360.000	-0.000	program voice3 pizz
+248360.000	0.081	gain voice3 5.777778
+248500.000	0.030	noteon voice3 67.4 90
+248550.000	0.021	noteoff voice3 67.4
+248570.000	-0.002	noteon voice3 67.4 90
+248620.000	0.040	noteoff voice3 67.4
+248640.000	0.011	noteon voice3 67.4 90
+248690.000	0.015	noteoff voice3 67.4
+248710.000	0.003	noteon voice3 67.4 90
+248760.000	0.024	noteoff voice3 67.4
+248780.000	0.019	noteon voice3 67.4 90
+248830.000	0.028	noteoff voice3 67.4
+248850.000	0.022	noteon voice3 67.4 90
+248900.000	0.030	noteoff voice3 67.4
+248920.000	0.015	noteon voice3 67.4 90
+248970.000	0.013	noteoff voice3 67.4
+248990.000	0.004	noteon voice3 67.4 90
+249040.000	0.009	noteoff voice3 67.4
+250350.000	0.005	dynamic_correction 1
+250360.000	0.001	program voice3 pizz
+250360.000	0.115	gain voice3 5.777778
+250500.000	0.041	ctnote 3 208 67.4 90 50.
+250550.000	-0.001	ctnoteoff 208
+250570.000	0.006	ctnote 3 209 67.4 90 50.
+250620.000	-0.007	ctnoteoff 209
+250640.000	0.009	ctnote 3 210 67.4 90 50.
+250690.000	-0.018	ctnoteoff 210
+250710.000	0.020	ctnote 3 211 67.4 90 50.
+250760.000	-0.012	ctnoteoff 211
+250780.000	0.017	ctnote 3 212 67.4 90 50.
+250830.000	0.006	ctnoteoff 212
+250850.000	0.031	ctnote 3 213 67.4 90 50.
+250900.000	0.010	ctnoteoff 213
+250920.000	0.026	ctnote 3 214 67.4 90 50.
+250970.000	-0.002	ctnoteoff 214
+250990.000	0.021	ctnote 3 215 67.4 90 50.
+251040.000	-0.003	ctnoteoff 215
+252350.000	0.002	dynamic_correction 1
+252360.000	0.001	program voice3 "sul tasto"
+252360.000	0.081	gain voice3 5.777778
+252500.000	0.029	ctnote 3 216 67.4 40 1900.
+252700.000	0.014	ctdynamic 216 0. 800.
+254400.000	0.001	ctnoteoff 216
+254750.000	-0.015	dynamic_correction 1
+254760.000	-0.002	program voice3 "sul tasto"
+254760.000	0.089	gain voice3 5.777778
+254900.000	0.011	ctnote 3 217 67.4 40 1900.
+255100.000	0.011	ctdynamic 217 0.1 800.
+256800.000	0.004	ctnoteoff 217
+257150.000	-0.019	dynamic_correction 1
+257160.000	0.007	program voice3 "sul tasto"
+257160.000	0.101	gain voice3 5.777778
+257300.000	0.024	noteon voice3 67.4 40
+257500.000	0.012	dynamic voice3 67.4 12.7 800.
+259200.000	0.015	noteoff voice3 67.4
+259550.000	-0.003	dynamic_correction 1
+259560.000	-0.014	program voice3 "sul tasto"
+259560.000	0.131	gain voice3 5.777778
+259700.000	0.004	ctnote 3 219 67.4 40 1900.
+259900.000	0.018	ctdynamic 219 0.25 800.
+261600.000	-0.019	ctnoteoff 219
+261950.000	-0.001	dynamic_correction 1
+261960.000	-0.010	program voice3 "sul tasto"
+261960.000	0.111	gain voice3 5.777778
+262100.000	-0.002	noteon voice3 67.4 40
+262300.000	0.024	dynamic voice3 67.4 31.75 800.
+264000.000	0.008	noteoff voice3 67.4
+264350.000	0.002	dynamic_correction 1
+264360.000	-0.016	program voice3 "sul tasto"
+264360.000	0.058	gain voice3 5.777778
+264500.000	0.009	ctnote 3 221 67.4 40 1900.
+264700.000	0.012	ctdynamic 221 0.5 800.
+266400.000	0.006	ctnoteoff 221
+266750.000	-0.010	dynamic_correction 1
+266760.000	0.016	program voice3 "sul tasto"
+266760.000	0.111	gain voice3 5.777778
+266900.000	0.012	noteon voice3 67.4 40
+267100.000	0.049	dynamic voice3 67.4 63.5 800.
+268800.000	0.014	noteoff voice3 67.4
+269150.000	0.005	dynamic_correction 1
+269160.000	0.000	program voice3 "sul tasto"
+269160.000	0.078	gain voice3 5.777778
+269300.000	0.033	ctnote 3 223 67.4 40 1900.
+269500.000	0.031	ctdynamic 223 0.75 800.
+271200.000	-0.018	ctnoteoff 223
+271550.000	-0.007	dynamic_correction 1
+271560.000	-0.003	program voice3 "sul tasto"
+271560.000	0.096	gain voice3 5.777778
+271700.000	0.016	noteon voice3 67.4 40
+271900.000	0.024	dynamic voice3 67.4 95.25 800.
+273600.000	0.021	noteoff voice3 67.4
+273950.000	-0.009	dynamic_correction 1
+273960.000	0.015	program voice3 "sul tasto"
+273960.000	0.116	gain voice3 5.777778
+274100.000	0.024	ctnote 3 225 67.4 40 1900.
+274300.000	0.009	ctdynamic 225 1. 800.
+276000.000	-0.005	ctnoteoff 225
+276350.000	0.001	dynamic_correction 1
+276360.000	0.015	program voice3 "sul tasto"
+276360.000	0.095	gain voice3 5.777778
+276500.000	0.009	noteon voice3 67.4 40
+276700.000	0.020	dynamic voice3 67.4 127. 800.
+278400.000	0.035	noteoff voice3 67.4
+278750.000	0.002	dynamic_correction 1
+278760.000	0.005	program voice3 "sul tasto"
+278760.000	0.102	gain voice3 5.777778
+278900.000	0.019	ctnote 3 227 67.4 100 1900.
+279100.000	0.020	ctdynamic 227 0.1 800.
+280800.000	0.004	ctnoteoff 227
+281150.000	0.016	dynamic_correction 1
+281160.000	0.009	program voice3 "sul tasto"
+281160.000	0.088	gain voice3 5.777778
+281300.000	0.024	noteon voice3 67.4 100
+281500.000	0.011	dynamic voice3 67.4 12.7 800.
+283200.000	0.001	noteoff voice3 67.4
+283550.000	0.016	dynamic_correction 1
+283560.000	-0.009	program voice3 "sul tasto"
+283560.000	0.060	gain voice3 5.777778
+283700.000	0.024	ctnote 3 229 67.4 100 1900.
+283900.000	0.020	ctdynamic 229 0.5 800.
+285600.000	-0.000	ctnoteoff 229
+285950.000	0.017	dynamic_correction 1
+285960.000	-0.013	program voice3 "sul tasto"
+285960.000	0.108	gain voice3 5.777778
+286100.000	0.017	noteon voice3 67.4 100
+286300.000	0.025	dynamic voice3 67.4 63.5 800.
+288000.000	0.034	noteoff voice3 67.4
+288350.000	-0.016	dynamic_correction 1
+288360.000	0.004	program voice3 "sul tasto"
+288360.000	0.077	gain voice3 5.777778
+288500.000	0.012	ctnote 3 231 67.4 100 1900.
+288700.000	0.028	ctdynamic 231 1. 800.
+290400.000	0.008	ctnoteoff 231
+290750.000	0.010	dynamic_correction 1
+290760.000	0.005	program voice3 "sul tasto"
+290760.000	0.092	gain voice3 5.777778
+290900.000	0.008	noteon voice3 67.4 100
+291100.000	0.028	dynamic voice3 67.4 127. 800.
+292800.000	0.012	noteoff voice3 67.4
+293150.000	0.020	dynamic_correction 1
+293160.000	0.007	program voice3 "sul tasto"
+293160.000	0.114	gain voice3 5.777778
+293300.000	0.020	ctnote 3 233 67.4 40 1900.
+295200.000	-0.008	ctnoteoff 233
+295550.000	-0.001	dynamic_correction 1
+295560.000	0.005	program voice3 "sul tasto"
+295560.000	0.072	gain voice3 5.777778
+295700.000	0.014	ctnote 3 234 67.4 100 1900.
+297600.000	-0.015	ctnoteoff 234
+297950.000	-0.009	dynamic_correction 1
+297960.000	0.007	program voice3 "sul tasto"
+297960.000	0.122	gain voice3 5.777778
+298100.000	0.030	ctnote 3 235 67.4 40 3300.
+298300.000	0.029	ctdynamic 235 0.25 600.
+299200.000	0.043	ctdynamic 235 0.75 600.
+300100.000	0.020	ctdynamic 235 0.25 600.
+301400.000	0.002	ctnoteoff 235
+301750.000	0.003	dynamic_correction 1
+301760.000	0.001	program voice3 "sul tasto"
+301760.000	0.093	gain voice3 5.777778
+301900.000	-0.005	ctnote 3 236 67.4 40 3300.
+302100.000	0.012	ctdynamic 236 0.5 600.
+303000.000	0.014	ctdynamic 236 0.5 600.
+303900.000	0.023	ctdynamic 236 0.5 600.
+305200.000	-0.012	ctnoteoff 236
+305550.000	-0.010	dynamic_correction 1
+305560.000	-0.015	program voice5 ordinario
+305560.000	0.147	gain voice5 -6.
+305700.000	0.017	ctnote 5 237 50. 40 1900.
+305900.000	0.000	ctdynamic 237 0. 800.
+307600.000	0.002	ctnoteoff 237
+307950.000	0.004	dynamic_correction 1
+307960.000	-0.004	program voice5 ordinario
+307960.000	0.120	gain voice5 -6.
+308100.000	0.023	noteon voice5 50. 40
+308300.000	0.016	dynamic voice5 50. 0. 800.
+310000.000	0.039	noteoff voice5 50.
+310350.000	-0.002	dynamic_correction 1
+310360.000	0.003	program voice5 ordinario
+310360.000	0.105	gain voice5 -6.
+310500.000	0.032	ctnote 5 239 50. 40 1900.
+310700.000	0.014	ctdynamic 239 0.1 800.
+312400.000	-0.017	ctnoteoff 239
+312750.000	-0.012	dynamic_correction 1
+312760.000	0.001	program voice5 ordinario
+312760.000	0.105	gain voice5 -6.
+312900.000	0.010	noteon voice5 50. 40
+313100.000	0.041	dynamic voice5 50. 12.7 800.
+314800.000	0.024	noteoff voice5 50.
+315150.000	0.002	dynamic_correction 1
+315160.000	-0.008	program voice5 ordinario
+315160.000	0.155	gain voice5 -6.
+315300.000	0.019	ctnote 5 241 50. 40 1900.
+315500.000	0.002	ctdynamic 241 0.25 800.
+317200.000	0.011	ctnoteoff 241
+317550.000	0.001	dynamic_correction 1
+317560.000	-0.022	program voice5 ordinario
+317560.000	0.141	gain voice5 -6.
+317700.000	0.023	noteon voice5 50. 40
+317900.000	0.030	dynamic voice5 50. 31.75 800.
+319600.000	0.011	noteoff voice5 50.
+319950.000	-0.008	dynamic_correction 1
+319960.000	-0.024	program voice5 ordinario
+319960.000	0.071	gain voice5 -6.
+320100.000	0.035	ctnote 5 243 50. 40 1900.
+320300.000	0.002	ctdynamic 243 0.5 800.
+322000.000	-0.000	ctnoteoff 243
+322350.000	-0.007	dynamic_correction 1
+322360.000	-0.008	program voice5 ordinario
+322360.000	0.070	gain voice5 -6.
+322500.000	0.017	noteon voice5 50. 40
+322700.000	0.022	dynamic voice5 50. 63.5 800.
+324400.000	0.027	noteoff voice5 50.
+324750.000	-0.002	dynamic_correction 1
+324760.000	0.010	program voice5 ordinario
+324760.000	0.103	gain voice5 -6.
+324900.000	0.011	ctnote 5 245 50. 40 1900.
+325100.000	0.041	ctdynamic 245 0.75 800.
+326800.000	0.008	ctnoteoff 245
+327150.000	-0.003	dynamic_correction 1
+327160.000	-0.015	program voice5 ordinario
+327160.000	0.075	gain voice5 -6.
+327300.000	0.013	noteon voice5 50. 40
+327500.000	0.020	dynamic voice5 50. 95.25 800.
+329200.000	0.013	noteoff voice5 50.
+329550.000	-0.022	dynamic_correction 1
+329560.000	-0.014	program voice5 ordinario
+329560.000	0.072	gain voice5 -6.
+329700.000	0.024	ctnote 5 247 50. 40 1900.
+329900.000	0.029	ctdynamic 247 1. 800.
+331600.000	-0.008	ctnoteoff 247
+331950.000	0.017	dynamic_correction 1
+331960.000	-0.008	program voice5 ordinario
+331960.000	0.128	gain voice5 -6.
+332100.000	0.024	noteon voice5 50. 40
+332300.000	0.032	dynamic voice5 50. 127. 800.
+334000.000	0.037	noteoff voice5 50.
+334350.000	0.001	dynamic_correction 1
+334360.000	-0.008	program voice5 ordinario
+334360.000	0.074	gain voice5 -6.
+334500.000	0.018	ctnote 5 249 50. 100 1900.
+334700.000	0.007	ctdynamic 249 0.1 800.
+336400.000	-0.001	ctnoteoff 249
+336750.000	0.009	dynamic_correction 1
+336760.000	-0.011	program voice5 ordinario
+336760.000	0.122	gain voice5 -6.
+336900.000	-0.007	noteon voice5 50. 100
+337100.000	0.010	dynamic voice5 50. 12.7 800.
+338800.000	0.012	noteoff voice5 50.
+339150.000	0.010	dynamic_correction 1
+339160.000	-0.008	program voice5 ordinario
+339160.000	0.072	gain voice5 -6.
+339300.000	0.008	ctnote 5 251 50. 100 1900.
+339500.000	0.019	ctdynamic 251 0.5 800.
+341200.000	0.004	ctnoteoff 251
+341550.000	-0.009	dynamic_correction 1
+341560.000	-0.003	program voice5 ordinario
+341560.000	0.105	gain voice5 -6.
+341700.000	0.016	noteon voice5 50. 100
+341900.000	0.019	dynamic voice5 50. 63.5 800.
+343600.000	0.018	noteoff voice5 50.
+343950.000	0.004	dynamic_correction 1
+343960.000	0.004	program voice5 ordinario
+343960.000	0.116	gain voice5 -6.
+344100.000	0.010	ctnote 5 253 50. 100 1900.
+344300.000	0.018	ctdynamic 253 1. 800.
+346000.000	-0.011	ctnoteoff 253
+346350.000	-0.008	dynamic_correction 1
+346360.000	-0.005	program voice5 ordinario
+346360.000	0.098	gain voice5 -6.
+346500.000	0.009	noteon voice5 50. 100
+346700.000	0.036	dynamic voice5 50. 127. 800.
+348400.000	0.032	noteoff voice5 50.
+348750.000	-0.007	dynamic_correction 1
+348760.000	-0.012	program voice5 ordinario
+348760.000	0.113	gain voice5 -6.
+348900.000	0.012	ctnote 5 255 50. 40 1900.
+350800.000	0.017	ctnoteoff 255
+351150.000	0.013	dynamic_correction 1
+351160.000	0.010	program voice5 ordinario
+351160.000	0.102	gain voice5 -6.
+351300.000	0.023	ctnote 5 256 50. 100 1900.
+353200.000	-0.003	ctnoteoff 256
+353550.000	-0.005	dynamic_correction 1
+353560.000	-0.011	program voice5 ordinario
+353560.000	0.098	gain voice5 -6.
+353700.000	0.012	ctnote 5 257 50. 40 3300.
+353900.000	0.016	ctdynamic 257 0.25 600.
+354800.000	0.033	ctdynamic 257 0.75 600.
+355700.000	0.034	ctdynamic 257 0.25 600.
+357000.000	0.007	ctnoteoff 257
+357350.000	0.014	dynamic_correction 1
+357360.000	-0.014	program voice5 ordinario
+357360.000	0.075	gain voice5 -6.
+357500.000	0.018	ctnote 5 258 50. 40 3300.
+357700.000	0.039	ctdynamic 258 0.5 600.
+358600.000	0.031	ctdynamic 258 0.5 600.
+359500.000	0.012	ctdynamic 258 0.5 600.
+360800.000	0.013	ctnoteoff 258
+361150.000	-0.018	dynamic_correction 1
+361160.000	-0.019	program voice3 pizz
+361160.000	0.050	gain voice3 5.777778
+361300.000	0.002	noteon voice3 67.4 90
+361420.000	0.007	noteon voice3 67.4 90
+361450.000	-0.001	noteoff voice3 67.4
+361540.000	0.004	noteon voice3 67.4 90
+361570.000	0.008	noteoff voice3 67.4
+361660.000	0.020	noteon voice3 67.4 90
+361690.000	-0.010	noteoff voice3 67.4
+361780.000	0.013	noteon voice3 67.4 90
+361810.000	0.019	noteoff voice3 67.4
+361900.000	0.006	noteon voice3 67.4 90
+361930.000	-0.005	noteoff voice3 67.4
+362020.000	0.004	noteon voice3 67.4 90
+362050.000	0.029	noteoff voice3 67.4
+362140.000	0.002	noteon voice3 67.4 90
+362170.000	0.017	noteoff voice3 67.4
+362290.000	0.028	noteoff voice3 67.4
+363150.000	-0.014	dynamic_correction 1
+363160.000	-0.022	program voice3 pizz
+363160.000	0.034	gain voice3 5.777778
+363300.000	0.027	ctnote 3 267 67.4 90 150.
+363420.000	-0.003	ctnote 3 268 67.4 90 150.
+363450.000	-0.001	ctnoteoff 267
+363540.000	0.017	ctnote 3 269 67.4 90 150.
+363570.000	0.013	ctnoteoff 268
+363660.000	0.033	ctnote 3 270 67.4 90 150.
+363690.000	-0.005	ctnoteoff 269
+363780.000	0.010	ctnote 3 271 67.4 90 150.
+363810.000	0.005	ctnoteoff 270
+363900.000	0.032	ctnote 3 272 67.4 90 150.
+363930.000	-0.005	ctnoteoff 271
+364020.000	0.039	ctnote 3 273 67.4 90 150.
+364050.000	0.008	ctnoteoff 272
+364140.000	0.032	ctnote 3 274 67.4 90 150.
+364170.000	-0.011	ctnoteoff 273
+364290.000	-0.001	ctnoteoff 274
+365150.000	-0.003	dynamic_correction 1
+365160.000	0.007	program voice3 pizz
+365160.000	0.142	gain voice3 5.777778
+365300.000	0.019	noteon voice3 67.4 90
+365400.000	0.022	noteoff voice3 67.4
+365420.000	-0.007	noteon voice3 67.4 90
+365520.000	0.024	noteoff voice3 67.4
+365540.000	0.005	noteon voice3 67.4 90
+365640.000	0.017	noteoff voice3 67.4
+365660.000	0.022	noteon voice3 67.4 90
+365760.000	0.026	noteoff voice3 67.4
+365780.000	-0.001	noteon voice3 67.4 90
+365880.000	0.012	noteoff voice3 67.4
+365900.000	0.000	noteon voice3 67.4 90
+366000.000	0.016	noteoff voice3 67.4
+366020.000	0.020	noteon voice3 67.4 90
+366120.000	0.009	noteoff voice3 67.4
+366140.000	0.003	noteon voice3 67.4 90
+366240.000	0.005	noteoff voice3 67.4
+367150.000	0.006	dynamic_correction 1
+367160.000	-0.015	program voice3 pizz
+367160.000	0.071	gain voice3 5.777778
+367300.000	0.026	ctnote 3 283 67.4 90 100.
+367400.000	-0.007	ctnoteoff 283
+367420.000	-0.000	ctnote 3 284 67.4 90 100.
+367520.000	0.004	ctnoteoff 284
+367540.000	0.018	ctnote 3 285 67.4 90 100.
+367640.000	-0.001	ctnoteoff 285
+367660.000	0.023	ctnote 3 286 67.4 90 100.
+367760.000	-0.000	ctnoteoff 286
+367780.000	0.022	ctnote 3 287 67.4 90 100.
+367880.000	0.005	ctnoteoff 287
+367900.000	0.011	ctnote 3 288 67.4 90 100.
+368000.000	-0.017	ctnoteoff 288
+368020.000	0.008	ctnote 3 289 67.4 90 100.
+368120.000	-0.018	ctnoteoff 289
+368140.000	0.029	ctnote 3 290 67.4 90 100.
+368240.000	-0.017	ctnoteoff 290
+369150.000	-0.012	dynamic_correction 1
+369160.000	-0.016	program voice3 pizz
+369160.000	0.118	gain voice3 5.777778
+369300.000	0.019	noteon voice3 67.4 90
+369370.000	0.001	noteon voice3 67.4 90
+369400.000	0.011	noteoff voice3 67.4
+369440.000	0.019	noteon voice3 67.4 90
+369470.000	0.010	noteoff voice3 67.4
+369510.000	-0.002	noteon voice3 67.4 90
+369540.000	0.006	noteoff voice3 67.4
+369580.000	0.016	noteon voice3 67.4 90
+369610.000	0.016	noteoff voice3 67.4
+369650.000	0.023	noteon voice3 67.4 90
+369680.000	0.001	noteoff voice3 67.4
+369720.000	0.032	noteon voice3 67.4 90
+369750.000	-0.003	noteoff voice3 67.4
+369790.000	-0.001	noteon voice3 67.4 90
+369820.000	0.027	noteoff voice3 67.4
+369890.000	0.024	noteoff voice3 67.4
+371150.000	-0.021	dynamic_correction 1
+371160.000	0.004	program voice3 pizz
+371160.000	0.159	gain voice3 5.777778
+371300.000	0.038	ctnote 3 299 67.4 90 100.
+371370.000	0.043	ctnote 3 300 67.4 90 100.
+371400.000	-0.018	ctnoteoff 299
+371440.000	0.007	ctnote 3 301 67.4 90 100.
+371470.000	-0.019	ctnoteoff 300
+371510.000	-0.005	ctnote 3 302 67.4 90 100.
+371540.000	-0.002	ctnoteoff 301
+371580.000	0.018	ctnote 3 303 67.4 90 100.
+371610.000	-0.011	ctnoteoff 302
+371650.000	0.038	ctnote 3 304 67.4 90 100.
+371680.000	-0.001	ctnoteoff 303
+371720.000	0.025	ctnote 3 305 67.4 90 100.
+371750.000	-0.000	ctnoteoff 304
+371790.000	0.013	ctnote 3 306 67.4 90 100.
+371820.000	0.004	ctnoteoff 305
+371890.000	-0.002	ctnoteoff 306
+373150.000	-0.002	dynamic_correction 1
+373160.000	-0.015	program voice3 pizz
+373160.000	0.099	gain voice3 5.777778
+373300.000	0.004	noteon voice3 67.4 90
+373350.000	0.017	noteoff voice3 67.4
+373370.000	0.011	noteon voice3 67.4 90
+373420.000	-0.009	noteoff voice3 67.4
+373440.000	0.009	noteon voice3 67.4 90
+373490.000	0.005	noteoff voice3 67.4
+373510.000	0.009	noteon voice3 67.4 90
+373560.000	-0.007	noteoff voice3 67.4
+373580.000	0.002	noteon voice3 67.4 90
+373630.000	0.012	noteoff voice3 67.4
+373650.000	0.022	noteon voice3 67.4 90
+373700.000	-0.004	noteoff voice3 67.4
+373720.000	-0.008	noteon voice3 67.4 90
+373770.000	0.004	noteoff voice3 67.4
+373790.000	0.010	noteon voice3 67.4 90
+373840.000	0.019	noteoff voice3 67.4
+375150.000	-0.001	dynamic_correction 1
+375160.000	-0.003	program voice3 pizz
+375160.000	0.130	gain voice3 5.777778
+375300.000	0.011	ctnote 3 315 67.4 90 50.
+375350.000	0.005	ctnoteoff 315
+375370.000	0.017	ctnote 3 316 67.4 90 50.
+375420.000	0.008	ctnoteoff 316
+375440.000	0.013	ctnote 3 317 67.4 90 50.
+375490.000	-0.021	ctnoteoff 317
+375510.000	0.018	ctnote 3 318 67.4 90 50.
+375560.000	-0.009	ctnoteoff 318
+375580.000	0.022	ctnote 3 319 67.4 90 50.
+375630.000	-0.007	ctnoteoff 319
+375650.000	0.022	ctnote 3 320 67.4 90 50.
+375700.000	-0.003	ctnoteoff 320
+375720.000	0.032	ctnote 3 321 67.4 90 50.
+375770.000	-0.007	ctnoteoff 321
+375790.000	0.015	ctnote 3 322 67.4 90 50.
+375840.000	-0.006	ctnoteoff 322
+377150.000	-0.015	dynamic_correction 1
+377160.000	-0.013	program voice3 "sul tasto"
+377160.000	0.101	gain voice3 5.777778
+377300.000	0.010	ctnote 3 323 67.4 40 1900.
+377500.000	0.005	ctdynamic 323 0. 800.
+379200.000	-0.001	ctnoteoff 323
+379550.000	-0.012	dynamic_correction 1
+379560.000	-0.012	program voice3 "sul tasto"
+379560.000	0.086	gain voice3 5.777778
+379700.000	0.017	noteon voice3 67.4 40
+379900.000	0.037	dynamic voice3 67.4 0. 800.
+381600.000	0.020	noteoff voice3 67.4
+381950.000	0.003	dynamic_correction 1
+381960.000	0.001	program voice3 pizz
+381960.000	0.105	gain voice3 5.777778
+382100.000	0.007	noteon voice3 67.4 90
+382220.000	0.034	noteon voice3 67.4 90
+382250.000	-0.005	noteoff voice3 67.4
+382340.000	0.016	noteon voice3 67.4 90
+382370.000	0.015	noteoff voice3 67.4
+382460.000	-0.003	noteon voice3 67.4 90
+382490.000	-0.013	noteoff voice3 67.4
+382580.000	0.003	noteon voice3 67.4 90
+382610.000	0.017	noteoff voice3 67.4
+382700.000	0.025	noteon voice3 67.4 90
+382730.000	0.004	noteoff voice3 67.4
+382820.000	0.023	noteon voice3 67.4 90
+382850.000	0.021	noteoff voice3 67.4
+382940.000	0.030	noteon voice3 67.4 90
+382970.000	0.028	noteoff voice3 67.4
+383090.000	0.016	noteoff voice3 67.4
+383950.000	-0.000	dynamic_correction 1
+383960.000	-0.005	program voice3 pizz
+383960.000	0.116	gain voice3 5.777778
+384100.000	0.007	ctnote 3 333 67.4 90 150.
+384220.000	0.029	ctnote 3 334 67.4 90 150.
+384250.000	-0.008	ctnoteoff 333
+384340.000	0.002	ctnote 3 335 67.4 90 150.
+384370.000	0.002	ctnoteoff 334
+384460.000	0.008	ctnote 3 336 67.4 90 150.
+384490.000	-0.020	ctnoteoff 335
+384580.000	0.026	ctnote 3 337 67.4 90 150.
+384610.000	-0.022	ctnoteoff 336
+384700.000	0.030	ctnote 3 338 67.4 90 150.
+384730.000	-0.017	ctnoteoff 337
+384820.000	0.043	ctnote 3 339 67.4 90 150.
+384850.000	0.010	ctnoteoff 338
+384940.000	0.041	ctnote 3 340 67.4 90 150.
+384970.000	0.004	ctnoteoff 339
+385090.000	-0.021	ctnoteoff 340
+385950.000	0.001	dynamic_correction 1
+385960.000	-0.024	program voice3 pizz
+385960.000	0.103	gain voice3 5.777778
+386100.000	0.007	noteon voice3 67.4 90
+386200.000	0.001	noteoff voice3 67.4
+386220.000	0.001	noteon voice3 67.4 90
+386320.000	0.019	noteoff voice3 67.4
+386340.000	0.000	noteon voice3 67.4 90
+386440.000	0.007	noteoff voice3 67.4
+386460.000	0.018	noteon voice3 67.4 90
+386560.000	0.013	noteoff voice3 67.4
+386580.000	0.010	noteon voice3 67.4 90
+386680.000	0.012	noteoff voice3 67.4
+386700.000	0.028	noteon voice3 67.4 90
+386800.000	0.021	noteoff voice3 67.4
+386820.000	0.003	noteon voice3 67.4 90
+386920.000	0.016	noteoff voice3 67.4
+386940.000	0.019	noteon voice3 67.4 90
+387040.000	0.001	noteoff voice3 67.4
+387950.000	0.000	dynamic_correction 1
+387960.000	-0.019	program voice3 pizz
+387960.000	0.088	gain voice3 5.777778
+388100.000	0.023	ctnote 3 349 67.4 90 100.
+388200.000	-0.021	ctnoteoff 349
+388220.000	0.028	ctnote 3 350 67.4 90 100.
+388320.000	-0.009	ctnoteoff 350
+388340.000	0.009	ctnote 3 351 67.4 90 100.
+388440.000	-0.003	ctnoteoff 351
+388460.000	0.015	ctnote 3 352 67.4 90 100.
+388560.000	-0.021	ctnoteoff 352
+388580.000	0.028	ctnote 3 353 67.4 90 100.
+388680.000	-0.001	ctnoteoff 353
+388700.000	0.027	ctnote 3 354 67.4 90 100.
+388800.000	0.008	ctnoteoff 354
+388820.000	0.037	ctnote 3 355 67.4 90 100.
+388920.000	-0.007	ctnoteoff 355
+388940.000	0.033	ctnote 3 356 67.4 90 100.
+389040.000	-0.016	ctnoteoff 356
+389950.000	0.017	dynamic_correction 1
+389960.000	-0.009	program voice3 pizz
+389960.000	0.123	gain voice3 5.777778
+390100.000	0.023	noteon voice3 67.4 90
+390170.000	0.030	noteon voice3 67.4 90
+390200.000	-0.004	noteoff voice3 67.4
+390240.000	0.016	noteon voice3 67.4 90
+390270.000	0.003	noteoff voice3 67.4
+390310.000	0.018	noteon voice3 67.4 90
+390340.000	0.014	noteoff voice3 67.4
+390380.000	0.020	noteon voice3 67.4 90
+390410.000	0.002	noteoff voice3 67.4
+390450.000	-0.005	noteon voice3 67.4 90
+390480.000	-0.014	noteoff voice3 67.4
+390520.000	0.015	noteon voice3 67.4 90
+390550.000	0.021	noteoff voice3 67.4
+390590.000	0.001	noteon voice3 67.4 90
+390620.000	0.018	noteoff voice3 67.4
+390690.000	0.020	noteoff voice3 67.4
+391950.000	-0.018	dynamic_correction 1
+391960.000	-0.007	program voice3 pizz
+391960.000	0.121	gain voice3 5.777778
+392100.000	0.013	ctnote 3 365 67.4 90 100.
+392170.000	0.011	ctnote 3 366 67.4 90 100.
+392200.000	-0.011	ctnoteoff 365
+392240.000	-0.002	ctnote 3 367 67.4 90 100.
+392270.000	-0.003	ctnoteoff 366
+392310.000	0.006	ctnote 3 368 67.4 90 100.
+392340.000	-0.008	ctnoteoff 367
+392380.000	0.030	ctnote 3 369 67.4 90 100.
+392410.000	-0.017	ctnoteoff 368
+392450.000	0.012	ctnote 3 370 67.4 90 100.
+392480.000	-0.006	ctnoteoff 369
+392520.000	0.024	ctnote 3 371 67.4 90 100.
+392550.000	0.000	ctnoteoff 370
+392590.000	0.014	ctnote 3 372 67.4 90 100.
+392620.000	-0.014	ctnoteoff 371
+392690.000	0.014	ctnoteoff 372
+393950.000	0.010	dynamic_correction 1
+393960.000	-0.003	program voice3 pizz
+393960.000	0.106	gain voice3 5.777778
+394100.000	0.015	noteon voice3 67.4 90
+394150.000	0.025	noteoff voice3 67.4
+394170.000	0.019	noteon voice3 67.4 90
+394220.000	0.017	noteoff voice3 67.4
+394240.000	-0.003	noteon voice3 67.4 90
+394290.000	0.016	noteoff voice3 67.4
+394310.000	0.003	noteon voice3 67.4 90
+394360.000	0.019	noteoff voice3 67.4
+394380.000	-0.003	noteon voice3 67.4 90
+394430.000	0.012	noteoff voice3 67.4
+394450.000	0.010	noteon voice3 67.4 90
+394500.000	0.020	noteoff voice3 67.4
+394520.000	0.025	noteon voice3 67.4 90
+394570.000	0.022	noteoff voice3 67.4
+394590.000	0.010	noteon voice3 67.4 90
+394640.000	0.009	noteoff voice3 67.4
+395950.000	0.012	dynamic_correction 1
+395960.000	0.009	program voice3 pizz
+395960.000	0.096	gain voice3 5.777778
+396100.000	0.029	ctnote 3 381 67.4 90 50.
+396150.000	-0.010	ctnoteoff 381
+396170.000	0.019	ctnote 3 382 67.4 90 50.
+396220.000	-0.006	ctnoteoff 382
+396240.000	0.006	ctnote 3 383 67.4 90 50.
+396290.000	-0.010	ctnoteoff 383
+396310.000	0.023	ctnote 3 384 67.4 90 50.
+396360.000	0.004	ctnoteoff 384
+396380.000	0.024	ctnote 3 385 67.4 90 50.
+396430.000	-0.014	ctnoteoff 385
+396450.000	0.006	ctnote 3 386 67.4 90 50.
+396500.000	-0.004	ctnoteoff 386
+396520.000	0.008	ctnote 3 387 67.4 90 50.
+396570.000	0.006	ctnoteoff 387
+396590.000	0.016	ctnote 3 388 67.4 90 50.
+396640.000	-0.012	ctnoteoff 388
+396940.000	-0.011	dynamic_correction 1

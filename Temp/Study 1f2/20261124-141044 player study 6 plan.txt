@@ -1,0 +1,226 @@
+Maket, study of the ePlayer, run 6 (stage 1f.7)
+voice	voice3
+program	ordinario
+gain	5.777778
+repetition length (ms)	4000.0
+figure	note 1: 67.4, velocity 15, 1700 ms, ramp to 60 over 1500 ms; note 2 at 1500 ms: 67.68, velocity 36, 1900 ms, ramps to 70 over 700 ms, to 100 over 600 ms, to 127 over 400 ms
+
+Ways. Columns, separated by a tab: number, by pitch or number, first dynamic after the note-on (ms), next ramp's command before the end of the ramp before (ms), dynamic correction, name, velocity of a single note (0: the figure), silence added before (ms), voice, repeated notes, their period (ms), their overlap (ms), glide (semitones), chord, struck at (run 4; 0: not a ramp note), ramp target (-1: none), target sent as, numbers of ctdynamic one after the other (run 5: steps; run 6: targets from 0 to 1; - when none), ms each ramp takes, ms from one to the next, sent as, pitch of the note
+1	number	0.0	0.3	on	cello, struck at 40, by number, ramp to 0.00	0	0.0	3	0	0.0	0.0	0.0	0	40	-1.0	real	0	800.0	900.0	real	67.40
+2	pitch	0.0	0.3	on	cello, struck at 40, by pitch, ramp to 0.0	0	0.0	3	0	0.0	0.0	0.0	0	40	0.0	real	-	800.0	900.0	whole	67.40
+3	number	0.0	0.3	on	cello, struck at 40, by number, ramp to 0.10	0	0.0	3	0	0.0	0.0	0.0	0	40	-1.0	real	0.100	800.0	900.0	real	67.40
+4	pitch	0.0	0.3	on	cello, struck at 40, by pitch, ramp to 12.7	0	0.0	3	0	0.0	0.0	0.0	0	40	12.7	real	-	800.0	900.0	whole	67.40
+5	number	0.0	0.3	on	cello, struck at 40, by number, ramp to 0.25	0	0.0	3	0	0.0	0.0	0.0	0	40	-1.0	real	0.250	800.0	900.0	real	67.40
+6	pitch	0.0	0.3	on	cello, struck at 40, by pitch, ramp to 31.8	0	0.0	3	0	0.0	0.0	0.0	0	40	31.8	real	-	800.0	900.0	whole	67.40
+7	number	0.0	0.3	on	cello, struck at 40, by number, ramp to 0.50	0	0.0	3	0	0.0	0.0	0.0	0	40	-1.0	real	0.500	800.0	900.0	real	67.40
+8	pitch	0.0	0.3	on	cello, struck at 40, by pitch, ramp to 63.5	0	0.0	3	0	0.0	0.0	0.0	0	40	63.5	real	-	800.0	900.0	whole	67.40
+9	number	0.0	0.3	on	cello, struck at 40, by number, ramp to 0.75	0	0.0	3	0	0.0	0.0	0.0	0	40	-1.0	real	0.750	800.0	900.0	real	67.40
+10	pitch	0.0	0.3	on	cello, struck at 40, by pitch, ramp to 95.2	0	0.0	3	0	0.0	0.0	0.0	0	40	95.2	real	-	800.0	900.0	whole	67.40
+11	number	0.0	0.3	on	cello, struck at 40, by number, ramp to 1.00	0	0.0	3	0	0.0	0.0	0.0	0	40	-1.0	real	1	800.0	900.0	real	67.40
+12	pitch	0.0	0.3	on	cello, struck at 40, by pitch, ramp to 127.0	0	0.0	3	0	0.0	0.0	0.0	0	40	127.0	real	-	800.0	900.0	whole	67.40
+13	number	0.0	0.3	on	cello, struck at 100, by number, ramp to 0.10	0	0.0	3	0	0.0	0.0	0.0	0	100	-1.0	real	0.100	800.0	900.0	real	67.40
+14	pitch	0.0	0.3	on	cello, struck at 100, by pitch, ramp to 12.7	0	0.0	3	0	0.0	0.0	0.0	0	100	12.7	real	-	800.0	900.0	whole	67.40
+15	number	0.0	0.3	on	cello, struck at 100, by number, ramp to 0.50	0	0.0	3	0	0.0	0.0	0.0	0	100	-1.0	real	0.500	800.0	900.0	real	67.40
+16	pitch	0.0	0.3	on	cello, struck at 100, by pitch, ramp to 63.5	0	0.0	3	0	0.0	0.0	0.0	0	100	63.5	real	-	800.0	900.0	whole	67.40
+17	number	0.0	0.3	on	cello, struck at 100, by number, ramp to 1.00	0	0.0	3	0	0.0	0.0	0.0	0	100	-1.0	real	1	800.0	900.0	real	67.40
+18	pitch	0.0	0.3	on	cello, struck at 100, by pitch, ramp to 127.0	0	0.0	3	0	0.0	0.0	0.0	0	100	127.0	real	-	800.0	900.0	whole	67.40
+19	number	0.0	0.3	on	cello, struck at 40, by number, no ramp	0	0.0	3	0	0.0	0.0	0.0	0	40	-1.0	real	-	800.0	900.0	whole	67.40
+20	number	0.0	0.3	on	cello, struck at 100, by number, no ramp	0	0.0	3	0	0.0	0.0	0.0	0	100	-1.0	real	-	800.0	900.0	whole	67.40
+21	number	0.0	0.3	on	cello, struck at 40, by number, ramps to 0.25, 0.75, 0.25 (does it come back?)	0	0.0	3	0	0.0	0.0	0.0	0	40	-1.0	real	0.250 0.750 0.250	600.0	900.0	real	67.40
+22	number	0.0	0.3	on	cello, struck at 40, by number, ramps to 0.5, 0.5, 0.5 (does it stay?)	0	0.0	3	0	0.0	0.0	0.0	0	40	-1.0	real	0.500 0.500 0.500	600.0	900.0	real	67.40
+23	number	0.0	0.3	on	bass clarinet, struck at 40, by number, ramp to 0.00	0	0.0	5	0	0.0	0.0	0.0	0	40	-1.0	real	0	800.0	900.0	real	50.00
+24	pitch	0.0	0.3	on	bass clarinet, struck at 40, by pitch, ramp to 0.0	0	0.0	5	0	0.0	0.0	0.0	0	40	0.0	real	-	800.0	900.0	whole	50.00
+25	number	0.0	0.3	on	bass clarinet, struck at 40, by number, ramp to 0.10	0	0.0	5	0	0.0	0.0	0.0	0	40	-1.0	real	0.100	800.0	900.0	real	50.00
+26	pitch	0.0	0.3	on	bass clarinet, struck at 40, by pitch, ramp to 12.7	0	0.0	5	0	0.0	0.0	0.0	0	40	12.7	real	-	800.0	900.0	whole	50.00
+27	number	0.0	0.3	on	bass clarinet, struck at 40, by number, ramp to 0.25	0	0.0	5	0	0.0	0.0	0.0	0	40	-1.0	real	0.250	800.0	900.0	real	50.00
+28	pitch	0.0	0.3	on	bass clarinet, struck at 40, by pitch, ramp to 31.8	0	0.0	5	0	0.0	0.0	0.0	0	40	31.8	real	-	800.0	900.0	whole	50.00
+29	number	0.0	0.3	on	bass clarinet, struck at 40, by number, ramp to 0.50	0	0.0	5	0	0.0	0.0	0.0	0	40	-1.0	real	0.500	800.0	900.0	real	50.00
+30	pitch	0.0	0.3	on	bass clarinet, struck at 40, by pitch, ramp to 63.5	0	0.0	5	0	0.0	0.0	0.0	0	40	63.5	real	-	800.0	900.0	whole	50.00
+31	number	0.0	0.3	on	bass clarinet, struck at 40, by number, ramp to 0.75	0	0.0	5	0	0.0	0.0	0.0	0	40	-1.0	real	0.750	800.0	900.0	real	50.00
+32	pitch	0.0	0.3	on	bass clarinet, struck at 40, by pitch, ramp to 95.2	0	0.0	5	0	0.0	0.0	0.0	0	40	95.2	real	-	800.0	900.0	whole	50.00
+33	number	0.0	0.3	on	bass clarinet, struck at 40, by number, ramp to 1.00	0	0.0	5	0	0.0	0.0	0.0	0	40	-1.0	real	1	800.0	900.0	real	50.00
+34	pitch	0.0	0.3	on	bass clarinet, struck at 40, by pitch, ramp to 127.0	0	0.0	5	0	0.0	0.0	0.0	0	40	127.0	real	-	800.0	900.0	whole	50.00
+35	number	0.0	0.3	on	bass clarinet, struck at 100, by number, ramp to 0.10	0	0.0	5	0	0.0	0.0	0.0	0	100	-1.0	real	0.100	800.0	900.0	real	50.00
+36	pitch	0.0	0.3	on	bass clarinet, struck at 100, by pitch, ramp to 12.7	0	0.0	5	0	0.0	0.0	0.0	0	100	12.7	real	-	800.0	900.0	whole	50.00
+37	number	0.0	0.3	on	bass clarinet, struck at 100, by number, ramp to 0.50	0	0.0	5	0	0.0	0.0	0.0	0	100	-1.0	real	0.500	800.0	900.0	real	50.00
+38	pitch	0.0	0.3	on	bass clarinet, struck at 100, by pitch, ramp to 63.5	0	0.0	5	0	0.0	0.0	0.0	0	100	63.5	real	-	800.0	900.0	whole	50.00
+39	number	0.0	0.3	on	bass clarinet, struck at 100, by number, ramp to 1.00	0	0.0	5	0	0.0	0.0	0.0	0	100	-1.0	real	1	800.0	900.0	real	50.00
+40	pitch	0.0	0.3	on	bass clarinet, struck at 100, by pitch, ramp to 127.0	0	0.0	5	0	0.0	0.0	0.0	0	100	127.0	real	-	800.0	900.0	whole	50.00
+41	number	0.0	0.3	on	bass clarinet, struck at 40, by number, no ramp	0	0.0	5	0	0.0	0.0	0.0	0	40	-1.0	real	-	800.0	900.0	whole	50.00
+42	number	0.0	0.3	on	bass clarinet, struck at 100, by number, no ramp	0	0.0	5	0	0.0	0.0	0.0	0	100	-1.0	real	-	800.0	900.0	whole	50.00
+43	number	0.0	0.3	on	bass clarinet, struck at 40, by number, ramps to 0.25, 0.75, 0.25 (does it come back?)	0	0.0	5	0	0.0	0.0	0.0	0	40	-1.0	real	0.250 0.750 0.250	600.0	900.0	real	50.00
+44	number	0.0	0.3	on	bass clarinet, struck at 40, by number, ramps to 0.5, 0.5, 0.5 (does it stay?)	0	0.0	5	0	0.0	0.0	0.0	0	40	-1.0	real	0.500 0.500 0.500	600.0	900.0	real	50.00
+45	pitch	0.0	0.3	on	plucked note repeated by pitch, one every 120 ms, overlapping by 30 ms	0	0.0	3	8	120.0	30.0	0.0	0	0	-1.0	real	-	800.0	900.0	whole	67.40
+46	number	0.0	0.3	on	plucked note repeated by number, one every 120 ms, overlapping by 30 ms	0	0.0	3	8	120.0	30.0	0.0	0	0	-1.0	real	-	800.0	900.0	whole	67.40
+47	pitch	0.0	0.3	on	plucked note repeated by pitch, one every 120 ms, 20 ms apart	0	0.0	3	8	120.0	-20.0	0.0	0	0	-1.0	real	-	800.0	900.0	whole	67.40
+48	number	0.0	0.3	on	plucked note repeated by number, one every 120 ms, 20 ms apart	0	0.0	3	8	120.0	-20.0	0.0	0	0	-1.0	real	-	800.0	900.0	whole	67.40
+49	pitch	0.0	0.3	on	plucked note repeated by pitch, one every 70 ms, overlapping by 30 ms	0	0.0	3	8	70.0	30.0	0.0	0	0	-1.0	real	-	800.0	900.0	whole	67.40
+50	number	0.0	0.3	on	plucked note repeated by number, one every 70 ms, overlapping by 30 ms	0	0.0	3	8	70.0	30.0	0.0	0	0	-1.0	real	-	800.0	900.0	whole	67.40
+51	pitch	0.0	0.3	on	plucked note repeated by pitch, one every 70 ms, 20 ms apart	0	0.0	3	8	70.0	-20.0	0.0	0	0	-1.0	real	-	800.0	900.0	whole	67.40
+52	number	0.0	0.3	on	plucked note repeated by number, one every 70 ms, 20 ms apart	0	0.0	3	8	70.0	-20.0	0.0	0	0	-1.0	real	-	800.0	900.0	whole	67.40
+
+Repetitions. Columns, separated by a tab: number, way, begins at (ms from the first command)
+1	1	500.0
+2	2	2900.0
+3	3	5300.0
+4	4	7700.0
+5	5	10100.0
+6	6	12500.0
+7	7	14900.0
+8	8	17300.0
+9	9	19700.0
+10	10	22100.0
+11	11	24500.0
+12	12	26900.0
+13	13	29300.0
+14	14	31700.0
+15	15	34100.0
+16	16	36500.0
+17	17	38900.0
+18	18	41300.0
+19	19	43700.0
+20	20	46100.0
+21	21	48500.0
+22	22	52300.0
+23	23	56100.0
+24	24	58500.0
+25	25	60900.0
+26	26	63300.0
+27	27	65700.0
+28	28	68100.0
+29	29	70500.0
+30	30	72900.0
+31	31	75300.0
+32	32	77700.0
+33	33	80100.0
+34	34	82500.0
+35	35	84900.0
+36	36	87300.0
+37	37	89700.0
+38	38	92100.0
+39	39	94500.0
+40	40	96900.0
+41	41	99300.0
+42	42	101700.0
+43	43	104100.0
+44	44	107900.0
+45	45	111700.0
+46	46	113700.0
+47	47	115700.0
+48	48	117700.0
+49	49	119700.0
+50	50	121700.0
+51	51	123700.0
+52	52	125700.0
+53	2	127700.0
+54	3	130100.0
+55	4	132500.0
+56	5	134900.0
+57	6	137300.0
+58	7	139700.0
+59	8	142100.0
+60	9	144500.0
+61	10	146900.0
+62	11	149300.0
+63	12	151700.0
+64	13	154100.0
+65	14	156500.0
+66	15	158900.0
+67	16	161300.0
+68	17	163700.0
+69	18	166100.0
+70	19	168500.0
+71	20	170900.0
+72	21	173300.0
+73	22	177100.0
+74	23	180900.0
+75	24	183300.0
+76	25	185700.0
+77	26	188100.0
+78	27	190500.0
+79	28	192900.0
+80	29	195300.0
+81	30	197700.0
+82	31	200100.0
+83	32	202500.0
+84	33	204900.0
+85	34	207300.0
+86	35	209700.0
+87	36	212100.0
+88	37	214500.0
+89	38	216900.0
+90	39	219300.0
+91	40	221700.0
+92	41	224100.0
+93	42	226500.0
+94	43	228900.0
+95	44	232700.0
+96	45	236500.0
+97	46	238500.0
+98	47	240500.0
+99	48	242500.0
+100	49	244500.0
+101	50	246500.0
+102	51	248500.0
+103	52	250500.0
+104	1	252500.0
+105	3	254900.0
+106	4	257300.0
+107	5	259700.0
+108	6	262100.0
+109	7	264500.0
+110	8	266900.0
+111	9	269300.0
+112	10	271700.0
+113	11	274100.0
+114	12	276500.0
+115	13	278900.0
+116	14	281300.0
+117	15	283700.0
+118	16	286100.0
+119	17	288500.0
+120	18	290900.0
+121	19	293300.0
+122	20	295700.0
+123	21	298100.0
+124	22	301900.0
+125	23	305700.0
+126	24	308100.0
+127	25	310500.0
+128	26	312900.0
+129	27	315300.0
+130	28	317700.0
+131	29	320100.0
+132	30	322500.0
+133	31	324900.0
+134	32	327300.0
+135	33	329700.0
+136	34	332100.0
+137	35	334500.0
+138	36	336900.0
+139	37	339300.0
+140	38	341700.0
+141	39	344100.0
+142	40	346500.0
+143	41	348900.0
+144	42	351300.0
+145	43	353700.0
+146	44	357500.0
+147	45	361300.0
+148	46	363300.0
+149	47	365300.0
+150	48	367300.0
+151	49	369300.0
+152	50	371300.0
+153	51	373300.0
+154	52	375300.0
+155	1	377300.0
+156	2	379700.0
+157	45	382100.0
+158	46	384100.0
+159	47	386100.0
+160	48	388100.0
+161	49	390100.0
+162	50	392100.0
+163	51	394100.0
+164	52	396100.0

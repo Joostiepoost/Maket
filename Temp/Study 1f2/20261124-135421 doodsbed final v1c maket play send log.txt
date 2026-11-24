@@ -1,0 +1,58 @@
+Maket playing doodsbed final v1c.txt from 0.0 s, by pitch, Maket's own way
+Columns, separated by a tab: time in the roll (ms), left Maket this much after it (ms), command
+0.000	0.001	program PnRH ordLV
+0.000	0.182	gain PnRH 0.
+0.000	0.219	noteon PnRH 67. 101
+603.575	0.011	noteon PnRH 66. 61
+696.788	0.003	noteon PnRH 64. 47
+697.063	-0.017	noteon PnRH 63. 56
+789.400	0.001	noteon PnRH 62. 50
+835.871	0.017	noteon PnRH 61. 70
+881.798	0.018	noteon PnRH 60. 66
+928.830	0.020	noteon PnRH 58. 79
+1220.587	0.006	noteoff PnRH 61.
+1220.972	-0.021	noteoff PnRH 62.
+1221.149	-0.011	noteoff PnRH 60.
+1221.311	-0.024	noteoff PnRH 64.
+1221.466	-0.002	noteoff PnRH 58.
+1221.623	-0.012	noteoff PnRH 67.
+1267.139	0.006	noteoff PnRH 63.
+1267.468	-0.006	noteoff PnRH 66.
+4541.945	0.004	program Vla "col legno tratto"
+4541.945	0.207	gain Vla 0.
+4541.945	0.256	noteon Vla 78. 1
+4541.945	0.298	dynamic Vla 78. 28.222222 737.155457
+4541.945	0.334	glissando Vla 78. 0. 2571.906645
+5278.945	0.018	dynamic Vla 78. 79.022222 1909.830404
+7113.945	-0.001	glissando Vla 78. 5.25 1732.126286
+7188.945	0.004	dynamic Vla 78. 104.422222 1705.749597
+7200.802	-0.025	program Vlc "sul tasto"
+7200.802	0.026	gain Vlc 5.777778
+7200.802	0.062	noteon Vlc 66.9 1
+7200.802	0.101	dynamic Vlc 66.9 16.846475 4267.
+7200.802	0.141	glissando Vlc 66.9 0.5 4511.
+7202.110	-0.025	program Fl "flute.flutter-tongue.throat-R.with air noise"
+7202.110	0.014	noteon Fl 63.75 40
+7202.110	0.051	glissando Fl 63.75 -1. 1746.598523
+7206.110	0.002	dynamic Fl 63.75 28.222222 848.09816
+8054.110	0.028	dynamic Fl 63.75 4.797778 894.340075
+8845.945	0.016	glissando Vla 78. 4.75 960.420576
+8894.945	-0.002	dynamic Vla 78. 45.155556 107.040725
+8916.193	0.005	noteon PnRH 55. 28
+8919.007	-0.015	program Cl ordinario
+8919.007	0.045	noteon Cl 39.75 12
+8919.007	0.083	dynamic Cl 39.75 21.731111 599.703481
+8919.007	0.130	glissando Cl 39.75 -0.5 3957.
+8928.063	-0.019	gain Cl 0.
+8948.708	-0.001	noteoff Fl 63.75
+8948.708	0.155	program Fl "bass flute.bisbigliando"
+8948.708	0.213	noteon Fl 62.5 34
+8948.708	0.270	glissando Fl 62.5 -0.25 2601.189976
+9001.945	0.037	dynamic Vla 78. 22.577778 164.190273
+9165.945	0.009	dynamic Vla 78. 5.644444 301.0155
+9195.876	-0.005	noteoff PnRH 55.
+9466.945	0.018	dynamic Vla 78. 0. 339.471551
+9519.007	0.020	dynamic Cl 39.75 31.891111 782.441687
+9722.336	0.006	noteon PnRH 66. 44
+9806.398	0.013	noteoff Vla 78.
+10002.019	0.001	noteoff PnRH 66.
