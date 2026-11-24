@@ -11,9 +11,27 @@ public:
     const juce::String getApplicationVersion() override { return JUCE_APPLICATION_VERSION_STRING; }
     bool moreThanOneInstanceAllowed() override          { return false; }
 
-    void initialise (const juce::String&) override
+    void initialise (const juce::String& commandLine) override
     {
         mainWindow = std::make_unique<MainWindow> (getApplicationName());
+        openFromCommandLine (commandLine);
+    }
+
+    /** A file dropped on Maket's icon or "opened with" Maket while it runs. */
+    void anotherInstanceStarted (const juce::String& commandLine) override
+    {
+        openFromCommandLine (commandLine);
+    }
+
+    /** Opens the roll named on the command line, if there is one. */
+    void openFromCommandLine (const juce::String& commandLine)
+    {
+        const auto path = commandLine.trim().unquoted();
+        if (path.isEmpty() || mainWindow == nullptr) return;
+        const auto file = juce::File::getCurrentWorkingDirectory().getChildFile (path);
+        if (file.existsAsFile())
+            if (auto* main = dynamic_cast<MainComponent*> (mainWindow->getContentComponent()))
+                main->openRollFile (file);
     }
 
     void shutdown() override

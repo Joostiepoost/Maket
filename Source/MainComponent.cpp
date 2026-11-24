@@ -31,6 +31,12 @@ MainComponent::MainComponent()
             utilities->onSettingSelected = [this] (const maket::SettingInfo& info) { showSetting (info); };
             pages[(size_t) i] = std::move (page);
         }
+        else if (i == Tabs::library)
+        {
+            auto page = std::make_unique<EditionPage> (settings);
+            edition = page.get();
+            pages[(size_t) i] = std::move (page);
+        }
         else
         {
             pages[(size_t) i] = std::make_unique<EmptyPage> (i);
@@ -154,6 +160,16 @@ void MainComponent::getAllCommands (juce::Array<juce::CommandID>& c)
         c.add (cmdShowTab + i);
     c.add (cmdToggleList);
     c.add (cmdToggleInspector);
+    for (auto id : { cmdOpen, cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit })
+        c.add (id);
+}
+
+bool MainComponent::openRollFile (const juce::File& file)
+{
+    showTab (Tabs::library);
+    const bool opened = edition != nullptr && edition->openFile (file);
+    commandManager.commandStatusChanged();
+    return opened;
 }
 
 void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommandInfo& info)
@@ -176,6 +192,43 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
         return;
     }
 
+    const auto cmd = juce::ModifierKeys::commandModifier;
+    const bool rollInFront = edition != nullptr && edition->hasRoll() && tabBar.getCurrent() == Tabs::library;
+    switch (id)
+    {
+        case cmdOpen:
+            info.setInfo (juce::String::fromUTF8 ("Openâ¦"), "Open a bach.roll text file", "File", 0);
+            info.addDefaultKeypress ('o', cmd);
+            return;
+        case cmdZoomAcrossIn:
+            info.setInfo ("More time detail", "Zoom in along the time axis", "View", 0);
+            info.addDefaultKeypress ('=', cmd);
+            info.addDefaultKeypress ('+', cmd);
+            info.setActive (rollInFront);
+            return;
+        case cmdZoomAcrossOut:
+            info.setInfo ("Less time detail", "Zoom out along the time axis", "View", 0);
+            info.addDefaultKeypress ('-', cmd);
+            info.setActive (rollInFront);
+            return;
+        case cmdZoomDownIn:
+            info.setInfo ("Larger staves", "Zoom in on the staves", "View", 0);
+            info.addDefaultKeypress ('=', cmdAlt);
+            info.setActive (rollInFront);
+            return;
+        case cmdZoomDownOut:
+            info.setInfo ("Smaller staves", "Zoom out on the staves", "View", 0);
+            info.addDefaultKeypress ('-', cmdAlt);
+            info.setActive (rollInFront);
+            return;
+        case cmdZoomToFit:
+            info.setInfo ("The whole roll in the window", "Zoom so that the whole roll shows", "View", 0);
+            info.addDefaultKeypress ('0', cmd);
+            info.setActive (rollInFront);
+            return;
+        default: break;
+    }
+
     const int tab = (int) id - cmdShowTab;
     if (tab < 0 || tab >= Tabs::count) return;
 
@@ -190,6 +243,18 @@ bool MainComponent::perform (const InvocationInfo& info)
     if (info.commandID == cmdToggleList)      { setListShown (! listShown); return true; }
     if (info.commandID == cmdToggleInspector) { setInspectorShown (! inspectorShown); return true; }
 
+    if (edition != nullptr)
+        switch (info.commandID)
+        {
+            case cmdOpen:           showTab (Tabs::library); edition->chooseFile(); return true;
+            case cmdZoomAcrossIn:   edition->zoomAcross (1);    return true;
+            case cmdZoomAcrossOut:  edition->zoomAcross (-1);   return true;
+            case cmdZoomDownIn:     edition->zoomDown (1);      return true;
+            case cmdZoomDownOut:    edition->zoomDown (-1);     return true;
+            case cmdZoomToFit:      edition->zoomToFit();       return true;
+            default: break;
+        }
+
     const int tab = (int) info.commandID - cmdShowTab;
     if (tab < 0 || tab >= Tabs::count) return false;
     showTab (tab);
@@ -198,7 +263,7 @@ bool MainComponent::perform (const InvocationInfo& info)
 
 juce::StringArray MainComponent::getMenuBarNames()
 {
-    return { "View" };
+    return { "File", "View" };
 }
 
 juce::PopupMenu MainComponent::getMenuForIndex (int menuIndex, const juce::String&)
@@ -206,6 +271,13 @@ juce::PopupMenu MainComponent::getMenuForIndex (int menuIndex, const juce::Strin
     juce::PopupMenu m;
     if (menuIndex == 0)
     {
+        m.addCommandItem (&commandManager, cmdOpen);
+    }
+    else if (menuIndex == 1)
+    {
+        for (auto id : { cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit })
+            m.addCommandItem (&commandManager, id);
+        m.addSeparator();
         for (int i = 0; i < Tabs::count; ++i)
             m.addCommandItem (&commandManager, cmdShowTab + i);
         m.addSeparator();

@@ -20,6 +20,7 @@
 #include "UI/EmptyPage.h"
 #include "UI/Inspector.h"
 #include "UI/UtilitiesPage.h"
+#include "UI/EditionPage.h"
 #include "Engine/OscScheduler.h"
 #include "UI/KeepAwake.h"
 #include "Model/Settings.h"
@@ -40,8 +41,13 @@ public:
     {
         cmdShowTab = 0x3000,        // cmdShowTab + Tabs::Index
         cmdToggleList = 0x3010,
-        cmdToggleInspector
+        cmdToggleInspector,
+        cmdOpen = 0x3020,
+        cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit
     };
+
+    /** Opens a bach.roll text file in the tab Library and edition. */
+    bool openRollFile (const juce::File&);
 
     /** Hides or shows the list on the left of the tabs that have one. */
     void setListShown (bool shouldShow);
@@ -80,6 +86,7 @@ private:
     maket::OscScheduler oscScheduler;           // sends OSC messages at their time, on a thread of its own
     KeepAwake keepAwake { oscScheduler };       // tells macOS not to slow Maket down while messages wait
     UtilitiesPage* utilities = nullptr;         // owned by `pages`
+    EditionPage* edition = nullptr;             // owned by `pages`
     bool listShown = true;
     bool inspectorShown = true;
 

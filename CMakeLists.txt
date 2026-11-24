@@ -18,7 +18,7 @@ endif()
 
 # The build stage this source stands at; shown at the right of the tab row,
 # so that it is clear which build is being tested.
-set(MAKET_BUILD_STAGE "1f.8")
+set(MAKET_BUILD_STAGE "2a")
 
 # --- JUCE --------------------------------------------------------------------
 # By default JUCE is downloaded automatically (first build takes a few minutes).
@@ -54,7 +54,9 @@ set(MAKET_CORE_SOURCES
     Source/Engine/ConTimbre.cpp
     Source/Engine/TimingTest.cpp
     Source/Engine/ConTimbreMapping.cpp
-    Source/Engine/PlayerStudy.cpp)
+    Source/Engine/PlayerStudy.cpp
+    Source/Notation/Spelling.cpp
+    Source/Notation/Staves.cpp)
 
 set(MAKET_DEFINITIONS
     JUCE_WEB_BROWSER=0
@@ -88,6 +90,9 @@ target_sources(Maket PRIVATE
     Source/UI/PanelButton.cpp
     Source/UI/PreferencesPage.cpp
     Source/UI/UtilitiesPage.cpp
+    Source/UI/MusicFont.cpp
+    Source/UI/RollView.cpp
+    Source/UI/EditionPage.cpp
     Source/UI/OscTestPage.cpp
     Source/UI/TimingTestPage.cpp
     Source/UI/ConTimbreTestPage.cpp
@@ -106,8 +111,12 @@ target_compile_definitions(Maket PRIVATE
     JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:Maket,JUCE_VERSION>"
     ${MAKET_DEFINITIONS})
 
+# Files built into the app: the Bravura music font (SIL Open Font License, see Resources/Fonts).
+juce_add_binary_data(MaketData SOURCES Resources/Fonts/Bravura.otf)
+
 target_link_libraries(Maket
     PRIVATE
+        MaketData
         juce::juce_gui_extra
     PUBLIC
         juce::juce_recommended_config_flags
@@ -123,7 +132,7 @@ option(MAKET_BUILD_TESTS "Build the MaketTests console program" OFF)
 if(MAKET_BUILD_TESTS)
     juce_add_console_app(MaketTests PRODUCT_NAME "MaketTests")
     juce_generate_juce_header(MaketTests)
-    target_sources(MaketTests PRIVATE Tests/MaketTests.cpp Tests/BachTests.cpp Tests/BachWriteTests.cpp Tests/OscTests.cpp Tests/TimingTests.cpp Tests/MappingTests.cpp Tests/StudyTests.cpp ${MAKET_CORE_SOURCES})
+    target_sources(MaketTests PRIVATE Tests/MaketTests.cpp Tests/BachTests.cpp Tests/BachWriteTests.cpp Tests/OscTests.cpp Tests/TimingTests.cpp Tests/MappingTests.cpp Tests/StudyTests.cpp Tests/NotationTests.cpp ${MAKET_CORE_SOURCES})
     target_compile_definitions(MaketTests PRIVATE
         ${MAKET_DEFINITIONS} JUCE_STANDALONE_APPLICATION=1
         MAKET_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")

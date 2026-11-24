@@ -61,7 +61,13 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1f.6 | By number, a dynamic ramp sent as a step from the level before; the fifth run of the study: how such steps behave (it replaces the fourth run) | set aside on 24 Nov: the idea of steps did not hold (see 1f.7) |
 | 1f.7 | By number, the target of a dynamic ramp on the ePlayer's scale from 0 to 1; the sixth run of the study: that scale beside the ramps by pitch, on the cello and the bass clarinet (it replaces runs four and five) | done; run by Joost on 24 Nov: by number and by pitch give the same dynamics |
 | 1f.8 | Tuning: the standard pitch as a setting, sent to the ePlayer (`kammerton`) at the start of every play; a tuning check of 48 seconds | done; run by Joost on 24 Nov: the A lands on the frequency sent, within a third of a cent |
-| 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
+| 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | in parts |
+| 2a | A roll opens in *Library and edition*: staves and clefs per voice, notes with stems and duration lines in proportional time, a time ruler, zoom and scroll; on paper, as bach.roll. No accidentals yet | built, to test |
+| 2b | Accidentals: semitones, quarter tones, eighth tones in bach's spelling | |
+| 2c | Pitch breakpoints, markers, how muted and locked things look | |
+| 2d | Transport on conTimbre: playhead, play, stop, loop | |
+| 2e | The first synth, the audio output, a choice of engine per voice | |
+| 2f | The closing test of step 2 | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
 | 5 | Slot list and data: the project's slots, all built types, import mapping | |
@@ -600,6 +606,25 @@ Joost, by ear with the typed line, on a note struck at 33: `ctdynamic 1 20 1000.
 
 Step 1 is complete with this.
 
+## Using stage 2a
+
+- **Open a roll:** the **Open…** button of the tab *Library and edition*, *File > Open* (⌘O), or a bach.roll text file dropped on the window. The file is only read.
+- **What is drawn:** every voice on the staves of its clef, stacked as bach stacks them (the voice spacing of the file's header is followed, a hidden voice is left out, the parts of a voice ensemble share their staves); the voice names; each note as a head on its line or space, with ledger lines, a stem per chord and a duration line that ends in a small tick; soft notes lighter and loud notes blacker, as in ScAst's bach.roll. The roll is light with dark notation.
+- **Where a note sits** follows bach's own spelling on the eighth-tone grid (C sharp, E flat, F sharp, A flat, B flat for the black keys). The accidentals themselves are not drawn yet, so a C sharp looks like a C for now.
+- **Time:** a ruler at the top, a faint grid behind the staves. The stem of a chord stands at its onset.
+- **Zoom:** the two pairs of − and + in the bar (time detail, staff size) and **Fit**; ⌘+ and ⌘− for time, ⌥⌘+ and ⌥⌘− for the staves, ⌘0 for the whole roll; pinching on the trackpad and ⌘ with the scroll wheel zoom the time around the pointer, ⌥ with the wheel the staves.
+- **Scroll:** the trackpad or wheel in both directions (⇧ with a wheel goes sideways), and the two scroll bars. The clefs and names stay at the left, the ruler at the top.
+- Not yet: accidentals (2b); glides and markers (2c); playing (2d); what is in the slots (step 5); selecting and editing (step 4).
+
+### Testing stage 2a
+
+1. `git pull`, then `./build.sh`: `stage 2a`. `./build.sh tests` ends with `All 159 checks passed.`
+2. *Library and edition*, **Open…**, a roll from `Temp/Roll view 2/roll txt`. Beside it the same roll in bach.roll.
+3. For each roll you care to look at: the same voices with the same clefs, in the same order and at about the same distances? The notes at the same times and on the same lines and spaces (mind: no accidentals yet)? Chords: the same notes on the stem?
+4. Zoom and scroll: is it smooth with Bult (1189 notes), also zoomed far out? Does anything jump or lag?
+5. What looks wrong or unlike bach.roll in a way that bothers you: sizes, thickness of lines, the greys, the stems, the place of the names. A screenshot with a remark is the quickest.
+6. Push `Measurements/report.md`.
+
 ## The repository
 
 ```
@@ -608,11 +633,13 @@ CMakeLists.txt      what is built, and with which JUCE
 Source/             the application
   Main.cpp            the application object and its window
   MainComponent.*     everything inside the window
-  UI/                 interface code: tab row, panel buttons, pages, preferences, inspector, colours
+  UI/                 interface code: tab row, panel buttons, pages, preferences, inspector, colours, the roll view, the music font
   Platform/           what differs per operating system (on macOS: telling the system that Maket is busy)
   Model/              no interface code: the settings; the name, version and build stage; bach's list type; the roll
   Formats/            no interface code: reading and writing files (bach's text, bach.roll)
   Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test
+  Notation/           no interface code: which note a pitch is drawn as, the staves of each clef, how voices are stacked
+Resources/Fonts/    the Bravura music font (Steinberg, SIL Open Font License), built into the app
 Max/                patches for Max that belong to Maket (the OSC logging patch, the bach.roll reference)
 Tests/              the console test program
 Measurements/       its reports
@@ -620,10 +647,12 @@ Reference/python/   scripts from the design phase (file formats, checks); not pa
 Temp/               Joost's test material, test saves, crash reports and screen captures
 ```
 
-`Source/` gains `Notation/` when its step comes. `Model/`, `Formats/`, `Engine/` and `Notation/` hold no interface code, so that the test program can build them without the window.
+`Model/`, `Formats/`, `Engine/` and `Notation/` hold no interface code, so that the test program can build them without the window.
 
 ## Licence
 
 Maket is published under the GNU Affero General Public License, version 3 (see `LICENSE.md`), the licence under which JUCE is used here.
+
+The music signs are drawn with the Bravura font by Steinberg, which is built into the app under the SIL Open Font License (`Resources/Fonts/Bravura OFL.txt`). How notes are spelled and staves laid out follows the source of bach (GPL, version 3), read as a reference.
 
 Nothing of conTimbre is in this repository or in the app. Each user needs their own conTimbre and points Maket at it.

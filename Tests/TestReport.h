@@ -63,3 +63,6 @@ void testConTimbreMapping (const juce::File& temp);
 
 /** Stage 1f.2: the plan of the ePlayer study (Tests/StudyTests.cpp). */
 void testPlayerStudy();
+
+// Section 8: where notes sit on the staves (stage 2a), NotationTests.cpp.
+void testNotation (const juce::File& temp);
