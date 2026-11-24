@@ -52,7 +52,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1c | Gate: OSC sender, and a Max test patch that logs when each message arrives | done |
 | 1d | Gate: timing tests of the OSC connection | done |
 | 1e | Gate: the full conTimbre mapping (program, dynamic, gain, glissando, markers) | done; tested by Joost on 23 Nov. **The gate is passed** (Joost, 23 Nov) |
-| 1f | Addressing by note, tuning (chords: abandoned on 24 Nov) | in parts |
+| 1f | Addressing by note, tuning (chords: abandoned on 24 Nov) | done, in the parts below |
 | 1f.1 | The ways of the Max patch by switch (order, glissando to 0, spacing), to hear whether any of them matters; the comparison sets apart what is known of the patch | done; tested by Joost on 23 Nov: no difference, Maket keeps its own way |
 | 1f.2 | A study of the ePlayer: one figure sent in ten ways (by pitch or by number, timing of the dynamics, dynamic correction), to find out what makes it follow its ramps | done; run by Joost on 23 Nov |
 | 1f.3 | The second run of the study: is a note by number louder as such; which part of the timing matters by number; do slow starts come from the note before | done; run by Joost on 23 Nov |
@@ -60,7 +60,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1f.5 | By number, the target of a dynamic ramp as a whole number; any command typed on the OSC test page; the fourth run of the study: one ramp per note in each form, plucked repeated notes | done; tried by Joost on 24 Nov: the form makes no difference, a ramp by number is a step from where the note is |
 | 1f.6 | By number, a dynamic ramp sent as a step from the level before; the fifth run of the study: how such steps behave (it replaces the fourth run) | set aside on 24 Nov: the idea of steps did not hold (see 1f.7) |
 | 1f.7 | By number, the target of a dynamic ramp on the ePlayer's scale from 0 to 1; the sixth run of the study: that scale beside the ramps by pitch, on the cello and the bass clarinet (it replaces runs four and five) | done; run by Joost on 24 Nov: by number and by pitch give the same dynamics |
-| 1f.8 | Tuning: the standard pitch as a setting, sent to the ePlayer (`kammerton`) at the start of every play; a tuning check of 48 seconds | built, to test |
+| 1f.8 | Tuning: the standard pitch as a setting, sent to the ePlayer (`kammerton`) at the start of every play; a tuning check of 48 seconds | done; run by Joost on 24 Nov: the A lands on the frequency sent, within a third of a cent |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -590,6 +590,15 @@ Joost, by ear with the typed line, on a note struck at 33: `ctdynamic 1 20 1000.
 3. In the ePlayer: the orchestra `doodsbed by number`. Start a recording, ePlayer study page, **Run the tuning check**; stop the recording when the status says the run is over. By ear you should hear the A step down and up, by a semitone at the widest.
 4. If you like, by ear: set the standard pitch to 466.16 in the Preferences and play the start of doodsbed on the conTimbre test page: a semitone higher. Then press **Default** to go back to 442 and play again.
 5. Send the recording; push the *Test results* folder and `Measurements/report.md`.
+
+### After the run of 1f.8 (24 Nov)
+
+- **The ePlayer takes `kammerton` over OSC, as a real number and as a whole number alike.** In all 21 notes the A lies within 0.3 cents of the frequency sent (442, 440, 430, 415.3, 466.16 Hz).
+- **A note that already sounds keeps its pitch**; the next note has the new one. The three notes that got `kammerton 430` while sounding stayed at 442 Hz to their end. So sending the standard pitch once before a play, as Maket does, is the right moment.
+- The change is in place within the 145 ms between the command and the note (no shorter time was tried).
+- The start of doodsbed played at 466.16 Hz lies 92 cents over the same at 442 Hz (expected: 92.1).
+
+Step 1 is complete with this.
 
 ## The repository
 
