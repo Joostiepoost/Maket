@@ -1,0 +1,151 @@
+Maket, study of the ePlayer, run 7: when every command left.
+Columns, separated by a tab: time in the run (ms), left Maket this much after it (ms), command
+350.000	-0.008	dynamic_correction 1
+355.000	0.012	kammerton 442.
+360.000	-0.009	program voice3 ordinario
+360.000	0.053	gain voice3 5.777778
+500.000	0.016	ctnote 3 1 69. 80 1500.
+2000.000	0.010	ctnoteoff 1
+2350.000	-0.015	dynamic_correction 1
+2355.000	-0.005	kammerton 440.
+2360.000	-0.019	program voice3 ordinario
+2360.000	0.070	gain voice3 5.777778
+2500.000	0.006	ctnote 3 2 69. 80 1500.
+4000.000	-0.016	ctnoteoff 2
+4350.000	-0.012	dynamic_correction 1
+4355.000	-0.027	kammerton 440
+4360.000	-0.006	program voice3 ordinario
+4360.000	0.078	gain voice3 5.777778
+4500.000	0.012	ctnote 3 3 69. 80 1500.
+6000.000	0.003	ctnoteoff 3
+6350.000	0.001	dynamic_correction 1
+6355.000	-0.010	kammerton 430.
+6360.000	0.001	program voice3 ordinario
+6360.000	0.109	gain voice3 5.777778
+6500.000	0.016	ctnote 3 4 69. 80 1500.
+8000.000	-0.001	ctnoteoff 4
+8350.000	-0.020	dynamic_correction 1
+8355.000	-0.012	kammerton 430
+8360.000	-0.022	program voice3 ordinario
+8360.000	0.057	gain voice3 5.777778
+8500.000	-0.014	ctnote 3 5 69. 80 1500.
+10000.000	-0.008	ctnoteoff 5
+10350.000	-0.011	dynamic_correction 1
+10355.000	0.009	kammerton 415.3
+10360.000	-0.007	program voice3 ordinario
+10360.000	0.048	gain voice3 5.777778
+10500.000	0.023	ctnote 3 6 69. 80 1500.
+12000.000	0.002	ctnoteoff 6
+12350.000	0.002	dynamic_correction 1
+12355.000	0.011	kammerton 466.16
+12360.000	-0.007	program voice3 ordinario
+12360.000	0.066	gain voice3 5.777778
+12500.000	0.003	ctnote 3 7 69. 80 1500.
+14000.000	-0.012	ctnoteoff 7
+14350.000	-0.020	dynamic_correction 1
+14355.000	0.007	kammerton 442.
+14360.000	-0.011	program voice3 ordinario
+14360.000	0.041	gain voice3 5.777778
+14500.000	0.024	ctnote 3 8 69. 80 1500.
+15200.000	0.016	kammerton 430.
+16000.000	-0.003	ctnoteoff 8
+16350.000	0.000	dynamic_correction 1
+16355.000	-0.005	kammerton 440.
+16360.000	-0.023	program voice3 ordinario
+16360.000	0.032	gain voice3 5.777778
+16500.000	0.023	ctnote 3 9 69. 80 1500.
+18000.000	-0.016	ctnoteoff 9
+18350.000	-0.014	dynamic_correction 1
+18355.000	-0.016	kammerton 440
+18360.000	-0.015	program voice3 ordinario
+18360.000	0.042	gain voice3 5.777778
+18500.000	0.031	ctnote 3 10 69. 80 1500.
+20000.000	0.002	ctnoteoff 10
+20350.000	-0.000	dynamic_correction 1
+20355.000	0.014	kammerton 430.
+20360.000	-0.005	program voice3 ordinario
+20360.000	0.054	gain voice3 5.777778
+20500.000	0.024	ctnote 3 11 69. 80 1500.
+22000.000	-0.017	ctnoteoff 11
+22350.000	-0.014	dynamic_correction 1
+22355.000	-0.020	kammerton 430
+22360.000	-0.004	program voice3 ordinario
+22360.000	0.055	gain voice3 5.777778
+22500.000	0.014	ctnote 3 12 69. 80 1500.
+24000.000	-0.013	ctnoteoff 12
+24350.000	-0.020	dynamic_correction 1
+24355.000	0.003	kammerton 415.3
+24360.000	-0.012	program voice3 ordinario
+24360.000	0.055	gain voice3 5.777778
+24500.000	0.013	ctnote 3 13 69. 80 1500.
+26000.000	-0.016	ctnoteoff 13
+26350.000	-0.001	dynamic_correction 1
+26355.000	0.013	kammerton 466.16
+26360.000	-0.003	program voice3 ordinario
+26360.000	0.053	gain voice3 5.777778
+26500.000	0.032	ctnote 3 14 69. 80 1500.
+28000.000	0.006	ctnoteoff 14
+28350.000	-0.020	dynamic_correction 1
+28355.000	-0.006	kammerton 442.
+28360.000	-0.022	program voice3 ordinario
+28360.000	0.037	gain voice3 5.777778
+28500.000	0.004	ctnote 3 15 69. 80 1500.
+29200.000	0.007	kammerton 430.
+30000.000	-0.009	ctnoteoff 15
+30350.000	-0.008	dynamic_correction 1
+30355.000	-0.005	kammerton 442.
+30360.000	-0.007	program voice3 ordinario
+30360.000	0.064	gain voice3 5.777778
+30500.000	0.015	ctnote 3 16 69. 80 1500.
+32000.000	0.003	ctnoteoff 16
+32350.000	-0.014	dynamic_correction 1
+32355.000	-0.026	kammerton 440
+32360.000	-0.023	program voice3 ordinario
+32360.000	0.032	gain voice3 5.777778
+32500.000	0.039	ctnote 3 17 69. 80 1500.
+34000.000	-0.003	ctnoteoff 17
+34350.000	-0.021	dynamic_correction 1
+34355.000	0.010	kammerton 430.
+34360.000	-0.002	program voice3 ordinario
+34360.000	0.067	gain voice3 5.777778
+34500.000	0.016	ctnote 3 18 69. 80 1500.
+36000.000	-0.015	ctnoteoff 18
+36350.000	-0.012	dynamic_correction 1
+36355.000	-0.015	kammerton 430
+36360.000	-0.009	program voice3 ordinario
+36360.000	0.053	gain voice3 5.777778
+36500.000	0.004	ctnote 3 19 69. 80 1500.
+38000.000	-0.009	ctnoteoff 19
+38350.000	0.008	dynamic_correction 1
+38355.000	0.010	kammerton 415.3
+38360.000	-0.012	program voice3 ordinario
+38360.000	0.041	gain voice3 5.777778
+38500.000	0.025	ctnote 3 20 69. 80 1500.
+40000.000	-0.022	ctnoteoff 20
+40350.000	-0.016	dynamic_correction 1
+40355.000	0.007	kammerton 466.16
+40360.000	-0.018	program voice3 ordinario
+40360.000	0.052	gain voice3 5.777778
+40500.000	0.035	ctnote 3 21 69. 80 1500.
+42000.000	0.004	ctnoteoff 21
+42350.000	0.005	dynamic_correction 1
+42355.000	0.007	kammerton 442.
+42360.000	-0.007	program voice3 ordinario
+42360.000	0.051	gain voice3 5.777778
+42500.000	0.008	ctnote 3 22 69. 80 1500.
+43200.000	0.012	kammerton 430.
+44000.000	-0.011	ctnoteoff 22
+44350.000	-0.020	dynamic_correction 1
+44355.000	0.001	kammerton 442.
+44360.000	-0.002	program voice3 ordinario
+44360.000	0.053	gain voice3 5.777778
+44500.000	0.012	ctnote 3 23 69. 80 1500.
+46000.000	-0.000	ctnoteoff 23
+46350.000	-0.012	dynamic_correction 1
+46355.000	0.009	kammerton 440.
+46360.000	-0.006	program voice3 ordinario
+46360.000	0.050	gain voice3 5.777778
+46500.000	0.037	ctnote 3 24 69. 80 1500.
+48000.000	-0.007	ctnoteoff 24
+48300.000	-0.021	dynamic_correction 1
+48300.000	0.180	kammerton 442.
