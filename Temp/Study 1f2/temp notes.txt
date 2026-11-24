@@ -1,0 +1,53 @@
+I've done a round of very intense testing; 
+Log files all pushed in /temp/Mapping 1e
+
+Then a round of auditory tests, with all instruments together, and every voice also solo;
+Recorded playback from ScAst and Maket, then detailed comparisons in Reaper of the recorded wave files;
+All recordings in attachment (original recording 96Khz, 24 bit, all compressed with OGG in var bitrate, high quality)
+
+Remarks below:
+
+Doodsbed - auditory evaluation:
+
+PnoRH, PnoLH: none
+
+Cl: no major audible differences
+Fl: no major audible differences
+
+Vlc: minor dynamic differences (maybe stemming from a minimal randomisation in the ePlayer or from a different interpolation algorithm in Maket of the modulation curve?)
+
+Vla: 
+
+- audible difference at 36.322 > Maket seems louder
+- audible difference at 51.282 > Maket stays loud, doesn't make the sudden diminuendo written in slot 2
+
+After testing: not exclusively related to Maket: after repeated playback of the passage, it seems that sometimes the ePlayer doesn't interpret the modulation curve, independent whether it comes from Maket or ScAst
+
+
+---
+
+Bult - auditory evaluation:
+
+
+PnoRH, PnoLH, Fl: no major audible differences
+
+Cl (@24"-35", 45", 2'10"): minor dynamic differences (sometimes somewhat slower or faster growing of a crescendo - might be also due to randomisation algorithms in ePlayer?)
+
+Vla, Vlc idem als klarinet (ook @45")
+
+
+
+
+I've send an email to the maker with all our questions.
+
+Regarding the proposal:
+
+* Pitch by default OK, since indeed it is the proven path and dynamics work as expected.
+* Maket choosing by itself sounds interesting, but also possbily causing 'errors of judgement'; in the case we implement it, I would want to first test is very thoroughly and absolutely implement a clear override-method (through a slot or any other way) so I can always pick myself the method that suits my playback goal the best. 
+* Naming as we accepted before
+
+
+Regarding the question of crisp: could you create another etude to test this scenario? We could play it to the Piano RH or Piano LH from Doodsbed by numbers and then compare with a normal noteon/noteoff equivalent. 
+OK for a test to see if they work together and don't disturb each others playback reliability.
+
+
