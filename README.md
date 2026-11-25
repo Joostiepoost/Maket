@@ -718,7 +718,12 @@ The roll in *Library and edition* plays on the conTimbre ePlayer, through the ma
 
 ### Testing stage 2d
 
-With the ePlayer in Max and Doodsbed's orchestra loaded, as for the conTimbre test page.
+With the ePlayer in Max. The roll view plays by number, so the ePlayer needs an orchestra whose voices are named `voice1`, `voice2` ... by their place in the roll:
+
+- for Doodsbed (the roll is the one you always used, `doodsbed final v1c.txt` or `Temp/Roll view 2/roll txt/Doodsbed.txt`): the orchestra **`doodsbed by number`** of stage 1f.4. It has no `voice1`, so the Mezzo's notes are sent and not heard, as when Mezzo was unticked on the test page;
+- for Maket's own test rolls (step 7): **`Maket test 2d`**, sent in the chat on 25 Nov: `voice1` to `voice5`, each a copy of the cello voice of `doodsbed kwintet`, gain 0. The test rolls name no technique, so each voice plays the program that is selected for it in the ePlayer.
+
+Orchestra files stay out of the repository.
 
 1. `git pull`, then `./build.sh`: `stage 2d`. `./build.sh tests` ends with `All 194 checks passed.`
 2. Open Doodsbed in *Library and edition* and press space. Does it sound as it did from the test page (by number)? Is the playhead where the sound is? Does the page turn at the right edge?
@@ -726,7 +731,7 @@ With the ePlayer in Max and Doodsbed's orchestra loaded, as for the conTimbre te
 4. Click in the ruler somewhere in the middle of long notes (around 1'00") and press space: do the notes that are sounding there come in at once, at a sensible level? If you like, compare with ScAst from the same place.
 5. Drag in the ruler with ⌥ held over a few bars (for instance 0'46" to 0'58") and press space. Does it go round without a hole and without a hanging note? L while stopped switches the loop off and on; ⌥-click in the ruler removes it.
 6. ⇧space (Play ps): the same sound with the playhead standing still. If a heavy score ever stutters in normal play and not here, I would like to know.
-7. Open `Temp/written by Maket/Glides and markers by Maket.txt` and play it: it holds solo items, so only the solo G at 6 s and the solo chord at 18 s should sound (on the ePlayer's `voice2`, with whatever program that voice has).
+7. Open `Temp/written by Maket/Glides and markers by Maket.txt` and play it: it holds solo items, so only the solo G at 6 s and the solo chord at 18 s should sound (on `voice2` of the orchestra `Maket test 2d`).
 8. Looks: the voice names (centred; blue and red for the muted and the locked voice of that roll), and the percussion clef in the mixed example.
 9. Push `Measurements/report.md`. A recording of anything that sounds wrong helps, as before.
 
