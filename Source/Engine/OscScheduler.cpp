@@ -59,6 +59,13 @@ void OscScheduler::clear()
     waiting.clear();
 }
 
+void OscScheduler::clear (int tag)
+{
+    const juce::ScopedLock sl (lock);
+    for (auto it = waiting.begin(); it != waiting.end();)
+        it = it->second.tag == tag ? waiting.erase (it) : std::next (it);
+}
+
 std::vector<OscScheduler::Sent> OscScheduler::takeSent()
 {
     std::vector<Sent> result;

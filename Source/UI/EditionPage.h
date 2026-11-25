@@ -1,8 +1,9 @@
 // EditionPage.h — the page of the tab "Library and edition".
 //
 // Since stage 2a: a roll opened from a bach.roll text file is shown in the
-// roll view, with a bar above it for the file's name and the zoom. The
-// library on the left arrives at step 3, editing at step 4.
+// roll view, with a bar above it for the file's name and the zoom. Since 2d
+// a second row holds the transport: the roll plays on the conTimbre ePlayer.
+// The library on the left arrives at step 3, editing at step 4.
 
 #pragma once
 
@@ -11,13 +12,15 @@
 #include <memory>
 
 #include "RollView.h"
+#include "../Engine/Transport.h"
 #include "../Model/Settings.h"
 
 class EditionPage : public juce::Component,
-                    public juce::FileDragAndDropTarget
+                    public juce::FileDragAndDropTarget,
+                    private juce::Timer
 {
 public:
-    explicit EditionPage (maket::Settings&);
+    EditionPage (maket::Settings&, maket::OscScheduler&);
     ~EditionPage() override;
 
     /** Shows the file dialog and opens what is chosen. */
@@ -34,6 +37,22 @@ public:
     void zoomDown (int direction);
     void zoomToFit()                    { view.zoomToFit(); }
 
+    // --- Transport (stage 2d): the roll on the conTimbre ePlayer ---
+
+    /** Plays from the playhead with the playhead following the sound, or stops when it plays. */
+    void playOrStop();
+    /** Plays from the playhead "prescheduled": nothing on screen follows the sound. */
+    void playPrescheduled();
+    /** Plays on from where the last play was stopped. */
+    void playOn();
+    void stopPlaying();
+    /** Switches going round the loop on or off; it takes effect at the next play. */
+    void toggleLoop();
+    /** The playhead to the start of the roll. */
+    void toStart();
+    bool isPlaying() const              { return transport.isPlaying(); }
+    bool isLoopOn() const               { return transport.isLoopOn(); }
+
     /** Called after a file was opened, with what to show about it. */
     std::function<void (const juce::File&, const maket::Roll&)> onRollOpened;
 
@@ -45,8 +64,21 @@ public:
 
 private:
     void updateBar();
+    void startPlaying (double from, bool follow);
+    void timerCallback() override;
+    void setNotice (const juce::String& text, bool isProblem = false);
+    juce::String transportText() const;
 
     maket::Settings& settings;
+    maket::OscScheduler& scheduler;
+    maket::Transport transport;
+    bool following = true;              // whether the playhead follows the sound of the play under way
+    double cursor = 0.0;                // where play begins, ms
+    juce::TextButton playButton, prescheduledButton, stopButton, loopButton;
+    juce::String notice;
+    bool noticeIsProblem = false;
+    juce::uint32 noticeUntil = 0;
+    juce::Rectangle<int> transportArea, transportTextArea;
     RollView view;
     juce::TextButton openButton, acrossOut, acrossIn, downOut, downIn, fitButton;
     juce::ComboBox gridBox;             // stage 2b: the grid notes are drawn on (bach's tone division)

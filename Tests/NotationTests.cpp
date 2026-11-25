@@ -103,7 +103,18 @@ namespace
         entry.name = name;
         entry.content.items.push_back (maket::Llll::makeSymbol (name));
         for (const auto& w : words)
-            entry.content.items.push_back (w.containsOnly ("0123456789") ? maket::Llll::makeInteger (w.getLargeIntValue()) : maket::Llll::makeSymbol (w));
+        {
+            if (w.containsChar (' '))
+            {
+                // A name of several words: a list of them, as bach keeps it (one symbol with spaces shows in bach with quotes).
+                maket::Llll several;
+                juce::StringArray parts;
+                parts.addTokens (w, " ", "");
+                for (const auto& part : parts) several.items.push_back (maket::Llll::makeSymbol (part));
+                entry.content.items.push_back (std::move (several));
+            }
+            else entry.content.items.push_back (w.containsOnly ("0123456789") ? maket::Llll::makeInteger (w.getLargeIntValue()) : maket::Llll::makeSymbol (w));
+        }
         return entry;
     }
 
@@ -562,9 +573,11 @@ static void testGlidesAndMarkers (const juce::File& temp)
                         if (! note.breakpoints.empty()) ++glides;
                         if ((note.flags | chord.flags | back.voices[v].flags) != 0) ++flagged;
                     }
-        checkRow (same && glides == 7 && flagged == 27 && back.markers[6].role == "timesig" && back.markers[6].hasContent,
+        checkRow (same && glides == 7 && flagged == 27 && back.markers[6].role == "timesig" && back.markers[6].hasContent
+                  && back.voices[2].name == "muted voice" && back.voices[0].name == "glides",
                   "`Temp/written by Maket/Glides and markers by Maket.txt` is written (5 voices, " + juce::String (testRoll.numNotes()) + " notes, 7 of them gliding, "
-                  + juce::String (flagged) + " locked, muted or solo; " + juce::String ((int) testRoll.markers.size()) + " markers) and, read back, holds the same");
+                  + juce::String (flagged) + " locked, muted or solo; " + juce::String ((int) testRoll.markers.size()) + " markers) and, read back, holds the same; "
+                  "a voice name of two words is written as two words, as bach keeps it, and read back as one name");
     }
     line();
     line ("The roll `Glides and markers by Maket.txt`, for bach.roll beside Maket (the README tells what to look at):");

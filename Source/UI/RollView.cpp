@@ -26,6 +26,8 @@ namespace
     const juce::Colour gridMajor   { 0xffdcdcd8 };
     const juce::Colour rulerText   { 0xff454545 };
     const juce::Colour rulerLine   { 0xffb9b9b4 };
+    const juce::Colour loopColour  = juce::Colour::fromFloatRGBA (0.68f, 0.48f, 0.69f, 1.0f);      // bach's
+    const juce::Colour playColour  = juce::Colour::fromFloatRGBA (0.34f, 0.87f, 0.20f, 1.0f);      // bach's
 
     juce::String clockLabel (double seconds, bool withTenths)
     {
@@ -67,6 +69,13 @@ namespace
 RollView::RollView()
 {
     setOpaque (true);
+    paperLayer.setOpaque (true);
+    paperLayer.setBufferedToImage (true);
+    for (auto* layer : { &paperLayer, &overlayLayer })
+    {
+        layer->setInterceptsMouseClicks (false, false);
+        addAndMakeVisible (*layer);
+    }
     for (auto* bar : { &horizontalBar, &verticalBar })
     {
         bar->setAutoHide (false);
@@ -86,7 +95,7 @@ void RollView::clear()
     rollLength = heightUnits = 0.0;
     scrollMs = scrollY = 0.0;
     updateScrollBars();
-    repaint();
+    paperLayer.repaint();
 }
 
 namespace
@@ -115,7 +124,7 @@ void RollView::setRoll (const maket::Roll& newRoll)
     rebuild();
     scrollMs = scrollY = 0.0;
     updateScrollBars();
-    repaint();
+    paperLayer.repaint();
 }
 
 void RollView::setToneDivision (int newDivision)
@@ -124,14 +133,14 @@ void RollView::setToneDivision (int newDivision)
     if (newDivision == division) return;
     division = newDivision;
     rebuild();
-    repaint();
+    paperLayer.repaint();
 }
 
 void RollView::setVelocityDisplay (VelocityDisplay newMode)
 {
     if (newMode == velocityMode) return;
     velocityMode = newMode;
-    repaint();
+    paperLayer.repaint();
 }
 
 juce::Colour RollView::flagColour (int itemFlags, juce::Colour otherwise)
@@ -369,7 +378,8 @@ void RollView::viewChanged()
     scrollMs = juce::jlimit (0.0, juce::jmax (0.0, rollLength + tailMs - visibleMs), scrollMs);
     scrollY = juce::jlimit (0.0, juce::jmax (0.0, heightUnits * pixelsPerUnit() + 20.0 - area.getHeight()), scrollY);
     updateScrollBars();
-    repaint();
+    paperLayer.repaint();
+    overlayLayer.repaint();
     if (onViewChanged) onViewChanged();
 }
 
@@ -387,12 +397,15 @@ void RollView::scrollBarMoved (juce::ScrollBar* bar, double newRangeStart)
 {
     if (bar == &horizontalBar) scrollMs = newRangeStart;
     else                       scrollY = newRangeStart;
-    repaint();
+    paperLayer.repaint();
+    overlayLayer.repaint();
     if (onViewChanged) onViewChanged();
 }
 
 void RollView::resized()
 {
+    paperLayer.setBounds (getLocalBounds());
+    overlayLayer.setBounds (getLocalBounds());
     auto area = getLocalBounds();
     verticalBar.setBounds (area.removeFromRight (barThickness).withTrimmedBottom (barThickness));
     horizontalBar.setBounds (area.removeFromBottom (barThickness));
@@ -430,6 +443,11 @@ void RollView::mouseMagnify (const juce::MouseEvent& e, float scaleFactor)
 
 void RollView::paint (juce::Graphics& g)
 {
+    g.fillAll (paper);      // the layers cover it
+}
+
+void RollView::paintPaper (juce::Graphics& g)
+{
     g.fillAll (paper);
 
     const auto area = rollArea();
@@ -450,6 +468,17 @@ void RollView::paint (juce::Graphics& g)
                 g.fillRect (juce::Rectangle<float> ((float) xOf (t * 1000.0) - 0.5f, (float) area.getY(), 1.0f, (float) area.getHeight()));
             }
 
+            // The loop region over the staves, when play goes round it.
+            if (loopShownOn && loopEndMs > loopStartMs)
+            {
+                const float x1 = (float) xOf (loopStartMs), x2 = (float) xOf (loopEndMs);
+                g.setColour (loopColour.withAlpha (0.10f));
+                g.fillRect (juce::Rectangle<float> (x1, (float) area.getY(), x2 - x1, (float) area.getHeight()));
+                g.setColour (loopColour.withAlpha (0.8f));
+                g.fillRect (juce::Rectangle<float> (x1 - 0.5f, (float) area.getY(), 1.0f, (float) area.getHeight()));
+                g.fillRect (juce::Rectangle<float> (x2 - 0.5f, (float) area.getY(), 1.0f, (float) area.getHeight()));
+            }
+
             paintStaves (g, area.getX(), area.getRight());
             paintMarkers (g, area, false);
             paintNotes (g, area);
@@ -457,11 +486,110 @@ void RollView::paint (juce::Graphics& g)
         }
         paintHeader (g, { 0, rulerHeight, headerWidth(), area.getHeight() });
         paintRuler (g, { 0, 0, getWidth() - barThickness, rulerHeight });
+
+        // The loop region in the ruler: always shown when there is one, stronger when play goes round it.
+        if (loopEndMs > loopStartMs)
+        {
+            juce::Graphics::ScopedSaveState state (g);
+            g.reduceClipRegion (area.getX(), 0, area.getWidth(), rulerHeight);
+            const float x1 = (float) xOf (loopStartMs), x2 = (float) xOf (loopEndMs);
+            g.setColour (loopColour.withAlpha (loopShownOn ? 0.45f : 0.18f));
+            g.fillRect (juce::Rectangle<float> (x1, 0.0f, x2 - x1, (float) rulerHeight));
+            g.setColour (loopColour.withAlpha (loopShownOn ? 1.0f : 0.5f));
+            g.fillRect (juce::Rectangle<float> (x1 - 1.0f, 0.0f, 2.0f, (float) rulerHeight));
+            g.fillRect (juce::Rectangle<float> (x2 - 1.0f, 0.0f, 2.0f, (float) rulerHeight));
+        }
     }
 
     // The corner between the two scroll bars.
     g.setColour (Theme::panel);
     g.fillRect (getWidth() - barThickness, getHeight() - barThickness, barThickness, barThickness);
+}
+
+// --- The playhead and the loop (stage 2d) ------------------------------------------
+
+juce::Rectangle<int> RollView::playheadStrip (double ms) const
+{
+    const int x = juce::roundToInt (xOf (ms));
+    return { x - 8, 0, 16, getHeight() - barThickness };
+}
+
+void RollView::setPlayhead (double ms)
+{
+    if (std::abs (ms - playheadMs) < 1.0e-6) return;
+    const auto before = playheadStrip (playheadMs);
+    playheadMs = ms;
+    overlayLayer.repaint (before);
+    overlayLayer.repaint (playheadStrip (playheadMs));
+}
+
+void RollView::paintOverlay (juce::Graphics& g)
+{
+    if (! hasRoll()) return;
+    const auto area = rollArea();
+    const float x = (float) xOf (playheadMs);
+    if (x < (float) area.getX() - 1.0f || x > (float) area.getRight() + 1.0f) return;
+
+    // bach's play colour, a shade darker so that it reads on paper.
+    g.setColour (playColour.darker (0.15f));
+    g.fillRect (juce::Rectangle<float> (x - 0.75f, 0.0f, 1.5f, (float) area.getBottom()));
+    juce::Path flag;
+    flag.addTriangle (x - 6.0f, 0.0f, x + 6.0f, 0.0f, x, 9.0f);
+    g.fillPath (flag);
+}
+
+void RollView::turnPageTo (double ms)
+{
+    const auto area = rollArea();
+    const double x = xOf (ms);
+    if (x >= area.getX() && x <= area.getRight() - 2) return;
+    scrollMs = ms;
+    viewChanged();
+}
+
+void RollView::setLoop (double startMs, double endMs, bool on)
+{
+    if (std::abs (startMs - loopStartMs) < 1.0e-6 && std::abs (endMs - loopEndMs) < 1.0e-6 && on == loopShownOn) return;
+    loopStartMs = startMs;
+    loopEndMs = endMs;
+    loopShownOn = on;
+    paperLayer.repaint();
+}
+
+void RollView::mouseDown (const juce::MouseEvent& e)
+{
+    const auto area = rollArea();
+    pressInRuler = hasRoll() && e.y < rulerHeight && e.x >= area.getX() && e.x < area.getRight();
+    draggingLoop = loopDragged = false;
+    if (! pressInRuler) return;
+
+    const double ms = juce::jlimit (0.0, rollLength, timeAt (e.x));
+    if (e.mods.isAltDown())
+    {
+        draggingLoop = true;
+        loopAnchorMs = ms;
+    }
+    else if (onPlayheadSet) onPlayheadSet (ms, false);
+}
+
+void RollView::mouseDrag (const juce::MouseEvent& e)
+{
+    if (! pressInRuler) return;
+    const double ms = juce::jlimit (0.0, rollLength, timeAt (e.x));
+    if (draggingLoop)
+    {
+        if (std::abs (e.getDistanceFromDragStartX()) < 3) return;
+        loopDragged = true;
+        if (onLoopSet) onLoopSet (juce::jmin (loopAnchorMs, ms), juce::jmax (loopAnchorMs, ms));
+    }
+    else if (onPlayheadSet) onPlayheadSet (ms, true);
+}
+
+void RollView::mouseUp (const juce::MouseEvent&)
+{
+    // The option key and a click without a drag: no loop.
+    if (pressInRuler && draggingLoop && ! loopDragged && onLoopSet) onLoopSet (0.0, 0.0);
+    pressInRuler = draggingLoop = false;
 }
 
 void RollView::paintStaves (juce::Graphics& g, int fromX, int toX)
@@ -727,9 +855,10 @@ void RollView::paintHeader (juce::Graphics& g, juce::Rectangle<int> area)
         // The left end of the staves, and the name beside them.
         g.setColour (flagColour (v.flags, staffLine));
         g.fillRect (juce::Rectangle<float> ((float) staffStart, topY, juce::jmax (1.0f, 0.11f * space), bottomY - topY));
-        g.setColour (ink);
-        g.drawText (v.name, juce::Rectangle<float> (8.0f, (topY + bottomY) * 0.5f - 10.0f, (float) staffStart - 12.0f, 20.0f),
-                    juce::Justification::centredLeft, false);
+        // The name: in the middle of its column, in the colour of a locked, muted or solo voice, as in ScAst's roll.
+        g.setColour (flagColour (v.flags, ink));
+        g.drawText (v.name, juce::Rectangle<float> (4.0f, (topY + bottomY) * 0.5f - 10.0f, (float) staffStart - 8.0f, 20.0f),
+                    juce::Justification::centred, false);
 
         g.setColour (flagColour (v.flags, ink));
         for (const auto& staff : v.place.clef.staves)

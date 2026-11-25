@@ -314,7 +314,7 @@ juce::String plainName (const juce::String& name)
 
 void testMaterial (const juce::File& temp)
 {
-    line ("## 9. Test material");
+    line ("## 10. Test material");
     line();
     line ("The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. "
           "This section lists what the program finds there; nothing is read yet. A missing file is not a "
@@ -426,6 +426,7 @@ int main (int argc, char** argv)
     std::cout << "Timing tests..." << std::endl;         testTiming (sourceDir.getChildFile ("Temp"));
     std::cout << "The conTimbre mapping..." << std::endl; testConTimbreMapping (sourceDir.getChildFile ("Temp"));
     std::cout << "Notation..." << std::endl;             testNotation (sourceDir.getChildFile ("Temp"));
+    std::cout << "Playing..." << std::endl;              testPlaying (sourceDir.getChildFile ("Temp"));
     std::cout << "Test material..." << std::endl;        testMaterial (sourceDir.getChildFile ("Temp"));
 
     work.deleteRecursively();

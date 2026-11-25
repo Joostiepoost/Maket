@@ -83,6 +83,10 @@ struct MappingOptions
         so every roll target of 1 or more came out as the top. Off: the
         roll's target as it stands, as sent in 1f.4. */
     bool normalizedTargets = true;
+
+    /** By number: the number of the first note. A loop gives every pass numbers of its own, so that a
+        note of the pass before that still rings is not taken for one of the new pass (stage 2d). */
+    int firstNoteNumber = 1;
 };
 
 /** The commands for the voices of `roll` named in `voices` (numbers from 0;
@@ -97,6 +101,10 @@ std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<i
     keeps whatever was played last.) Notes already sounding at `from` are
     left out. */
 std::vector<TimedMessage> messagesFrom (const std::vector<TimedMessage>& all, double from);
+
+/** The first part of that alone: the last program and the last gain each voice was given before `from`,
+    each timed at `from`. */
+std::vector<TimedMessage> stateBefore (const std::vector<TimedMessage>& all, double from);
 
 // --- Held against a log from Max -------------------------------------------------------
 

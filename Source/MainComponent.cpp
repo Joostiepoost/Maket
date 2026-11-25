@@ -33,7 +33,7 @@ MainComponent::MainComponent()
         }
         else if (i == Tabs::library)
         {
-            auto page = std::make_unique<EditionPage> (settings);
+            auto page = std::make_unique<EditionPage> (settings, oscScheduler);
             edition = page.get();
             pages[(size_t) i] = std::move (page);
         }
@@ -160,7 +160,8 @@ void MainComponent::getAllCommands (juce::Array<juce::CommandID>& c)
         c.add (cmdShowTab + i);
     c.add (cmdToggleList);
     c.add (cmdToggleInspector);
-    for (auto id : { cmdOpen, cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit })
+    for (auto id : { cmdOpen, cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit,
+                     cmdPlayStop, cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart })
         c.add (id);
 }
 
@@ -226,6 +227,32 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
             info.addDefaultKeypress ('0', cmd);
             info.setActive (rollInFront);
             return;
+        case cmdPlayStop:
+            info.setInfo (edition != nullptr && edition->isPlaying() ? "Stop" : "Play", "Play the roll from the playhead on the conTimbre ePlayer, or stop", "Transport", 0);
+            info.addDefaultKeypress (juce::KeyPress::spaceKey, juce::ModifierKeys::noModifiers);
+            info.setActive (rollInFront);
+            return;
+        case cmdPlayPrescheduled:
+            info.setInfo ("Play prescheduled", "Play from the playhead without anything on screen following the sound", "Transport", 0);
+            info.addDefaultKeypress (juce::KeyPress::spaceKey, juce::ModifierKeys::shiftModifier);
+            info.setActive (rollInFront);
+            return;
+        case cmdPlayOn:
+            info.setInfo ("Play on from where it stopped", "Play from where the last play was stopped", "Transport", 0);
+            info.addDefaultKeypress (juce::KeyPress::spaceKey, juce::ModifierKeys::altModifier);
+            info.setActive (rollInFront && ! edition->isPlaying());
+            return;
+        case cmdToggleLoop:
+            info.setInfo ("Go round the loop", "Play goes round the loop region marked in the ruler", "Transport", 0);
+            info.addDefaultKeypress ('l', juce::ModifierKeys::noModifiers);
+            info.setTicked (edition != nullptr && edition->isLoopOn());
+            info.setActive (rollInFront);
+            return;
+        case cmdToStart:
+            info.setInfo ("Playhead to the start", "Put the playhead at the start of the roll", "Transport", 0);
+            info.addDefaultKeypress (juce::KeyPress::returnKey, juce::ModifierKeys::noModifiers);
+            info.setActive (rollInFront);
+            return;
         default: break;
     }
 
@@ -252,6 +279,11 @@ bool MainComponent::perform (const InvocationInfo& info)
             case cmdZoomDownIn:     edition->zoomDown (1);      return true;
             case cmdZoomDownOut:    edition->zoomDown (-1);     return true;
             case cmdZoomToFit:      edition->zoomToFit();       return true;
+            case cmdPlayStop:           edition->playOrStop();          commandManager.commandStatusChanged(); return true;
+            case cmdPlayPrescheduled:   edition->playPrescheduled();    commandManager.commandStatusChanged(); return true;
+            case cmdPlayOn:             edition->playOn();              commandManager.commandStatusChanged(); return true;
+            case cmdToggleLoop:         edition->toggleLoop();          commandManager.commandStatusChanged(); return true;
+            case cmdToStart:            edition->toStart();             return true;
             default: break;
         }
 
@@ -263,7 +295,7 @@ bool MainComponent::perform (const InvocationInfo& info)
 
 juce::StringArray MainComponent::getMenuBarNames()
 {
-    return { "File", "View" };
+    return { "File", "View", "Transport" };
 }
 
 juce::PopupMenu MainComponent::getMenuForIndex (int menuIndex, const juce::String&)
@@ -283,6 +315,14 @@ juce::PopupMenu MainComponent::getMenuForIndex (int menuIndex, const juce::Strin
         m.addSeparator();
         m.addCommandItem (&commandManager, cmdToggleList);
         m.addCommandItem (&commandManager, cmdToggleInspector);
+    }
+    else if (menuIndex == 2)
+    {
+        for (auto id : { cmdPlayStop, cmdPlayPrescheduled, cmdPlayOn })
+            m.addCommandItem (&commandManager, id);
+        m.addSeparator();
+        m.addCommandItem (&commandManager, cmdToggleLoop);
+        m.addCommandItem (&commandManager, cmdToStart);
     }
     return m;
 }

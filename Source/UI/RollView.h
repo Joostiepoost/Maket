@@ -3,8 +3,8 @@
 //
 // Stage 2a draws voices, clefs, note heads, stems, ledger lines and duration
 // lines; 2b the accidentals; 2c glides (pitch breakpoints), markers and the
-// colours of what is locked, muted or solo. Not yet: the
-// playhead (2d), the content of slots (step 5), selecting and editing
+// colours of what is locked, muted or solo; 2d the playhead and the loop
+// region. Not yet: the content of slots (step 5), selecting and editing
 // (step 4).
 //
 // The layout is bach's (Notation/Staves, Notation/Spelling), so that a roll
@@ -63,7 +63,29 @@ public:
     double timeAt (double x) const;
     juce::String describeView() const;
 
+    // --- The playhead and the loop (stage 2d) ---
+
+    /** The playhead: where the sound is, or where play will begin. It is drawn in a layer of its own,
+        so moving it does not draw the notes again. */
+    void setPlayhead (double ms);
+    double playhead() const             { return playheadMs; }
+
+    /** Scrolls so that `ms` shows, as bach's "ChangePage": when it has passed the right edge (or lies
+        left of the view) the page turns and it stands at the left. */
+    void turnPageTo (double ms);
+
+    /** The loop region, shown in the ruler; when `on` it is tinted over the staves too. */
+    void setLoop (double startMs, double endMs, bool on);
+
+    /** A click or drag in the ruler: the playhead is wanted there. */
+    std::function<void (double ms, bool dragging)> onPlayheadSet;
+    /** A drag in the ruler with the option key: the loop is wanted from here to there (both 0: no loop). */
+    std::function<void (double startMs, double endMs)> onLoopSet;
+
     void paint (juce::Graphics&) override;
+    void mouseDown (const juce::MouseEvent&) override;
+    void mouseDrag (const juce::MouseEvent&) override;
+    void mouseUp (const juce::MouseEvent&) override;
     void resized() override;
     void mouseWheelMove (const juce::MouseEvent&, const juce::MouseWheelDetails&) override;
     void mouseMagnify (const juce::MouseEvent&, float scaleFactor) override;
@@ -106,6 +128,25 @@ private:
         juce::String name;          // its name, or for a tempo or time signature what it holds
         juce::String role;          // empty for a plain marker
     };
+
+    // The paper with everything on it is kept as a picture; the playhead lies over it.
+    struct Layer : public juce::Component
+    {
+        Layer (RollView& o, bool isPaper) : owner (o), paper (isPaper) {}
+        void paint (juce::Graphics& g) override     { if (paper) owner.paintPaper (g); else owner.paintOverlay (g); }
+        RollView& owner;
+        const bool paper;
+    };
+    Layer paperLayer { *this, true }, overlayLayer { *this, false };
+    void paintPaper (juce::Graphics&);
+    void paintOverlay (juce::Graphics&);
+    juce::Rectangle<int> playheadStrip (double ms) const;
+
+    double playheadMs = 0.0;
+    double loopStartMs = 0.0, loopEndMs = 0.0;
+    bool loopShownOn = false;
+    bool pressInRuler = false, draggingLoop = false, loopDragged = false;
+    double loopAnchorMs = 0.0;
 
     void scrollBarMoved (juce::ScrollBar*, double newRangeStart) override;
     void updateScrollBars();

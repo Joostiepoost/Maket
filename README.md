@@ -65,7 +65,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 2a | A roll opens in *Library and edition*: staves and clefs per voice, notes with stems and duration lines in proportional time, a time ruler, zoom and scroll; on paper, as bach.roll. No accidentals yet | done; tested by Joost on 25 Nov. 2a.1: the direction of a stem by bach's own rule |
 | 2b | Accidentals: bach's sign for every step of the eighth-tone grid, placed left of the chord by bach's method; the semitone grid as the other choice; a note the file gives by name keeps its letter | done; tested by Joost on 25 Nov. 2b.1: clusters as bach's small tree; velocity shown in grey, colour or alpha |
 | 2c | Glides (pitch breakpoints) along the duration line, markers with their names and roles, the colours of what is locked, muted or solo | done; tested by Joost on 25 Nov |
-| 2d | Transport on conTimbre: playhead, play, stop, loop | |
+| 2d | Transport on conTimbre: a playhead, play from any point, play prescheduled, stop, a loop region; voice names and the percussion clef as in ScAst | built 25 Nov; to be tested by Joost |
 | 2e | The first synth, the audio output, a choice of engine per voice | |
 | 2f | The closing test of step 2 | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
@@ -701,6 +701,35 @@ Joost: all 183 checks passed on his Mac. The clusters are trees as in ScAst; gli
 - The percussion clef is Bravura's two bars, not bach's open box.
 - Everything that comes from the slots (techniques, the curves, dynamics with hairpins, articulations, the shape of note heads) is step 5.
 
+## Using stage 2d
+
+The roll in *Library and edition* plays on the conTimbre ePlayer, through the mapping of step 1 as it stands: every note by a number of its own, dynamics from 0 to 1, the standard pitch of the settings sent first. As on the conTimbre test page, the voice at place 1 of the roll plays on the ePlayer's `voice1`, and so on, and the ePlayer has its orchestra loaded by hand. A voice without a name does not play.
+
+- **The second row of the bar** holds the transport: **Play**, **Play ps**, **Stop**, **Loop**, and beside them where the playhead is.
+- **The playhead** is the green line with a small flag in the ruler. A click in the ruler puts it there (drag to move it). Play begins at the playhead.
+- **Play** (space): the playhead follows the sound, and when it reaches the right edge the page turns, as in ScAst.
+- **Play ps** (⇧space), "play prescheduled": the same sound, but nothing on screen follows it. The playhead stays where play began. In Maket the sound never waits for the screen in either way of playing: every command is handed to the send thread ahead of time with its moment. What Play ps saves is the drawing, 30 times a second, of the playhead.
+- **Stop** (space again): every sounding note is ended, and the playhead goes back to where play began. The view stays on the page it was on. **⌥space** plays on from where it stopped. **Return** puts the playhead at the start.
+- **A note already sounding at the playhead** plays its remainder, as in ScAst: it enters at the pitch its glide has reached, with the rest of its glide. Its dynamics go, in 20 ms, to the value their curve has at that moment and on from there. (ScAst lets such a note start at its velocity and go from there to the next point.)
+- **The loop.** Drag in the ruler with ⌥ held: the region shows in purple and **Loop** switches on (L switches it off and on; ⌥-click in the ruler removes the region). With the loop on, play goes from the playhead to the loop's end and then round the loop. At the loop's end every sounding note is ended; at its start the notes sounding there enter as described above. A play that begins beyond the loop's end runs to the end of the roll. A change to the loop while it plays takes effect at the next play.
+- **Muted and solo**, bach's rule: what is muted does not play (a note, its chord or its voice); when anything in the roll is solo, only that plays.
+- **Looks**, after your remarks: voice names stand in the middle of their column and take the colour of a muted, locked or solo voice; the percussion clef is the open box.
+- Not yet: playing only what is selected (step 4); sound from Maket itself (2e).
+
+### Testing stage 2d
+
+With the ePlayer in Max and Doodsbed's orchestra loaded, as for the conTimbre test page.
+
+1. `git pull`, then `./build.sh`: `stage 2d`. `./build.sh tests` ends with `All 194 checks passed.`
+2. Open Doodsbed in *Library and edition* and press space. Does it sound as it did from the test page (by number)? Is the playhead where the sound is? Does the page turn at the right edge?
+3. Space again: does everything stop, with no note hanging? The playhead is back at the start. ⌥space: does it play on from where it stopped?
+4. Click in the ruler somewhere in the middle of long notes (around 1'00") and press space: do the notes that are sounding there come in at once, at a sensible level? If you like, compare with ScAst from the same place.
+5. Drag in the ruler with ⌥ held over a few bars (for instance 0'46" to 0'58") and press space. Does it go round without a hole and without a hanging note? L while stopped switches the loop off and on; ⌥-click in the ruler removes it.
+6. ⇧space (Play ps): the same sound with the playhead standing still. If a heavy score ever stutters in normal play and not here, I would like to know.
+7. Open `Temp/written by Maket/Glides and markers by Maket.txt` and play it: it holds solo items, so only the solo G at 6 s and the solo chord at 18 s should sound (on the ePlayer's `voice2`, with whatever program that voice has).
+8. Looks: the voice names (centred; blue and red for the muted and the locked voice of that roll), and the percussion clef in the mixed example.
+9. Push `Measurements/report.md`. A recording of anything that sounds wrong helps, as before.
+
 ## The repository
 
 ```
@@ -713,7 +742,7 @@ Source/             the application
   Platform/           what differs per operating system (on macOS: telling the system that Maket is busy)
   Model/              no interface code: the settings; the name, version and build stage; bach's list type; the roll
   Formats/            no interface code: reading and writing files (bach's text, bach.roll)
-  Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test
+  Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test; what of a roll plays from where to where (`Playing`) and the transport (`Transport`)
   Notation/           no interface code: which note and accidental a pitch is drawn as, the staves of each clef, how voices are stacked, the heads and accidentals of a chord, glides, the lines of marker names
 Resources/Fonts/    the Bravura music font (Steinberg, SIL Open Font License), built into the app
 Max/                patches for Max that belong to Maket (the OSC logging patch, the bach.roll reference)

@@ -123,7 +123,7 @@ namespace
 std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<int>& voices, const MappingOptions& options)
 {
     std::vector<TimedMessage> out;
-    int nextNumber = 1;
+    int nextNumber = juce::jmax (1, options.firstNoteNumber);
 
     for (size_t v = 0; v < roll.voices.size(); ++v)
     {
@@ -179,24 +179,18 @@ std::vector<TimedMessage> messagesForRoll (const Roll& roll, const std::vector<i
     return out;
 }
 
-std::vector<TimedMessage> messagesFrom (const std::vector<TimedMessage>& all, double from)
+std::vector<TimedMessage> stateBefore (const std::vector<TimedMessage>& all, double from)
 {
-    if (from <= 0.0) return all;
-
     // The last program and the last gain of every voice before `from`.
     std::map<int, TimedMessage> lastProgram, lastGain;
-    std::vector<TimedMessage> out, later;
-
     for (const auto& m : all)
-    {
         if (m.time < from)
         {
             if (m.message.address == "program")     lastProgram[m.voice] = m;
             else if (m.message.address == "gain")   lastGain[m.voice] = m;
         }
-        if (m.noteOnset >= from) later.push_back (m);
-    }
 
+    std::vector<TimedMessage> out;
     for (auto* kept : { &lastProgram, &lastGain })
         for (auto& [voice, m] : *kept)
         {
@@ -206,8 +200,16 @@ std::vector<TimedMessage> messagesFrom (const std::vector<TimedMessage>& all, do
             m.moment = from;
             out.push_back (m);
         }
+    return out;
+}
 
-    out.insert (out.end(), later.begin(), later.end());
+std::vector<TimedMessage> messagesFrom (const std::vector<TimedMessage>& all, double from)
+{
+    if (from <= 0.0) return all;
+
+    auto out = stateBefore (all, from);
+    for (const auto& m : all)
+        if (m.noteOnset >= from) out.push_back (m);
     return out;
 }
 

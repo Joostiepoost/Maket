@@ -76,6 +76,9 @@ public:
     /** Forgets everything that is still waiting. */
     void clear();
 
+    /** Forgets what is still waiting with this tag; the rest stays. */
+    void clear (int tag);
+
     /** What left since the last call, in the order it left. */
     std::vector<Sent> takeSent();
 

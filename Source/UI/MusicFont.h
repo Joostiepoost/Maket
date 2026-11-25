@@ -20,7 +20,7 @@ public:
         gClef = 0xE050, gClef15mb = 0xE051, gClef8vb = 0xE052, gClef8va = 0xE053, gClef15ma = 0xE054,
         cClef = 0xE05C,
         fClef = 0xE062, fClef15mb = 0xE063, fClef8vb = 0xE064, fClef8va = 0xE065, fClef15ma = 0xE066,
-        percussionClef = 0xE069,
+        percussionClef = 0xE06A,      // the open box, as bach's (0xE069 is the pair of bars)
         noteheadBlack = 0xE0A4,
         flat = 0xE260, sharp = 0xE262,
         naturalArrowUp = 0xE272, naturalArrowDown = 0xE273,

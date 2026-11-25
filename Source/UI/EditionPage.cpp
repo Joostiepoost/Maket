@@ -6,13 +6,57 @@
 
 namespace
 {
-    constexpr int barHeight = 40;
+    constexpr int rowHeight = 40;
+    constexpr int barHeight = 2 * rowHeight;        // the file and the zoom; under it the transport and the two menus
     constexpr double zoomStep = 1.25;
+    constexpr int transportTag = 4;                 // the mark on the transport's commands in the send thread
+
+    juce::String timeText (double ms)
+    {
+        const double seconds = juce::jmax (0.0, ms) / 1000.0;
+        const int minutes = (int) std::floor (seconds / 60.0);
+        return juce::String (minutes) + "'" + juce::String (seconds - 60.0 * minutes, 1).paddedLeft ('0', 4) + "\"";
+    }
 }
 
-EditionPage::EditionPage (maket::Settings& s) : settings (s)
+EditionPage::EditionPage (maket::Settings& s, maket::OscScheduler& sched) : settings (s), scheduler (sched), transport (sched, transportTag)
 {
     setOpaque (true);
+
+    playButton.setButtonText ("Play");
+    prescheduledButton.setButtonText ("Play ps");
+    stopButton.setButtonText ("Stop");
+    loopButton.setButtonText ("Loop");
+    loopButton.setClickingTogglesState (false);
+    playButton.setTooltip ("Play from the playhead on the conTimbre ePlayer; the playhead follows the sound  (space)");
+    prescheduledButton.setTooltip (juce::String::fromUTF8 ("Play prescheduled: the same, but nothing on screen follows the sound  (\xe2\x87\xa7space)"));
+    stopButton.setTooltip (juce::String::fromUTF8 ("Stop; the playhead goes back to where play began  (space). \xe2\x8c\xa5space plays on from where it stopped"));
+    loopButton.setTooltip (juce::String::fromUTF8 ("Go round the loop region  (L). Mark the region by dragging in the ruler with \xe2\x8c\xa5 held; \xe2\x8c\xa5-click removes it"));
+    playButton.onClick = [this] { if (! transport.isPlaying()) startPlaying (cursor, true); };
+    prescheduledButton.onClick = [this] { playPrescheduled(); };
+    stopButton.onClick = [this] { stopPlaying(); };
+    loopButton.onClick = [this] { toggleLoop(); };
+    for (auto* b : { &playButton, &prescheduledButton, &stopButton, &loopButton })
+    {
+        b->setWantsKeyboardFocus (false);       // the space bar is the transport's, not the last button's
+        addAndMakeVisible (*b);
+    }
+
+    view.onPlayheadSet = [this] (double ms, bool dragging)
+    {
+        cursor = ms;
+        if (! transport.isPlaying())    view.setPlayhead (ms);
+        else if (! dragging)            startPlaying (ms, following);       // a click while it plays: on from there
+        repaint (transportArea);
+    };
+    view.onLoopSet = [this] (double start, double end)
+    {
+        transport.setLoop (start, end);
+        transport.setLoopOn (transport.hasLoop());          // a region just marked is gone round; without one there is no loop
+        view.setLoop (transport.loopStart(), transport.loopEnd(), transport.isLoopOn());
+        if (transport.isPlaying()) setNotice ("The loop takes effect at the next play.");
+        updateBar();
+    };
 
     openButton.setButtonText (juce::String::fromUTF8 ("Open\xe2\x80\xa6"));
     openButton.setTooltip (juce::String::fromUTF8 ("Open a bach.roll text file  (\xe2\x8c\x98O)"));
@@ -52,12 +96,20 @@ EditionPage::EditionPage (maket::Settings& s) : settings (s)
     velocityBox.onChange = [this] { view.setVelocityDisplay ((RollView::VelocityDisplay) velocityBox.getSelectedId()); };
     addAndMakeVisible (velocityBox);
 
+    // Keys are the commands' (space, return, L): no button or menu of the bar keeps the keyboard after a click.
+    for (auto* c : std::initializer_list<juce::Component*> { &openButton, &acrossOut, &acrossIn, &downOut, &downIn, &fitButton, &gridBox, &velocityBox })
+        c->setWantsKeyboardFocus (false);
+
     view.onViewChanged = [this] { repaint (barArea); };
     addChildComponent (view);
     updateBar();
 }
 
-EditionPage::~EditionPage() = default;
+EditionPage::~EditionPage()
+{
+    stopTimer();
+    transport.stop();
+}
 
 void EditionPage::chooseFile()
 {
@@ -89,7 +141,15 @@ bool EditionPage::openFile (const juce::File& file)
     detail = juce::String ((int) roll.voices.size()) + " voices, " + juce::String (roll.numNotes()) + " notes, "
              + juce::String (juce::roundToInt (std::floor (roll.length() / 60000.0))) + "'"
              + juce::String (juce::roundToInt (std::fmod (roll.length() / 1000.0, 60.0))).paddedLeft ('0', 2) + "\"";
+    stopTimer();
+    transport.setRoll (roll);
+    transport.setLoop (0.0, 0.0);
+    transport.setLoopOn (false);
+    cursor = 0.0;
+    notice.clear();
     view.setRoll (roll);
+    view.setLoop (0.0, 0.0, false);
+    view.setPlayhead (0.0);
     view.setVisible (true);
     updateBar();
     resized();
@@ -120,6 +180,138 @@ void EditionPage::updateBar()
         b->setEnabled (has);
     gridBox.setEnabled (has);
     velocityBox.setEnabled (has);
+
+    const bool playing = transport.isPlaying();
+    playButton.setEnabled (has && ! playing);
+    prescheduledButton.setEnabled (has && ! playing);
+    stopButton.setEnabled (has && playing);
+    loopButton.setEnabled (has);
+    loopButton.setToggleState (transport.isLoopOn(), juce::dontSendNotification);
+    repaint (transportArea);
+}
+
+// --- Transport ---------------------------------------------------------------------
+
+void EditionPage::setNotice (const juce::String& text, bool isProblem)
+{
+    notice = text;
+    noticeIsProblem = isProblem;
+    noticeUntil = juce::Time::getMillisecondCounter() + 6000;
+    repaint (transportArea);
+    if (! isTimerRunning()) startTimer (500);       // to take the notice away again
+}
+
+void EditionPage::startPlaying (double from, bool follow)
+{
+    if (! view.hasRoll()) return;
+
+    scheduler.setPlayer (settings.get ("ePlayerHost"), settings.getInt ("ePlayerPort"));
+    juce::String why;
+    if (! transport.play (from, settings.getDouble ("standardPitch"), why))
+    {
+        setNotice (why, true);
+        updateBar();
+        return;
+    }
+
+    following = follow;
+    notice.clear();
+    if (! follow) view.setPlayhead (cursor);        // prescheduled: the playhead stays where play began
+    startTimer (follow ? 33 : 200);                 // prescheduled: only to keep a loop supplied and to notice the end
+    updateBar();
+}
+
+void EditionPage::playOrStop()
+{
+    if (transport.isPlaying())  stopPlaying();
+    else                        startPlaying (cursor, true);
+}
+
+void EditionPage::playPrescheduled()
+{
+    if (transport.isPlaying()) stopPlaying();
+    startPlaying (cursor, false);
+}
+
+void EditionPage::playOn()
+{
+    if (transport.isPlaying() || ! view.hasRoll()) return;
+    const double from = transport.stoppedAt();
+    startPlaying (from > 0.0 && from < transport.rollLength() ? from : cursor, true);
+}
+
+void EditionPage::stopPlaying()
+{
+    transport.stop();
+    stopTimer();
+    view.setPlayhead (cursor);
+    updateBar();
+}
+
+void EditionPage::toggleLoop()
+{
+    if (! view.hasRoll()) return;
+    if (! transport.hasLoop())
+    {
+        setNotice (juce::String::fromUTF8 ("No loop region yet: drag in the ruler with \xe2\x8c\xa5 held."), true);
+        return;
+    }
+    transport.setLoopOn (! transport.isLoopOn());
+    view.setLoop (transport.loopStart(), transport.loopEnd(), transport.isLoopOn());
+    if (transport.isPlaying()) setNotice ("The loop takes effect at the next play.");
+    updateBar();
+}
+
+void EditionPage::toStart()
+{
+    if (! view.hasRoll()) return;
+    cursor = 0.0;
+    if (transport.isPlaying())  startPlaying (0.0, following);
+    else                        view.setPlayhead (0.0);
+    view.turnPageTo (0.0);
+    repaint (transportArea);
+}
+
+void EditionPage::timerCallback()
+{
+    if (notice.isNotEmpty() && juce::Time::getMillisecondCounter() > noticeUntil)
+    {
+        notice.clear();
+        repaint (transportArea);
+    }
+
+    const bool wasPlaying = transport.isPlaying();
+    transport.service();
+
+    if (! transport.isPlaying())
+    {
+        if (wasPlaying)
+        {
+            // The roll has run to its end.
+            view.setPlayhead (cursor);
+            updateBar();
+        }
+        if (notice.isEmpty()) stopTimer();
+        else                  startTimer (500);
+        return;
+    }
+
+    if (following)
+    {
+        const double position = transport.position();
+        view.turnPageTo (position);
+        view.setPlayhead (position);
+        repaint (transportTextArea);
+    }
+}
+
+juce::String EditionPage::transportText() const
+{
+    if (notice.isNotEmpty()) return notice;
+    if (! transport.isPlaying()) return "from " + timeText (cursor);
+    const juce::String round = transport.isLoopOn() && transport.hasLoop() && transport.startedFrom() < transport.loopEnd() ? ", round the loop" : "";
+    return following ? timeText (transport.position()) + round
+                     : "playing prescheduled from " + timeText (transport.startedFrom()) + round;
 }
 
 void EditionPage::resized()
@@ -128,9 +320,26 @@ void EditionPage::resized()
     barArea = area.removeFromTop (barHeight);
     view.setBounds (area);
 
-    auto bar = barArea.reduced (10, 7);
+    auto bar = barArea.withHeight (rowHeight).reduced (10, 7);
     openButton.setBounds (bar.removeFromLeft (76));
     bar.removeFromLeft (14);
+
+    // The second row: the transport at the left, the two menus at the right.
+    transportArea = barArea.withTrimmedTop (rowHeight);
+    auto row = transportArea.reduced (10, 7).withTrimmedTop (-3).withTrimmedBottom (3);
+    playButton.setBounds (row.removeFromLeft (56));
+    row.removeFromLeft (4);
+    prescheduledButton.setBounds (row.removeFromLeft (72));
+    row.removeFromLeft (4);
+    stopButton.setBounds (row.removeFromLeft (56));
+    row.removeFromLeft (12);
+    loopButton.setBounds (row.removeFromLeft (56));
+    row.removeFromLeft (14);
+    velocityBox.setBounds (row.removeFromRight (140));
+    row.removeFromRight (8);
+    gridBox.setBounds (row.removeFromRight (128));
+    row.removeFromRight (12);
+    transportTextArea = row;
 
     fitButton.setBounds (bar.removeFromRight (44));
     bar.removeFromRight (14);
@@ -143,10 +352,6 @@ void EditionPage::resized()
     acrossOut.setBounds (bar.removeFromRight (28));
     bar.removeFromRight (10);
     zoomTextArea = bar.removeFromRight (170);
-    bar.removeFromRight (12);
-    velocityBox.setBounds (bar.removeFromRight (140));
-    bar.removeFromRight (8);
-    gridBox.setBounds (bar.removeFromRight (128));
     bar.removeFromRight (12);
     titleArea = bar;
 }
@@ -170,6 +375,10 @@ void EditionPage::paint (juce::Graphics& g)
         g.setFont (Theme::font (12.5f));
         g.drawText (detail, titleArea.withTrimmedLeft (titleWidth), juce::Justification::centredLeft, true);
         g.drawText (view.describeView(), zoomTextArea, juce::Justification::centredRight, true);
+
+        g.setColour (notice.isNotEmpty() && noticeIsProblem ? Theme::warning : transport.isPlaying() ? Theme::text : Theme::textMuted);
+        g.setFont (Theme::font (13.0f));
+        g.drawText (transportText(), transportTextArea, juce::Justification::centredLeft, true);
         return;
     }
 
@@ -189,7 +398,7 @@ void EditionPage::paint (juce::Graphics& g)
                       column.removeFromTop (60), juce::Justification::topLeft, 3);
     g.setColour (Theme::textMuted);
     g.setFont (Theme::font (12.5f));
-    g.drawFittedText ("The roll is shown as bach.roll shows it. Stage 2a: staves, clefs, notes and duration lines; "
-                      "accidentals, glides and markers follow in 2b and 2c. The library arrives at step 3.",
+    g.drawFittedText ("The roll is shown as bach.roll shows it and plays on the conTimbre ePlayer. "
+                      "The library arrives at step 3, editing at step 4.",
                       column, juce::Justification::topLeft, 4);
 }

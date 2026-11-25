@@ -200,7 +200,13 @@ namespace
             if (const auto* n = item ("voicenames", v))
             {
                 if (n->isSymbol())                          roll.voices[v].name = n->text;
-                else if (n->isList() && n->size() > 0)      roll.voices[v].name = (*n)[0].isSymbol() ? (*n)[0].text : (*n)[0].toLine();
+                else if (n->isList() && n->size() > 0)
+                {
+                    // A name of several words is a list of them, as bach keeps it; shown with spaces between.
+                    juce::StringArray words;
+                    for (const auto& w : n->items) words.add (w.isSymbol() ? w.text : w.toLine());
+                    roll.voices[v].name = words.joinIntoString (" ");
+                }
                 else if (! n->isList())                     roll.voices[v].name = n->toLine();
             }
             if (const auto* c = item ("clefs", v))          roll.voices[v].clef = c->isSymbol() ? c->text : c->toLine();
