@@ -64,7 +64,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | in parts |
 | 2a | A roll opens in *Library and edition*: staves and clefs per voice, notes with stems and duration lines in proportional time, a time ruler, zoom and scroll; on paper, as bach.roll. No accidentals yet | done; tested by Joost on 25 Nov. 2a.1: the direction of a stem by bach's own rule |
 | 2b | Accidentals: bach's sign for every step of the eighth-tone grid, placed left of the chord by bach's method; the semitone grid as the other choice; a note the file gives by name keeps its letter | done; tested by Joost on 25 Nov. 2b.1: clusters as bach's small tree; velocity shown in grey, colour or alpha |
-| 2c | Glides (pitch breakpoints) along the duration line, markers with their names and roles, the colours of what is locked, muted or solo | built 25 Nov; to be tested by Joost |
+| 2c | Glides (pitch breakpoints) along the duration line, markers with their names and roles, the colours of what is locked, muted or solo | done; tested by Joost on 25 Nov |
 | 2d | Transport on conTimbre: playhead, play, stop, loop | |
 | 2e | The first synth, the audio output, a choice of engine per voice | |
 | 2f | The closing test of step 2 | |
@@ -691,6 +691,15 @@ From your inspector screenshots (`Temp/Roll view 2/inspector`): tone division 8,
    - **markers**: `first`, `second close by` (a line lower), `third`, `fourth`, `section B`, a bar line, a time signature showing 3 4, `end`.
 4. Open Doodsbed (57 notes with glides, 35 bar lines and time signatures) and one or two other rolls in both.
 5. Push `Measurements/report.md`; screenshots with remarks for whatever differs.
+
+### After the test of 2c (25 Nov)
+
+Joost: all 183 checks passed on his Mac. The clusters are trees as in ScAst; glides, markers, and the colours of locked, muted and solo look the same; velocity answers to all three displays. His screenshots of three rolls in both programs are in `Temp/Roll view 2`. What still differs in them, none of it asked for yet:
+
+- ScAst centres the voice names in their column and writes the name of a muted or locked voice in that colour; Maket writes them at the left, in black.
+- A name that the file holds as one word with spaces in it shows in ScAst with quotes or backslashes (`"muted voice"`, `` `Maket\ test\ (1b) ``); Maket shows it plain. When Maket comes to write names itself (voices at step 7, markers at step 4) it should write the words separately, as bach does, so that ScAst shows them plain too.
+- The percussion clef is Bravura's two bars, not bach's open box.
+- Everything that comes from the slots (techniques, the curves, dynamics with hairpins, articulations, the shape of note heads) is step 5.
 
 ## The repository
 
