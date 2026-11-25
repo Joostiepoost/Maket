@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <JuceHeader.h>
+
 namespace maket::notation
 {
 
@@ -37,5 +39,23 @@ Spelling spell (double cents, int toneDivision = 8);
 
 /** The cents of a spelled note: the way back, for tests. */
 double centsOf (const Spelling&);
+
+/** The same for a note whose pitch the file gives as a name (G#6, Bb4): bach keeps the letter that was named
+    (`note_compute_approximation` in its source) and draws the accidental that leads from there to the pitch
+    on the grid, so G#6 stays a G sharp where the pitch alone would be drawn as A flat. Without a name, with
+    one that cannot be read, or when the note would need more than a sharp or a flat: as `spell`. */
+Spelling spellAs (const juce::String& pitchName, double cents, int toneDivision = 8);
+
+/** The sign drawn for an alteration, as bach.roll draws it with its own font: an eighth tone is a natural
+    with an arrow, a quarter tone the half sharp or the reversed flat, three eighths the quarter-tone sign
+    with an arrow that points further away (half sharp with an arrow up, reversed flat with an arrow down).
+    A natural note has no sign: in a roll bach gives every altered note its own accidental and never draws
+    a natural (its "Classically" is, in a roll, "altered notes, no naturals"). */
+enum class Accidental { none, naturalUp, quarterSharp, quarterSharpUp, sharp, naturalDown, quarterFlat, quarterFlatDown, flat };
+
+Accidental accidentalOf (int alteration);
+
+/** The note in words, for a list: "C5", "C5 sharp", "D5 three eighths flat" ... (middle C is C5, as in bach). */
+juce::String spellingName (const Spelling&);
 
 } // namespace maket::notation

@@ -63,7 +63,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1f.8 | Tuning: the standard pitch as a setting, sent to the ePlayer (`kammerton`) at the start of every play; a tuning check of 48 seconds | done; run by Joost on 24 Nov: the A lands on the frequency sent, within a third of a cent |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | in parts |
 | 2a | A roll opens in *Library and edition*: staves and clefs per voice, notes with stems and duration lines in proportional time, a time ruler, zoom and scroll; on paper, as bach.roll. No accidentals yet | done; tested by Joost on 25 Nov. 2a.1: the direction of a stem by bach's own rule |
-| 2b | Accidentals: semitones, quarter tones, eighth tones in bach's spelling | |
+| 2b | Accidentals: bach's sign for every step of the eighth-tone grid, placed left of the chord by bach's method; the semitone grid as the other choice; a note the file gives by name keeps its letter | built 25 Nov; to be tested by Joost |
 | 2c | Pitch breakpoints, markers, how muted and locked things look | |
 | 2d | Transport on conTimbre: playhead, play, stop, loop | |
 | 2e | The first synth, the audio output, a choice of engine per voice | |
@@ -629,6 +629,38 @@ Joost: all checks passed on his Mac; the rolls look as expected and as in ScAst.
 5. What looks wrong or unlike bach.roll in a way that bothers you: sizes, thickness of lines, the greys, the stems, the place of the names. A screenshot with a remark is the quickest.
 6. Push `Measurements/report.md`.
 
+## Using stage 2b
+
+- **Accidentals are drawn.** Every altered note carries its own sign, a natural note none: that is what bach.roll does (its "Classically" is, in a roll, "altered notes, no naturals").
+- **The signs** are bach's, one per step of the eighth-tone grid:
+
+  | Above a white key | Sign | Under a white key | Sign |
+  | --- | --- | --- | --- |
+  | an eighth tone | natural with an arrow up | an eighth tone | natural with an arrow down |
+  | a quarter tone | half sharp (one upright stroke) | a quarter tone | reversed flat |
+  | three eighths | half sharp with an arrow up | three eighths | reversed flat with an arrow down |
+  | a semitone | sharp | a semitone | flat |
+
+  Which of the two a pitch gets is bach's choice, as since 2a: from C upwards plain, arrow up, half sharp, half sharp with arrow, sharp; then towards D reversed flat with arrow, reversed flat, arrow down, D. The black keys are C sharp, E flat, F sharp, A flat, B flat.
+- **Where they stand:** left of the chord, by bach's own method: half a staff space from the head; when two signs of a chord are in each other's way, the lowest stands at the heads, then the highest, and the ones between go further left. The signs come from Maket's font (Bravura), so their shapes and widths differ a little from bach's own font; the arrowheads are heavier.
+- **A note the file gives by name** (bach writes `G#6` and not `8000.` when the spelling was chosen by hand) keeps that letter, as in bach: in `Bult` the clarinet's run at 33.9 s has a G sharp and an A sharp that would otherwise be drawn as A flat and B flat.
+- **The grid:** a menu in the bar, *Eighth tones* (as ScAst's roll) or *Semitones*. A pitch between two steps is drawn as the nearest one; on *Semitones* every note is plain, sharp or flat. The choice is not kept between runs yet and is not in the roll file (bach keeps it with the object too, not in the file).
+- **Time zero** stands two staff spaces further from the clefs than in 2a, and further still when the chords that begin the roll need the room, so that their accidentals are not cut off.
+- Not yet: bach's other ways of showing an alteration (as a fraction, in cents); double sharps and flats, and a named note more than a semitone from its letter (drawn by its pitch); keys other than C major (all your rolls name C major).
+
+### Testing stage 2b
+
+1. `git pull`, then `./build.sh`: `stage 2b`. `./build.sh tests` ends with `All 172 checks passed.` and writes `Temp/written by Maket/Accidentals by Maket.txt`.
+2. Open that file in ScAst's bach.roll and, beside it, in Maket (*Library and edition*, **Open…**). It has five voices:
+   - **every step**: the 49 eighth-tone steps from middle C up to the next C. Is it the same sign on the same line or space, note for note?
+   - **chords**: eight chords whose signs are in each other's way. The same signs? About the same arrangement: which sign stands at the heads, which further left? (Exact distances will differ a little with the font.)
+   - **off the grid**: pitches between the steps (4800, 4810, 4812, 4813, 4820, 4837, 4838, 4850, 4862, 4863, 4875, 4887, 4888, 4900 cents). Maket changes sign from 4812 to 4813, from 4837 to 4838, from 4862 to 4863 and from 4887 to 4888. Does bach change at the same notes?
+   - **two staves**: four chords on a piano system.
+   - **named**: seven pitches, each twice under two names (C sharp then D flat, D sharp then E flat, E sharp then F ...). Does bach draw them as named, as Maket does?
+3. In Maket, switch the menu to *Semitones*: only sharps and flats remain. (In bach the same is `tonedivision 2` in the inspector, if you care to compare.)
+4. Open a few of your own rolls in both. Anything that looks wrong or unlike bach.roll in a way that bothers you: size or weight of the signs, their distance to the heads, the heavier arrowheads. A screenshot with a remark is the quickest.
+5. Push `Measurements/report.md`.
+
 ## The repository
 
 ```
@@ -642,7 +674,7 @@ Source/             the application
   Model/              no interface code: the settings; the name, version and build stage; bach's list type; the roll
   Formats/            no interface code: reading and writing files (bach's text, bach.roll)
   Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test
-  Notation/           no interface code: which note a pitch is drawn as, the staves of each clef, how voices are stacked
+  Notation/           no interface code: which note and accidental a pitch is drawn as, the staves of each clef, how voices are stacked, the heads and accidentals of a chord
 Resources/Fonts/    the Bravura music font (Steinberg, SIL Open Font License), built into the app
 Max/                patches for Max that belong to Maket (the OSC logging patch, the bach.roll reference)
 Tests/              the console test program
@@ -657,6 +689,6 @@ Temp/               Joost's test material, test saves, crash reports and screen 
 
 Maket is published under the GNU Affero General Public License, version 3 (see `LICENSE.md`), the licence under which JUCE is used here.
 
-The music signs are drawn with the Bravura font by Steinberg, which is built into the app under the SIL Open Font License (`Resources/Fonts/Bravura OFL.txt`). How notes are spelled and staves laid out follows the source of bach (GPL, version 3), read as a reference.
+The music signs are drawn with the Bravura font by Steinberg, which is built into the app under the SIL Open Font License (`Resources/Fonts/Bravura OFL.txt`). How notes are spelled, staves laid out and accidentals placed follows the source of bach (GPL, version 3), read as a reference.
 
 Nothing of conTimbre is in this repository or in the app. Each user needs their own conTimbre and points Maket at it.

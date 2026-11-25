@@ -21,7 +21,11 @@ public:
         cClef = 0xE05C,
         fClef = 0xE062, fClef15mb = 0xE063, fClef8vb = 0xE064, fClef8va = 0xE065, fClef15ma = 0xE066,
         percussionClef = 0xE069,
-        noteheadBlack = 0xE0A4
+        noteheadBlack = 0xE0A4,
+        flat = 0xE260, sharp = 0xE262,
+        naturalArrowUp = 0xE272, naturalArrowDown = 0xE273,
+        quarterFlat = 0xE280, quarterSharp = 0xE282,            // the reversed flat and the half sharp
+        quarterFlatArrowDown = 0xE291, quarterSharpArrowUp = 0xE299
     };
 
     static MusicFont& get();
@@ -37,6 +41,9 @@ public:
 
     /** The width of a black note head in staff spaces. */
     float noteheadWidth();
+
+    /** A sign's bounds in staff spaces, around its origin (empty when the font lacks it). */
+    juce::Rectangle<float> bounds (juce::juce_wchar sign)      { return path (sign).getBounds(); }
 
 private:
     MusicFont();

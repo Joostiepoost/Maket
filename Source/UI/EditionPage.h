@@ -49,6 +49,7 @@ private:
     maket::Settings& settings;
     RollView view;
     juce::TextButton openButton, acrossOut, acrossIn, downOut, downIn, fitButton;
+    juce::ComboBox gridBox;             // stage 2b: the grid notes are drawn on (bach's tone division)
     juce::String title, detail, problem;
     juce::Rectangle<int> barArea, titleArea, zoomTextArea;
     std::unique_ptr<juce::FileChooser> chooser;

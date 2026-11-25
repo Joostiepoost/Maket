@@ -2,7 +2,7 @@
 // their duration lines in proportional time, a time ruler, zoom and scroll.
 //
 // Stage 2a draws voices, clefs, note heads, stems, ledger lines and duration
-// lines. Not yet: accidentals (2b), pitch breakpoints and markers (2c), the
+// lines; 2b the accidentals. Not yet: pitch breakpoints and markers (2c), the
 // playhead (2d), the content of slots (step 5), selecting and editing
 // (step 4).
 //
@@ -31,6 +31,11 @@ public:
 
     /** Shows a roll (a copy is kept). */
     void setRoll (const maket::Roll&);
+
+    /** The grid notes are drawn on: 8 eighth tones, 4 quarter tones, 2 semitones (bach's tone division). */
+    int toneDivision() const            { return division; }
+    void setToneDivision (int);
+
     void clear();
     bool hasRoll() const                { return ! voices.empty() || rollLength > 0.0; }
 
@@ -64,6 +69,8 @@ private:
         float lightness = 0.0f;     // 0 black (loud) to about 0.8 (softest)
         std::vector<int> ledgers;   // steps of its ledger lines
         bool otherSide = false;     // the head sits on the far side of the stem, as the upper of two notes a second apart does
+        juce::juce_wchar accidental = 0;    // the sign left of the chord, 0 for none
+        float accidentalLeft = 0.0f;        // the sign's left edge, staff spaces from the stem (negative: left of it)
     };
     struct ChordItem
     {
@@ -91,12 +98,18 @@ private:
     double xOf (double ms) const;
     double yOf (double units) const;
     int headerWidth() const;
+    double zeroPad() const;
 
     void paintRuler (juce::Graphics&, juce::Rectangle<int> area);
     void paintStaves (juce::Graphics&, int fromX, int toX);
     void paintNotes (juce::Graphics&, juce::Rectangle<int> area);
     void paintHeader (juce::Graphics&, juce::Rectangle<int> area);
 
+    void rebuild();
+
+    maket::Roll roll;
+    int division = 8;
+    double startReach = 0.0;            // staff spaces the chords of the first quarter second reach left of their stems
     std::vector<VoiceItem> voices;
     double rollLength = 0.0;            // ms
     double heightUnits = 0.0;

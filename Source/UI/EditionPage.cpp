@@ -37,6 +37,13 @@ EditionPage::EditionPage (maket::Settings& s) : settings (s)
     for (auto* b : { &openButton, &acrossOut, &acrossIn, &downOut, &downIn, &fitButton })
         addAndMakeVisible (*b);
 
+    gridBox.addItem ("Eighth tones", 8);
+    gridBox.addItem ("Semitones", 2);
+    gridBox.setSelectedId (8, juce::dontSendNotification);
+    gridBox.setTooltip ("The grid notes are drawn on: each note gets the accidental of the nearest step");
+    gridBox.onChange = [this] { view.setToneDivision (gridBox.getSelectedId()); };
+    addAndMakeVisible (gridBox);
+
     view.onViewChanged = [this] { repaint (barArea); };
     addChildComponent (view);
     updateBar();
@@ -103,6 +110,7 @@ void EditionPage::updateBar()
     const bool has = view.hasRoll();
     for (auto* b : { &acrossOut, &acrossIn, &downOut, &downIn, &fitButton })
         b->setEnabled (has);
+    gridBox.setEnabled (has);
 }
 
 void EditionPage::resized()
@@ -125,7 +133,10 @@ void EditionPage::resized()
     bar.removeFromRight (4);
     acrossOut.setBounds (bar.removeFromRight (28));
     bar.removeFromRight (10);
-    zoomTextArea = bar.removeFromRight (190);
+    zoomTextArea = bar.removeFromRight (170);
+    bar.removeFromRight (12);
+    gridBox.setBounds (bar.removeFromRight (128));
+    bar.removeFromRight (12);
     titleArea = bar;
 }
 

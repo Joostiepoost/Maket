@@ -55,4 +55,58 @@ double centsOf (const Spelling& s)
     return 6000.0 + 1200.0 * octaves + 25.0 * (naturals[degree] + s.alteration);
 }
 
+Spelling spellAs (const juce::String& pitchName, double cents, int toneDivision)
+{
+    const auto automatic = spell (cents, toneDivision);
+    const auto name = pitchName.trim();
+    if (name.length() < 2) return automatic;
+
+    const int degree = juce::String ("CDEFGAB").indexOfChar (juce::CharacterFunctions::toUpperCase (name[0]));
+    if (degree < 0) return automatic;
+
+    // After the letter the accidentals, then the octave (middle C is C5).
+    int i = 1;
+    while (i < name.length() && ! juce::CharacterFunctions::isDigit (name[i]) && name[i] != '-') ++i;
+    int end = i;
+    if (end < name.length() && name[end] == '-') ++end;
+    const int firstDigit = end;
+    while (end < name.length() && juce::CharacterFunctions::isDigit (name[end])) ++end;
+    if (end == firstDigit) return automatic;
+    const int octave = name.substring (i, end).getIntValue();
+
+    Spelling named { (octave - 5) * 7 + degree, 0 };
+    const double off = (centsOf (automatic) - centsOf (named)) / 25.0;
+    const int alteration = (int) std::lround (off);
+    if (std::abs (off - alteration) > 1.0e-6 || std::abs (alteration) > 4) return automatic;
+    named.alteration = alteration;
+    return named;
+}
+
+Accidental accidentalOf (int alteration)
+{
+    switch (alteration)
+    {
+        case 1:  return Accidental::naturalUp;
+        case 2:  return Accidental::quarterSharp;
+        case 3:  return Accidental::quarterSharpUp;
+        case 4:  return Accidental::sharp;
+        case -1: return Accidental::naturalDown;
+        case -2: return Accidental::quarterFlat;
+        case -3: return Accidental::quarterFlatDown;
+        case -4: return Accidental::flat;
+        default: return Accidental::none;
+    }
+}
+
+juce::String spellingName (const Spelling& s)
+{
+    static const char* letters[7] = { "C", "D", "E", "F", "G", "A", "B" };
+    static const char* words[9] = { " flat", " three eighths flat", " quarter flat", " eighth flat", "",
+                                    " eighth sharp", " quarter sharp", " three eighths sharp", " sharp" };
+    const int octaves = (int) std::floor (s.steps / 7.0);
+    const int degree = s.steps - octaves * 7;
+    const int a = s.alteration < -4 ? -4 : s.alteration > 4 ? 4 : s.alteration;
+    return juce::String (letters[degree]) + juce::String (octaves + 5) + words[a + 4];
+}
+
 } // namespace maket::notation

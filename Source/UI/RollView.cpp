@@ -3,6 +3,7 @@
 #include "RollView.h"
 #include "MusicFont.h"
 #include "Theme.h"
+#include "../Notation/Chords.h"
 #include "../Notation/Spelling.h"
 
 #include <algorithm>
@@ -79,6 +80,7 @@ RollView::~RollView() = default;
 
 void RollView::clear()
 {
+    roll = {};
     voices.clear();
     rollLength = heightUnits = 0.0;
     scrollMs = scrollY = 0.0;
@@ -86,9 +88,49 @@ void RollView::clear()
     repaint();
 }
 
-void RollView::setRoll (const maket::Roll& roll)
+namespace
 {
+    juce::juce_wchar signOf (Accidental a)
+    {
+        switch (a)
+        {
+            case Accidental::naturalUp:     return MusicFont::naturalArrowUp;
+            case Accidental::quarterSharp:  return MusicFont::quarterSharp;
+            case Accidental::quarterSharpUp: return MusicFont::quarterSharpArrowUp;
+            case Accidental::sharp:         return MusicFont::sharp;
+            case Accidental::naturalDown:   return MusicFont::naturalArrowDown;
+            case Accidental::quarterFlat:   return MusicFont::quarterFlat;
+            case Accidental::quarterFlatDown: return MusicFont::quarterFlatArrowDown;
+            case Accidental::flat:          return MusicFont::flat;
+            case Accidental::none:          break;
+        }
+        return 0;
+    }
+}
+
+void RollView::setRoll (const maket::Roll& newRoll)
+{
+    roll = newRoll;
+    rebuild();
+    scrollMs = scrollY = 0.0;
+    updateScrollBars();
+    repaint();
+}
+
+void RollView::setToneDivision (int newDivision)
+{
+    newDivision = newDivision == 2 || newDivision == 4 ? newDivision : 8;
+    if (newDivision == division) return;
+    division = newDivision;
+    rebuild();
+    repaint();
+}
+
+void RollView::rebuild()
+{
+    auto& font = MusicFont::get();
     voices.clear();
+    startReach = 0.0;
     const auto layout = layoutVoices (roll);
     heightUnits = layout.height;
     rollLength = roll.length();
@@ -117,7 +159,9 @@ void RollView::setRoll (const maket::Roll& roll)
             for (const auto& note : chord.notes)
             {
                 NoteItem n;
-                n.step = spell (note.cents, 8).steps;
+                const auto spelling = spellAs (note.pitchName, note.cents, division);
+                n.step = spelling.steps;
+                n.accidental = signOf (accidentalOf (spelling.alteration));
                 n.units = place.offset + place.clef.unitsOf (n.step);
                 n.end = chord.onset + note.duration;
                 n.lightness = 0.8f * (1.0f - (float) juce::jlimit (0, 126, note.velocity - 1) / 126.0f);   // softest: almost white, as bach
@@ -132,32 +176,48 @@ void RollView::setRoll (const maket::Roll& roll)
             // The stem: bach's rule for its direction (Notation/Staves); an octave long beyond the outer note.
             c.direction = stemDirection (place, sum / (double) c.notes.size());
 
-            // Heads a second (or less) apart cannot sit above each other: every other one goes to the far side of the stem,
-            // counted from the end of the stem that holds the heads.
+            // Heads a second (or less) apart: every other one on the far side of the stem (Notation/Chords).
             {
-                std::vector<size_t> order (c.notes.size());
-                for (size_t i = 0; i < order.size(); ++i) order[i] = i;
-                std::stable_sort (order.begin(), order.end(), [&c] (size_t a, size_t b)
-                                  { return c.direction == 1 ? c.notes[a].step < c.notes[b].step : c.notes[a].step > c.notes[b].step; });
-                for (size_t i = 1; i < order.size(); ++i)
-                {
-                    const auto& before = c.notes[order[i - 1]];
-                    auto& note = c.notes[order[i]];
-                    note.otherSide = std::abs (note.step - before.step) <= 1 && ! before.otherSide;
-                }
+                std::vector<int> steps;
+                for (const auto& n : c.notes) steps.push_back (n.step);
+                const auto far = farSideHeads (steps, c.direction);
+                for (size_t i = 0; i < c.notes.size(); ++i) c.notes[i].otherSide = far[i];
             }
             const double lowUnits = place.offset + place.clef.unitsOf (lowest), highUnits = place.offset + place.clef.unitsOf (highest);
             if (c.direction == 1)   { c.stemFromUnits = lowUnits;  c.stemToUnits = highUnits - 7.0 * stepUnits; }
             else                    { c.stemFromUnits = highUnits; c.stemToUnits = lowUnits + 7.0 * stepUnits; }
 
+            // The accidentals, left of the chord, by bach's method (Notation/Chords) with the sizes of this font's signs.
+            {
+                const double headWidth = font.noteheadWidth();
+                std::vector<ChordNote> placing;
+                for (auto& n : c.notes)
+                {
+                    ChordNote p;
+                    p.step = n.step;
+                    p.headLeft = (c.direction == 1) != n.otherSide ? -headWidth : 0.0;
+                    const auto b = n.accidental != 0 ? font.bounds (n.accidental) : juce::Rectangle<float>();
+                    if (b.isEmpty()) n.accidental = 0;
+                    p.hasAccidental = n.accidental != 0;
+                    p.above = -b.getY();
+                    p.below = b.getBottom();
+                    p.width = b.getRight();
+                    placing.push_back (p);
+                }
+                const auto right = placeAccidentals (placing);
+                double reach = 0.0;
+                for (size_t i = 0; i < c.notes.size(); ++i)
+                {
+                    c.notes[i].accidentalLeft = (float) (right[i] - placing[i].width);
+                    reach = juce::jmax (reach, -placing[i].headLeft, placing[i].hasAccidental ? -(double) c.notes[i].accidentalLeft : 0.0);
+                }
+                if (c.onset <= 250.0) startReach = juce::jmax (startReach, reach);
+            }
+
             item.chords.push_back (std::move (c));
         }
         voices.push_back (std::move (item));
     }
-
-    scrollMs = scrollY = 0.0;
-    updateScrollBars();
-    repaint();
 }
 
 // --- Geometry ---------------------------------------------------------------------
@@ -168,6 +228,12 @@ int RollView::headerWidth() const
     return juce::roundToInt (juce::jmax (36.0f, nameWidth + 20.0f) + 4.8f * space + 6.0f);
 }
 
+double RollView::zeroPad() const
+{
+    // Between the clefs and time zero: room for the heads and the accidentals of the chords that begin the roll.
+    return juce::jmax (4.0, startReach + 0.4) * spacePixels();
+}
+
 juce::Rectangle<int> RollView::rollArea() const
 {
     return getLocalBounds().withTrimmedTop (rulerHeight).withTrimmedLeft (headerWidth())
@@ -176,12 +242,12 @@ juce::Rectangle<int> RollView::rollArea() const
 
 double RollView::xOf (double ms) const
 {
-    return rollArea().getX() + 2.0 * spacePixels() + (ms - scrollMs) * pixelsPerMs();
+    return rollArea().getX() + zeroPad() + (ms - scrollMs) * pixelsPerMs();
 }
 
 double RollView::timeAt (double x) const
 {
-    return scrollMs + (x - rollArea().getX() - 2.0 * spacePixels()) / pixelsPerMs();
+    return scrollMs + (x - rollArea().getX() - zeroPad()) / pixelsPerMs();
 }
 
 double RollView::yOf (double units) const
@@ -199,10 +265,10 @@ juce::String RollView::describeView() const
 void RollView::setHorizontalZoom (double zoom, double anchorX)
 {
     const auto area = rollArea();
-    if (anchorX < area.getX()) anchorX = area.getX() + 2.0 * spacePixels();
+    if (anchorX < area.getX()) anchorX = area.getX() + zeroPad();
     const double time = timeAt (anchorX);
     zoomX = juce::jlimit (minZoomX, maxZoomX, zoom);
-    scrollMs = time - (anchorX - area.getX() - 2.0 * spacePixels()) / pixelsPerMs();
+    scrollMs = time - (anchorX - area.getX() - zeroPad()) / pixelsPerMs();
     viewChanged();
 }
 
@@ -403,6 +469,10 @@ void RollView::paintNotes (juce::Graphics& g, juce::Rectangle<int> area)
                     font.draw (g, MusicFont::noteheadBlack, headLeft, y, space);
                 else
                     g.fillEllipse (headLeft, y - 0.5f * space, headWidth, space);
+
+                // The accidental.
+                if (n.accidental != 0)
+                    font.draw (g, n.accidental, stemX + n.accidentalLeft * space, y, space);
             }
 
             // The stem.
@@ -460,23 +530,23 @@ void RollView::paintRuler (juce::Graphics& g, juce::Rectangle<int> area)
     g.setColour (rulerLine);
     g.fillRect (area.getX(), area.getBottom() - 1, area.getWidth(), 1);
 
-    const auto roll = rollArea();
+    const auto across = rollArea();
     juce::Graphics::ScopedSaveState state (g);
-    g.reduceClipRegion (area.withLeft (roll.getX() - 24).withRight (roll.getRight()));      // a little room for the label of 0'00"
+    g.reduceClipRegion (area.withLeft (across.getX() - 24).withRight (across.getRight()));      // a little room for the label of 0'00"
 
     double major = 1.0, minor = 0.5;
     tickSteps (pixelsPerMs() * 1000.0, major, minor);
     const bool tenths = major < 1.0;
     g.setFont (Theme::font (11.0f));
 
-    const double first = std::floor (timeAt (roll.getX() - 60.0) / 1000.0 / minor) * minor;
-    for (double t = juce::jmax (0.0, first); xOf (t * 1000.0) < roll.getRight() + 60.0; t += minor)
+    const double first = std::floor (timeAt (across.getX() - 60.0) / 1000.0 / minor) * minor;
+    for (double t = juce::jmax (0.0, first); xOf (t * 1000.0) < across.getRight() + 60.0; t += minor)
     {
         const float x = (float) xOf (t * 1000.0);
         const bool isMajor = std::abs (t / major - std::round (t / major)) < 1.0e-6;
         g.setColour (rulerLine);
         g.fillRect (juce::Rectangle<float> (x - 0.5f, (float) area.getBottom() - (isMajor ? 9.0f : 5.0f), 1.0f, isMajor ? 9.0f : 5.0f));
-        if (isMajor && x >= (float) roll.getX() - 1.0f)
+        if (isMajor && x >= (float) across.getX() - 1.0f)
         {
             g.setColour (rulerText);
             g.drawText (clockLabel (t, tenths), juce::Rectangle<float> (x - 40.0f, 3.0f, 80.0f, 14.0f), juce::Justification::centred, false);

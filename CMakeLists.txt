@@ -18,7 +18,7 @@ endif()
 
 # The build stage this source stands at; shown at the right of the tab row,
 # so that it is clear which build is being tested.
-set(MAKET_BUILD_STAGE "2a.1")
+set(MAKET_BUILD_STAGE "2b")
 
 # --- JUCE --------------------------------------------------------------------
 # By default JUCE is downloaded automatically (first build takes a few minutes).
@@ -55,6 +55,7 @@ set(MAKET_CORE_SOURCES
     Source/Engine/TimingTest.cpp
     Source/Engine/ConTimbreMapping.cpp
     Source/Engine/PlayerStudy.cpp
+    Source/Notation/Chords.cpp
     Source/Notation/Spelling.cpp
     Source/Notation/Staves.cpp)
 
