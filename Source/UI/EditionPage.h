@@ -12,6 +12,7 @@
 #include <memory>
 
 #include "RollView.h"
+#include "../Audio/AudioOutput.h"
 #include "../Engine/Transport.h"
 #include "../Model/Settings.h"
 
@@ -20,7 +21,7 @@ class EditionPage : public juce::Component,
                     private juce::Timer
 {
 public:
-    EditionPage (maket::Settings&, maket::OscScheduler&);
+    EditionPage (maket::Settings&, maket::OscScheduler&, maket::Synth&, AudioOutput&);
     ~EditionPage() override;
 
     /** Shows the file dialog and opens what is chosen. */
@@ -69,8 +70,14 @@ private:
     void setNotice (const juce::String& text, bool isProblem = false);
     juce::String transportText() const;
 
+    void showEngines();
+    bool anyVoiceOnSynth() const;
+    void openAudioIfNeeded();
+
     maket::Settings& settings;
     maket::OscScheduler& scheduler;
+    maket::Synth& synth;
+    AudioOutput& audio;
     maket::Transport transport;
     bool following = true;              // whether the playhead follows the sound of the play under way
     double cursor = 0.0;                // where play begins, ms

@@ -137,7 +137,10 @@ void testSettings (const juce::File& work)
     for (const auto& s : Settings::all())
     {
         const juce::String kind = s.kind == SettingKind::folder ? "folder" : s.kind == SettingKind::host ? "host"
-                                : s.kind == SettingKind::frequency ? "frequency" : "port";
+                                : s.kind == SettingKind::frequency ? "frequency"
+                                : s.kind == SettingKind::audioDevice ? "audio device"
+                                : s.kind == SettingKind::level ? "level"
+                                : s.kind == SettingKind::milliseconds ? "milliseconds" : "port";
         const juce::String def (s.defaultValue);
         line ("| " + juce::String (s.group) + ": " + s.label + " | " + kind + " | "
               + (def.isEmpty() ? "not set" : "`" + def + "`") + " | `" + s.key + "` |");
@@ -314,7 +317,7 @@ juce::String plainName (const juce::String& name)
 
 void testMaterial (const juce::File& temp)
 {
-    line ("## 10. Test material");
+    line ("## 11. Test material");
     line();
     line ("The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. "
           "This section lists what the program finds there; nothing is read yet. A missing file is not a "
@@ -427,6 +430,7 @@ int main (int argc, char** argv)
     std::cout << "The conTimbre mapping..." << std::endl; testConTimbreMapping (sourceDir.getChildFile ("Temp"));
     std::cout << "Notation..." << std::endl;             testNotation (sourceDir.getChildFile ("Temp"));
     std::cout << "Playing..." << std::endl;              testPlaying (sourceDir.getChildFile ("Temp"));
+    std::cout << "Synth..." << std::endl;                testSynth (sourceDir.getChildFile ("Temp"));
     std::cout << "Test material..." << std::endl;        testMaterial (sourceDir.getChildFile ("Temp"));
 
     work.deleteRecursively();

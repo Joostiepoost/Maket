@@ -77,6 +77,11 @@ public:
     /** The loop region, shown in the ruler; when `on` it is tinted over the staves too. */
     void setLoop (double startMs, double endMs, bool on);
 
+    /** A small tag under each voice's name (stage 2e: what sounds the voice); a click on it is reported. */
+    void setVoiceTags (const juce::StringArray& tags);
+    juce::String voiceName (int voice) const    { return voice >= 0 && voice < (int) voices.size() ? voices[(size_t) voice].name : juce::String(); }
+    std::function<void (int voice)> onVoiceTagClicked;
+
     /** A click or drag in the ruler: the playhead is wanted there. */
     std::function<void (double ms, bool dragging)> onPlayheadSet;
     /** A drag in the ruler with the option key: the loop is wanted from here to there (both 0: no loop). */
@@ -141,6 +146,9 @@ private:
     void paintPaper (juce::Graphics&);
     void paintOverlay (juce::Graphics&);
     juce::Rectangle<int> playheadStrip (double ms) const;
+
+    juce::StringArray voiceTags;
+    juce::Rectangle<float> tagBounds (const VoiceItem&) const;
 
     double playheadMs = 0.0;
     double loopStartMs = 0.0, loopEndMs = 0.0;

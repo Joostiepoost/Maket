@@ -26,7 +26,10 @@ enum class SettingKind
     folder,     // a folder on disk; a path inside the home folder is kept as ~/...
     host,       // the name or address of a computer
     port,       // a network port, 1 to 65535
-    frequency   // a standard pitch in Hz, 380 to 480, with at most three decimals
+    frequency,  // a standard pitch in Hz, 380 to 480, with at most three decimals
+    audioDevice,    // the name of an audio output device; empty for the computer's default output
+    level,          // a level in dB, -60 to 6, with at most one decimal
+    milliseconds    // a shift in time in ms, -200 to 200, with at most one decimal
 };
 
 struct SettingInfo

@@ -19,16 +19,35 @@ namespace
     }
 }
 
-EditionPage::EditionPage (maket::Settings& s, maket::OscScheduler& sched) : settings (s), scheduler (sched), transport (sched, transportTag)
+EditionPage::EditionPage (maket::Settings& s, maket::OscScheduler& sched, maket::Synth& syn, AudioOutput& out)
+    : settings (s), scheduler (sched), synth (syn), audio (out), transport (sched, transportTag)
 {
     setOpaque (true);
+    transport.setSynth (&synth);
+
+    // A click on a voice's tag: conTimbre, synth, silent, and round again.
+    view.onVoiceTagClicked = [this] (int voice)
+    {
+        auto engines = transport.getEngines();
+        if (voice < 0 || voice >= (int) engines.size()) return;
+        using maket::playing::VoiceEngine;
+        const bool named = view.voiceName (voice).isNotEmpty();     // a voice without a name is never sent to the ePlayer
+        engines[(size_t) voice] = engines[(size_t) voice] == VoiceEngine::conTimbre ? VoiceEngine::synth
+                                : engines[(size_t) voice] == VoiceEngine::synth ? VoiceEngine::silent
+                                : named ? VoiceEngine::conTimbre : VoiceEngine::synth;
+        transport.setEngines (engines);
+        showEngines();
+        openAudioIfNeeded();
+        if (transport.isPlaying()) setNotice ("The change takes effect at the next play.");
+        else if (! named)          setNotice ("A voice without a name cannot play on conTimbre: it goes between synth and silent.");
+    };
 
     playButton.setButtonText ("Play");
     prescheduledButton.setButtonText ("Play ps");
     stopButton.setButtonText ("Stop");
     loopButton.setButtonText ("Loop");
     loopButton.setClickingTogglesState (false);
-    playButton.setTooltip ("Play from the playhead on the conTimbre ePlayer; the playhead follows the sound  (space)");
+    playButton.setTooltip ("Play from the playhead, on the conTimbre ePlayer and on Maket's synth; the playhead follows the sound  (space)");
     prescheduledButton.setTooltip (juce::String::fromUTF8 ("Play prescheduled: the same, but nothing on screen follows the sound  (\xe2\x87\xa7space)"));
     stopButton.setTooltip (juce::String::fromUTF8 ("Stop; the playhead goes back to where play began  (space). \xe2\x8c\xa5space plays on from where it stopped"));
     loopButton.setTooltip (juce::String::fromUTF8 ("Go round the loop region  (L). Mark the region by dragging in the ruler with \xe2\x8c\xa5 held; \xe2\x8c\xa5-click removes it"));
@@ -142,7 +161,7 @@ bool EditionPage::openFile (const juce::File& file)
              + juce::String (juce::roundToInt (std::floor (roll.length() / 60000.0))) + "'"
              + juce::String (juce::roundToInt (std::fmod (roll.length() / 1000.0, 60.0))).paddedLeft ('0', 2) + "\"";
     stopTimer();
-    transport.setRoll (roll);
+    transport.setRoll (roll);       // every voice gets its default engine
     transport.setLoop (0.0, 0.0);
     transport.setLoopOn (false);
     cursor = 0.0;
@@ -151,6 +170,8 @@ bool EditionPage::openFile (const juce::File& file)
     view.setLoop (0.0, 0.0, false);
     view.setPlayhead (0.0);
     view.setVisible (true);
+    showEngines();
+    openAudioIfNeeded();
     updateBar();
     resized();
     repaint();
@@ -201,11 +222,40 @@ void EditionPage::setNotice (const juce::String& text, bool isProblem)
     if (! isTimerRunning()) startTimer (500);       // to take the notice away again
 }
 
+void EditionPage::showEngines()
+{
+    juce::StringArray tags;
+    for (auto e : transport.getEngines())
+        tags.add (e == maket::playing::VoiceEngine::conTimbre ? "conTimbre" : e == maket::playing::VoiceEngine::synth ? "synth" : "silent");
+    view.setVoiceTags (tags);
+}
+
+bool EditionPage::anyVoiceOnSynth() const
+{
+    for (auto e : transport.getEngines())
+        if (e == maket::playing::VoiceEngine::synth) return true;
+    return false;
+}
+
+void EditionPage::openAudioIfNeeded()
+{
+    // The audio output is opened as soon as a voice needs it, not at the play itself: opening takes a moment.
+    if (! anyVoiceOnSynth()) return;
+    const auto trouble = audio.open (settings.get ("audioOutput"));
+    if (trouble.isNotEmpty()) setNotice ("Synth: " + trouble, true);
+}
+
 void EditionPage::startPlaying (double from, bool follow)
 {
     if (! view.hasRoll()) return;
 
     scheduler.setPlayer (settings.get ("ePlayerHost"), settings.getInt ("ePlayerPort"));
+    synth.setStandardPitch (settings.getDouble ("standardPitch"));
+    synth.setLevel (settings.getDouble ("synthLevel"));
+    transport.setSynthOffset (settings.getDouble ("synthOffset"));
+    openAudioIfNeeded();
+    const auto audioProblem = notice;
+
     juce::String why;
     if (! transport.play (from, settings.getDouble ("standardPitch"), why))
     {
@@ -215,7 +265,7 @@ void EditionPage::startPlaying (double from, bool follow)
     }
 
     following = follow;
-    notice.clear();
+    if (! (noticeIsProblem && audioProblem.isNotEmpty())) notice.clear();     // a problem with the audio output stays in sight
     if (! follow) view.setPlayhead (cursor);        // prescheduled: the playhead stays where play began
     startTimer (follow ? 33 : 200);                 // prescheduled: only to keep a loop supplied and to notice the end
     updateBar();

@@ -149,6 +149,48 @@ namespace
     }
 }
 
+namespace
+{
+    /** Slot 1 names a conTimbre technique when it holds a word: "pizz", "bass flute.ordinario". Numbers alone
+        (as on the MIDI voices of Joost's mixed example) are not a technique. */
+    bool namesTechnique (const Llll& content)
+    {
+        if (content.isSymbol()) return content.text.containsAnyOf ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        for (const auto& item : content.items)
+            if (namesTechnique (item)) return true;
+        return false;
+    }
+}
+
+std::vector<VoiceEngine> defaultEngines (const Roll& roll)
+{
+    std::vector<VoiceEngine> engines;
+    for (const auto& voice : roll.voices)
+    {
+        bool technique = false;
+        for (const auto& chord : voice.chords)
+        {
+            for (const auto& note : chord.notes)
+                if (const auto* slot = note.slot (1))
+                    if (namesTechnique (slot->content)) { technique = true; break; }
+            if (technique) break;
+        }
+        const bool pitched = voice.clef != "Percussion" && voice.clef != "None";
+        // A voice without a name is never sent to the ePlayer (as in the Max patch), so it cannot be a conTimbre voice.
+        engines.push_back (technique && voice.name.isNotEmpty() ? VoiceEngine::conTimbre : pitched ? VoiceEngine::synth : VoiceEngine::silent);
+    }
+    return engines;
+}
+
+Roll forEngine (const Roll& roll, const std::vector<VoiceEngine>& engines, VoiceEngine which)
+{
+    Roll result = roll;
+    for (size_t v = 0; v < result.voices.size(); ++v)
+        if ((v < engines.size() ? engines[v] : VoiceEngine::conTimbre) != which)
+            result.voices[v].chords.clear();
+    return result;
+}
+
 bool anySolo (const Roll& roll)
 {
     for (const auto& voice : roll.voices)
@@ -265,6 +307,37 @@ std::vector<contimbre::TimedMessage> messagesForPass (const Roll& roll, double f
         messages = std::move (before);
     }
     return messages;
+}
+
+std::vector<contimbre::TimedMessage> messagesForPass (const Roll& roll, const std::vector<VoiceEngine>& engines,
+                                                     double from, double to, int firstNumber, int& numbersUsed)
+{
+    // Muted and solo are judged over the whole roll, whatever plays a voice.
+    return messagesForPass (forEngine (audible (roll), engines, VoiceEngine::conTimbre), from, to, firstNumber, numbersUsed);
+}
+
+std::vector<SynthNote> synthNotesForPass (const Roll& roll, const std::vector<VoiceEngine>& engines, double from, double to)
+{
+    std::vector<SynthNote> notes;
+    const auto part = excerpt (forEngine (audible (roll), engines, VoiceEngine::synth), from, to);
+    for (const auto& voice : part.voices)
+        for (const auto& chord : voice.chords)
+            for (const auto& note : chord.notes)
+            {
+                if (note.duration <= 0.0) continue;
+                SynthNote n;
+                n.start = chord.onset;
+                n.end = chord.onset + note.duration;
+                n.cents = note.cents;
+                n.velocity = note.velocity;
+                if (note.breakpoints.size() >= 2)
+                    for (const auto& b : note.breakpoints) n.glide.push_back ({ b.position, b.cents, b.slope });
+                if (const auto* slot = note.slot (2))
+                    for (const auto& p : pointsOf (slot->content)) n.levels.push_back ({ p.x, p.y, p.slope });
+                notes.push_back (std::move (n));
+            }
+    std::stable_sort (notes.begin(), notes.end(), [] (const SynthNote& a, const SynthNote& b) { return a.start < b.start; });
+    return notes;
 }
 
 std::vector<int> soundingAt (const std::vector<contimbre::TimedMessage>& pass, double time)

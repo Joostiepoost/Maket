@@ -33,7 +33,9 @@ MainComponent::MainComponent()
         }
         else if (i == Tabs::library)
         {
-            auto page = std::make_unique<EditionPage> (settings, oscScheduler);
+            auto page = std::make_unique<EditionPage> (settings, oscScheduler, synth, audioOutput);
+            PreferencesPage::audioOutputNames = [this] { return audioOutput.outputNames(); };
+            PreferencesPage::audioOutputState = [this] { return audioOutput.describe(); };
             edition = page.get();
             pages[(size_t) i] = std::move (page);
         }
@@ -66,6 +68,8 @@ MainComponent::~MainComponent()
     // A value still being typed on the preferences page is taken over, so
     // that quitting right after typing does not lose it.
     if (utilities != nullptr) utilities->commitPendingEdits();
+    PreferencesPage::audioOutputNames = nullptr;
+    PreferencesPage::audioOutputState = nullptr;
 
     // Messages that still wait are dropped, and the ePlayer is told to
     // stop every note: nothing is left sounding when Maket has gone.

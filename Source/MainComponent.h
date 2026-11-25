@@ -22,6 +22,8 @@
 #include "UI/UtilitiesPage.h"
 #include "UI/EditionPage.h"
 #include "Engine/OscScheduler.h"
+#include "Engine/Synth.h"
+#include "Audio/AudioOutput.h"
 #include "UI/KeepAwake.h"
 #include "Model/Settings.h"
 
@@ -86,6 +88,8 @@ private:
 
     maket::Settings settings { maket::Settings::defaultFile() };
     maket::OscScheduler oscScheduler;           // sends OSC messages at their time, on a thread of its own
+    maket::Synth synth;                 // Maket's own sound (stage 2e); before the pages, which use it
+    AudioOutput audioOutput { synth };
     KeepAwake keepAwake { oscScheduler };       // tells macOS not to slow Maket down while messages wait
     UtilitiesPage* utilities = nullptr;         // owned by `pages`
     EditionPage* edition = nullptr;             // owned by `pages`

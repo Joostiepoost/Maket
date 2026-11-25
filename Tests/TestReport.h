@@ -67,3 +67,4 @@ void testPlayerStudy();
 // Section 8: where notes sit on the staves (stage 2a), NotationTests.cpp.
 void testNotation (const juce::File& temp);
 void testPlaying (const juce::File& temp);
+void testSynth (const juce::File& temp);

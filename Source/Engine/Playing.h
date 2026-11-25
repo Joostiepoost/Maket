@@ -24,12 +24,25 @@
 
 #include "../Model/Roll.h"
 #include "ConTimbreMapping.h"
+#include "Synth.h"
 
 namespace maket::playing
 {
 
 /** Milliseconds a note that is entered in its middle takes to reach the dynamic it would have had there. */
 constexpr double catchUpTime = 20.0;
+
+/** What sounds a voice (stage 2e; a stopgap until the instruments of step 7). */
+enum class VoiceEngine { conTimbre, synth, silent };
+
+/** The engine each voice gets when nothing is chosen: a voice whose notes name a technique (slot 1) plays on
+    conTimbre; a voice without a clef that tells a pitch (Percussion, None) is silent; any other voice plays on
+    the synth. */
+std::vector<VoiceEngine> defaultEngines (const Roll&);
+
+/** The roll with the voices of one engine only; the others stay in their place, without chords, so that the
+    numbers of the voices stay what they are. */
+Roll forEngine (const Roll&, const std::vector<VoiceEngine>& engines, VoiceEngine which);
 
 /** True when a note, a chord or a voice of the roll is solo. */
 bool anySolo (const Roll&);
@@ -53,6 +66,14 @@ Roll excerpt (const Roll&, double from, double to);
     every voice was given earlier in the roll. Times are those of the roll. `numbersUsed` gets how many
     note numbers the pass took. */
 std::vector<contimbre::TimedMessage> messagesForPass (const Roll& roll, double from, double to, int firstNumber, int& numbersUsed);
+
+/** The same for a roll whose voices play on different engines: the commands of its conTimbre voices. */
+std::vector<contimbre::TimedMessage> messagesForPass (const Roll& roll, const std::vector<VoiceEngine>& engines,
+                                                     double from, double to, int firstNumber, int& numbersUsed);
+
+/** The notes of the synth's voices for one pass: `audible` and `excerpt` as for conTimbre, so muted and solo, a
+    note entered in its middle and the end of a loop are the same for both. `start` and `end` are times of the roll. */
+std::vector<SynthNote> synthNotesForPass (const Roll& roll, const std::vector<VoiceEngine>& engines, double from, double to);
 
 /** The numbers of the notes that sound at `time` (after their `ctnote`, before their `ctnoteoff`) in a pass. */
 std::vector<int> soundingAt (const std::vector<contimbre::TimedMessage>& pass, double time);

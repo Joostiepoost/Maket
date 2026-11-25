@@ -48,6 +48,17 @@ const std::vector<SettingInfo>& Settings::all()
           "The frequency of the A above middle C. Maket sends it to the ePlayer (as kammerton) at the start of every play; "
           "442 is the ePlayer's own default. For now one value for all of Maket; it moves into the project when projects come." },
 
+        { "audioOutput", "Sound from Maket", "Audio output", SettingKind::audioDevice, "", true,
+          "The audio device Maket's own sound (the synth) goes to. Not set: the Mac's default output. "
+          "Choose lists the outputs this Mac has now. A change takes effect at the next play." },
+
+        { "synthLevel", "Sound from Maket", "Synth level (dB)", SettingKind::level, "-18", false,
+          "How loud one note of the synth is at full velocity, in dB under full scale. Eight such notes together reach full scale at -18." },
+
+        { "synthOffset", "Sound from Maket", "Synth timing (ms)", SettingKind::milliseconds, "0", false,
+          "Moves the synth in time against the ePlayer: a positive number makes the synth later, a negative one earlier. "
+          "At 0 a synth note sounds at the very moment its command would leave for the ePlayer, which then still needs a moment of its own." },
+
         { "logPatchPort", "Tests", "Logging patch port", SettingKind::port, "46002", false,
           "The port of Maket's logging patch in Max (Max/Maket OSC log.maxpat), which notes when each message "
           "arrives. Used by the OSC test page. It must differ from the ePlayer's port." },
@@ -150,6 +161,35 @@ juce::Result Settings::validate (const SettingInfo& info, const juce::String& va
             if (tidied.endsWithChar ('.')) tidied = tidied.dropLastCharacters (1);
             return juce::Result::ok();
         }
+
+        case SettingKind::audioDevice:
+        case SettingKind::level:
+        case SettingKind::milliseconds:
+            break;
+    }
+
+    if (info.kind == SettingKind::audioDevice)
+    {
+        if (text.length() > 200) return juce::Result::fail ("The name of an audio device is shorter than that.");
+        tidied = text;
+        return juce::Result::ok();
+    }
+
+    if (info.kind == SettingKind::level || info.kind == SettingKind::milliseconds)
+    {
+        const bool isLevel = info.kind == SettingKind::level;
+        const auto number = text.replaceCharacter (',', '.').replace (juce::String::fromUTF8 ("\xe2\x88\x92"), "-");
+        const double amount = number.getDoubleValue();
+        const double low = isLevel ? -60.0 : -200.0, high = isLevel ? 6.0 : 200.0;
+        const auto digits = number.startsWithChar ('-') ? number.substring (1) : number;
+        if (! digits.containsOnly ("0123456789.") || digits.indexOfChar ('.') != digits.lastIndexOfChar ('.')
+            || ! digits.containsAnyOf ("0123456789") || amount < low || amount > high)
+            return juce::Result::fail (isLevel ? "A level is a number of dB from -60 to 6, such as -18 or -12.5."
+                                               : "A shift in time is a number of milliseconds from -200 to 200, such as 0, 15 or -7.5.");
+        tidied = juce::String (amount, 1);
+        if (tidied.endsWith (".0")) tidied = tidied.dropLastCharacters (2);
+        if (tidied == "-0") tidied = "0";
+        return juce::Result::ok();
     }
 
     return juce::Result::fail ("Unknown kind of setting.");
@@ -260,7 +300,8 @@ juce::Result Settings::save() const
     for (const auto& s : all())
     {
         if (s.kind == SettingKind::port)            object->setProperty (s.key, getInt (s.key));
-        else if (s.kind == SettingKind::frequency)  object->setProperty (s.key, getDouble (s.key));
+        else if (s.kind == SettingKind::frequency || s.kind == SettingKind::level || s.kind == SettingKind::milliseconds)
+                                                    object->setProperty (s.key, getDouble (s.key));
         else                             object->setProperty (s.key, get (s.key));
     }
     if (auto* unknown = others.getDynamicObject())

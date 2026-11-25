@@ -21,6 +21,7 @@ void Transport::setRoll (const Roll& newRoll)
 {
     if (playing) stop();
     roll = newRoll;
+    engines = playing::defaultEngines (roll);
     rollSet = true;
     length = roll.length();
     started = stopped = 0.0;
@@ -49,8 +50,20 @@ Transport::Pass Transport::nextPass (const Pass* previous, double from, double c
         pass.rollFrom = loopFrom;
         pass.rollTo = loopTo;
     }
-    pass.messages = playing::messagesForPass (roll, pass.rollFrom, pass.rollTo, pass.firstNumber, pass.numbers);
+    pass.messages = playing::messagesForPass (roll, engines, pass.rollFrom, pass.rollTo, pass.firstNumber, pass.numbers);
+    pass.synthNotes = playing::synthNotesForPass (roll, engines, pass.rollFrom, pass.rollTo);
     return pass;
+}
+
+std::vector<SynthNote> Transport::onClock (const Pass& pass, double offsetMs)
+{
+    auto notes = pass.synthNotes;
+    for (auto& n : notes)
+    {
+        n.start = pass.clockStart + (n.start - pass.rollFrom) + offsetMs;
+        n.end = pass.clockStart + (n.end - pass.rollFrom) + offsetMs;
+    }
+    return notes;
 }
 
 void Transport::schedule (const Pass& pass)
@@ -58,6 +71,7 @@ void Transport::schedule (const Pass& pass)
     for (const auto& m : pass.messages)
         scheduler.sendAt (pass.clockStart + (m.time - pass.rollFrom), m.message, OscScheduler::toPlayer, tag);
     commands += (int) pass.messages.size();
+    if (synth != nullptr && ! pass.synthNotes.empty()) synth->addNotes (onClock (pass, synthOffset));
 }
 
 bool Transport::play (double from, double standardPitch, juce::String& problem)
@@ -71,9 +85,9 @@ bool Transport::play (double from, double standardPitch, juce::String& problem)
     const double now = OscScheduler::now();
     looping = loopOn && hasLoop() && from < loopTo;
     auto first = nextPass (nullptr, from, now + leadTime);
-    if (first.messages.empty() && ! looping)
+    if (first.messages.empty() && first.synthNotes.empty() && ! looping)
     {
-        problem = "Nothing plays from there: no note that is not muted, in a voice with a name.";
+        problem = "Nothing plays from there: no note that is not muted, in a voice that plays.";
         return false;
     }
 
@@ -87,6 +101,7 @@ bool Transport::play (double from, double standardPitch, juce::String& problem)
 
     endClock = first.clockStart;
     for (const auto& m : first.messages) endClock = std::max (endClock, first.clockStart + (m.time - first.rollFrom));
+    for (const auto& n : first.synthNotes) endClock = std::max (endClock, first.clockStart + (n.end - first.rollFrom));
     schedule (first);
     passes.push_back (std::move (first));
     service();
@@ -159,6 +174,7 @@ void Transport::stop()
             scheduler.sendImmediately (contimbre::ctNoteOff (number), OscScheduler::toPlayer, tag);
     }
     scheduler.sendImmediately (contimbre::allNotesOff(), OscScheduler::toPlayer, tag);
+    if (synth != nullptr) synth->allNotesOff();
 
     playing = false;
     passes.clear();

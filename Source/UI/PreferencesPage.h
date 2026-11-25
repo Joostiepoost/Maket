@@ -22,6 +22,11 @@ public:
     /** Called when a setting's field gets the keyboard, with that setting. */
     std::function<void (const maket::SettingInfo&)> onSettingSelected;
 
+    /** Gives the names of the audio outputs this computer has now, for the Choose button of that setting.
+        Set once by the main window, which owns the audio output. */
+    static inline std::function<juce::StringArray()> audioOutputNames;
+    static inline std::function<juce::String()> audioOutputState;       // what is open now, in words
+
     /** A message shown at the top of the page (a problem met when the
         settings file was read); empty for none. */
     void setNotice (const juce::String& text);

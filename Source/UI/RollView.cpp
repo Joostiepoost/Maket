@@ -556,8 +556,35 @@ void RollView::setLoop (double startMs, double endMs, bool on)
     paperLayer.repaint();
 }
 
+void RollView::setVoiceTags (const juce::StringArray& tags)
+{
+    if (tags == voiceTags) return;
+    voiceTags = tags;
+    paperLayer.repaint();
+}
+
+juce::Rectangle<float> RollView::tagBounds (const VoiceItem& v) const
+{
+    // Under the name, in the middle of the names' column.
+    const float topY = (float) yOf (v.place.offset + v.place.clef.topUnits()), bottomY = (float) yOf (v.place.offset + v.place.clef.bottomUnits());
+    const float column = (float) (rollArea().getX() - (int) std::round (4.8 * spacePixels()) - 6);        // the left end of the staves
+    const float width = juce::jmin (64.0f, column - 8.0f);
+    return { 4.0f + (column - 8.0f - width) * 0.5f, (topY + bottomY) * 0.5f + 11.0f, width, 15.0f };
+}
+
 void RollView::mouseDown (const juce::MouseEvent& e)
 {
+    // A click on a voice's tag.
+    if (hasRoll() && e.x < rollArea().getX() && e.y > rulerHeight && onVoiceTagClicked)
+        for (size_t i = 0; i < voices.size(); ++i)
+            if (! voices[i].place.hidden && voices[i].place.ownsStaves && (int) i < voiceTags.size()
+                && tagBounds (voices[i]).expanded (3.0f).contains (e.position))
+            {
+                onVoiceTagClicked ((int) i);
+                pressInRuler = draggingLoop = false;
+                return;
+            }
+
     const auto area = rollArea();
     pressInRuler = hasRoll() && e.y < rulerHeight && e.x >= area.getX() && e.x < area.getRight();
     draggingLoop = loopDragged = false;
@@ -855,6 +882,21 @@ void RollView::paintHeader (juce::Graphics& g, juce::Rectangle<int> area)
         // The left end of the staves, and the name beside them.
         g.setColour (flagColour (v.flags, staffLine));
         g.fillRect (juce::Rectangle<float> ((float) staffStart, topY, juce::jmax (1.0f, 0.11f * space), bottomY - topY));
+        // What sounds the voice: a small tag under the name (a click changes it).
+        if ((int) (&v - voices.data()) < voiceTags.size())
+        {
+            const auto tag = voiceTags[(int) (&v - voices.data())];
+            const auto box = tagBounds (v);
+            const bool silent = tag == "silent";
+            const auto tint = tag == "synth" ? juce::Colour (0xff5b4fa8) : silent ? juce::Colour (0xff8a8a86) : juce::Colour (0xff1f7a6d);
+            g.setColour (tint.withAlpha (silent ? 0.0f : 0.14f));
+            g.fillRoundedRectangle (box, 4.0f);
+            g.setColour (tint.withAlpha (silent ? 0.6f : 0.85f));
+            g.drawRoundedRectangle (box.reduced (0.5f), 4.0f, 1.0f);
+            g.setFont (Theme::font (10.5f));
+            g.drawText (tag, box, juce::Justification::centred, false);
+        }
+
         // The name: in the middle of its column, in the colour of a locked, muted or solo voice, as in ScAst's roll.
         g.setColour (flagColour (v.flags, ink));
         g.drawText (v.name, juce::Rectangle<float> (4.0f, (topY + bottomY) * 0.5f - 10.0f, (float) staffStart - 8.0f, 20.0f),

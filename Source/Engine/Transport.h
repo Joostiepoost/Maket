@@ -13,6 +13,10 @@
 // notes sounding at its start played from there, notes sounding at the end
 // of a loop ended there. Each pass of a loop numbers its notes anew.
 //
+// Since 2e a voice plays on conTimbre, on Maket's synth or not at all. The
+// synth's notes of a pass are handed to it with the same clock times, so
+// both engines are told the same moments.
+//
 // No interface code.
 
 #pragma once
@@ -24,6 +28,8 @@
 #include "../Model/Roll.h"
 #include "ConTimbreMapping.h"
 #include "OscScheduler.h"
+#include "Playing.h"
+#include "Synth.h"
 
 namespace maket
 {
@@ -39,6 +45,16 @@ public:
     void setRoll (const Roll&);
     bool hasRoll() const                    { return rollSet; }
     double rollLength() const               { return length; }
+
+    /** What sounds each voice (stage 2e). Without this every voice gets its default (`playing::defaultEngines`).
+        Takes effect at the next play. */
+    void setEngines (std::vector<playing::VoiceEngine> newEngines)     { engines = std::move (newEngines); }
+    const std::vector<playing::VoiceEngine>& getEngines() const        { return engines; }
+
+    /** Where the synth's notes go (null: nowhere), and by how many ms they are moved against the ePlayer's
+        commands (positive: later). */
+    void setSynth (NoteSink* sink)          { synth = sink; }
+    void setSynthOffset (double ms)         { synthOffset = ms; }
 
     /** The loop: from `start` to `end` (ms), and whether play goes round it. Takes effect at the next play. */
     void setLoop (double start, double end);
@@ -80,9 +96,13 @@ public:
     {
         double rollFrom = 0.0, rollTo = 0.0;
         double clockStart = 0.0;
-        std::vector<contimbre::TimedMessage> messages;
+        std::vector<contimbre::TimedMessage> messages;     // for the ePlayer; times of the roll
+        std::vector<SynthNote> synthNotes;                  // for the synth; times of the roll
         int firstNumber = 1, numbers = 0;
     };
+
+    /** A pass's synth notes with their times on the clock, as they are handed to the synth. */
+    static std::vector<SynthNote> onClock (const Pass&, double offsetMs);
 
     /** Where in the roll the sound is at `clock`, given the passes handed over (in order). */
     static double positionAt (const std::deque<Pass>& passes, double clock);
@@ -96,6 +116,9 @@ private:
     OscScheduler& scheduler;
     const int tag;
     Roll roll;
+    std::vector<playing::VoiceEngine> engines;
+    NoteSink* synth = nullptr;
+    double synthOffset = 0.0;
     bool rollSet = false;
     double length = 0.0;
     double loopFrom = 0.0, loopTo = 0.0;

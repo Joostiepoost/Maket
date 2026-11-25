@@ -65,8 +65,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 2a | A roll opens in *Library and edition*: staves and clefs per voice, notes with stems and duration lines in proportional time, a time ruler, zoom and scroll; on paper, as bach.roll. No accidentals yet | done; tested by Joost on 25 Nov. 2a.1: the direction of a stem by bach's own rule |
 | 2b | Accidentals: bach's sign for every step of the eighth-tone grid, placed left of the chord by bach's method; the semitone grid as the other choice; a note the file gives by name keeps its letter | done; tested by Joost on 25 Nov. 2b.1: clusters as bach's small tree; velocity shown in grey, colour or alpha |
 | 2c | Glides (pitch breakpoints) along the duration line, markers with their names and roles, the colours of what is locked, muted or solo | done; tested by Joost on 25 Nov |
-| 2d | Transport on conTimbre: a playhead, play from any point, play prescheduled, stop, a loop region; voice names and the percussion clef as in ScAst | built 25 Nov; to be tested by Joost |
-| 2e | The first synth, the audio output, a choice of engine per voice | |
+| 2d | Transport on conTimbre: a playhead, play from any point, play prescheduled, stop, a loop region; voice names and the percussion clef as in ScAst | done; tested by Joost on 25 Nov |
+| 2e | Sound from Maket itself: the audio output as a setting, a first plain synth (one sine per note), and per voice the choice of conTimbre, synth or silent | built 25 Nov; to be tested by Joost |
 | 2f | The closing test of step 2 | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -735,6 +735,39 @@ Orchestra files stay out of the repository.
 8. Looks: the voice names (centred; blue and red for the muted and the locked voice of that roll), and the percussion clef in the mixed example.
 9. Push `Measurements/report.md`. A recording of anything that sounds wrong helps, as before.
 
+### After the test of 2d (25 Nov)
+
+All of it passed on Joost's Mac: looping without hiccups or hanging notes, play prescheduled, entering midway with the 20 ms ramp, the loop's seam, and the keys staying quiet while a text field is typed in. His recording of Doodsbed played from the roll view was compared with the one from the test page (by number): the two differ no more than two takes of the ePlayer differ from each other.
+
+## Using stage 2e
+
+Maket makes sound of its own for the first time, next to the ePlayer.
+
+- **A tag under every voice name** says what plays the voice: `conTimbre` (the ePlayer, as before), `synth` (Maket's own) or `silent`. A click on the tag goes to the next of the three. Maket's first guess when a roll opens: a voice whose notes name a technique in words in slot 1 goes to conTimbre; a voice with a percussion clef or no clef is silent; every other voice goes to the synth. So Doodsbed plays as it did (its Mezzo, which names no technique and has no clef, is now silent instead of sent to a voice the orchestra does not have), and in the mixed example only `L1a` and `L2a` go to the ePlayer. The choice is per open roll and not kept; from step 7 it belongs to the instrument in the project.
+- **The synth** is as plain as can be: one sine per note. Its pitch is exact, eighth tones and any pitch in between, glides with bach's curves, on the standard pitch of the preferences. Its loudness is the note's velocity times the modulation curve of slot 2 when the note has one (0 to 127, in ms), under the level of the preferences. A note fades in over 10 ms and out over 50 ms. Other timbres, and the waveshape slot, wait for the discussion on the synth.
+- **In time with the ePlayer**: both are driven from the one clock. A synth note sounds at the very moment its command would leave for the ePlayer; the ePlayer then needs a moment of its own before its sample is heard, so the synth will be a little early. *Synth timing (ms)* in the preferences moves the synth: positive is later.
+- **Preferences → Sound from Maket**: *Audio output* (Choose lists what this Mac has; not set is the Mac's default output; the line under it says what is open now), *Synth level (dB)* (how loud one note at full velocity is; -18 at first), *Synth timing (ms)*. The audio output is opened as soon as an open roll has a voice on the synth; a roll with only conTimbre voices opens none.
+- Mute and solo, entering midway, the loop, Stop and play prescheduled work for the synth as for conTimbre.
+
+Not yet: the choice of engine is not kept with the roll; a change of tag, level or timing during play takes effect at the next play.
+
+### Testing stage 2e
+
+With the ePlayer in Max and the orchestra **`Maket test 2d`** (its `voice1` is the cello).
+
+1. `git pull`, then `./build.sh`: `stage 2e`. `./build.sh tests` ends with `All 208 checks passed.` (it also writes the roll of step 2).
+2. Open `Temp/written by Maket/Synth and conTimbre by Maket.txt` and play it. It has three voices: `cello` (conTimbre), `synth` and `synth alone`.
+   - 1 to 8 s: eight plucked notes on the cello, each with a short high tone of the synth. Do they fall together? If not: which comes first, and roughly by how much?
+   - 10 to 16 s: the same A, bowed and on the synth. Is it one pitch, without beating?
+   - 18 s: nine notes rising by eighth tones. 25 s: a glide up a fifth and back. 30 s: a note that swells and fades. 35 s: eight notes at once: clean, without distortion?
+3. A recording of the first 16 seconds with both the ePlayer and Maket in it would let me measure how far apart they are, to the millisecond, and set *Synth timing* to the right number for your Mac. Or set it by ear: try 10, 20, 30.
+4. *Utilities → Preferences → Sound from Maket*: what does the line under *Audio output* say (device, rate, block size, delay)? Choose another output and play again: does the synth move there?
+5. Set *Synth level* to -12: louder? Back to -18, or to what suits you.
+6. The mixed example: are the tags as described above? Play; click a few tags and play again; Stop in the middle of long notes: is everything silent at once?
+7. Doodsbed with its orchestra `doodsbed by number`: as before. Then click the Mezzo's tag to `synth` and play: its line as a plain tone with the ensemble.
+8. On any roll with synth voices: click in the ruler in the middle of a long or gliding note and play (it should come in at once, at the pitch the glide has reached); a loop over synth notes; ⇧space.
+9. Push `Measurements/report.md`.
+
 ## The repository
 
 ```
@@ -747,7 +780,8 @@ Source/             the application
   Platform/           what differs per operating system (on macOS: telling the system that Maket is busy)
   Model/              no interface code: the settings; the name, version and build stage; bach's list type; the roll
   Formats/            no interface code: reading and writing files (bach's text, bach.roll)
-  Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test; what of a roll plays from where to where (`Playing`) and the transport (`Transport`)
+  Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test; what of a roll plays from where to where and on which engine (`Playing`), the transport (`Transport`), the synth (`Synth`) and the clock of the audio stream (`StreamClock`)
+  Audio/              the audio output: the device, and the call in which the synth fills each block
   Notation/           no interface code: which note and accidental a pitch is drawn as, the staves of each clef, how voices are stacked, the heads and accidentals of a chord, glides, the lines of marker names
 Resources/Fonts/    the Bravura music font (Steinberg, SIL Open Font License), built into the app
 Max/                patches for Max that belong to Maket (the OSC logging patch, the bach.roll reference)

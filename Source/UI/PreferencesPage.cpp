@@ -53,6 +53,12 @@ public:
             chooseButton.onClick = [this] { chooseFolder(); };
             addAndMakeVisible (chooseButton);
         }
+        else if (info.kind == maket::SettingKind::audioDevice)
+        {
+            chooseButton.setButtonText (juce::String::fromUTF8 ("Choose\xe2\x80\xa6"));
+            chooseButton.onClick = [this] { chooseAudioOutput(); };
+            addAndMakeVisible (chooseButton);
+        }
 
         defaultButton.setButtonText ("Default");
         defaultButton.setTooltip (juce::String ("Back to the default: ")
@@ -103,7 +109,7 @@ public:
         auto line = getLocalBounds().removeFromTop (fieldHeight).withTrimmedLeft (labelWidthNow());
         defaultButton.setBounds (line.removeFromRight (defaultWidth));
         line.removeFromRight (gap);
-        if (info.kind == maket::SettingKind::folder)
+        if (info.kind == maket::SettingKind::folder || info.kind == maket::SettingKind::audioDevice)
         {
             chooseButton.setBounds (line.removeFromRight (chooseWidth));
             line.removeFromRight (gap);
@@ -127,6 +133,10 @@ private:
         whether it is there. For the rest: the first sentence of its help. */
     juce::String statusText() const
     {
+        if (info.kind == maket::SettingKind::audioDevice)
+            return "Now: " + (PreferencesPage::audioOutputState ? PreferencesPage::audioOutputState() : juce::String ("no audio output open"))
+                   + ". It is opened when a roll has a voice on the synth.";
+
         if (info.kind != maket::SettingKind::folder)
         {
             const juce::String help (info.help);
@@ -141,6 +151,26 @@ private:
 
         // Kept with ~: show the whole path on this Mac as well.
         return folder.getFullPathName() + juce::String::fromUTF8 ("  \xc2\xb7  ") + there;
+    }
+
+    void chooseAudioOutput()
+    {
+        // The outputs this Mac has now; the first entry is "not set".
+        juce::PopupMenu menu;
+        const auto now = owner.settings.get (info.key);
+        menu.addItem (1, "The Mac's default output", true, now.isEmpty());
+        const auto names = PreferencesPage::audioOutputNames ? PreferencesPage::audioOutputNames() : juce::StringArray();
+        if (! names.isEmpty()) menu.addSeparator();
+        for (int i = 0; i < names.size(); ++i)
+            menu.addItem (2 + i, names[i], true, names[i] == now);
+
+        juce::Component::SafePointer<Row> safe (this);
+        menu.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&chooseButton),
+                            [safe, names] (int chosen)
+                            {
+                                if (safe == nullptr || chosen == 0) return;
+                                safe->apply (chosen == 1 ? juce::String() : names[chosen - 2]);
+                            });
     }
 
     void chooseFolder()
