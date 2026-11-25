@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 2d. Machine: Apple M4, Mac OSX 27.2.1. Date: 25 Nov 2026 4:34:47pm.
+Maket 0.0.1, stage 2e. Machine: Apple M4, Mac OSX 27.2.1. Date: 25 Nov 2026 8:08:05pm.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`2d`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`2e`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -29,6 +29,9 @@ The settings and their defaults:
 | conTimbre ePlayer (OSC): Host | host | `127.0.0.1` | `ePlayerHost` |
 | conTimbre ePlayer (OSC): Port | port | `46001` | `ePlayerPort` |
 | Tuning: Standard pitch (Hz) | frequency | `442` | `standardPitch` |
+| Sound from Maket: Audio output | audio device | not set | `audioOutput` |
+| Sound from Maket: Synth level (dB) | level | `-18` | `synthLevel` |
+| Sound from Maket: Synth timing (ms) | milliseconds | `0` | `synthOffset` |
 | Tests: Logging patch port | port | `46002` | `logPatchPort` |
 | Tests: Test results | folder | `~/Documents/Maket/Exports/Timing` | `timingFolder` |
 
@@ -276,8 +279,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.028 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.006 ms; the latest of all: 0.020 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.027 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.008 ms; the latest of all: 0.016 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -285,8 +288,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.011 | 0.006 | 0.020 |
-| Arrived at the listener in this program | 0.068 | 0.112 | 0.275 |
+| Left Maket | -0.010 | 0.008 | 0.016 |
+| Arrived at the listener in this program | 0.069 | 0.094 | 0.377 |
 
 ### A command from a typed line (stage 1f.5)
 
@@ -341,14 +344,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.07 ms; the farthest 0.24 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.09 ms; the farthest 0.26 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.04 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.10 ms; the farthest 0.24 ms (earliest -0.10, latest +0.24).
-The note-ons alone: half within 0.04 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.10 ms; the farthest 0.24 ms (earliest -0.10, latest +0.24).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.07 ms, the farthest 0.24 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.04 ms after it.
+All messages: half within 0.02 ms of their time, 95 in 100 within 0.09 ms, 99 in 100 within 0.14 ms; the farthest 0.26 ms (earliest -0.05, latest +0.26).
+The note-ons alone: half within 0.02 ms of their time, 95 in 100 within 0.05 ms, 99 in 100 within 0.08 ms; the farthest 0.26 ms (earliest -0.05, latest +0.26).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.09 ms, the farthest 0.26 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.02 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -656,7 +659,28 @@ The roll view plays through the same mapping as the conTimbre test page, by numb
 | doodsbed from 60 s: the 4 notes that sound there enter at 60 s, the 190 later ones follow at their own times, and nothing is sent for an earlier moment | yes |
 | doodsbed, one pass of a loop from 60 s to 70 s: 133 commands, all within the loop; each of its 42 notes is ended by the loop's end | yes |
 
-## 10. Test material
+## 10. Maket's own sound: the first synth (stage 2e)
+
+A voice plays on conTimbre, on Maket's synth or not at all. The synth is one sine per note, timed on the clock of the ePlayer's commands. It is rendered into memory here and measured; how it sounds with the ePlayer is settled on the Mac.
+
+| Check | Passed |
+| --- | --- |
+| The three new settings: the audio output (not set means the Mac's default output), the synth's level (-60 to 6 dB, default -18) and the synth's timing against the ePlayer (-200 to 200 ms, default 0); a comma is read as a point, a wrong value is refused | yes |
+| Pitch: the A is 442 Hz, and 440 Hz when the standard pitch is 440; a quarter tone and an eighth tone above it, middle C, a pitch off the grid and a low C are right within 0.05 cent (furthest off: 0.000 cent) | yes |
+| A glide of two semitones over 2 s: 10.0, 100.0 and 190.0 cents above the A after 0.1, 1 and 1.9 s (10, 100, 190); with slope 0.5 the pitch is 25.0 cents up at half time (25: an eighth of the way, bach's curve) | yes |
+| Time: a note from 10 ms to 110 ms has its first sound at sample 481 of 48000 a second, exactly, and is silent 50 ms after its end (within a third of a ms), whatever the size of the blocks (blocks of 512: 481 to 7679; 64: 481 to 7679; 37: 481 to 7690; 2048: 481 to 7679) | yes |
+| The same notes in blocks of 512 and of 96 samples give the same sound (largest difference -180 dB) | yes |
+| Level: a note at full velocity peaks at -18 dB under full scale (the setting), velocity 64 at half of that; half way up the attack of 10 ms after 5 ms; a modulation curve from 0 to 127 and back to 63.5 gives half, all and three quarters of the level at its quarter, middle and three quarters | yes |
+| Twelve full notes together stay under full scale (the top is rounded off, peak 0.81); Stop ends a sounding note within its release (silent 52.6458 ms after a stop at 200 ms) | yes |
+| When a block is heard: the device's own time plus its delay where the device gives one (the Mac); otherwise counted on from block to block, even when the calls come up to 4 ms early or late (largest step off 0.14 ms), and anew after a break | yes |
+| doodsbed: its six instruments name techniques and play on conTimbre, on the same ePlayer voices as before; the Mezzo (no technique, no clef) and the voice without a name are silent (22 commands fewer than at 2d, which went to a voice the orchestra does not have) | yes |
+| With the Mezzo set to the synth, its 11 notes go to the synth; in a loop from 60 s to 70 s every synth note lies within the loop | yes |
+| The mixed example: 2 voices on conTimbre (L1a, L2a: their notes name a technique in words; the numbers on the iac voices are not one), 13 on the synth, 3 silent (the percussion clefs); the synth gets 17 notes, 8 with a glide and 14 with a modulation curve | yes |
+| `Temp/written by Maket/Synth and conTimbre by Maket.txt` is written and, read back, holds the same: a cello on conTimbre (9 notes: eight plucked, one bowed) with the synth on the same moments, then the synth alone (eighth tones, a glide, a swell, eight notes at once; 28 synth notes in all) | yes |
+| Two notes that begin together, one on conTimbre and one on the synth: the command of the first is timed 500 ms after the start of play, the synth's note at the same moment, moved by the timing setting (here 12 ms) | yes |
+| Play hands the synth its note on the clock of the commands (120 ms ahead, as for the ePlayer) and Stop silences the synth; a roll with only synth voices plays without a single note command to the ePlayer; with every voice silent, play says that nothing plays | yes |
+
+## 11. Test material
 
 The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. This section lists what the program finds there; nothing is read yet. A missing file is not a failed check at this stage.
 
@@ -772,6 +796,7 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `support materials/Bult maquette.cePlayerOrc` | 3.3 MB |
 | `support materials/cpe%.maxpat` | 9.0 KB |
 | `support materials/cpe_poly.maxpat` | 44.5 KB |
+| `support materials/doodsbed final v1c#.txt.txt` | 57.1 KB |
 | `support materials/doodsbed final v1c.txt` | 56.1 KB |
 | `support materials/doodsbed kwintet.cePlayerOrc` | 2.4 MB |
 | `support materials/mixed_roll_example_01h.txt` | 17.2 KB |
@@ -826,6 +851,7 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `written by Maket/mixed_roll_example_01h.txt` | 17.2 KB |
 | `written by Maket/screenshots/Marker detail in Inspector.png` | 63.3 KB |
 | `written by Maket/screenshots/Marker detail in roll.png` | 60.7 KB |
+| `written by Maket/Synth and conTimbre by Maket.txt` | 11.1 KB |
 
 Needed for the coming stages:
 
@@ -840,4 +866,4 @@ Needed for the coming stages:
 | 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `support materials/1c maket log.txt` |
 | 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `support materials/1c max log.txt` |
 
-All 194 checks passed.
+All 208 checks passed.
