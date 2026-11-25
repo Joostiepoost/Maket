@@ -2,7 +2,8 @@
 // their duration lines in proportional time, a time ruler, zoom and scroll.
 //
 // Stage 2a draws voices, clefs, note heads, stems, ledger lines and duration
-// lines; 2b the accidentals. Not yet: pitch breakpoints and markers (2c), the
+// lines; 2b the accidentals; 2c glides (pitch breakpoints), markers and the
+// colours of what is locked, muted or solo. Not yet: the
 // playhead (2d), the content of slots (step 5), selecting and editing
 // (step 4).
 //
@@ -20,6 +21,7 @@
 #include <vector>
 
 #include "../Model/Roll.h"
+#include "../Notation/Glides.h"
 #include "../Notation/Staves.h"
 
 class RollView : public juce::Component,
@@ -76,6 +78,8 @@ private:
         std::vector<int> ledgers;   // steps of its ledger lines
         float headLeft = 0.0f;      // the left edge of the head, staff spaces from the stem (negative: left of it)
         bool auxiliaryStem = false; // the head does not touch the stem: a branch leads to it
+        int flags = 0;              // locked, muted, solo: its own, its chord's and its voice's together
+        std::vector<maket::notation::GlidePoint> glide;     // the duration line of a note that glides; empty otherwise
         juce::juce_wchar accidental = 0;    // the sign left of the chord, 0 for none
         float accidentalLeft = 0.0f;        // the sign's left edge, staff spaces from the stem (negative: left of it)
     };
@@ -85,6 +89,7 @@ private:
         double end = 0.0;           // ms, of its longest note
         int direction = 1;          // stem: 1 up, -1 down
         int maxVelocity = 100;      // of its loudest note: the stem's
+        int flags = 0;              // the chord's and its voice's
         double stemFromUnits = 0.0, stemToUnits = 0.0;
         std::vector<NoteItem> notes;
     };
@@ -92,7 +97,14 @@ private:
     {
         maket::notation::VoicePlace place;
         juce::String name;
+        int flags = 0;
         std::vector<ChordItem> chords;
+    };
+    struct MarkerItem
+    {
+        double ms = 0.0;
+        juce::String name;          // its name, or for a tempo or time signature what it holds
+        juce::String role;          // empty for a plain marker
     };
 
     void scrollBarMoved (juce::ScrollBar*, double newRangeStart) override;
@@ -109,6 +121,7 @@ private:
     double zeroPad() const;
 
     void paintRuler (juce::Graphics&, juce::Rectangle<int> area);
+    void paintMarkers (juce::Graphics&, juce::Rectangle<int> area, bool names);
     void paintStaves (juce::Graphics&, int fromX, int toX);
     void paintNotes (juce::Graphics&, juce::Rectangle<int> area);
     void paintHeader (juce::Graphics&, juce::Rectangle<int> area);
@@ -118,7 +131,9 @@ private:
     maket::Roll roll;
     int division = 8;
     VelocityDisplay velocityMode = VelocityDisplay::greyScale;
-    juce::Colour colourOf (int velocity) const;
+    juce::Colour colourOf (int velocity, int itemFlags) const;
+    static juce::Colour flagColour (int itemFlags, juce::Colour otherwise);
+    std::vector<MarkerItem> markers;
     double startReach = 0.0;            // staff spaces the chords of the first quarter second reach left of their onset
     std::vector<VoiceItem> voices;
     double rollLength = 0.0;            // ms

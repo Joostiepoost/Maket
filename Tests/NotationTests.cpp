@@ -3,14 +3,17 @@
 // ledger lines, how the voices of a roll are stacked; the nine rolls of
 // `Temp/Roll view 2`, read and written back; and the accidentals (stage 2b):
 // the sign of each step, their places left of a chord, and a roll written
-// for the comparison with bach.roll.
+// for the comparison with bach.roll; glides and marker names (stage 2c), with
+// a second such roll.
 
 #include <JuceHeader.h>
 #include <cmath>
 
 #include "TestReport.h"
 #include "../Source/Formats/BachRoll.h"
+#include "../Source/Formats/LlllText.h"
 #include "../Source/Notation/Chords.h"
+#include "../Source/Notation/Glides.h"
 #include "../Source/Notation/Spelling.h"
 #include "../Source/Notation/Staves.h"
 
@@ -367,9 +370,220 @@ static void testAccidentals (const juce::File& temp)
     line();
 }
 
+namespace
+{
+    void addGlide (maket::Voice& voice, double onset, double cents, double duration, std::vector<maket::Breakpoint> points)
+    {
+        addChord (voice, onset, { cents }, duration);
+        maket::Breakpoint head;
+        auto& note = voice.chords.back().notes[0];
+        note.velocity = 100;
+        note.breakpoints.push_back (head);
+        for (const auto& p : points) note.breakpoints.push_back (p);
+    }
+
+    maket::Breakpoint point (double position, double cents, double slope)
+    {
+        maket::Breakpoint b;
+        b.position = position; b.cents = cents; b.slope = slope;
+        return b;
+    }
+
+    maket::Marker markerAt (double ms, const juce::String& name, const juce::String& role = "none", const juce::String& content = {})
+    {
+        maket::Marker m;
+        m.position = ms;
+        juce::StringArray words;
+        words.addTokens (name, " ", "");
+        for (const auto& w : words) m.names.items.push_back (maket::Llll::makeSymbol (w));
+        m.role = role;
+        if (content.isNotEmpty()) { m.hasContent = maket::readLlllText (content, m.content).wasOk(); }
+        return m;
+    }
+
+    /** The roll for the comparison with bach.roll at stage 2c. */
+    maket::Roll glidesRoll()
+    {
+        maket::Roll roll;
+        roll.header.push_back (headerOf ("clefs", { "G", "G", "F", "F", "G" }));
+        roll.header.push_back (headerOf ("voicenames", { "glides", "flags", "muted voice", "locked voice", "velocities" }));
+        roll.header.push_back (headerOf ("midichannels", { "1", "2", "3", "4", "5" }));
+        roll.voices.resize (5);
+
+        // 1: glides.
+        auto& glides = roll.voices[0];
+        addGlide (glides, 0.0,     6000.0, 2500.0, { point (1.0, 700.0, 0.0) });                                  // straight up a fifth
+        addGlide (glides, 3000.0,  6700.0, 2500.0, { point (1.0, -700.0, 0.5) });                                 // down, late
+        addGlide (glides, 6000.0,  6700.0, 2500.0, { point (1.0, -700.0, -0.5) });                                // down, early
+        addGlide (glides, 9000.0,  6400.0, 2500.0, { point (0.25, 300.0, 0.0), point (0.5, -200.0, -0.5),
+                                                     point (0.75, 100.0, 0.5), point (1.0, 0.0, 0.0) });         // three points on the way
+        addGlide (glides, 12000.0, 6100.0, 2500.0, { point (1.0, 200.0, -0.6) });                                 // from C sharp up a tone
+        addGlide (glides, 15000.0, 6900.0, 2500.0, { point (0.5, 0.0, 0.0), point (1.0, 400.0, 0.0) });           // held, then up
+        addChord (glides, 18000.0, { 6000.0, 6400.0, 6700.0 }, 2500.0);                                           // a chord, only its top note glides
+        glides.chords.back().notes[2].breakpoints = { maket::Breakpoint(), point (1.0, 500.0, 0.0) };
+
+        // 2: single notes and a chord that are locked, muted or solo.
+        auto& flags = roll.voices[1];
+        const int noteFlags[] = { 0, maket::flagLocked, maket::flagMuted, maket::flagSolo, maket::flagLocked | maket::flagMuted,
+                                  maket::flagMuted | maket::flagSolo, maket::flagLocked | maket::flagMuted | maket::flagSolo };
+        for (size_t i = 0; i < std::size (noteFlags); ++i)
+        {
+            addChord (flags, 2000.0 * (double) i, { 6700.0 }, 1500.0);
+            flags.chords.back().notes[0].flags = noteFlags[i];
+        }
+        addChord (flags, 14000.0, { 6400.0, 6700.0, 7100.0 }, 1500.0);          // a muted chord
+        flags.chords.back().flags = maket::flagMuted;
+        addChord (flags, 16000.0, { 6400.0, 6700.0, 7100.0 }, 1500.0);          // a chord with one locked note
+        flags.chords.back().notes[1].flags = maket::flagLocked;
+        addChord (flags, 18000.0, { 6400.0, 6700.0, 7100.0 }, 1500.0);          // a solo chord
+        flags.chords.back().flags = maket::flagSolo;
+
+        // 3 and 4: a muted voice, a locked voice.
+        for (int v : { 2, 3 })
+        {
+            for (int i = 0; i < 7; ++i)
+                addChord (roll.voices[(size_t) v], 3000.0 * i, { 4800.0 + 200.0 * (i % 4) }, 2400.0);
+            roll.voices[(size_t) v].flags = v == 2 ? maket::flagMuted : maket::flagLocked;
+        }
+
+        // 5: velocities from 1 to 127.
+        const int velocities[] = { 1, 18, 36, 54, 72, 90, 108, 127 };
+        for (size_t i = 0; i < std::size (velocities); ++i)
+        {
+            addChord (roll.voices[4], 2500.0 * (double) i, { 6000.0 + 100.0 * (double) i, 6700.0 + 100.0 * (double) i }, 2000.0);
+            for (auto& n : roll.voices[4].chords.back().notes) n.velocity = velocities[i];
+        }
+
+        roll.markers.push_back (markerAt (1000.0, "first"));
+        roll.markers.push_back (markerAt (1400.0, "second close by"));
+        roll.markers.push_back (markerAt (1800.0, "third"));
+        roll.markers.push_back (markerAt (4500.0, "fourth"));
+        roll.markers.push_back (markerAt (9000.0, "section B"));
+        roll.markers.push_back (markerAt (12000.0, "bar", "barline"));
+        roll.markers.push_back (markerAt (15000.0, "metre", "timesig", "3 4"));
+        roll.markers.push_back (markerAt (18000.0, "end"));
+        return roll;
+    }
+}
+
+/** Stage 2c: glides, markers. */
+static void testGlidesAndMarkers (const juce::File& temp)
+{
+    line ("### Glides and markers (stage 2c)");
+    line();
+    line ("The line of a note whose pitch moves, and the lines marker names are written on, by bach's rules. The look of it, "
+          "and of what is locked, muted or solo, is judged by eye with the roll this test writes.");
+    line();
+    line ("| Check | Passed |");
+    line ("| --- | --- |");
+
+    checkRow (near (slopeCurve (0.5, 0.0), 0.5) && near (slopeCurve (0.5, 0.5), 0.125) && near (slopeCurve (0.5, -0.5), 0.875)
+              && near (slopeCurve (0.0, 0.5), 0.0) && near (slopeCurve (1.0, 0.5), 1.0) && near (slopeCurve (0.0, -0.5), 0.0) && near (slopeCurve (1.0, -0.5), 1.0)
+              && near (slopeCurve (0.3, 1.0), 0.0) && near (slopeCurve (0.3, -1.0), 1.0),
+              "bach's curve: slope 0 is a straight line; with slope 0.5 the line is an eighth of the way at half time, with -0.5 seven eighths; both begin and end where they should");
+
+    {
+        struct Height { double cents, steps; };
+        const Height heights[] = { { 6000, 0 }, { 6100, 0.5 }, { 6200, 1 }, { 6400, 2 }, { 6450, 2.5 }, { 6500, 3 }, { 6600, 3.5 }, { 7100, 6 },
+                                   { 7150, 6.5 }, { 7200, 7 }, { 5900, -1 }, { 4800, -7 }, { 6025, 0.125 } };
+        bool ok = true;
+        for (const auto& h : heights) ok = ok && near (continuousSteps (h.cents), h.steps);
+        checkRow (ok, "The height of a pitch between the notes: C sharp half a step above C, a quarter tone above E half way to F, across octaves");
+    }
+
+    {
+        const auto points = glidePoints ({ 0, 4 }, { maket::Breakpoint(), point (0.5, 200.0, 0.0), point (1.0, -100.0, 0.5) });      // from C sharp
+        const bool shape = points.size() == 3 && near (points[0].steps, 0.0) && near (points[1].steps, 1.0) && near (points[2].steps, -1.0)
+                           && near (points[2].position, 1.0);
+        const bool between = near (glideStepsAt (points, 0.25), 0.5) && near (glideStepsAt (points, 0.75), 0.75) && near (glideStepsAt (points, 1.0), -1.0);
+        checkRow (shape && between && glidePoints ({ 0, 0 }, {}).empty() && glidePoints ({ 0, 0 }, { maket::Breakpoint() }).empty(),
+                  "A glide begins at the head and goes through its points: from a C sharp, +200 cents lies on D and -100 on B, as in bach; "
+                  "half way along a curved piece the height follows the curve; a note without points has no glide");
+    }
+
+    {
+        const auto lines = markerNameLines ({ 0, 50, 100, 300 }, { 80, 80, 80, 50 }, 6);
+        const auto apart = markerNameLines ({ 0, 100, 200 }, { 80, 80, 80 }, 6);
+        const auto stairs = markerNameLines ({ 0, 10, 20 }, { 80, 80, 80 }, 6);
+        checkRow (lines == std::vector<int> ({ 0, 1, 0, 0 }) && apart == std::vector<int> ({ 0, 0, 0 }) && stairs == std::vector<int> ({ 0, 1, 2 }),
+                  "Marker names: a name that would run into the one before goes a line lower, and back to the first line when there is room again");
+    }
+
+    // The rolls of Temp/Roll view 2: every glide is whole.
+    {
+        const auto folder = temp.getChildFile ("Roll view 2").getChildFile ("roll txt");
+        auto files = folder.findChildFiles (juce::File::findFiles, false, "*.txt");
+        if (! files.isEmpty())
+        {
+            int glides = 0, markers = 0, flagged = 0, broken = 0;
+            for (const auto& file : files)
+            {
+                maket::Roll roll;
+                juce::StringArray remarks;
+                if (! maket::readBachRollFile (file, roll, remarks).wasOk()) { ++broken; continue; }
+                markers += (int) roll.markers.size();
+                for (const auto& voice : roll.voices)
+                    for (const auto& chord : voice.chords)
+                        for (const auto& note : chord.notes)
+                        {
+                            if ((note.flags | chord.flags | voice.flags) != 0) ++flagged;
+                            const auto points = glidePoints (spellAs (note.pitchName, note.cents, 8), note.breakpoints);
+                            if (points.empty()) continue;
+                            ++glides;
+                            bool ok = near (points.front().position, 0.0) && near (points.back().position, 1.0);
+                            for (size_t i = 1; ok && i < points.size(); ++i)
+                                ok = points[i].position >= points[i - 1].position && std::isfinite (points[i].steps);
+                            if (! ok) ++broken;
+                        }
+            }
+            checkRow (broken == 0, "In the " + juce::String (files.size()) + " rolls of `Temp/Roll view 2`: " + juce::String (glides) + " notes glide, each line whole from head to tail; "
+                                   + juce::String (markers) + " markers; " + juce::String (flagged) + " notes locked, muted or solo (themselves, their chord or their voice)");
+        }
+    }
+
+    // The roll for bach.roll.
+    const auto testRoll = glidesRoll();
+    {
+        const auto folder = temp.getChildFile ("written by Maket");
+        const auto file = folder.getChildFile ("Glides and markers by Maket.txt");
+        const bool written = temp.isDirectory() && folder.createDirectory().wasOk() && maket::writeBachRollFile (file, testRoll).wasOk();
+
+        maket::Roll back;
+        juce::StringArray remarks;
+        bool same = written && maket::readBachRollFile (file, back, remarks).wasOk() && back.voices.size() == testRoll.voices.size()
+                    && back.numNotes() == testRoll.numNotes() && back.markers.size() == testRoll.markers.size()
+                    && maket::writeBachRollText (back) == maket::writeBachRollText (testRoll);
+        int glides = 0, flagged = 0;
+        if (same)
+            for (size_t v = 0; v < back.voices.size(); ++v)
+                for (const auto& chord : back.voices[v].chords)
+                    for (const auto& note : chord.notes)
+                    {
+                        if (! note.breakpoints.empty()) ++glides;
+                        if ((note.flags | chord.flags | back.voices[v].flags) != 0) ++flagged;
+                    }
+        checkRow (same && glides == 7 && flagged == 27 && back.markers[6].role == "timesig" && back.markers[6].hasContent,
+                  "`Temp/written by Maket/Glides and markers by Maket.txt` is written (5 voices, " + juce::String (testRoll.numNotes()) + " notes, 7 of them gliding, "
+                  + juce::String (flagged) + " locked, muted or solo; " + juce::String ((int) testRoll.markers.size()) + " markers) and, read back, holds the same");
+    }
+    line();
+    line ("The roll `Glides and markers by Maket.txt`, for bach.roll beside Maket (the README tells what to look at):");
+    line();
+    line ("| Voice | Clef | What it holds |");
+    line ("| --- | --- | --- |");
+    line ("| glides | G | 7 notes, one every 3 s: up a fifth in a straight line; down a fifth with slope 0.5, then with -0.5; three points on the way; "
+          "from C sharp up a tone (slope -0.6); held, then up; a chord whose top note alone glides |");
+    line ("| flags | G | one G every 2 s: plain, locked, muted, solo, locked and muted, muted and solo, all three; then a muted chord, a chord with one locked note, a solo chord |");
+    line ("| muted voice | F | 7 notes in a voice that is muted |");
+    line ("| locked voice | F | the same notes in a voice that is locked |");
+    line ("| velocities | G | 8 chords of two notes with velocities 1, 18, 36, 54, 72, 90, 108 and 127 |");
+    line ("| markers | | first (1 s), second close by (1.4 s), third (1.8 s), fourth (4.5 s), section B (9 s), a bar line (12 s), a time signature 3 4 (15 s), end (18 s) |");
+    line();
+}
+
 void testNotation (const juce::File& temp)
 {
-    line ("## 8. Notation: where notes sit on the staves (stages 2a and 2b)");
+    line ("## 8. Notation: where notes sit on the staves (stages 2a to 2c)");
     line();
     line ("The roll view draws a note with the note name bach gives it, on the staves bach gives the voice. These checks are on "
           "that reckoning, which has no interface code; what the view draws from it is judged by eye against bach.roll.");
@@ -585,4 +799,5 @@ void testNotation (const juce::File& temp)
     line();
 
     testAccidentals (temp);
+    testGlidesAndMarkers (temp);
 }

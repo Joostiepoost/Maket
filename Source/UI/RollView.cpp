@@ -4,6 +4,7 @@
 #include "MusicFont.h"
 #include "Theme.h"
 #include "../Notation/Chords.h"
+#include "../Notation/Glides.h"
 #include "../Notation/Spelling.h"
 
 #include <algorithm>
@@ -133,17 +134,30 @@ void RollView::setVelocityDisplay (VelocityDisplay newMode)
     repaint();
 }
 
-juce::Colour RollView::colourOf (int velocity) const
+juce::Colour RollView::flagColour (int itemFlags, juce::Colour otherwise)
+{
+    // bach's colours for what is locked, muted or solo; together, their mean.
+    float r = 0.0f, g = 0.0f, b = 0.0f;
+    int count = 0;
+    if (itemFlags & maket::flagLocked)  { r += 0.83f; g += 0.04f; b += 0.04f; ++count; }
+    if (itemFlags & maket::flagMuted)   { r += 0.29f; g += 0.29f; b += 0.72f; ++count; }
+    if (itemFlags & maket::flagSolo)    { r += 0.61f; g += 0.61f; b += 0.21f; ++count; }
+    if (count == 0) return otherwise;
+    return juce::Colour::fromFloatRGBA (r / (float) count, g / (float) count, b / (float) count, 1.0f);
+}
+
+juce::Colour RollView::colourOf (int velocity, int itemFlags) const
 {
     // bach counts from velocity 1 to 127.
     const float loud = (float) juce::jlimit (0, 126, velocity - 1) / 126.0f;
+    const auto base = flagColour (itemFlags, ink);
     switch (velocityMode)
     {
         case VelocityDisplay::spectrum:     return juce::Colour::fromHSL ((240.0f / 360.0f) * (1.0f - loud), 0.85f, 0.42f, 1.0f);
-        case VelocityDisplay::alpha:        return ink.withAlpha (0.3f + 0.7f * loud);
+        case VelocityDisplay::alpha:        return base.withAlpha (0.3f + 0.7f * loud);
         case VelocityDisplay::greyScale:    break;
     }
-    return ink.interpolatedWith (juce::Colours::white, 0.8f * (1.0f - loud));
+    return base.interpolatedWith (juce::Colours::white, 0.8f * (1.0f - loud));
 }
 
 void RollView::rebuild()
@@ -164,6 +178,7 @@ void RollView::rebuild()
         item.place = place;
         const auto& voice = roll.voices[(size_t) place.voice];
         item.name = voice.name;
+        item.flags = voice.flags;
         if (! place.hidden && place.ownsStaves)
             nameWidth = juce::jmax (nameWidth, juce::GlyphArrangement::getStringWidth (nameFont, item.name));
 
@@ -173,6 +188,7 @@ void RollView::rebuild()
 
             ChordItem c;
             c.onset = chord.onset;
+            c.flags = chord.flags | voice.flags;
             int lowest = 1 << 20, highest = -(1 << 20);
             double sum = 0.0;
 
@@ -192,6 +208,8 @@ void RollView::rebuild()
                 n.units = place.offset + place.clef.unitsOf (n.step);
                 n.end = chord.onset + note.duration;
                 n.velocity = note.velocity;
+                n.flags = note.flags | c.flags;
+                n.glide = glidePoints (spelling, note.breakpoints);
                 n.ledgers = ledgerSteps (place.clef, n.step);
                 c.end = juce::jmax (c.end, n.end);
                 c.maxVelocity = juce::jmax (c.maxVelocity, note.velocity);
@@ -248,6 +266,26 @@ void RollView::rebuild()
         }
         voices.push_back (std::move (item));
     }
+
+    markers.clear();
+    for (const auto& m : roll.markers)
+    {
+        MarkerItem item;
+        item.ms = m.position;
+        item.role = m.role == "none" ? juce::String() : m.role;
+        // bach writes the name of a plain marker; for a tempo or a time signature what it holds; for other roles nothing.
+        if (item.role.isEmpty())
+            item.name = m.nameAsText();
+        else if ((item.role == "tempo" || item.role == "timesig") && m.hasContent)
+        {
+            juce::StringArray words;
+            if (m.content.isList()) for (const auto& w : m.content.items) words.add (w.toLine());
+            else                    words.add (m.content.toLine());
+            item.name = words.joinIntoString (" ");
+        }
+        markers.push_back (std::move (item));
+    }
+    std::stable_sort (markers.begin(), markers.end(), [] (const MarkerItem& a, const MarkerItem& b) { return a.ms < b.ms; });
 }
 
 // --- Geometry ---------------------------------------------------------------------
@@ -413,7 +451,9 @@ void RollView::paint (juce::Graphics& g)
             }
 
             paintStaves (g, area.getX(), area.getRight());
+            paintMarkers (g, area, false);
             paintNotes (g, area);
+            paintMarkers (g, area, true);
         }
         paintHeader (g, { 0, rulerHeight, headerWidth(), area.getHeight() });
         paintRuler (g, { 0, 0, getWidth() - barThickness, rulerHeight });
@@ -428,11 +468,11 @@ void RollView::paintStaves (juce::Graphics& g, int fromX, int toX)
 {
     const float thickness = juce::jmax (1.0f, 0.11f * spacePixels());
     const auto clip = g.getClipBounds();
-    g.setColour (staffLine);
 
     for (const auto& v : voices)
     {
         if (v.place.hidden || ! v.place.ownsStaves) continue;
+        g.setColour (flagColour (v.flags, staffLine));
         for (const auto& staff : v.place.clef.staves)
             for (int k = 0; k < 5; ++k)
             {
@@ -448,8 +488,9 @@ void RollView::paintNotes (juce::Graphics& g, juce::Rectangle<int> area)
     auto& font = MusicFont::get();
     const float space = spacePixels();
     const float headWidth = font.noteheadWidth() * space;
-    const float lineThickness = juce::jmax (1.5f, 0.36f * space);
+    const float lineThickness = juce::jmax (1.5f, space / 3.0f);       // bach: 2 of its units; a staff space is 6
     const float thin = juce::jmax (1.0f, 0.12f * space);
+    const float tailWidth = juce::jmax (1.0f, space / 3.0f), tailHalf = space / 3.0f;       // bach: 2 units wide, 2 up and down
     const float ledgerThickness = juce::jmax (1.0f, 0.14f * space);
 
     const double fromMs = timeAt (area.getX() - 3.0 * space), toMs = timeAt (area.getRight() + 3.0 * space);
@@ -468,7 +509,7 @@ void RollView::paintNotes (juce::Graphics& g, juce::Rectangle<int> area)
             const float topY = (float) yOf (c.direction == 1 ? c.stemToUnits + 7.0 * stepUnits : c.stemFromUnits);         // the highest note
             const float bottomY = (float) yOf (c.direction == 1 ? c.stemFromUnits : c.stemToUnits - 7.0 * stepUnits);      // the lowest note
             const float stemLength = 3.5f * space;
-            const auto stemColour = colourOf (c.maxVelocity);
+            const auto stemColour = colourOf (c.maxVelocity, c.flags);
 
             for (const auto& n : c.notes)
             {
@@ -485,14 +526,56 @@ void RollView::paintNotes (juce::Graphics& g, juce::Rectangle<int> area)
                     g.fillRect (juce::Rectangle<float> (headLeft - 0.38f * space, ly - ledgerThickness * 0.5f, headWidth + 0.76f * space, ledgerThickness));
                 }
 
-                // The duration line and its tail.
-                const auto colour = colourOf (n.velocity);
+                // The duration line and its tail: from the right edge of the head to the note's end.
+                const auto colour = colourOf (n.velocity, n.flags);
+                const float startX = headLeft + headWidth - 0.08f * space;
                 const float endX = (float) xOf (n.end);
                 g.setColour (colour);
-                if (endX > headCentre)
+                if (n.glide.empty())
                 {
-                    g.fillRect (juce::Rectangle<float> (headCentre, y - lineThickness * 0.5f, endX - headCentre, lineThickness));
-                    g.fillRect (juce::Rectangle<float> (endX - thin * 0.5f, y - 0.5f * space, thin, space));
+                    if (endX > startX)
+                    {
+                        g.fillRect (juce::Rectangle<float> (startX, y - lineThickness * 0.5f, endX - startX, lineThickness));
+                        g.fillRect (juce::Rectangle<float> (endX - tailWidth * 0.5f, y - tailHalf, tailWidth, 2.0f * tailHalf));
+                    }
+                }
+                else
+                {
+                    // A glide: from point to point along bach's curve, a diamond at each point between head and tail.
+                    const double onsetX = xOf (c.onset), length = (double) endX - onsetX;
+                    auto pointX = [&] (const GlidePoint& p)   { return p.position <= 0.0 ? startX : (float) (onsetX + p.position * length); };
+                    auto pointY = [&] (double steps)          { return (float) yOf (v.place.offset + v.place.clef.unitsOf (steps)); };
+
+                    juce::Path line;
+                    line.startNewSubPath (startX, y);
+                    for (size_t i = 1; i < n.glide.size(); ++i)
+                    {
+                        const auto& a = n.glide[i - 1];
+                        const auto& b = n.glide[i];
+                        const float x1 = pointX (a), x2 = pointX (b);
+                        const float y1 = i == 1 ? y : pointY (a.steps), y2 = pointY (b.steps);
+                        const int pieces = std::abs (b.slope) < 1.0e-9 || std::abs (y1 - y2) < 0.01f ? 1 : juce::jlimit (4, 200, (int) ((x2 - x1) / 3.0f));
+                        for (int k = 1; k <= pieces; ++k)
+                        {
+                            const double t = (double) k / pieces;
+                            line.lineTo (x1 + (x2 - x1) * (float) t, y1 + (y2 - y1) * (float) slopeCurve (t, b.slope));
+                        }
+                    }
+                    g.strokePath (line, juce::PathStrokeType (lineThickness, juce::PathStrokeType::curved, juce::PathStrokeType::butt));
+
+                    for (size_t i = 1; i + 1 < n.glide.size(); ++i)
+                    {
+                        const float px = pointX (n.glide[i]), py = pointY (n.glide[i].steps);
+                        juce::Path diamond;
+                        diamond.addQuadrilateral (px - 0.3f * space, py, px, py - 0.5f * space, px + 0.3f * space, py, px, py + 0.5f * space);
+                        g.setColour (colour);
+                        g.fillPath (diamond);
+                        g.setColour (paper);
+                        g.strokePath (diamond, juce::PathStrokeType (0.9f));
+                    }
+                    g.setColour (colour);
+                    const float tailY = pointY (n.glide.back().steps);
+                    g.fillRect (juce::Rectangle<float> (endX - tailWidth * 0.5f, tailY - tailHalf, tailWidth, 2.0f * tailHalf));
                 }
 
                 // A head away from the stem: bach's branch, from the stem to above (or under) the head.
@@ -531,6 +614,94 @@ void RollView::paintNotes (juce::Graphics& g, juce::Rectangle<int> area)
     }
 }
 
+void RollView::paintMarkers (juce::Graphics& g, juce::Rectangle<int> area, bool names)
+{
+    if (markers.empty()) return;
+
+    // bach's marker: a green line over the whole height, its name in bold beside the top of it. A marker with a
+    // role (bar line, time signature, tempo ...) is dashed in that role's colour, with the role written along it.
+    const juce::Colour green = juce::Colour::fromFloatRGBA (0.24f, 0.70f, 0.19f, 0.9f);
+    auto roleColour = [] (const juce::String& role)
+    {
+        if (role == "tempo")    return juce::Colour::fromFloatRGBA (0.6f, 0.2f, 0.2f, 1.0f);
+        if (role == "timesig")  return juce::Colour::fromFloatRGBA (0.2f, 0.2f, 0.6f, 1.0f);
+        if (role == "barline")  return juce::Colour::fromFloatRGBA (0.2f, 0.6f, 0.6f, 1.0f);
+        if (role == "division") return juce::Colour::fromFloatRGBA (0.6f, 0.6f, 0.2f, 1.0f);
+        return juce::Colour::fromFloatRGBA (0.6f, 0.2f, 0.6f, 1.0f);
+    };
+    auto roleWord = [] (const juce::String& role)
+    {
+        if (role == "tempo")    return juce::String ("TEMPO");
+        if (role == "timesig")  return juce::String ("TIME SIG");
+        if (role == "barline")  return juce::String ("BARLINE");
+        if (role == "division") return juce::String ("DIVISION");
+        return role.toUpperCase();
+    };
+
+    const float space = spacePixels();
+    const float top = (float) area.getY(), bottom = (float) area.getBottom();
+    const auto nameFont = Theme::font (juce::jlimit (10.0f, 18.0f, 1.5f * space)).boldened();        // bach: 9 units, bold
+
+    if (! names)
+    {
+        for (const auto& m : markers)
+        {
+            const float x = (float) xOf (m.ms);
+            if (x < (float) area.getX() - 2.0f || x > (float) area.getRight() + 2.0f) continue;
+            g.setColour (green);
+            g.fillRect (juce::Rectangle<float> (x - 0.75f, top, 1.5f, bottom - top));
+            if (m.role.isNotEmpty())
+            {
+                g.setColour (roleColour (m.role));
+                const float dash[2] = { 0.5f * space, 0.5f * space };
+                g.drawDashedLine (juce::Line<float> (x, top, x, bottom), dash, 2, 1.5f);
+            }
+        }
+        return;
+    }
+
+    // The names: bach's "smart" placing over all markers, so that a name keeps its line while the roll scrolls.
+    std::vector<double> xs, widths;
+    for (const auto& m : markers)
+    {
+        xs.push_back (xOf (m.ms));
+        widths.push_back (m.name.isEmpty() ? 0.0 : (double) juce::GlyphArrangement::getStringWidth (nameFont, m.name) + 0.5 * space);
+    }
+    const auto lines = markerNameLines (xs, widths, space);
+    const float lineHeight = nameFont.getHeight();
+
+    for (size_t i = 0; i < markers.size(); ++i)
+    {
+        const auto& m = markers[i];
+        const float x = (float) xs[i];
+        if (x + (float) widths[i] < (float) area.getX() || x > (float) area.getRight()) continue;
+
+        if (m.role.isNotEmpty())
+        {
+            // The role, as bach writes it: small capitals one under the other, left of the line (a tempo at its foot).
+            const auto small = Theme::font (juce::jlimit (8.0f, 13.0f, space)).boldened();
+            const auto word = roleWord (m.role);
+            const float letter = small.getHeight() * 0.86f;
+            const float wordTop = m.role == "tempo" ? bottom - 0.5f * space - letter * (float) word.length() : top + 0.5f * space;
+            g.setColour (roleColour (m.role));
+            g.setFont (small);
+            for (int k = 0; k < word.length(); ++k)
+                g.drawText (word.substring (k, k + 1), juce::Rectangle<float> (x - 1.7f * space, wordTop + letter * (float) k, 1.7f * space, letter),
+                            juce::Justification::centred, false);
+        }
+
+        if (m.name.isNotEmpty())
+        {
+            const juce::Rectangle<float> box (x + 0.5f * space, top + 2.0f + (float) lines[i] * lineHeight, (float) widths[i], lineHeight);
+            g.setColour (paper.withAlpha (0.8f));
+            g.fillRect (box.withTrimmedRight (0.4f * space));
+            g.setColour (green.withAlpha (1.0f).darker (0.25f));
+            g.setFont (nameFont);
+            g.drawText (m.name, box, juce::Justification::centredLeft, false);
+        }
+    }
+}
+
 void RollView::paintHeader (juce::Graphics& g, juce::Rectangle<int> area)
 {
     juce::Graphics::ScopedSaveState state (g);
@@ -554,12 +725,13 @@ void RollView::paintHeader (juce::Graphics& g, juce::Rectangle<int> area)
         if (bottomY < (float) (area.getY() - 40) || topY > (float) (area.getBottom() + 40)) continue;
 
         // The left end of the staves, and the name beside them.
-        g.setColour (staffLine);
+        g.setColour (flagColour (v.flags, staffLine));
         g.fillRect (juce::Rectangle<float> ((float) staffStart, topY, juce::jmax (1.0f, 0.11f * space), bottomY - topY));
         g.setColour (ink);
         g.drawText (v.name, juce::Rectangle<float> (8.0f, (topY + bottomY) * 0.5f - 10.0f, (float) staffStart - 12.0f, 20.0f),
                     juce::Justification::centredLeft, false);
 
+        g.setColour (flagColour (v.flags, ink));
         for (const auto& staff : v.place.clef.staves)
             if (const auto sign = clefSign (staff))
                 font.draw (g, sign, (float) staffStart + 0.7f * space,

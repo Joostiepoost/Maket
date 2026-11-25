@@ -63,8 +63,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1f.8 | Tuning: the standard pitch as a setting, sent to the ePlayer (`kammerton`) at the start of every play; a tuning check of 48 seconds | done; run by Joost on 24 Nov: the A lands on the frequency sent, within a third of a cent |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | in parts |
 | 2a | A roll opens in *Library and edition*: staves and clefs per voice, notes with stems and duration lines in proportional time, a time ruler, zoom and scroll; on paper, as bach.roll. No accidentals yet | done; tested by Joost on 25 Nov. 2a.1: the direction of a stem by bach's own rule |
-| 2b | Accidentals: bach's sign for every step of the eighth-tone grid, placed left of the chord by bach's method; the semitone grid as the other choice; a note the file gives by name keeps its letter | built 25 Nov; to be tested by Joost |
-| 2c | Pitch breakpoints, markers, how muted and locked things look | |
+| 2b | Accidentals: bach's sign for every step of the eighth-tone grid, placed left of the chord by bach's method; the semitone grid as the other choice; a note the file gives by name keeps its letter | done; tested by Joost on 25 Nov. 2b.1: clusters as bach's small tree; velocity shown in grey, colour or alpha |
+| 2c | Glides (pitch breakpoints) along the duration line, markers with their names and roles, the colours of what is locked, muted or solo | built 25 Nov; to be tested by Joost |
 | 2d | Transport on conTimbre: playhead, play, stop, loop | |
 | 2e | The first synth, the audio output, a choice of engine per voice | |
 | 2f | The closing test of step 2 | |
@@ -661,6 +661,37 @@ Joost: all checks passed on his Mac; the rolls look as expected and as in ScAst.
 4. Open a few of your own rolls in both. Anything that looks wrong or unlike bach.roll in a way that bothers you: size or weight of the signs, their distance to the heads, the heavier arrowheads. A screenshot with a remark is the quickest.
 5. Push `Measurements/report.md`.
 
+### After the test of 2b (25 Nov)
+
+Joost: all checks passed on his Mac; the test roll looks the same in ScAst and in Maket but for the clusters (voice 2 at 21 s, voice 4 at 6 and 12 s), which bach.roll draws as a small tree. He asked for that, and for other ways to show velocity. **2b.1** does both:
+
+- **Clusters.** The heads of a chord are now placed by bach's own method, read in its source. Notes at one height (C and C sharp) sit beside each other; a third and further note at that height goes further out and gets a small branch from the stem (bach calls these auxiliary stems). With the stem down, the lower of two neighbours is the left one, as in bach.
+- **The onset is the middle of the head**, not the stem: bach.roll's own alignment ("Notehead Center" in your inspector). Notes stand half a head further left (stem up) or right (stem down) than in 2b.
+- **Velocity** has a menu in the bar: *grey* (bach's colour scale, as ScAst: soft is light), *colour* (blue is soft, through green and yellow to red for loud) or *alpha* (bach's: soft is see-through). bach's own colour spectrum runs the other way round (red is soft, through green and blue to magenta) and is paler; say so if you would rather have that one. The choice is not kept between runs yet.
+- The duration line now has bach's thickness (a third of a staff space) and starts at the right edge of the head; the tail is bach's short block.
+
+From your inspector screenshots (`Temp/Roll view 2/inspector`): tone division 8, accidentals "Classically", stems "Main And Auxiliary", velocity "Colorscale", chords aligned at the notehead centre, duration line width 2, breakpoint size 3, markers with smart name placing, and bach's default colours for locked, muted, solo and markers. Maket follows these.
+
+## Using stage 2c
+
+- **Glides.** A note with pitch breakpoints draws its duration line through them: from point to point along bach's curve (the slope of each piece), a small diamond at each point between head and tail, the tail at the height where the note ends. Heights are bach's: the line starts at the head, and a point lies where its pitch lies between the white keys.
+- **Markers.** A green line over the whole height and the name in bold at the top; names that would run into each other go a line lower (bach's smart placing). A marker with a role is dashed in the role's colour with the role written beside it in small capitals, one letter under the other (BARLINE, TIME SIG, TEMPO, DIVISION ...); a time signature or tempo shows what it holds (3 4) where a plain marker shows its name.
+- **Locked, muted, solo.** Notes take bach's colours: red for locked, blue for muted, olive for solo, the mean of them when several hold. A note counts as locked (muted, solo) when it is so itself or its chord or its voice is. A voice that is locked, muted or solo also has its staff lines and clefs in that colour. Velocity still shows on top (a soft muted note is pale blue).
+- Not yet: glides drawn with small note heads (bach's "breakpoints have noteheads"; yours is off), velocities of breakpoints, selecting anything (step 4), and all that comes from the slots: techniques, dynamics, the curves (step 5).
+
+### Testing stage 2c
+
+1. `git pull`, then `./build.sh`: `stage 2c`. `./build.sh tests` ends with `All 183 checks passed.` and writes two rolls into `Temp/written by Maket`.
+2. Open **`Accidentals by Maket.txt`** again in Maket: the three clusters you marked (voice 2 at 21 s, voice 4 at 6 and 12 s) should now be small trees as in ScAst.
+3. Open **`Glides and markers by Maket.txt`** in ScAst's bach.roll and in Maket, side by side:
+   - **glides**: seven notes. The same lines? Straight up a fifth; down a fifth, once bending late and once early; a line through three diamonds; from C sharp up a tone; held, then up; a chord whose top note alone glides.
+   - **flags**: a G every two seconds: plain, locked, muted, solo, locked and muted, muted and solo, all three; then a muted chord, a chord with one locked note, a solo chord. The same colours?
+   - **muted voice**, **locked voice**: staff, clef and notes in blue and in red.
+   - **velocities**: eight chords from velocity 1 to 127. Try the three displays in Maket's menu.
+   - **markers**: `first`, `second close by` (a line lower), `third`, `fourth`, `section B`, a bar line, a time signature showing 3 4, `end`.
+4. Open Doodsbed (57 notes with glides, 35 bar lines and time signatures) and one or two other rolls in both.
+5. Push `Measurements/report.md`; screenshots with remarks for whatever differs.
+
 ## The repository
 
 ```
@@ -674,7 +705,7 @@ Source/             the application
   Model/              no interface code: the settings; the name, version and build stage; bach's list type; the roll
   Formats/            no interface code: reading and writing files (bach's text, bach.roll)
   Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test
-  Notation/           no interface code: which note and accidental a pitch is drawn as, the staves of each clef, how voices are stacked, the heads and accidentals of a chord
+  Notation/           no interface code: which note and accidental a pitch is drawn as, the staves of each clef, how voices are stacked, the heads and accidentals of a chord, glides, the lines of marker names
 Resources/Fonts/    the Bravura music font (Steinberg, SIL Open Font License), built into the app
 Max/                patches for Max that belong to Maket (the OSC logging patch, the bach.roll reference)
 Tests/              the console test program
@@ -689,6 +720,6 @@ Temp/               Joost's test material, test saves, crash reports and screen 
 
 Maket is published under the GNU Affero General Public License, version 3 (see `LICENSE.md`), the licence under which JUCE is used here.
 
-The music signs are drawn with the Bravura font by Steinberg, which is built into the app under the SIL Open Font License (`Resources/Fonts/Bravura OFL.txt`). How notes are spelled, staves laid out and accidentals placed follows the source of bach (GPL, version 3), read as a reference.
+The music signs are drawn with the Bravura font by Steinberg, which is built into the app under the SIL Open Font License (`Resources/Fonts/Bravura OFL.txt`). How notes are spelled, staves laid out, heads and accidentals placed and glides drawn follows the source of bach (GPL, version 3), read as a reference.
 
 Nothing of conTimbre is in this repository or in the app. Each user needs their own conTimbre and points Maket at it.
