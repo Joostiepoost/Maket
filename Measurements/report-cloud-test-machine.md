@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 2a. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 24 Nov 2026 6:37:46pm.
+Maket 0.0.1, stage 2a.1. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 25 Nov 2026 11:31:14am.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`2a`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`2a.1`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -277,7 +277,7 @@ A listener inside the test program takes the place of Max. This shows that the m
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
 | None leaves before its time (the earliest: -0.027 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.007 ms; the latest of all: 0.014 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.005 ms; the latest of all: 0.018 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -285,8 +285,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.009 | 0.007 | 0.014 |
-| Arrived at the listener in this program | 0.067 | 0.123 | 0.619 |
+| Left Maket | -0.012 | 0.005 | 0.018 |
+| Arrived at the listener in this program | 0.078 | 0.152 | 0.808 |
 
 ### A command from a typed line (stage 1f.5)
 
@@ -341,14 +341,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.07 ms; the farthest 1.60 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.09 ms; the farthest 21.86 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.02 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.19 ms; the farthest 1.60 ms (earliest -0.07, latest +1.60).
-The note-ons alone: half within 0.02 ms of their time, 95 in 100 within 0.05 ms, 99 in 100 within 0.11 ms; the farthest 0.12 ms (earliest -0.07, latest +0.12).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.07 ms, the farthest 1.60 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 1.57 ms after it.
+All messages: half within 0.02 ms of their time, 95 in 100 within 0.09 ms, 99 in 100 within 2.55 ms; the farthest 21.86 ms (earliest -0.07, latest +21.86).
+The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.17 ms, 99 in 100 within 2.55 ms; the farthest 16.87 ms (earliest -0.07, latest +16.87).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.09 ms, the farthest 21.86 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 16.92 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -556,6 +556,7 @@ The roll view draws a note with the note name bach gives it, on the staves bach 
 | Over four octaves of eighth tones every spelling stands for its own pitch, with an accidental of a semitone at most | yes |
 | 17 of bach's clefs: the number of staves, the top and bottom line, and middle C at the height bach reckons (112 units under the voice's offset for FFGG, 70 for G and FG, 34 for F, 52 for Alto ...) | yes |
 | Ledger lines: middle C between the staves of a piano system has one; a note between two staves takes the lines of the nearer staff; none for a note on a staff or in the space next to it | yes |
+| A stem points down when its chord lies on or above the middle bach takes for the clef (the middle line of a single staff; middle C for FG and FFGG, so middle C there has its stem down), up when under it; the parts of a voice ensemble take turns | yes |
 | The eight voices of `doodsbed final v1c` are stacked by its clefs (None, None, FG, G8vb, F, Alto, FFGG, FFGG), 17 units between them as its header names no spacing: offsets 17, 76, 135, 236, 295, 354, 413 and 598 units | yes |
 | The same roll as saved by today's bach (`Roll view 2/roll txt/Doodsbed.txt`) is stacked by the voice spacing in its header (17, 17, 20, 17, 29.3, 17 ...): offsets 17, 76, 138, 239, 310.3, 369.3, 428.3 and 613.3 units | yes |
 
@@ -740,4 +741,4 @@ Needed for the coming stages:
 | 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `support materials/1c maket log.txt` |
 | 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `support materials/1c max log.txt` |
 
-All 159 checks passed.
+All 160 checks passed.
