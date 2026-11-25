@@ -126,6 +126,26 @@ void RollView::setToneDivision (int newDivision)
     repaint();
 }
 
+void RollView::setVelocityDisplay (VelocityDisplay newMode)
+{
+    if (newMode == velocityMode) return;
+    velocityMode = newMode;
+    repaint();
+}
+
+juce::Colour RollView::colourOf (int velocity) const
+{
+    // bach counts from velocity 1 to 127.
+    const float loud = (float) juce::jlimit (0, 126, velocity - 1) / 126.0f;
+    switch (velocityMode)
+    {
+        case VelocityDisplay::spectrum:     return juce::Colour::fromHSL ((240.0f / 360.0f) * (1.0f - loud), 0.85f, 0.42f, 1.0f);
+        case VelocityDisplay::alpha:        return ink.withAlpha (0.3f + 0.7f * loud);
+        case VelocityDisplay::greyScale:    break;
+    }
+    return ink.interpolatedWith (juce::Colours::white, 0.8f * (1.0f - loud));
+}
+
 void RollView::rebuild()
 {
     auto& font = MusicFont::get();
@@ -156,17 +176,25 @@ void RollView::rebuild()
             int lowest = 1 << 20, highest = -(1 << 20);
             double sum = 0.0;
 
-            for (const auto& note : chord.notes)
+            // bach's order within a chord: by pitch, lowest first.
+            std::vector<const maket::Note*> byPitch;
+            for (const auto& note : chord.notes) byPitch.push_back (&note);
+            std::stable_sort (byPitch.begin(), byPitch.end(), [] (const maket::Note* a, const maket::Note* b) { return a->cents < b->cents; });
+
+            c.maxVelocity = 1;
+            for (const auto* notePointer : byPitch)
             {
+                const auto& note = *notePointer;
                 NoteItem n;
                 const auto spelling = spellAs (note.pitchName, note.cents, division);
                 n.step = spelling.steps;
                 n.accidental = signOf (accidentalOf (spelling.alteration));
                 n.units = place.offset + place.clef.unitsOf (n.step);
                 n.end = chord.onset + note.duration;
-                n.lightness = 0.8f * (1.0f - (float) juce::jlimit (0, 126, note.velocity - 1) / 126.0f);   // softest: almost white, as bach
+                n.velocity = note.velocity;
                 n.ledgers = ledgerSteps (place.clef, n.step);
                 c.end = juce::jmax (c.end, n.end);
+                c.maxVelocity = juce::jmax (c.maxVelocity, note.velocity);
                 lowest = juce::jmin (lowest, n.step);
                 highest = juce::jmax (highest, n.step);
                 sum += n.step;
@@ -175,27 +203,28 @@ void RollView::rebuild()
 
             // The stem: bach's rule for its direction (Notation/Staves); an octave long beyond the outer note.
             c.direction = stemDirection (place, sum / (double) c.notes.size());
-
-            // Heads a second (or less) apart: every other one on the far side of the stem (Notation/Chords).
-            {
-                std::vector<int> steps;
-                for (const auto& n : c.notes) steps.push_back (n.step);
-                const auto far = farSideHeads (steps, c.direction);
-                for (size_t i = 0; i < c.notes.size(); ++i) c.notes[i].otherSide = far[i];
-            }
             const double lowUnits = place.offset + place.clef.unitsOf (lowest), highUnits = place.offset + place.clef.unitsOf (highest);
             if (c.direction == 1)   { c.stemFromUnits = lowUnits;  c.stemToUnits = highUnits - 7.0 * stepUnits; }
             else                    { c.stemFromUnits = highUnits; c.stemToUnits = lowUnits + 7.0 * stepUnits; }
 
-            // The accidentals, left of the chord, by bach's method (Notation/Chords) with the sizes of this font's signs.
+            // The heads against the stem, and the accidentals left of the chord: bach's methods (Notation/Chords),
+            // with the sizes of this font's signs.
             {
                 const double headWidth = font.noteheadWidth();
+                std::vector<int> steps;
+                for (const auto& n : c.notes) steps.push_back (n.step);
+                const auto heads = placeHeads (steps, c.direction, headWidth);
+
                 std::vector<ChordNote> placing;
-                for (auto& n : c.notes)
+                for (size_t i = 0; i < c.notes.size(); ++i)
                 {
+                    auto& n = c.notes[i];
+                    n.headLeft = (float) heads[i].left;
+                    n.auxiliaryStem = heads[i].auxiliaryStem;
+
                     ChordNote p;
                     p.step = n.step;
-                    p.headLeft = (c.direction == 1) != n.otherSide ? -headWidth : 0.0;
+                    p.headLeft = heads[i].left;
                     const auto b = n.accidental != 0 ? font.bounds (n.accidental) : juce::Rectangle<float>();
                     if (b.isEmpty()) n.accidental = 0;
                     p.hasAccidental = n.accidental != 0;
@@ -211,7 +240,8 @@ void RollView::rebuild()
                     c.notes[i].accidentalLeft = (float) (right[i] - placing[i].width);
                     reach = juce::jmax (reach, -placing[i].headLeft, placing[i].hasAccidental ? -(double) c.notes[i].accidentalLeft : 0.0);
                 }
-                if (c.onset <= 250.0) startReach = juce::jmax (startReach, reach);
+                // The stem stands half a head beside the onset (see paintNotes).
+                if (c.onset <= 250.0) startReach = juce::jmax (startReach, reach - c.direction * 0.5 * headWidth);
             }
 
             item.chords.push_back (std::move (c));
@@ -433,17 +463,18 @@ void RollView::paintNotes (juce::Graphics& g, juce::Rectangle<int> area)
         {
             if (c.end < fromMs || c.onset > toMs) continue;
 
-            const float stemX = (float) xOf (c.onset);
-            const float nearLeft = c.direction == 1 ? stemX - headWidth : stemX;      // the side of the stem the heads sit on
-            const float farLeft = c.direction == 1 ? stemX : stemX - headWidth;
-            float darkest = 1.0f;
+            // As in bach.roll, the onset is the middle of the head that sits at the stem; the stem half a head beside it.
+            const float stemX = (float) xOf (c.onset) + (float) c.direction * 0.5f * headWidth;
+            const float topY = (float) yOf (c.direction == 1 ? c.stemToUnits + 7.0 * stepUnits : c.stemFromUnits);         // the highest note
+            const float bottomY = (float) yOf (c.direction == 1 ? c.stemFromUnits : c.stemToUnits - 7.0 * stepUnits);      // the lowest note
+            const float stemLength = 3.5f * space;
+            const auto stemColour = colourOf (c.maxVelocity);
 
             for (const auto& n : c.notes)
             {
                 const float y = (float) yOf (n.units);
                 if (y < top || y > bottom) continue;
-                darkest = juce::jmin (darkest, n.lightness);
-                const float headLeft = n.otherSide ? farLeft : nearLeft;
+                const float headLeft = stemX + n.headLeft * space;
                 const float headCentre = headLeft + headWidth * 0.5f;
 
                 // Ledger lines.
@@ -455,13 +486,26 @@ void RollView::paintNotes (juce::Graphics& g, juce::Rectangle<int> area)
                 }
 
                 // The duration line and its tail.
-                const auto colour = juce::Colour::greyLevel (n.lightness);
+                const auto colour = colourOf (n.velocity);
                 const float endX = (float) xOf (n.end);
                 g.setColour (colour);
                 if (endX > headCentre)
                 {
                     g.fillRect (juce::Rectangle<float> (headCentre, y - lineThickness * 0.5f, endX - headCentre, lineThickness));
                     g.fillRect (juce::Rectangle<float> (endX - thin * 0.5f, y - 0.5f * space, thin, space));
+                }
+
+                // A head away from the stem: bach's branch, from the stem to above (or under) the head.
+                if (n.auxiliaryStem)
+                {
+                    g.setColour (stemColour);
+                    const float fromY = c.direction == 1 ? topY - 0.4f * stemLength : bottomY + 0.4f * stemLength;
+                    const float bendY = c.direction == 1 ? topY - 0.2f * stemLength : bottomY + 0.2f * stemLength;
+                    const float headY = c.direction == 1 ? y - 0.25f * space : y + 0.25f * space;
+                    const float branch = juce::jmax (1.0f, 0.87f * thin);
+                    g.drawLine (stemX - (float) c.direction * 0.5f * thin, fromY, headCentre, bendY, branch);
+                    g.drawLine (headCentre, bendY, headCentre, headY, branch);
+                    g.setColour (colour);
                 }
 
                 // The head.
@@ -479,7 +523,7 @@ void RollView::paintNotes (juce::Graphics& g, juce::Rectangle<int> area)
             const float y1 = (float) yOf (c.stemFromUnits), y2 = (float) yOf (c.stemToUnits);
             if (juce::jmax (y1, y2) >= top && juce::jmin (y1, y2) <= bottom)
             {
-                g.setColour (juce::Colour::greyLevel (darkest));
+                g.setColour (stemColour);
                 const float x = c.direction == 1 ? stemX - thin : stemX;
                 g.fillRect (juce::Rectangle<float> (x, juce::jmin (y1, y2), thin, std::abs (y2 - y1)));
             }

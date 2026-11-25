@@ -44,6 +44,14 @@ EditionPage::EditionPage (maket::Settings& s) : settings (s)
     gridBox.onChange = [this] { view.setToneDivision (gridBox.getSelectedId()); };
     addAndMakeVisible (gridBox);
 
+    velocityBox.addItem ("Velocity: grey", (int) RollView::VelocityDisplay::greyScale);
+    velocityBox.addItem ("Velocity: colour", (int) RollView::VelocityDisplay::spectrum);
+    velocityBox.addItem ("Velocity: alpha", (int) RollView::VelocityDisplay::alpha);
+    velocityBox.setSelectedId ((int) RollView::VelocityDisplay::greyScale, juce::dontSendNotification);
+    velocityBox.setTooltip ("How a note shows its velocity: grey (soft is light, as ScAst's roll), colour (blue is soft, red is loud) or alpha (soft is see-through)");
+    velocityBox.onChange = [this] { view.setVelocityDisplay ((RollView::VelocityDisplay) velocityBox.getSelectedId()); };
+    addAndMakeVisible (velocityBox);
+
     view.onViewChanged = [this] { repaint (barArea); };
     addChildComponent (view);
     updateBar();
@@ -111,6 +119,7 @@ void EditionPage::updateBar()
     for (auto* b : { &acrossOut, &acrossIn, &downOut, &downIn, &fitButton })
         b->setEnabled (has);
     gridBox.setEnabled (has);
+    velocityBox.setEnabled (has);
 }
 
 void EditionPage::resized()
@@ -135,6 +144,8 @@ void EditionPage::resized()
     bar.removeFromRight (10);
     zoomTextArea = bar.removeFromRight (170);
     bar.removeFromRight (12);
+    velocityBox.setBounds (bar.removeFromRight (140));
+    bar.removeFromRight (8);
     gridBox.setBounds (bar.removeFromRight (128));
     bar.removeFromRight (12);
     titleArea = bar;

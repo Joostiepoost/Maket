@@ -1,5 +1,5 @@
-// Chords.h — the notes of one chord beside each other: which heads go to the
-// far side of the stem, and where the accidentals stand left of the chord.
+// Chords.h — the notes of one chord beside each other: where each head sits
+// against the stem, and where the accidentals stand left of the chord.
 //
 // As bach.roll does it (`calculate_chord_parameters` in bach's source).
 // Lengths in staff spaces, counted from the stem. No interface code.
@@ -11,11 +11,20 @@
 namespace maket::notation
 {
 
-/** Heads a second (or less) apart cannot sit above each other: every other one goes to the far side of the stem.
-    `steps` are the notes' heights in diatonic steps, `direction` the stem's (1 up, -1 down); counted from the end
-    of the stem that holds the heads. Returned for each note: whether its head sits on the far side
-    (right of a stem that goes up, left of one that goes down). */
-std::vector<bool> farSideHeads (const std::vector<int>& steps, int direction);
+/** Where the head of one note of a chord sits. */
+struct HeadPlace
+{
+    double left = 0.0;          // the left edge of the head, counted from the stem (negative: left of it)
+    bool auxiliaryStem = false; // the head does not touch the stem: bach draws a small branch from the stem to it
+};
+
+/** The heads of a chord, as bach.roll places them. Notes a second or less apart form a group: going up, every
+    other one sits on the far side of the stem. Notes at one height (C and C sharp) cannot share a place: the
+    second goes to the far side when that is free, the next ones further out on either side, and those no longer
+    touch the stem. With the stem down a group is mirrored where needed, so that the lower of two notes is the
+    left one. `steps` are the notes' heights in diatonic steps, lowest note first (notes at one height in the
+    order of their pitch); `direction` the stem's (1 up, -1 down). */
+std::vector<HeadPlace> placeHeads (const std::vector<int>& steps, int direction, double headWidth);
 
 /** One note of a chord, for placing the accidentals left of it. Lengths in staff spaces. */
 struct ChordNote

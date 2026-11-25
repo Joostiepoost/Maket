@@ -46,14 +46,14 @@ namespace
         std::vector<int> steps;
         std::vector<Spelling> spellings;
         for (double c : cents) { spellings.push_back (spell (c, division)); steps.push_back (spellings.back().steps); }
-        const auto far = farSideHeads (steps, direction);
+        const auto heads = placeHeads (steps, direction, headWidth);
 
         std::vector<ChordNote> notes;
         for (size_t i = 0; i < cents.size(); ++i)
         {
             ChordNote n;
             n.step = steps[i];
-            n.headLeft = (direction == 1) != far[i] ? -headWidth : 0.0;
+            n.headLeft = heads[i].left;
             const auto sign = accidentalOf (spellings[i].alteration);
             const auto size = sizeOf (sign);
             n.hasAccidental = sign != Accidental::none;
@@ -83,6 +83,14 @@ namespace
             for (size_t b = a + 1; b < signs.size(); ++b) if (meet (signs[a], signs[b])) return false;
             for (const auto& h : heads) if (meet (signs[a], h)) return false;
         }
+        // No head over another: heads a second apart count as over each other when they sit on the same side.
+        for (size_t a = 0; a < heads.size(); ++a)
+            for (size_t b = a + 1; b < heads.size(); ++b)
+            {
+                Box one = heads[a], other = heads[b];
+                one.top += 0.2; one.bottom -= 0.2; other.top += 0.2; other.bottom -= 0.2;
+                if (meet (one, other)) return false;
+            }
         return true;
     }
 
@@ -220,6 +228,37 @@ static void testAccidentals (const juce::File& temp)
                   "on the semitone grid every one of them is drawn plain, sharp or flat (" + juce::String (signs2) + " of the 48 with a sign)");
     }
 
+    // --- Where the heads sit (stage 2b.1) ---
+    {
+        const double w = headWidth;
+        auto lefts = [w] (std::vector<int> steps, int direction, std::vector<double> expected, std::vector<bool> auxiliary)
+        {
+            const auto heads = placeHeads (steps, direction, w);
+            bool ok = heads.size() == expected.size();
+            for (size_t i = 0; ok && i < heads.size(); ++i)
+                ok = near (heads[i].left, expected[i] * w) && heads[i].auxiliaryStem == auxiliary[i];
+            return ok;
+        };
+
+        checkRow (lefts ({ 0 }, 1, { -1 }, { false }) && lefts ({ 0 }, -1, { 0 }, { false })
+                  && lefts ({ 0, 2, 4 }, 1, { -1, -1, -1 }, { false, false, false }),
+                  "Heads: left of a stem that goes up, right of one that goes down; notes a third apart sit above each other");
+        checkRow (lefts ({ 0, 1 }, 1, { -1, 0 }, { false, false }) && lefts ({ 0, 1 }, -1, { -1, 0 }, { false, false })
+                  && lefts ({ 0, 1, 2 }, 1, { -1, 0, -1 }, { false, false, false }),
+                  "A second: the lower head left of the stem, the upper right of it, with the stem up or down; three notes a second apart take turns");
+        checkRow (lefts ({ 0, 0 }, 1, { -1, 0 }, { false, false }) && lefts ({ 0, 0 }, -1, { -1, 0 }, { false, false }),
+                  "Two notes at one height (C and C sharp) sit beside each other, one on each side of the stem");
+        checkRow (lefts ({ -1, 0, 0 }, 1, { -1, 0, -2 }, { false, false, true }) && lefts ({ 0, 0, 0 }, 1, { -1, 0, -2 }, { false, false, true }),
+                  "B, C and C sharp, and three notes at one height: the third head goes further out and gets a branch from the stem, as in bach.roll");
+
+        const auto cluster = chordNotes ({ 6100, 6175, 6250, 6325, 6400, 6475, 6550, 6625 }, 1);
+        const auto clusterHeads = placeHeads ({ 0, 1, 1, 2, 2, 3, 3, 4 }, 1, w);
+        int branches = 0;
+        for (const auto& h : clusterHeads) if (h.auxiliaryStem) ++branches;
+        checkRow (chordIsClear (cluster, placeAccidentals (cluster)) && branches == 3,
+                  "Eight notes three eighths of a tone apart (the last chord of the voice \"chords\"): no head over another, three of them on a branch");
+    }
+
     // --- Where the signs stand ---
     {
         const double atHeads = -headWidth - accidentalFromNote;
@@ -279,7 +318,7 @@ static void testAccidentals (const juce::File& temp)
         int chords = 0, crowded = 0, unclear = 0;
         count (testRoll, chords, crowded, unclear);
         checkRow (unclear == 0, "In the roll written below (" + juce::String (chords) + " chords, " + juce::String (crowded)
-                                + " with two signs or more) no sign lies over another sign or over a head, with the stem up or down");
+                                + " with two signs or more) no sign lies over another sign or over a head, and no head over another, with the stem up or down");
 
         const auto folder = temp.getChildFile ("Roll view 2").getChildFile ("roll txt");
         auto files = folder.findChildFiles (juce::File::findFiles, false, "*.txt");

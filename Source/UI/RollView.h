@@ -32,6 +32,12 @@ public:
     /** Shows a roll (a copy is kept). */
     void setRoll (const maket::Roll&);
 
+    /** How a note shows its velocity: bach's grey scale (softest almost white), a colour from blue (softest)
+        to red (loudest), or bach's alpha (softest almost clear). */
+    enum class VelocityDisplay { greyScale = 1, spectrum, alpha };
+    VelocityDisplay velocityDisplay() const     { return velocityMode; }
+    void setVelocityDisplay (VelocityDisplay);
+
     /** The grid notes are drawn on: 8 eighth tones, 4 quarter tones, 2 semitones (bach's tone division). */
     int toneDivision() const            { return division; }
     void setToneDivision (int);
@@ -66,9 +72,10 @@ private:
         int step = 0;               // diatonic steps above middle C
         double units = 0.0;         // height in the roll, bach units
         double end = 0.0;           // ms
-        float lightness = 0.0f;     // 0 black (loud) to about 0.8 (softest)
+        int velocity = 100;
         std::vector<int> ledgers;   // steps of its ledger lines
-        bool otherSide = false;     // the head sits on the far side of the stem, as the upper of two notes a second apart does
+        float headLeft = 0.0f;      // the left edge of the head, staff spaces from the stem (negative: left of it)
+        bool auxiliaryStem = false; // the head does not touch the stem: a branch leads to it
         juce::juce_wchar accidental = 0;    // the sign left of the chord, 0 for none
         float accidentalLeft = 0.0f;        // the sign's left edge, staff spaces from the stem (negative: left of it)
     };
@@ -77,6 +84,7 @@ private:
         double onset = 0.0;         // ms
         double end = 0.0;           // ms, of its longest note
         int direction = 1;          // stem: 1 up, -1 down
+        int maxVelocity = 100;      // of its loudest note: the stem's
         double stemFromUnits = 0.0, stemToUnits = 0.0;
         std::vector<NoteItem> notes;
     };
@@ -109,7 +117,9 @@ private:
 
     maket::Roll roll;
     int division = 8;
-    double startReach = 0.0;            // staff spaces the chords of the first quarter second reach left of their stems
+    VelocityDisplay velocityMode = VelocityDisplay::greyScale;
+    juce::Colour colourOf (int velocity) const;
+    double startReach = 0.0;            // staff spaces the chords of the first quarter second reach left of their onset
     std::vector<VoiceItem> voices;
     double rollLength = 0.0;            // ms
     double heightUnits = 0.0;

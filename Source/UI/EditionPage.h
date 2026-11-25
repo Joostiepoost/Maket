@@ -50,6 +50,7 @@ private:
     RollView view;
     juce::TextButton openButton, acrossOut, acrossIn, downOut, downIn, fitButton;
     juce::ComboBox gridBox;             // stage 2b: the grid notes are drawn on (bach's tone division)
+    juce::ComboBox velocityBox;         // stage 2b.1: how a note shows its velocity
     juce::String title, detail, problem;
     juce::Rectangle<int> barArea, titleArea, zoomTextArea;
     std::unique_ptr<juce::FileChooser> chooser;
