@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 2a.1. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 25 Nov 2026 11:31:14am.
+Maket 0.0.1, stage 2b. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 25 Nov 2026 12:23:20pm.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`2a.1`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`2b`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -276,8 +276,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.027 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.005 ms; the latest of all: 0.018 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.026 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.011 ms; the latest of all: 0.792 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -285,8 +285,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.012 | 0.005 | 0.018 |
-| Arrived at the listener in this program | 0.078 | 0.152 | 0.808 |
+| Left Maket | -0.008 | 0.011 | 0.792 |
+| Arrived at the listener in this program | 0.102 | 0.186 | 0.894 |
 
 ### A command from a typed line (stage 1f.5)
 
@@ -341,14 +341,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.09 ms; the farthest 21.86 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.18 ms; the farthest 3.35 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.02 ms of their time, 95 in 100 within 0.09 ms, 99 in 100 within 2.55 ms; the farthest 21.86 ms (earliest -0.07, latest +21.86).
-The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.17 ms, 99 in 100 within 2.55 ms; the farthest 16.87 ms (earliest -0.07, latest +16.87).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.09 ms, the farthest 21.86 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 16.92 ms after it.
+All messages: half within 0.03 ms of their time, 95 in 100 within 0.18 ms, 99 in 100 within 1.59 ms; the farthest 3.35 ms (earliest -0.07, latest +3.35).
+The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.14 ms, 99 in 100 within 1.35 ms; the farthest 1.59 ms (earliest -0.07, latest +1.59).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.18 ms, the farthest 3.35 ms.
+Leaving Maket: 95 in 100 within 0.03 ms of their time, the latest 3.31 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -546,7 +546,7 @@ Joost found (24 Nov) that `ctdynamic` goes to an absolute target after all, on a
 | 24 notes of the A on the cello, each 145 ms after its `kammerton` (442, 440, 430, 415.3, 466.16; 440 and 430 also as whole numbers); three notes get a second `kammerton` while they sound; the run ends with the standard pitch of the settings | yes |
 | `kammerton` is sent as a real number (`kammerton 442.`, `kammerton 440.5`) | yes |
 
-## 8. Notation: where notes sit on the staves (stage 2a)
+## 8. Notation: where notes sit on the staves (stages 2a and 2b)
 
 The roll view draws a note with the note name bach gives it, on the staves bach gives the voice. These checks are on that reckoning, which has no interface code; what the view draws from it is judged by eye against bach.roll.
 
@@ -579,6 +579,35 @@ The rolls Joost gave for the roll view (`Temp/Roll view 2/roll txt`), read and w
 | 9 rolls are read | yes |
 | Each of them, written back, is byte for byte the file (the test of stage 1b on new files) | yes |
 | Every clef in them is one Maket knows, and every note gets a spelling within half a grid step of its pitch | yes |
+
+### Accidentals (stage 2b)
+
+Which sign a note gets and where the signs of a chord stand, by bach's rules; the signs themselves are judged by eye, with the roll this test writes, opened in bach.roll beside Maket.
+
+| Check | Passed |
+| --- | --- |
+| Each alteration has bach's sign: a natural with an arrow for an eighth tone, the half sharp or the reversed flat for a quarter tone, those two with an arrow further away for three eighths, sharp or flat for a semitone; none for a natural note | yes |
+| A note the file gives by name keeps that letter, as in bach: G#6 is drawn as G sharp (the pitch alone gives A flat), A#6 as A sharp, Db5, E#5, Fb5, B#4 and Cb5 as named; without a name, or when the name would need more than a sharp or a flat, the pitch decides | yes |
+| Of the 48 eighth-tone steps of an octave, 41 carry a sign on the eighth-tone grid (all but the seven white keys); on the semitone grid every one of them is drawn plain, sharp or flat (20 of the 48 with a sign) | yes |
+| One note: its sign ends half a staff space left of its head, on either side of the stem | yes |
+| Two sharps an octave apart stand above each other; a chord of natural notes gets no sign | yes |
+| C sharp and E flat in one chord: the lower sign at the heads, the upper one left of it, with bach's gap between them | yes |
+| Three signs in each other's way (C sharp, E flat, F sharp): the lowest at the heads, then the highest, the middle one furthest left, as bach orders them | yes |
+| C sharp, F sharp, A flat: the outer two are clear of each other and both stand at the heads, the middle one left of them | yes |
+| A second (C quarter sharp, D quarter flat): the heads on both sides of the stem, both signs left of the left head | yes |
+| In the roll written below (89 chords, 10 with two signs or more) no sign lies over another sign or over a head, with the stem up or down | yes |
+| The same in the 9 rolls of `Temp/Roll view 2` (3079 chords, 190 with two signs or more) | yes |
+| `Temp/written by Maket/Accidentals by Maket.txt` is written (5 voices, 125 notes) and, read back, holds the same notes | yes |
+
+The roll `Accidentals by Maket.txt`, for bach.roll beside Maket (the README tells what to look at):
+
+| Voice | Clef | What it holds |
+| --- | --- | --- |
+| every step | G | the 49 eighth-tone steps from middle C to the C above, one every 0.6 s |
+| chords | G | 8 chords, one every 3 s, whose accidentals are in each other's way: C sharp with E flat; the five black keys; a second; three notes a second apart; four notes three eighths of a tone off a white key; a high chord (stem down); C with C sharp; eight notes three eighths of a tone apart |
+| off the grid | F | 14 pitches between the steps, one every 1.8 s: 4800, 4810, 4812, 4813, 4820, 4837, 4838, 4850, 4862, 4863, 4875, 4887, 4888 and 4900 cents |
+| two staves | FG | 4 chords, one every 6 s: seven sharps and flats over both staves; B, C and C sharp; four eighth tones around middle C; four quarter tones far apart |
+| named | G | 14 notes, one every 2 s, written in the file by name: seven pitches each under two names (C#5 and Db5, D#5 and Eb5, E#5 and F5, F#5 and Gb5, G#5 and Ab5, A#5 and Bb5, B5 and Cb6) |
 
 ## 9. Test material
 
@@ -724,6 +753,7 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `support materials/doodsbed final v1c.txt` | 56.1 KB |
 | `support materials/mixed_roll_example_01h.txt` | 17.2 KB |
 | `support materials/roll tests s1b.maxpat` | 100.8 KB |
+| `written by Maket/Accidentals by Maket.txt` | 4.9 KB |
 | `written by Maket/doodsbed final v1c.txt` | 56.1 KB |
 | `written by Maket/mixed_roll_example_01h changed by Maket.txt` | 17.2 KB |
 | `written by Maket/mixed_roll_example_01h.txt` | 17.2 KB |
@@ -741,4 +771,4 @@ Needed for the coming stages:
 | 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `support materials/1c maket log.txt` |
 | 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `support materials/1c max log.txt` |
 
-All 160 checks passed.
+All 172 checks passed.
