@@ -129,15 +129,8 @@ void RollView::setRoll (const maket::Roll& roll)
                 c.notes.push_back (std::move (n));
             }
 
-            // The stem: down when the chord lies on or above the middle line of its nearest staff, an octave long.
-            const double mean = sum / (double) c.notes.size();
-            double middle = 6.0, nearest = 1.0e9;
-            for (const auto& s : place.clef.staves)
-            {
-                const double m = s.topLineStep - 4.0;
-                if (std::abs (mean - m) < nearest) { nearest = std::abs (mean - m); middle = m; }
-            }
-            c.direction = mean >= middle ? -1 : 1;
+            // The stem: bach's rule for its direction (Notation/Staves); an octave long beyond the outer note.
+            c.direction = stemDirection (place, sum / (double) c.notes.size());
 
             // Heads a second (or less) apart cannot sit above each other: every other one goes to the far side of the stem,
             // counted from the end of the stem that holds the heads.

@@ -106,6 +106,29 @@ void testNotation (const juce::File& temp)
                   "none for a note on a staff or in the space next to it");
     }
 
+    // --- The direction of a stem ---
+    {
+        auto place = [] (const char* clef, int part = 0, int parts = 1)
+        {
+            VoicePlace p;
+            p.clef = clefLayout (clef);
+            p.partIndex = part;
+            p.numParts = parts;
+            return p;
+        };
+        struct Middle { const char* clef; int step; };
+        const Middle middles[] = { { "G", 6 }, { "F", -6 }, { "FG", 0 }, { "FFGG", 0 }, { "FFG", -8 }, { "FGG", 8 }, { "FF", -13 }, { "GG", 13 },
+                                   { "Alto", 0 }, { "Tenor", -2 }, { "G8vb", -1 }, { "G8va", 13 }, { "F15mb", -20 }, { "None", 6 }, { "Percussion", 6 } };
+        bool ok = true;
+        for (const auto& m : middles) ok = ok && clefLayout (m.clef).middleStep == m.step;
+        checkRow (ok && stemDirection (place ("FG"), 0.0) == -1 && stemDirection (place ("FG"), -1.0) == 1          // middle C on a piano system: down
+                  && stemDirection (place ("FFGG"), 0.0) == -1 && stemDirection (place ("FFGG"), -0.5) == 1
+                  && stemDirection (place ("G"), 6.0) == -1 && stemDirection (place ("G"), 5.0) == 1                 // the B on the middle line: down
+                  && stemDirection (place ("G", 0, 2), 12.0) == 1 && stemDirection (place ("G", 1, 2), -3.0) == -1,  // an ensemble: the parts take turns
+                  "A stem points down when its chord lies on or above the middle bach takes for the clef (the middle line of a single staff; "
+                  "middle C for FG and FFGG, so middle C there has its stem down), up when under it; the parts of a voice ensemble take turns");
+    }
+
     // --- The voices of doodsbed, stacked ---
     {
         auto offsetsOf = [] (const juce::File& file, const double* expected, double expectedHeight, RollLayout& layout)

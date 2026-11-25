@@ -74,7 +74,21 @@ ClefLayout clefLayout (const juce::String& clefName)
         c.staves = { gStaff() };
         c.known = false;
     }
+
+    // The middle a chord is weighed against for its stem.
+    if (n == "FFGG" || n == "FG")   c.middleStep = 0;
+    else if (n == "FFG")            c.middleStep = -8;
+    else if (n == "FGG")            c.middleStep = 8;
+    else if (n == "FF")             c.middleStep = -13;
+    else if (n == "GG")             c.middleStep = 13;
+    else                            c.middleStep = c.staves.front().topLineStep - 4;     // the middle line of the one staff
     return c;
+}
+
+int stemDirection (const VoicePlace& place, double meanStep)
+{
+    if (place.numParts > 1) return place.partIndex % 2 == 0 ? 1 : -1;
+    return meanStep >= (double) place.clef.middleStep ? -1 : 1;
 }
 
 std::vector<int> ledgerSteps (const ClefLayout& clef, int step)
@@ -119,12 +133,18 @@ RollLayout layoutVoices (const Roll& roll)
 
     // numparts: how many voices share each set of staves, ensemble by ensemble.
     std::vector<bool> firstOfEnsemble ((size_t) numVoices, true);
+    std::vector<int> partIndex ((size_t) numVoices, 0), numParts ((size_t) numVoices, 1);
     {
         int voice = 0;
         for (double p : parts)
         {
             const int count = juce::jmax (1, juce::roundToInt (p));
-            for (int k = 1; k < count && voice + k < numVoices; ++k) firstOfEnsemble[(size_t) (voice + k)] = false;
+            for (int k = 0; k < count && voice + k < numVoices; ++k)
+            {
+                if (k > 0) firstOfEnsemble[(size_t) (voice + k)] = false;
+                partIndex[(size_t) (voice + k)] = k;
+                numParts[(size_t) (voice + k)] = juce::jmin (count, numVoices - voice);
+            }
             voice += count;
         }
     }
@@ -139,6 +159,8 @@ RollLayout layoutVoices (const Roll& roll)
         place.clef = clefLayout (roll.voices[(size_t) v].clef.isEmpty() ? juce::String ("G") : roll.voices[(size_t) v].clef);
         place.hidden = (size_t) v < hidden.size() && hidden[(size_t) v] > 0.5;
         place.ownsStaves = firstOfEnsemble[(size_t) v];
+        place.partIndex = partIndex[(size_t) v];
+        place.numParts = numParts[(size_t) v];
         place.offset = offset;
         layout.voices.push_back (place);
 

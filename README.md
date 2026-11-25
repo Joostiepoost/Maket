@@ -62,7 +62,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 1f.7 | By number, the target of a dynamic ramp on the ePlayer's scale from 0 to 1; the sixth run of the study: that scale beside the ramps by pitch, on the cello and the bass clarinet (it replaces runs four and five) | done; run by Joost on 24 Nov: by number and by pitch give the same dynamics |
 | 1f.8 | Tuning: the standard pitch as a setting, sent to the ePlayer (`kammerton`) at the start of every play; a tuning check of 48 seconds | done; run by Joost on 24 Nov: the A lands on the frequency sent, within a third of a cent |
 | 2 | Roll view and transport: staves, microtonal accidentals, duration lines, breakpoints, markers; play through conTimbre and the synth | in parts |
-| 2a | A roll opens in *Library and edition*: staves and clefs per voice, notes with stems and duration lines in proportional time, a time ruler, zoom and scroll; on paper, as bach.roll. No accidentals yet | built, to test |
+| 2a | A roll opens in *Library and edition*: staves and clefs per voice, notes with stems and duration lines in proportional time, a time ruler, zoom and scroll; on paper, as bach.roll. No accidentals yet | done; tested by Joost on 25 Nov. 2a.1: the direction of a stem by bach's own rule |
 | 2b | Accidentals: semitones, quarter tones, eighth tones in bach's spelling | |
 | 2c | Pitch breakpoints, markers, how muted and locked things look | |
 | 2d | Transport on conTimbre: playhead, play, stop, loop | |
@@ -615,6 +615,10 @@ Step 1 is complete with this.
 - **Zoom:** the two pairs of − and + in the bar (time detail, staff size) and **Fit**; ⌘+ and ⌘− for time, ⌥⌘+ and ⌥⌘− for the staves, ⌘0 for the whole roll; pinching on the trackpad and ⌘ with the scroll wheel zoom the time around the pointer, ⌥ with the wheel the staves.
 - **Scroll:** the trackpad or wheel in both directions (⇧ with a wheel goes sideways), and the two scroll bars. The clefs and names stay at the left, the ruler at the top.
 - Not yet: accidentals (2b); glides and markers (2c); playing (2d); what is in the slots (step 5); selecting and editing (step 4).
+
+### After the test of 2a (25 Nov)
+
+Joost: all checks passed on his Mac; the rolls look as expected and as in ScAst. One difference seen: a middle C on a piano system (clef FG) had its stem up in Maket and down in ScAst. **2a.1** takes over bach's rule: a stem points down when its chord lies on or above the middle bach takes for the clef, and for a clef of several staves that is one place for all of them (middle C for FG and FFGG), not the middle line of the nearest staff; the parts of a voice ensemble take turns, the first up, the second down. `./build.sh tests` now ends with `All 160 checks passed.`
 
 ### Testing stage 2a
 

@@ -50,6 +50,11 @@ struct ClefLayout
     std::vector<Staff> staves;  // from the top one down
     bool known = true;          // false: a name Maket does not know; laid out as G
 
+    /** The step a chord is weighed against for its stem (bach's `get_middle_scaleposition`): the middle line of a single
+        staff; for a clef of several staves one step for the whole of them (middle C for FG and FFGG), so that a stem may
+        cross from one staff into the next. */
+    int middleStep = 6;
+
     int numStaves() const       { return (int) staves.size(); }
 
     /** Units from the voice's offset down to a step. */
@@ -75,7 +80,14 @@ struct VoicePlace
     double offset = 0.0;        // units from the top of the roll
     bool hidden = false;        // the header's hidevoices
     bool ownsStaves = true;     // false: a further part of a voice ensemble, drawn on the staves of the part before it
+    int partIndex = 0;          // which part of its ensemble this voice is, from 0
+    int numParts = 1;           // how many voices share its staves
 };
+
+/** Whether the stem of a chord points up (1) or down (-1), as bach decides it: down when the mean of the chord's steps
+    lies on or above the clef's middle step, up when under it; in a voice ensemble of several parts the parts take turns
+    instead, the first up, the second down. */
+int stemDirection (const VoicePlace&, double meanStep);
 
 struct RollLayout
 {
