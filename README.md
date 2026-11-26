@@ -67,7 +67,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 2c | Glides (pitch breakpoints) along the duration line, markers with their names and roles, the colours of what is locked, muted or solo | done; tested by Joost on 25 Nov |
 | 2d | Transport on conTimbre: a playhead, play from any point, play prescheduled, stop, a loop region; voice names and the percussion clef as in ScAst | done; tested by Joost on 25 Nov |
 | 2e | Sound from Maket itself: the audio output as a setting, a first plain synth (one sine per note), and per voice the choice of conTimbre, synth or silent | done; tested by Joost on 26 Nov. On his Mac the synth waits 91 ms for the ePlayer (*Synth timing*) |
-| 2f | The closing of step 2: speed with a very large roll (measured, and made faster where it was slow), the looks gone through once more | built 26 Nov; to be tested by Joost |
+| 2f | The closing of step 2: speed with a very large roll (measured, and made faster where it was slow), the looks gone through once more | done; tested by Joost on 26 Nov. **Step 2 is closed** |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
 | 5 | Slot list and data: the project's slots, all built types, import mapping | |
@@ -811,6 +811,19 @@ What still differs from ScAst is what the slots hold (techniques, curves, dynami
 6. Push `Measurements/report.md`: its section 11 holds your Mac's times.
 
 With that, step 2 is closed: real files look as in bach.roll, eighth tones are right, play, stop and loop work, on conTimbre and on Maket's own synth.
+
+### After the test of 2f (26 Nov): step 2 is closed
+
+Joost, on his Mac (Apple M4): all 214 checks passed. Scrolling is very smooth except for brusque large changes; play of the large roll starts with a minuscule delay (the quarter second estimated), from the middle at once; Stop is instant; a loop goes round without hiccups. The large roll played for several minutes in the background with all 24 voices on the synth took about 22 % of one processor on average, and less with 12 voices on conTimbre and 12 on the synth.
+
+Read from what he sent:
+
+- His report, section 11: reading the large roll 192 ms, making it ready 69 ms, a loop round 2.8 ms, press of Play to everything scheduled 138 ms, the first note keeps 98 ms of lead, the synth with 128 gliding notes 7.7 % of the time it lasts.
+- His screen video: the drawing takes 9 to 73 ms; 72.8 ms with 5525 notes in view, which is 13 millionths of a second per note, the same as on the test machine. So the Mac is not faster at this than the test machine was, and a roll with tens of thousands of notes in view at once would take a few tenths of a second per drawing. With his own rolls (hundreds of notes in view) it is a few ms. The remedy stays noted and is not needed now: draw the signs as font glyphs through the system's glyph cache instead of as outlines.
+- His recording (six minutes, twelve voices on the ePlayer and twelve on the synth): no holes in the sound anywhere. The recording itself reaches full scale in places (0.5 % of its samples), which is the sum of the two in the recording, not a fault in Maket's sound.
+- Seen in the video: when the staves stand close together (down 42 %), the tags lie over the neighbouring names. To be tidied at 3a.
+
+Asked for on the same day, and taken into step 3: an Audio on / Audio off switch as in Trajet and Goblet; panels of adjustable width; several snippets open at once as tabs.
 
 ## The repository
 
