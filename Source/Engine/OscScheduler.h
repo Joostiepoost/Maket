@@ -63,6 +63,9 @@ public:
         each ask for their own messages. */
     void sendAt (double time, const OscMessage& message, int targets, int tag = 0);
 
+    /** Several at once, each with its time. */
+    void sendAt (const std::vector<std::pair<double, OscMessage>>& messages, int targets, int tag = 0);
+
     /** Sends a message now, from the thread that calls, without waiting for
         the send thread. For the last word when Maket quits. */
     void sendImmediately (const OscMessage& message, int targets, int tag = 0);

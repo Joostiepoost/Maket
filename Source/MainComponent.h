@@ -45,7 +45,7 @@ public:
         cmdToggleList = 0x3010,
         cmdToggleInspector,
         cmdOpen = 0x3020,
-        cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit,
+        cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit, cmdDrawingTimes,
         cmdPlayStop = 0x3030,       // stage 2d: the transport of the roll
         cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart
     };

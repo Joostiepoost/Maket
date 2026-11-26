@@ -48,7 +48,7 @@ public:
 
     /** What sounds each voice (stage 2e). Without this every voice gets its default (`playing::defaultEngines`).
         Takes effect at the next play. */
-    void setEngines (std::vector<playing::VoiceEngine> newEngines)     { engines = std::move (newEngines); }
+    void setEngines (std::vector<playing::VoiceEngine> newEngines)     { engines = std::move (newEngines); preparedValid = false; }
     const std::vector<playing::VoiceEngine>& getEngines() const        { return engines; }
 
     /** Where the synth's notes go (null: nowhere), and by how many ms they are moved against the ePlayer's
@@ -117,6 +117,8 @@ private:
     const int tag;
     Roll roll;
     std::vector<playing::VoiceEngine> engines;
+    mutable playing::Prepared prepared;         // the roll split by engine, made at the first pass after a change
+    mutable bool preparedValid = false;
     NoteSink* synth = nullptr;
     double synthOffset = 0.0;
     bool rollSet = false;

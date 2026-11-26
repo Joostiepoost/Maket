@@ -171,6 +171,7 @@ juce::Colour RollView::colourOf (int velocity, int itemFlags) const
 
 void RollView::rebuild()
 {
+    const double began = juce::Time::getMillisecondCounterHiRes();
     auto& font = MusicFont::get();
     voices.clear();
     startReach = 0.0;
@@ -188,7 +189,7 @@ void RollView::rebuild()
         const auto& voice = roll.voices[(size_t) place.voice];
         item.name = voice.name;
         item.flags = voice.flags;
-        if (! place.hidden && place.ownsStaves)
+        if (! place.hidden)
             nameWidth = juce::jmax (nameWidth, juce::GlyphArrangement::getStringWidth (nameFont, item.name));
 
         for (const auto& chord : voice.chords)
@@ -295,6 +296,7 @@ void RollView::rebuild()
         markers.push_back (std::move (item));
     }
     std::stable_sort (markers.begin(), markers.end(), [] (const MarkerItem& a, const MarkerItem& b) { return a.ms < b.ms; });
+    rebuildMs = juce::Time::getMillisecondCounterHiRes() - began;
 }
 
 // --- Geometry ---------------------------------------------------------------------
@@ -302,7 +304,24 @@ void RollView::rebuild()
 int RollView::headerWidth() const
 {
     const float space = spacePixels();
-    return juce::roundToInt (juce::jmax (36.0f, nameWidth + 20.0f) + 4.8f * space + 6.0f);
+    return juce::roundToInt (nameColumn() + 4.8f * space + 6.0f);
+}
+
+float RollView::nameColumn() const
+{
+    // Room for the names, and for the tag under each name (2e) when there are tags.
+    return juce::jmax (voiceTags.isEmpty() ? 36.0f : 72.0f, nameWidth + 20.0f);
+}
+
+juce::Rectangle<float> RollView::nameBounds (const VoiceItem& v) const
+{
+    const float topY = (float) yOf (v.place.offset + v.place.clef.topUnits()), bottomY = (float) yOf (v.place.offset + v.place.clef.bottomUnits());
+    const float middle = (topY + bottomY) * 0.5f, width = nameColumn() - 8.0f;
+    if (v.place.numParts <= 1) return { 4.0f, middle - 10.0f, width, 20.0f };
+
+    // Voices that share their staves (bach's voice ensemble): their names one under the other beside the staves, as in bach.roll.
+    const float row = voiceTags.isEmpty() ? 15.0f : 29.0f;
+    return { 4.0f, middle - 0.5f * row * (float) v.place.numParts + row * (float) v.place.partIndex, width, 15.0f };
 }
 
 double RollView::zeroPad() const
@@ -448,6 +467,8 @@ void RollView::paint (juce::Graphics& g)
 
 void RollView::paintPaper (juce::Graphics& g)
 {
+    const double began = juce::Time::getMillisecondCounterHiRes();
+    notesDrawn = 0;
     g.fillAll (paper);
 
     const auto area = rollArea();
@@ -504,6 +525,20 @@ void RollView::paintPaper (juce::Graphics& g)
     // The corner between the two scroll bars.
     g.setColour (Theme::panel);
     g.fillRect (getWidth() - barThickness, getHeight() - barThickness, barThickness, barThickness);
+
+    if (showTimes && hasRoll())
+    {
+        const double took = juce::Time::getMillisecondCounterHiRes() - began;
+        const juce::String text = "drawn in " + juce::String (took, 1) + " ms (" + juce::String (notesDrawn) + " notes in view); notation worked out in "
+                                  + juce::String (rebuildMs, 1) + " ms";
+        const auto font = Theme::font (11.0f);
+        const auto box = juce::Rectangle<int> (4, getHeight() - barThickness - 20, juce::roundToInt (juce::GlyphArrangement::getStringWidth (font, text)) + 12, 18);
+        g.setColour (paper.withAlpha (0.9f));
+        g.fillRect (box);
+        g.setColour (juce::Colour (0xff555555));
+        g.setFont (font);
+        g.drawText (text, box.reduced (6, 0), juce::Justification::centredLeft, false);
+    }
 }
 
 // --- The playhead and the loop (stage 2d) ------------------------------------------
@@ -559,17 +594,19 @@ void RollView::setLoop (double startMs, double endMs, bool on)
 void RollView::setVoiceTags (const juce::StringArray& tags)
 {
     if (tags == voiceTags) return;
+    const bool widthChanges = tags.isEmpty() != voiceTags.isEmpty();
     voiceTags = tags;
+    if (widthChanges) viewChanged();        // the names' column gets room for the tags
     paperLayer.repaint();
 }
 
 juce::Rectangle<float> RollView::tagBounds (const VoiceItem& v) const
 {
     // Under the name, in the middle of the names' column.
-    const float topY = (float) yOf (v.place.offset + v.place.clef.topUnits()), bottomY = (float) yOf (v.place.offset + v.place.clef.bottomUnits());
-    const float column = (float) (rollArea().getX() - (int) std::round (4.8 * spacePixels()) - 6);        // the left end of the staves
-    const float width = juce::jmin (64.0f, column - 8.0f);
-    return { 4.0f + (column - 8.0f - width) * 0.5f, (topY + bottomY) * 0.5f + 11.0f, width, 15.0f };
+    const auto name = nameBounds (v);
+    const float width = juce::jmin (64.0f, name.getWidth());
+    const bool shared = v.place.numParts > 1;
+    return { name.getCentreX() - 0.5f * width, name.getBottom() + (shared ? -1.0f : 1.0f), width, shared ? 13.0f : 15.0f };
 }
 
 void RollView::mouseDown (const juce::MouseEvent& e)
@@ -577,10 +614,10 @@ void RollView::mouseDown (const juce::MouseEvent& e)
     // A click on a voice's tag.
     if (hasRoll() && e.x < rollArea().getX() && e.y > rulerHeight && onVoiceTagClicked)
         for (size_t i = 0; i < voices.size(); ++i)
-            if (! voices[i].place.hidden && voices[i].place.ownsStaves && (int) i < voiceTags.size()
-                && tagBounds (voices[i]).expanded (3.0f).contains (e.position))
+            if (! voices[i].place.hidden && voices[i].place.voice < voiceTags.size()
+                && tagBounds (voices[i]).expanded (2.0f).contains (e.position))
             {
-                onVoiceTagClicked ((int) i);
+                onVoiceTagClicked (voices[i].place.voice);
                 pressInRuler = draggingLoop = false;
                 return;
             }
@@ -670,6 +707,7 @@ void RollView::paintNotes (juce::Graphics& g, juce::Rectangle<int> area)
             {
                 const float y = (float) yOf (n.units);
                 if (y < top || y > bottom) continue;
+                ++notesDrawn;
                 const float headLeft = stemX + n.headLeft * space;
                 const float headCentre = headLeft + headWidth * 0.5f;
 
@@ -866,26 +904,22 @@ void RollView::paintHeader (juce::Graphics& g, juce::Rectangle<int> area)
 
     auto& font = MusicFont::get();
     const float space = spacePixels();
-    const int staffStart = juce::roundToInt (juce::jmax (36.0f, nameWidth + 20.0f));
+    const int staffStart = juce::roundToInt (nameColumn());
 
     paintStaves (g, staffStart, area.getRight());
 
-    g.setFont (Theme::font (13.0f));
     for (const auto& v : voices)
     {
-        if (v.place.hidden || ! v.place.ownsStaves) continue;
+        if (v.place.hidden) continue;
 
         const float topY = (float) yOf (v.place.offset + v.place.clef.topUnits());
         const float bottomY = (float) yOf (v.place.offset + v.place.clef.bottomUnits());
         if (bottomY < (float) (area.getY() - 40) || topY > (float) (area.getBottom() + 40)) continue;
 
-        // The left end of the staves, and the name beside them.
-        g.setColour (flagColour (v.flags, staffLine));
-        g.fillRect (juce::Rectangle<float> ((float) staffStart, topY, juce::jmax (1.0f, 0.11f * space), bottomY - topY));
         // What sounds the voice: a small tag under the name (a click changes it).
-        if ((int) (&v - voices.data()) < voiceTags.size())
+        if (v.place.voice < voiceTags.size())
         {
-            const auto tag = voiceTags[(int) (&v - voices.data())];
+            const auto tag = voiceTags[v.place.voice];
             const auto box = tagBounds (v);
             const bool silent = tag == "silent";
             const auto tint = tag == "synth" ? juce::Colour (0xff5b4fa8) : silent ? juce::Colour (0xff8a8a86) : juce::Colour (0xff1f7a6d);
@@ -898,10 +932,14 @@ void RollView::paintHeader (juce::Graphics& g, juce::Rectangle<int> area)
         }
 
         // The name: in the middle of its column, in the colour of a locked, muted or solo voice, as in ScAst's roll.
+        g.setFont (Theme::font (13.0f));
         g.setColour (flagColour (v.flags, ink));
-        g.drawText (v.name, juce::Rectangle<float> (4.0f, (topY + bottomY) * 0.5f - 10.0f, (float) staffStart - 8.0f, 20.0f),
-                    juce::Justification::centred, false);
+        g.drawText (v.name, nameBounds (v), juce::Justification::centred, false);
 
+        // The left end of the staves and their clefs: once for voices that share them.
+        if (! v.place.ownsStaves) continue;
+        g.setColour (flagColour (v.flags, staffLine));
+        g.fillRect (juce::Rectangle<float> ((float) staffStart, topY, juce::jmax (1.0f, 0.11f * space), bottomY - topY));
         g.setColour (flagColour (v.flags, ink));
         for (const auto& staff : v.place.clef.staves)
             if (const auto sign = clefSign (staff))

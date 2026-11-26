@@ -30,12 +30,27 @@ void Synth::prepare (double sampleRateToUse)
 
 void Synth::addNotes (std::vector<SynthNote> notes)
 {
-    std::vector<SynthNote> old;             // freed here, outside the lock and outside the audio thread
+    // Memory is asked for and given back here, outside the lock: the audio thread never waits for that.
+    // Only this thread adds notes, so between the two locks the list of waiting notes can only get shorter.
+    std::vector<SynthNote> old, fresh, grown;
+    fresh.reserve (mostFinished);
+    bool roomNeeded = false;
+    size_t have = 0;
+    {
+        const juce::ScopedLock sl (lock);
+        have = waiting.size();
+        roomNeeded = waiting.capacity() < have + notes.size();
+    }
+    if (roomNeeded) grown.reserve (2 * (have + notes.size()));
     {
         const juce::ScopedLock sl (lock);
         old.swap (finished);
-        finished.reserve (mostFinished);
-        // Room for 16384 waiting notes is kept ready; a pass with more makes the list grow here, which may hold up one block of sound.
+        finished.swap (fresh);
+        if (roomNeeded)
+        {
+            for (auto& n : waiting) grown.push_back (std::move (n));
+            waiting.swap (grown);
+        }
         for (auto& n : notes)
             if (n.end > n.start) waiting.push_back (std::move (n));
     }

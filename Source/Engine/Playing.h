@@ -75,6 +75,21 @@ std::vector<contimbre::TimedMessage> messagesForPass (const Roll& roll, const st
     note entered in its middle and the end of a loop are the same for both. `start` and `end` are times of the roll. */
 std::vector<SynthNote> synthNotesForPass (const Roll& roll, const std::vector<VoiceEngine>& engines, double from, double to);
 
+/** A roll made ready for playing: what is audible, split by engine. Made once when the roll or the engines
+    change; every pass after that (a loop goes round many times) only looks at its own part of the roll. */
+struct Prepared
+{
+    Roll conTimbre;                                         // audible, the conTimbre voices only
+    Roll synth;                                             // audible, the synth voices only
+    std::vector<contimbre::TimedMessage> programsAndGains;  // of a run from the start, in order: what `stateBefore` reads
+};
+
+Prepared prepare (const Roll&, const std::vector<VoiceEngine>& engines);
+
+/** As `messagesForPass` and `synthNotesForPass` above, from a prepared roll. */
+std::vector<contimbre::TimedMessage> messagesForPass (const Prepared&, double from, double to, int firstNumber, int& numbersUsed);
+std::vector<SynthNote> synthNotesForPass (const Prepared&, double from, double to);
+
 /** The numbers of the notes that sound at `time` (after their `ctnote`, before their `ctnoteoff`) in a pass. */
 std::vector<int> soundingAt (const std::vector<contimbre::TimedMessage>& pass, double time);
 

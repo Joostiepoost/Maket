@@ -79,6 +79,11 @@ public:
 
     /** A small tag under each voice's name (stage 2e: what sounds the voice); a click on it is reported. */
     void setVoiceTags (const juce::StringArray& tags);
+
+    /** Stage 2f: writes in the lower left corner how long the last drawing of the paper took, and the working out
+        of the notation when the roll was opened. For judging speed with large rolls. */
+    void setShowTimes (bool shouldShow)         { showTimes = shouldShow; paperLayer.repaint(); }
+    bool showsTimes() const                     { return showTimes; }
     juce::String voiceName (int voice) const    { return voice >= 0 && voice < (int) voices.size() ? voices[(size_t) voice].name : juce::String(); }
     std::function<void (int voice)> onVoiceTagClicked;
 
@@ -147,8 +152,14 @@ private:
     void paintOverlay (juce::Graphics&);
     juce::Rectangle<int> playheadStrip (double ms) const;
 
+    bool showTimes = false;
+    double rebuildMs = 0.0;
+    int notesDrawn = 0;
+
     juce::StringArray voiceTags;
     juce::Rectangle<float> tagBounds (const VoiceItem&) const;
+    juce::Rectangle<float> nameBounds (const VoiceItem&) const;
+    float nameColumn() const;
 
     double playheadMs = 0.0;
     double loopStartMs = 0.0, loopEndMs = 0.0;

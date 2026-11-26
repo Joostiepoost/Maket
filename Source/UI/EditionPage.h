@@ -37,6 +37,8 @@ public:
     void zoomAcross (int direction);
     void zoomDown (int direction);
     void zoomToFit()                    { view.zoomToFit(); }
+    void toggleDrawingTimes()           { view.setShowTimes (! view.showsTimes()); }
+    bool showsDrawingTimes() const      { return view.showsTimes(); }
 
     // --- Transport (stage 2d): the roll on the conTimbre ePlayer ---
 

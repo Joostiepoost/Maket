@@ -22,6 +22,7 @@ void Transport::setRoll (const Roll& newRoll)
     if (playing) stop();
     roll = newRoll;
     engines = playing::defaultEngines (roll);
+    preparedValid = false;
     rollSet = true;
     length = roll.length();
     started = stopped = 0.0;
@@ -50,8 +51,13 @@ Transport::Pass Transport::nextPass (const Pass* previous, double from, double c
         pass.rollFrom = loopFrom;
         pass.rollTo = loopTo;
     }
-    pass.messages = playing::messagesForPass (roll, engines, pass.rollFrom, pass.rollTo, pass.firstNumber, pass.numbers);
-    pass.synthNotes = playing::synthNotesForPass (roll, engines, pass.rollFrom, pass.rollTo);
+    if (! preparedValid)
+    {
+        prepared = playing::prepare (roll, engines);
+        preparedValid = true;
+    }
+    pass.messages = playing::messagesForPass (prepared, pass.rollFrom, pass.rollTo, pass.firstNumber, pass.numbers);
+    pass.synthNotes = playing::synthNotesForPass (prepared, pass.rollFrom, pass.rollTo);
     return pass;
 }
 
@@ -68,10 +74,21 @@ std::vector<SynthNote> Transport::onClock (const Pass& pass, double offsetMs)
 
 void Transport::schedule (const Pass& pass)
 {
-    for (const auto& m : pass.messages)
-        scheduler.sendAt (pass.clockStart + (m.time - pass.rollFrom), m.message, OscScheduler::toPlayer, tag);
-    commands += (int) pass.messages.size();
+    // The synth first: that is quick, and its audio device asks for its notes a little ahead of their time.
     if (synth != nullptr && ! pass.synthNotes.empty()) synth->addNotes (onClock (pass, synthOffset));
+
+    // In order of time and a few thousand at once: the send thread has the first commands while the later ones
+    // of a very large roll are still being handed over.
+    std::vector<std::pair<double, OscMessage>> batch;
+    const size_t most = 4000;
+    batch.reserve (std::min (most, pass.messages.size()));
+    for (const auto& m : pass.messages)
+    {
+        batch.emplace_back (pass.clockStart + (m.time - pass.rollFrom), m.message);
+        if (batch.size() == most) { scheduler.sendAt (batch, OscScheduler::toPlayer, tag); batch.clear(); }
+    }
+    if (! batch.empty()) scheduler.sendAt (batch, OscScheduler::toPlayer, tag);
+    commands += (int) pass.messages.size();
 }
 
 bool Transport::play (double from, double standardPitch, juce::String& problem)
@@ -82,9 +99,8 @@ bool Transport::play (double from, double standardPitch, juce::String& problem)
     from = std::max (0.0, from);
     if (from >= length)     { problem = "The roll ends at " + juce::String (length / 1000.0, 1) + " seconds."; return false; }
 
-    const double now = OscScheduler::now();
     looping = loopOn && hasLoop() && from < loopTo;
-    auto first = nextPass (nullptr, from, now + leadTime);
+    auto first = nextPass (nullptr, from, 0.0);
     if (first.messages.empty() && first.synthNotes.empty() && ! looping)
     {
         problem = "Nothing plays from there: no note that is not muted, in a voice that plays.";
@@ -98,6 +114,9 @@ bool Transport::play (double from, double standardPitch, juce::String& problem)
 
     // The standard pitch first, ahead of the first note (stage 1f.8).
     scheduler.sendImmediately (contimbre::kammerton (standardPitch), OscScheduler::toPlayer, tag);
+
+    // The clock is read only now: working out a very large roll takes a moment, and the first note keeps its lead.
+    first.clockStart = OscScheduler::now() + leadTime;
 
     endClock = first.clockStart;
     for (const auto& m : first.messages) endClock = std::max (endClock, first.clockStart + (m.time - first.rollFrom));

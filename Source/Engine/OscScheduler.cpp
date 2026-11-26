@@ -42,6 +42,16 @@ void OscScheduler::sendAt (double time, const OscMessage& message, int targets, 
     wake.signal();
 }
 
+void OscScheduler::sendAt (const std::vector<std::pair<double, OscMessage>>& messages, int targets, int tag)
+{
+    {
+        const juce::ScopedLock sl (lock);
+        for (const auto& [time, message] : messages)
+            waiting.insert (waiting.end(), { time, Event { message, targets, tag } });     // the hint: most come in order of time
+    }
+    wake.signal();
+}
+
 void OscScheduler::sendImmediately (const OscMessage& message, int targets, int tag)
 {
     sendNow (now(), Event { message, targets, tag });

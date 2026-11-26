@@ -66,8 +66,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 2b | Accidentals: bach's sign for every step of the eighth-tone grid, placed left of the chord by bach's method; the semitone grid as the other choice; a note the file gives by name keeps its letter | done; tested by Joost on 25 Nov. 2b.1: clusters as bach's small tree; velocity shown in grey, colour or alpha |
 | 2c | Glides (pitch breakpoints) along the duration line, markers with their names and roles, the colours of what is locked, muted or solo | done; tested by Joost on 25 Nov |
 | 2d | Transport on conTimbre: a playhead, play from any point, play prescheduled, stop, a loop region; voice names and the percussion clef as in ScAst | done; tested by Joost on 25 Nov |
-| 2e | Sound from Maket itself: the audio output as a setting, a first plain synth (one sine per note), and per voice the choice of conTimbre, synth or silent | tested by Joost on 26 Nov: all of it works; how many ms the synth must wait for the ePlayer is still being settled |
-| 2f | The closing test of step 2 | |
+| 2e | Sound from Maket itself: the audio output as a setting, a first plain synth (one sine per note), and per voice the choice of conTimbre, synth or silent | done; tested by Joost on 26 Nov. On his Mac the synth waits 91 ms for the ePlayer (*Synth timing*) |
+| 2f | The closing of step 2: speed with a very large roll (measured, and made faster where it was slow), the looks gone through once more | built 26 Nov; to be tested by Joost |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
 | 5 | Slot list and data: the project's slots, all built types, import mapping | |
@@ -778,7 +778,39 @@ His recording of the test roll (`Contimbre & synth test2.ogg`, attached in the c
 - The cello's plucks begin **90 to 93 ms after the synth's tones** (mean 91.5 ms). They alternate between two moments 2.67 ms apart, which is one block of 128 samples at 48000: the ePlayer starts a note on a block of Max's audio.
 - The held A is at 221.0 Hz, as it should be on 442.
 
-By ear, on his set-up, Joost finds the two together with *Synth timing* at 35 to 40 ms. The 55 ms between the two figures is not explained yet: it depends on what the setting was during the recording and on which outputs Maket and Max played through, for listening and for recording. No default is changed until that is known.
+Joost first found the two together by ear at 35 to 40 ms; listening again with the measured figure he confirmed it: at **91 ms** they fall exactly together. That is his setting of *Synth timing*. It belongs to his Mac, his audio output and Max's audio settings (it is the time the ePlayer needs from a command to its sound), so the setting's first value in the code stays 0.
+
+## Using stage 2f
+
+The closing of step 2. Nothing new to play with; what was asked of this stage is speed with large rolls and one more look at everything beside ScAst.
+
+**Speed.** The test program now writes a roll far larger than any of yours, `Temp/written by Maket/Large roll by Maket.txt` (24 voices, 20 minutes, 74157 notes, half of the voices on conTimbre and half on the synth), and times what Maket does with it (section 11 of the report). Three things were slow with it and are changed:
+
+- *The start of a play.* Working out a play of the whole roll took most of a second on the test machine, and the clock was read before that work: the first second of music came late and bunched together. The clock is now read after the work, so however large the roll, the opening is in time; a very large roll starts a moment after the press instead.
+- *A loop.* Every round of a loop was worked out from the whole roll (0.3 s per round with this roll, during which the window stood still). The roll is now made ready once, and a round is worked out from its own stretch: 6 ms.
+- *Handing over.* Commands go to the send thread a few thousand at a time and in order, so the first ones are on their way while the rest of a very large roll is still being handed over. The synth gets room for its notes without the sound having to wait.
+
+With your own rolls none of this was noticeable; they are a hundred times smaller.
+
+**Drawing times.** *View > Show drawing times* (⌥⌘T) writes in the lower left corner of the roll how long the last drawing of the paper took and how many notes were in view. On the test machine (no graphics card, so slower than your Mac): your rolls at full view about 10 ms (Draaikolk, 424 notes in view); the large roll about 14 ms at its opening zoom (480 notes in view) and 240 to 320 ms with 22000 to 28000 notes in view at once. Nearly all of that time goes to drawing note heads and accidentals one by one. If the figures on your Mac call for it, they can be drawn several times faster; I would rather decide that on your figures than on mine.
+
+**Looks.** Six more of your rolls (Draaikolk, FMmod, Mexican Bird, Priem boventonen, both Capriccios) were set beside your ScAst screenshots. Staves, notes, accidentals, velocities, markers and the colour of muted voices agree. Two things were found and changed:
+
+- Voices that share their staves (Draaikolk's `sample1` and `sample2`) now show both names, one under the other as in ScAst, each with its own tag; before, the second voice had no name and no tag to click.
+- A roll whose voices have short names or none now keeps room for the tags beside the staves (they were cut off or lay over the clefs).
+
+What still differs from ScAst is what the slots hold (techniques, curves, dynamics, articulations, note head shapes): step 5.
+
+### Testing stage 2f
+
+1. `git pull`, then `./build.sh`: `stage 2f`. `./build.sh tests` ends with `All 214 checks passed.`; it takes a few seconds longer than before, and writes the large roll.
+2. Open `Temp/written by Maket/Large roll by Maket.txt` and switch on *View > Show drawing times*. What does the line in the corner say as it opens, and after Fit? Scroll and zoom: where does it feel slow, if anywhere?
+3. Play it from the start (the ePlayer may stay closed for this roll: twelve of its voices play on the synth, and it is a wall of sound, not music). Does it begin at once and in time, does the playhead run evenly, do the pages turn? Stop: silent at once?
+4. Make a loop of some ten seconds somewhere in the middle and play: does it go round without the window hesitating at each round?
+5. The looks, once more with rolls of your choice beside ScAst; Draaikolk for the two names on one staff. Anything that differs, apart from what the slots hold, I would like to hear.
+6. Push `Measurements/report.md`: its section 11 holds your Mac's times.
+
+With that, step 2 is closed: real files look as in bach.roll, eighth tones are right, play, stop and loop work, on conTimbre and on Maket's own synth.
 
 ## The repository
 

@@ -18,7 +18,7 @@ endif()
 
 # The build stage this source stands at; shown at the right of the tab row,
 # so that it is clear which build is being tested.
-set(MAKET_BUILD_STAGE "2e")
+set(MAKET_BUILD_STAGE "2f")
 
 # --- JUCE --------------------------------------------------------------------
 # By default JUCE is downloaded automatically (first build takes a few minutes).
@@ -140,7 +140,7 @@ option(MAKET_BUILD_TESTS "Build the MaketTests console program" OFF)
 if(MAKET_BUILD_TESTS)
     juce_add_console_app(MaketTests PRODUCT_NAME "MaketTests")
     juce_generate_juce_header(MaketTests)
-    target_sources(MaketTests PRIVATE Tests/MaketTests.cpp Tests/BachTests.cpp Tests/BachWriteTests.cpp Tests/OscTests.cpp Tests/TimingTests.cpp Tests/MappingTests.cpp Tests/StudyTests.cpp Tests/NotationTests.cpp Tests/PlayingTests.cpp Tests/SynthTests.cpp ${MAKET_CORE_SOURCES})
+    target_sources(MaketTests PRIVATE Tests/MaketTests.cpp Tests/BachTests.cpp Tests/BachWriteTests.cpp Tests/OscTests.cpp Tests/TimingTests.cpp Tests/MappingTests.cpp Tests/StudyTests.cpp Tests/NotationTests.cpp Tests/PlayingTests.cpp Tests/SynthTests.cpp Tests/SpeedTests.cpp ${MAKET_CORE_SOURCES})
     target_compile_definitions(MaketTests PRIVATE
         ${MAKET_DEFINITIONS} JUCE_STANDALONE_APPLICATION=1
         MAKET_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")

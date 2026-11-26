@@ -184,10 +184,13 @@ std::vector<VoiceEngine> defaultEngines (const Roll& roll)
 
 Roll forEngine (const Roll& roll, const std::vector<VoiceEngine>& engines, VoiceEngine which)
 {
-    Roll result = roll;
-    for (size_t v = 0; v < result.voices.size(); ++v)
-        if ((v < engines.size() ? engines[v] : VoiceEngine::conTimbre) != which)
-            result.voices[v].chords.clear();
+    Roll result;
+    result.header = roll.header;
+    result.slotInfo = roll.slotInfo;
+    result.markers = roll.markers;
+    result.voices.reserve (roll.voices.size());
+    for (size_t v = 0; v < roll.voices.size(); ++v)
+        result.voices.push_back ((v < engines.size() ? engines[v] : VoiceEngine::conTimbre) == which ? roll.voices[v] : roll.voices[v].withoutChords());
     return result;
 }
 
@@ -253,91 +256,146 @@ double glideCentsAt (const Note& note, double position)
 
 Roll excerpt (const Roll& roll, double from, double to)
 {
-    Roll result = roll;
-    for (auto& voice : result.voices)
+    // Only what lies in the part is copied: a loop of ten seconds in a roll of an hour costs ten seconds' worth.
+    Roll result;
+    result.header = roll.header;
+    result.slotInfo = roll.slotInfo;
+    result.voices.reserve (roll.voices.size());
+
+    for (const auto& voice : roll.voices)
     {
-        std::vector<Chord> chords;
-        for (auto& chord : voice.chords)
+        auto out = voice.withoutChords();
+        for (const auto& chord : voice.chords)
         {
             if (chord.onset >= to) continue;
-            std::vector<Note> notes;
-            for (auto& note : chord.notes)
+            Chord cut;
+            bool any = false;
+            for (const auto& note : chord.notes)
             {
                 const double end = chord.onset + note.duration;
                 if (end <= from) continue;
-                cutNote (note, std::max (0.0, from - chord.onset), std::min (note.duration, to - chord.onset));
-                notes.push_back (std::move (note));
+                if (! any) { cut = chord.withoutNotes(); any = true; }
+                cut.notes.push_back (note);
+                cutNote (cut.notes.back(), std::max (0.0, from - chord.onset), std::min (note.duration, to - chord.onset));
             }
-            if (notes.empty()) continue;
+            if (! any) continue;
 
             // Notes of one chord cut at `from` all begin there; a chord that begins later keeps its onset.
-            chord.onset = std::max (chord.onset, from);
-            chord.notes = std::move (notes);
-            chords.push_back (std::move (chord));
+            cut.onset = std::max (chord.onset, from);
+            out.chords.push_back (std::move (cut));
         }
-        std::stable_sort (chords.begin(), chords.end(), [] (const Chord& a, const Chord& b) { return a.onset < b.onset; });
-        voice.chords = std::move (chords);
+        std::stable_sort (out.chords.begin(), out.chords.end(), [] (const Chord& a, const Chord& b) { return a.onset < b.onset; });
+        result.voices.push_back (std::move (out));
     }
 
-    std::vector<Marker> markers;
-    for (const auto& m : result.markers)
-        if (m.position >= from && m.position < to) markers.push_back (m);
-    result.markers = std::move (markers);
+    for (const auto& m : roll.markers)
+        if (m.position >= from && m.position < to) result.markers.push_back (m);
     return result;
+}
+
+namespace
+{
+    contimbre::MappingOptions passOptions (int firstNumber)
+    {
+        contimbre::MappingOptions options;
+        options.byNumber = true;
+        options.firstNoteNumber = firstNumber;
+        return options;
+    }
+
+    bool wholeRoll (double from, double to)     { return from <= 0.0 && to >= std::numeric_limits<double>::max(); }
+
+    std::vector<contimbre::TimedMessage> programsAndGainsOf (const Roll& audibleRoll)
+    {
+        std::vector<contimbre::TimedMessage> kept;
+        for (auto& m : contimbre::messagesForRoll (audibleRoll, {}, passOptions (1)))
+            if (m.message.address == "program" || m.message.address == "gain") kept.push_back (std::move (m));
+        return kept;
+    }
+
+    std::vector<contimbre::TimedMessage> passOf (const Roll& audibleRoll, const std::vector<contimbre::TimedMessage>* programsAndGains,
+                                                 double from, double to, int firstNumber, int& numbersUsed)
+    {
+        const auto options = passOptions (firstNumber);
+        auto messages = wholeRoll (from, to) ? contimbre::messagesForRoll (audibleRoll, {}, options)
+                                             : contimbre::messagesForRoll (excerpt (audibleRoll, from, to), {}, options);
+        numbersUsed = 0;
+        for (const auto& m : messages)
+            if (m.message.address == "ctnote") ++numbersUsed;
+
+        if (from > 0.0)
+        {
+            // What every voice was last told before `from`, in a run from the start.
+            auto before = contimbre::stateBefore (programsAndGains != nullptr ? *programsAndGains : programsAndGainsOf (audibleRoll), from);
+            before.insert (before.end(), std::make_move_iterator (messages.begin()), std::make_move_iterator (messages.end()));
+            messages = std::move (before);
+        }
+        return messages;
+    }
+
+    std::vector<SynthNote> synthNotesOf (const Roll& part)
+    {
+        std::vector<SynthNote> notes;
+        for (const auto& voice : part.voices)
+            for (const auto& chord : voice.chords)
+                for (const auto& note : chord.notes)
+                {
+                    if (note.duration <= 0.0) continue;
+                    SynthNote n;
+                    n.start = chord.onset;
+                    n.end = chord.onset + note.duration;
+                    n.cents = note.cents;
+                    n.velocity = note.velocity;
+                    if (note.breakpoints.size() >= 2)
+                        for (const auto& b : note.breakpoints) n.glide.push_back ({ b.position, b.cents, b.slope });
+                    if (const auto* slot = note.slot (2))
+                        for (const auto& p : pointsOf (slot->content)) n.levels.push_back ({ p.x, p.y, p.slope });
+                    notes.push_back (std::move (n));
+                }
+        std::stable_sort (notes.begin(), notes.end(), [] (const SynthNote& a, const SynthNote& b) { return a.start < b.start; });
+        return notes;
+    }
 }
 
 std::vector<contimbre::TimedMessage> messagesForPass (const Roll& roll, double from, double to, int firstNumber, int& numbersUsed)
 {
-    contimbre::MappingOptions options;
-    options.byNumber = true;
-    options.firstNoteNumber = firstNumber;
-
-    const auto playing = audible (roll);
-    auto messages = contimbre::messagesForRoll (excerpt (playing, from, to), {}, options);
-
-    numbersUsed = 0;
-    for (const auto& m : messages)
-        if (m.message.address == "ctnote") ++numbersUsed;
-
-    if (from > 0.0)
-    {
-        // What every voice was last told before `from`, in a run from the start.
-        auto before = contimbre::stateBefore (contimbre::messagesForRoll (playing, {}, options), from);
-        before.insert (before.end(), messages.begin(), messages.end());
-        messages = std::move (before);
-    }
-    return messages;
+    return passOf (audible (roll), nullptr, from, to, firstNumber, numbersUsed);
 }
 
 std::vector<contimbre::TimedMessage> messagesForPass (const Roll& roll, const std::vector<VoiceEngine>& engines,
                                                      double from, double to, int firstNumber, int& numbersUsed)
 {
     // Muted and solo are judged over the whole roll, whatever plays a voice.
-    return messagesForPass (forEngine (audible (roll), engines, VoiceEngine::conTimbre), from, to, firstNumber, numbersUsed);
+    return passOf (forEngine (audible (roll), engines, VoiceEngine::conTimbre), nullptr, from, to, firstNumber, numbersUsed);
 }
 
 std::vector<SynthNote> synthNotesForPass (const Roll& roll, const std::vector<VoiceEngine>& engines, double from, double to)
 {
-    std::vector<SynthNote> notes;
-    const auto part = excerpt (forEngine (audible (roll), engines, VoiceEngine::synth), from, to);
-    for (const auto& voice : part.voices)
-        for (const auto& chord : voice.chords)
-            for (const auto& note : chord.notes)
-            {
-                if (note.duration <= 0.0) continue;
-                SynthNote n;
-                n.start = chord.onset;
-                n.end = chord.onset + note.duration;
-                n.cents = note.cents;
-                n.velocity = note.velocity;
-                if (note.breakpoints.size() >= 2)
-                    for (const auto& b : note.breakpoints) n.glide.push_back ({ b.position, b.cents, b.slope });
-                if (const auto* slot = note.slot (2))
-                    for (const auto& p : pointsOf (slot->content)) n.levels.push_back ({ p.x, p.y, p.slope });
-                notes.push_back (std::move (n));
-            }
-    std::stable_sort (notes.begin(), notes.end(), [] (const SynthNote& a, const SynthNote& b) { return a.start < b.start; });
-    return notes;
+    const auto mine = forEngine (audible (roll), engines, VoiceEngine::synth);
+    return wholeRoll (from, to) ? synthNotesOf (mine) : synthNotesOf (excerpt (mine, from, to));
+}
+
+Prepared prepare (const Roll& roll, const std::vector<VoiceEngine>& engines)
+{
+    Prepared prepared;
+    auto playing = audible (roll);
+    prepared.conTimbre = forEngine (playing, engines, VoiceEngine::conTimbre);
+    for (size_t v = 0; v < playing.voices.size(); ++v)                      // what is left becomes the synth's roll, without another copy
+        if ((v < engines.size() ? engines[v] : VoiceEngine::conTimbre) != VoiceEngine::synth)
+            playing.voices[v].chords.clear();
+    prepared.synth = std::move (playing);
+    prepared.programsAndGains = programsAndGainsOf (prepared.conTimbre);
+    return prepared;
+}
+
+std::vector<contimbre::TimedMessage> messagesForPass (const Prepared& prepared, double from, double to, int firstNumber, int& numbersUsed)
+{
+    return passOf (prepared.conTimbre, &prepared.programsAndGains, from, to, firstNumber, numbersUsed);
+}
+
+std::vector<SynthNote> synthNotesForPass (const Prepared& prepared, double from, double to)
+{
+    return wholeRoll (from, to) ? synthNotesOf (prepared.synth) : synthNotesOf (excerpt (prepared.synth, from, to));
 }
 
 std::vector<int> soundingAt (const std::vector<contimbre::TimedMessage>& pass, double time)

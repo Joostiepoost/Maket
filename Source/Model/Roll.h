@@ -62,6 +62,9 @@ struct Chord
     std::vector<Llll> others;   // name; kept
 
     bool isMuted() const        { return (flags & flagMuted) != 0; }
+
+    /** This chord without its notes. A field added to Chord must be added here too. */
+    Chord withoutNotes() const  { Chord c; c.onset = onset; c.flags = flags; c.others = others; return c; }
 };
 
 struct Voice
@@ -76,6 +79,9 @@ struct Voice
 
     bool isMuted() const        { return (flags & flagMuted) != 0; }
     int numNotes() const;
+
+    /** This voice without its chords. A field added to Voice must be added here too. */
+    Voice withoutChords() const { Voice v; v.flags = flags; v.name = name; v.clef = clef; v.midiChannel = midiChannel; return v; }
 };
 
 struct Marker

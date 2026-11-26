@@ -164,7 +164,7 @@ void MainComponent::getAllCommands (juce::Array<juce::CommandID>& c)
         c.add (cmdShowTab + i);
     c.add (cmdToggleList);
     c.add (cmdToggleInspector);
-    for (auto id : { cmdOpen, cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit,
+    for (auto id : { cmdOpen, cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit, cmdDrawingTimes,
                      cmdPlayStop, cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart })
         c.add (id);
 }
@@ -241,6 +241,12 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
             info.addDefaultKeypress (juce::KeyPress::spaceKey, juce::ModifierKeys::shiftModifier);
             info.setActive (rollInFront);
             return;
+        case cmdDrawingTimes:
+            info.setInfo ("Show drawing times", "Write in the corner of the roll how long its last drawing took", "View", 0);
+            info.addDefaultKeypress ('t', cmdAlt);
+            info.setTicked (edition != nullptr && edition->showsDrawingTimes());
+            info.setActive (rollInFront);
+            return;
         case cmdPlayOn:
             info.setInfo ("Play on from where it stopped", "Play from where the last play was stopped", "Transport", 0);
             info.addDefaultKeypress (juce::KeyPress::spaceKey, juce::ModifierKeys::altModifier);
@@ -283,6 +289,7 @@ bool MainComponent::perform (const InvocationInfo& info)
             case cmdZoomDownIn:     edition->zoomDown (1);      return true;
             case cmdZoomDownOut:    edition->zoomDown (-1);     return true;
             case cmdZoomToFit:      edition->zoomToFit();       return true;
+            case cmdDrawingTimes:   edition->toggleDrawingTimes(); commandManager.commandStatusChanged(); return true;
             case cmdPlayStop:           edition->playOrStop();          commandManager.commandStatusChanged(); return true;
             case cmdPlayPrescheduled:   edition->playPrescheduled();    commandManager.commandStatusChanged(); return true;
             case cmdPlayOn:             edition->playOn();              commandManager.commandStatusChanged(); return true;
@@ -313,6 +320,7 @@ juce::PopupMenu MainComponent::getMenuForIndex (int menuIndex, const juce::Strin
     {
         for (auto id : { cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit })
             m.addCommandItem (&commandManager, id);
+        m.addCommandItem (&commandManager, cmdDrawingTimes);
         m.addSeparator();
         for (int i = 0; i < Tabs::count; ++i)
             m.addCommandItem (&commandManager, cmdShowTab + i);
