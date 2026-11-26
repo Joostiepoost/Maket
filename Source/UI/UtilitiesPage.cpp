@@ -78,6 +78,14 @@ void UtilitiesPage::mouseDown (const juce::MouseEvent& e)
     if (index >= 0 && index < (int) std::size (pageList)) showPage (index);
 }
 
+void UtilitiesPage::setListWidth (int width)
+{
+    if (width == listWidth) return;
+    listWidth = width;
+    resized();
+    repaint();
+}
+
 void UtilitiesPage::setListVisible (bool shouldShow)
 {
     if (shouldShow == listVisible) return;

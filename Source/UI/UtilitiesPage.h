@@ -28,6 +28,9 @@ public:
     void setSettingsNotice (const juce::String& text)    { preferences.setNotice (text); }
 
     /** Hides or shows the list of pages on the left. */
+    /** How wide the list is (stage 3a: it can be dragged; the main window keeps the width). */
+    void setListWidth (int width);
+    int getListWidth() const            { return listWidth; }
     void setListVisible (bool shouldShow);
 
     /** See PreferencesPage::commitPendingEdits. */
@@ -38,7 +41,7 @@ public:
     void mouseDown (const juce::MouseEvent&) override;
 
 private:
-    static constexpr int listWidth = 200;
+
 
     void showPage (int index);
 
@@ -49,6 +52,7 @@ private:
     TimingTestPage timingTest;
     ConTimbreTestPage conTimbreTest;
     PlayerStudyPage playerStudy;
+    int listWidth = 200;
     juce::Viewport viewport;        // the page scrolls when the window is low
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UtilitiesPage)

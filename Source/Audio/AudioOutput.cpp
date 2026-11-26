@@ -77,7 +77,16 @@ juce::String AudioOutput::describe() const
     if (! initialised || device == nullptr) return "no audio output open";
     return device->getName() + ", " + juce::String (device->getCurrentSampleRate() / 1000.0, 1) + " kHz, blocks of "
            + juce::String (device->getCurrentBufferSizeSamples()) + ", "
-           + juce::String (latencyMs, 1) + " ms delay" + (clock.usesDeviceTime() ? "" : ", timed by the calls");
+           + juce::String (latencyMs, 1) + " ms delay" + (clock.usesDeviceTime() ? "" : ", timed by the calls") + driftInWords();
+}
+
+juce::String AudioOutput::driftInWords() const
+{
+    const double seconds = clock.driftSeconds(), ppm = clock.driftPpm();
+    if (seconds < maket::StreamClock::driftFrom) return "; its clock against the Mac's: being measured";
+    const int whole = (int) seconds;
+    return "; its clock " + juce::String (std::abs (ppm), 1) + " millionths " + (ppm >= 0.0 ? "fast" : "slow") + " against the Mac's (over "
+           + juce::String (whole / 60) + "'" + juce::String (whole % 60).paddedLeft ('0', 2) + "\")";
 }
 
 void AudioOutput::audioDeviceAboutToStart (juce::AudioIODevice* device)

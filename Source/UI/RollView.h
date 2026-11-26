@@ -160,6 +160,9 @@ private:
     juce::Rectangle<float> tagBounds (const VoiceItem&) const;
     juce::Rectangle<float> nameBounds (const VoiceItem&) const;
     float nameColumn() const;
+    void updateTagLayout();
+    bool compactTags = false;                       // the staves stand too close for a tag under each name
+    static constexpr float smallTag = 17.0f;
 
     double playheadMs = 0.0;
     double loopStartMs = 0.0, loopEndMs = 0.0;

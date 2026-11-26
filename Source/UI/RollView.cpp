@@ -309,19 +309,40 @@ int RollView::headerWidth() const
 
 float RollView::nameColumn() const
 {
-    // Room for the names, and for the tag under each name (2e) when there are tags.
-    return juce::jmax (voiceTags.isEmpty() ? 36.0f : 72.0f, nameWidth + 20.0f);
+    // Room for the names, and for the tags (2e) when there are tags: under the name, or small beside it when the
+    // staves stand close (3a). The column is as wide either way, so that it does not jump with the zoom.
+    return voiceTags.isEmpty() ? juce::jmax (36.0f, nameWidth + 20.0f) : juce::jmax (72.0f, nameWidth + 20.0f + smallTag + 2.0f);
+}
+
+void RollView::updateTagLayout()
+{
+    // Does a name with its tag under it fit between neighbouring staves everywhere? If not, every tag goes small.
+    compactTags = false;
+    if (voiceTags.isEmpty()) return;
+    bool first = true;
+    double reachOfPrevious = 0.0;
+    for (const auto& v : voices)
+    {
+        if (v.place.hidden || ! v.place.ownsStaves) continue;
+        const double middle = (v.place.offset + 0.5 * (v.place.clef.topUnits() + v.place.clef.bottomUnits())) * pixelsPerUnit();
+        const double parts = v.place.numParts;
+        const double above = parts <= 1 ? 10.0 : 14.5 * parts, below = parts <= 1 ? 27.0 : 14.5 * parts;
+        if (! first && middle - above < reachOfPrevious + 1.0) { compactTags = true; return; }
+        reachOfPrevious = middle + below;
+        first = false;
+    }
 }
 
 juce::Rectangle<float> RollView::nameBounds (const VoiceItem& v) const
 {
     const float topY = (float) yOf (v.place.offset + v.place.clef.topUnits()), bottomY = (float) yOf (v.place.offset + v.place.clef.bottomUnits());
-    const float middle = (topY + bottomY) * 0.5f, width = nameColumn() - 8.0f;
-    if (v.place.numParts <= 1) return { 4.0f, middle - 10.0f, width, 20.0f };
+    const float middle = (topY + bottomY) * 0.5f;
+    const float left = compactTags ? 4.0f + smallTag + 2.0f : 4.0f, width = nameColumn() - 4.0f - left;
+    if (v.place.numParts <= 1) return { left, middle - 10.0f, width, 20.0f };
 
     // Voices that share their staves (bach's voice ensemble): their names one under the other beside the staves, as in bach.roll.
-    const float row = voiceTags.isEmpty() ? 15.0f : 29.0f;
-    return { 4.0f, middle - 0.5f * row * (float) v.place.numParts + row * (float) v.place.partIndex, width, 15.0f };
+    const float row = voiceTags.isEmpty() || compactTags ? 15.0f : 29.0f;
+    return { left, middle - 0.5f * row * (float) v.place.numParts + row * (float) v.place.partIndex, width, 15.0f };
 }
 
 double RollView::zeroPad() const
@@ -392,6 +413,7 @@ void RollView::zoomToFit()
 
 void RollView::viewChanged()
 {
+    updateTagLayout();
     const auto area = rollArea();
     const double visibleMs = area.getWidth() / pixelsPerMs();
     scrollMs = juce::jlimit (0.0, juce::jmax (0.0, rollLength + tailMs - visibleMs), scrollMs);
@@ -596,14 +618,18 @@ void RollView::setVoiceTags (const juce::StringArray& tags)
     if (tags == voiceTags) return;
     const bool widthChanges = tags.isEmpty() != voiceTags.isEmpty();
     voiceTags = tags;
+    updateTagLayout();
     if (widthChanges) viewChanged();        // the names' column gets room for the tags
     paperLayer.repaint();
 }
 
 juce::Rectangle<float> RollView::tagBounds (const VoiceItem& v) const
 {
-    // Under the name, in the middle of the names' column.
     const auto name = nameBounds (v);
+    // Staves close together: a small tag with one letter, left of the name.
+    if (compactTags) return { 4.0f, name.getCentreY() - 6.5f, smallTag, 13.0f };
+
+    // Under the name, in the middle of the names' column.
     const float width = juce::jmin (64.0f, name.getWidth());
     const bool shared = v.place.numParts > 1;
     return { name.getCentreX() - 0.5f * width, name.getBottom() + (shared ? -1.0f : 1.0f), width, shared ? 13.0f : 15.0f };
@@ -928,7 +954,7 @@ void RollView::paintHeader (juce::Graphics& g, juce::Rectangle<int> area)
             g.setColour (tint.withAlpha (silent ? 0.6f : 0.85f));
             g.drawRoundedRectangle (box.reduced (0.5f), 4.0f, 1.0f);
             g.setFont (Theme::font (10.5f));
-            g.drawText (tag, box, juce::Justification::centred, false);
+            g.drawText (compactTags ? (silent ? juce::String::fromUTF8 ("\xe2\x80\x93") : tag.substring (0, 1)) : tag, box, juce::Justification::centred, false);
         }
 
         // The name: in the middle of its column, in the colour of a locked, muted or solo voice, as in ScAst's roll.

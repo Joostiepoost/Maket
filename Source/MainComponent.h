@@ -26,6 +26,8 @@
 #include "Audio/AudioOutput.h"
 #include "UI/KeepAwake.h"
 #include "Model/Settings.h"
+#include "Model/WindowState.h"
+#include "UI/PanelEdge.h"
 
 class MainComponent : public juce::Component,
                       public juce::ApplicationCommandTarget,
@@ -47,8 +49,18 @@ public:
         cmdOpen = 0x3020,
         cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit, cmdDrawingTimes,
         cmdPlayStop = 0x3030,       // stage 2d: the transport of the roll
-        cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart
+        cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart,
+        cmdToggleAudio = 0x3040     // stage 3a
     };
+
+    /** Audio on: Maket's audio output is open. Off: it is closed and Maket makes no sound of its own and spends no
+        time on it; conTimbre over OSC is not touched. Returns what went wrong when turning on, or nothing. */
+    juce::String setAudioOn (bool shouldBeOn);
+    bool isAudioOn() const              { return audioOutput.isOpen(); }
+
+    /** The window's place and size as last left (for the window that holds this), and the way to keep it. */
+    juce::String storedWindowBounds() const             { return windowState.windowBounds(); }
+    void storeWindowBounds (const juce::String& b)      { windowState.setWindowBounds (b); windowState.save(); }
 
     /** Opens a bach.roll text file in the tab Library and edition. */
     bool openRollFile (const juce::File&);
@@ -86,7 +98,11 @@ private:
     juce::TooltipWindow tooltips { this };
     juce::ApplicationCommandManager commandManager;
 
+    /** The widths of the list and the inspector, as kept. */
+    void applyPanelWidths();
+
     maket::Settings settings { maket::Settings::defaultFile() };
+    maket::WindowState windowState { maket::WindowState::defaultFile() };
     maket::OscScheduler oscScheduler;           // sends OSC messages at their time, on a thread of its own
     maket::Synth synth;                 // Maket's own sound (stage 2e); before the pages, which use it
     AudioOutput audioOutput { synth };
@@ -99,6 +115,8 @@ private:
     TabBar tabBar;
     std::array<std::unique_ptr<juce::Component>, Tabs::count> pages;
     Inspector inspector;
+    PanelEdge listEdge, inspectorEdge;          // dragged to change a panel's width
+    int widthAtDragStart = 0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

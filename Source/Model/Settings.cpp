@@ -50,7 +50,8 @@ const std::vector<SettingInfo>& Settings::all()
 
         { "audioOutput", "Sound from Maket", "Audio output", SettingKind::audioDevice, "", true,
           "The audio device Maket's own sound (the synth) goes to. Not set: the Mac's default output. "
-          "Choose lists the outputs this Mac has now. A change takes effect at the next play." },
+          "Choose lists the outputs this Mac has now. A change takes effect at the next play. The output is opened by the "
+          "Audio switch in the tab row, or by a play that needs Maket's own sound, and closed by the switch." },
 
         { "synthLevel", "Sound from Maket", "Synth level (dB)", SettingKind::level, "-18", false,
           "How loud one note of the synth is at full velocity, in dB under full scale. Eight such notes together reach full scale at -18." },

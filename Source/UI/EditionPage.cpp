@@ -37,7 +37,6 @@ EditionPage::EditionPage (maket::Settings& s, maket::OscScheduler& sched, maket:
                                 : named ? VoiceEngine::conTimbre : VoiceEngine::synth;
         transport.setEngines (engines);
         showEngines();
-        openAudioIfNeeded();
         if (transport.isPlaying()) setNotice ("The change takes effect at the next play.");
         else if (! named)          setNotice ("A voice without a name cannot play on conTimbre: it goes between synth and silent.");
     };
@@ -171,7 +170,6 @@ bool EditionPage::openFile (const juce::File& file)
     view.setPlayhead (0.0);
     view.setVisible (true);
     showEngines();
-    openAudioIfNeeded();
     updateBar();
     resized();
     repaint();
@@ -239,10 +237,19 @@ bool EditionPage::anyVoiceOnSynth() const
 
 void EditionPage::openAudioIfNeeded()
 {
-    // The audio output is opened as soon as a voice needs it, not at the play itself: opening takes a moment.
+    // Stage 3a: audio goes on at a play that needs Maket's own sound, and not before; it is off until then, and
+    // again after the switch in the tab row. With audio on already, this follows a change of the output in the preferences.
     if (! anyVoiceOnSynth()) return;
-    const auto trouble = audio.open (settings.get ("audioOutput"));
+    const auto trouble = turnAudioOn ? turnAudioOn() : audio.open (settings.get ("audioOutput"));
     if (trouble.isNotEmpty()) setNotice ("Synth: " + trouble, true);
+}
+
+void EditionPage::audioChanged (bool isOn, const juce::String& trouble)
+{
+    if (trouble.isNotEmpty())                                   setNotice ("Synth: " + trouble, true);
+    else if (! isOn && transport.isPlaying() && anyVoiceOnSynth()) setNotice ("Audio is off: the voices on the synth are silent until the next play.");
+    else if (notice.startsWith ("Synth: ") || notice.startsWith ("Audio is off")) { notice.clear(); noticeIsProblem = false; }
+    updateBar();
 }
 
 void EditionPage::startPlaying (double from, bool follow)

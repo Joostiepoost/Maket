@@ -1,0 +1,84 @@
+// WindowState.cpp — see WindowState.h.
+
+#include "WindowState.h"
+
+namespace maket
+{
+
+WindowState::WindowState (juce::File f) : file (std::move (f)) {}
+
+juce::File WindowState::defaultFile()
+{
+    auto folder = juce::File::getSpecialLocation (juce::File::userApplicationDataDirectory);
+   #if JUCE_MAC
+    folder = folder.getChildFile ("Application Support");
+   #endif
+    return folder.getChildFile ("Maket").getChildFile ("window.json");
+}
+
+void WindowState::load()
+{
+    if (! file.existsAsFile()) return;
+    const auto parsed = juce::JSON::parse (file.loadFileAsString());
+    auto* object = parsed.getDynamicObject();
+    if (object == nullptr || ! object->hasProperty ("maket-window")) return;
+
+    auto number = [object] (const char* key, int fallback)
+    {
+        const auto v = object->getProperty (key);
+        return (v.isInt() || v.isInt64() || v.isDouble()) ? (int) v : fallback;
+    };
+    auto flag = [object] (const char* key, bool fallback)
+    {
+        const auto v = object->getProperty (key);
+        return v.isBool() ? (bool) v : fallback;
+    };
+
+    listW = juce::jlimit (listWidthMin, listWidthMax, number ("listWidth", listWidthDefault));
+    inspectorW = juce::jlimit (inspectorWidthMin, inspectorWidthMax, number ("inspectorWidth", inspectorWidthDefault));
+    listOn = flag ("listShown", true);
+    inspectorOn = flag ("inspectorShown", true);
+    tabIndex = juce::jmax (0, number ("tab", 0));
+    const auto b = object->getProperty ("window");
+    bounds = b.isString() ? b.toString() : juce::String();
+    changed = false;
+}
+
+bool WindowState::save()
+{
+    if (! changed) return true;
+
+    auto* object = new juce::DynamicObject();
+    const juce::var root (object);
+    object->setProperty ("maket-window", 1);
+    object->setProperty ("window", bounds);
+    object->setProperty ("tab", tabIndex);
+    object->setProperty ("listShown", listOn);
+    object->setProperty ("listWidth", listW);
+    object->setProperty ("inspectorShown", inspectorOn);
+    object->setProperty ("inspectorWidth", inspectorW);
+
+    if (! file.getParentDirectory().createDirectory().wasOk()) return false;
+    if (! file.replaceWithText (juce::JSON::toString (root) + "\n", false, false, "\n")) return false;
+    changed = false;
+    return true;
+}
+
+void WindowState::setListWidth (int w)
+{
+    w = juce::jlimit (listWidthMin, listWidthMax, w);
+    if (w != listW) { listW = w; changed = true; }
+}
+
+void WindowState::setInspectorWidth (int w)
+{
+    w = juce::jlimit (inspectorWidthMin, inspectorWidthMax, w);
+    if (w != inspectorW) { inspectorW = w; changed = true; }
+}
+
+void WindowState::setListShown (bool on)            { if (on != listOn) { listOn = on; changed = true; } }
+void WindowState::setInspectorShown (bool on)       { if (on != inspectorOn) { inspectorOn = on; changed = true; } }
+void WindowState::setTab (int t)                    { t = juce::jmax (0, t); if (t != tabIndex) { tabIndex = t; changed = true; } }
+void WindowState::setWindowBounds (const juce::String& b)   { if (b != bounds) { bounds = b; changed = true; } }
+
+} // namespace maket

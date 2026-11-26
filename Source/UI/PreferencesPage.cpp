@@ -30,12 +30,16 @@ namespace
 
 // --- One setting ------------------------------------------------------------------
 
-class PreferencesPage::Row : public juce::Component
+class PreferencesPage::Row : public juce::Component,
+                              private juce::Timer
 {
 public:
     Row (PreferencesPage& ownerPage, const maket::SettingInfo& setting)
         : owner (ownerPage), info (setting)
     {
+        // The line under the audio output says what is open now, and that changes by itself.
+        if (info.kind == maket::SettingKind::audioDevice) startTimer (2000);
+
         field.setFont (Theme::font (14.0f));
         field.setIndents (8, 6);
         field.setSelectAllWhenFocused (true);
@@ -90,6 +94,8 @@ public:
         apply (field.getText());
     }
 
+    void timerCallback() override       { if (isShowing()) repaint(); }
+
     void paint (juce::Graphics& g) override
     {
         g.setColour (Theme::text);
@@ -134,8 +140,7 @@ private:
     juce::String statusText() const
     {
         if (info.kind == maket::SettingKind::audioDevice)
-            return "Now: " + (PreferencesPage::audioOutputState ? PreferencesPage::audioOutputState() : juce::String ("no audio output open"))
-                   + ". It is opened when a roll has a voice on the synth.";
+            return "Now: " + (PreferencesPage::audioOutputState ? PreferencesPage::audioOutputState() : juce::String ("no audio output open"));
 
         if (info.kind != maket::SettingKind::folder)
         {

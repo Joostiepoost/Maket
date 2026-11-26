@@ -69,3 +69,4 @@ void testNotation (const juce::File& temp);
 void testPlaying (const juce::File& temp);
 void testSynth (const juce::File& temp);
 void testSpeed (const juce::File& temp);
+void testState (const juce::File& workFolder);

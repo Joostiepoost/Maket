@@ -30,6 +30,10 @@ public:
 
     /** The buttons for the list and the inspector. The main component sets
         their state, their tooltips and what a click does. */
+    /** Audio on / Audio off (stage 3a), as in Trajet and Goblet. The main component sets what a click does. */
+    juce::TextButton audioButton { "Audio off" };
+    void setAudioOn (bool on);
+
     PanelButton listButton      { "List", PanelButton::Side::left };
     PanelButton inspectorButton { "Inspector", PanelButton::Side::right };
 

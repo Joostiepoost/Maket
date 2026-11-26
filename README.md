@@ -68,7 +68,12 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 2d | Transport on conTimbre: a playhead, play from any point, play prescheduled, stop, a loop region; voice names and the percussion clef as in ScAst | done; tested by Joost on 25 Nov |
 | 2e | Sound from Maket itself: the audio output as a setting, a first plain synth (one sine per note), and per voice the choice of conTimbre, synth or silent | done; tested by Joost on 26 Nov. On his Mac the synth waits 91 ms for the ePlayer (*Synth timing*) |
 | 2f | The closing of step 2: speed with a very large roll (measured, and made faster where it was slow), the looks gone through once more | done; tested by Joost on 26 Nov. **Step 2 is closed** |
-| 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
+| 3a | Audio on / Audio off in the tab row; panels of adjustable width; the window remembers how it was left; small tags when staves stand close; the sound card's clock held against the Mac's | built 26 Nov; to be tested by Joost |
+| 3b | Projects (a folder), a start window, the library for notes: bach rolls imported, a miniature of each, several open at once as tabs | |
+| 3c | Audio snippets in the library: import as lossless copies, waveform, listening | |
+| 3d | The build surface with audio: tracks, blocks, edges, gain, fades, crossfades, play and loop, undo | |
+| 3e | Note blocks linked to their snippet, playing in time with the audio | |
+| 3f | The closing test of step 3 | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
 | 5 | Slot list and data: the project's slots, all built types, import mapping | |
 | 6 | Slot editing: slot window, slot layer, function editor, dynamics slot | |
@@ -825,6 +830,39 @@ Read from what he sent:
 
 Asked for on the same day, and taken into step 3: an Audio on / Audio off switch as in Trajet and Goblet; panels of adjustable width; several snippets open at once as tabs.
 
+## Step 3: what was agreed (26 Nov)
+
+Step 3 is the first part of the build surface. Its sub-stages are in the table at the top. Joost's answers to the questions put before it:
+
+- An audio snippet is the whole sound file in the library; each block on the surface has its own part of it, its own gain and fades, as in Projet and Reaper.
+- Sound files are copied into the project without loss (FLAC, 24-bit). His files run from under 5 seconds to 2 minutes at most; longer material he cuts before importing.
+- A project has a sample rate: 48 kHz by default, 96 kHz as an option; files of another rate are converted on import.
+- Audio is never stretched. Looping a fragment is wanted, possibly, and not in step 3.
+- Tracks have gain, pan, mute and solo; mono and stereo files; one stereo output for now.
+- File > Open of a single bach file stays for a quick look outside a project; Import brings a roll into the library.
+- Maket opens with a start window that shows recent projects. Later it also carries thanks to the makers of the bach library and a few others who were an inspiration, the statement that bach is their intellectual property, and Maket's licence.
+- Asked the same day and taken in: the Audio switch, panels of adjustable width, several snippets open at once as tabs (one of them playing).
+
+## Using stage 3a
+
+- **Audio on / Audio off**, the button in the tab row (also Transport > Audio on, ⇧⌘A), as in Trajet and Goblet. Off closes the audio output: Maket makes no sound of its own and spends no processor time on it. conTimbre is not touched: its commands go over OSC as before. Maket starts with audio off, and **a play that needs Maket's own sound turns it on**: a roll with a voice on the synth. A roll with only conTimbre voices leaves it off. Before 3a the output opened as soon as such a roll was opened, and never closed.
+- Switching audio off while a roll plays silences the synth's voices; the ePlayer plays on.
+- **The inspector and the list can be dragged wider or narrower** by their edge (the edge lights up under the mouse); a double click on the edge gives the first width back. The list is, for now, the one of the Utilities tab; the library's list at 3b uses the same edge.
+- **Maket remembers how its window was left**: its place and size, the tab in front, whether the list and the inspector show, and their widths. It is kept in `~/Library/Application Support/Maket/window.json`, beside the settings.
+- **Tags when the staves stand close**: where a name with its tag under it no longer fits between the staves, every tag becomes a small one left of the name, with one letter: `c` conTimbre, `s` synth, `–` silent. A click still changes it.
+- **The two clocks.** Sound files (from 3c) will run on the sound card's clock; the ePlayer's commands run on the Mac's. With audio on, Maket now measures how far the two run apart. The line under *Audio output* in the preferences shows it after 20 seconds and renews itself: `its clock 12.3 millionths fast against the Mac's (over 4'10")`. One millionth is 0.6 ms in ten minutes. The figure decides how the build surface keeps audio and notes together.
+
+### Testing stage 3a
+
+1. `git pull`, then `./build.sh`: `stage 3a`. `./build.sh tests` ends with `All 219 checks passed.`
+2. Start Maket: the button says **Audio off**. Open Doodsbed and play: it stays off. Open `Synth and conTimbre by Maket` and play: it goes on by itself, and the synth sounds (your *Synth timing* of 91 ms still holds).
+3. With nothing playing, look at Maket in Activity Monitor with audio on, then press **Audio off** (or ⇧⌘A): what are the two figures?
+4. Audio off in the middle of a play: the synth falls silent, the ePlayer plays on. The next play turns audio on again.
+5. Leave audio on for five minutes or more (playing or not), then read the line under *Audio output* in the preferences: what does it say about the clock? If you use more than one output (the Mac's own, an interface), the figure for each would help.
+6. Drag the inspector's edge and the list's edge (Utilities tab); double click one of them. Hide the list; go to another tab; move and resize the window. Quit, start again: is everything as you left it?
+7. The large roll, zoomed out until the staves stand close: small tags left of the names, nothing over anything else? Click one.
+8. Push `Measurements/report.md`.
+
 ## The repository
 
 ```
@@ -833,9 +871,9 @@ CMakeLists.txt      what is built, and with which JUCE
 Source/             the application
   Main.cpp            the application object and its window
   MainComponent.*     everything inside the window
-  UI/                 interface code: tab row, panel buttons, pages, preferences, inspector, colours, the roll view, the music font
+  UI/                 interface code: tab row (with the Audio switch), panel buttons and edges, pages, preferences, inspector, colours, the roll view, the music font
   Platform/           what differs per operating system (on macOS: telling the system that Maket is busy)
-  Model/              no interface code: the settings; the name, version and build stage; bach's list type; the roll
+  Model/              no interface code: the settings; what the window remembers; the name, version and build stage; bach's list type; the roll
   Formats/            no interface code: reading and writing files (bach's text, bach.roll)
   Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test; what of a roll plays from where to where and on which engine (`Playing`), the transport (`Transport`), the synth (`Synth`) and the clock of the audio stream (`StreamClock`)
   Audio/              the audio output: the device, and the call in which the synth fills each block

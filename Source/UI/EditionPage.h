@@ -37,6 +37,11 @@ public:
     void zoomAcross (int direction);
     void zoomDown (int direction);
     void zoomToFit()                    { view.zoomToFit(); }
+    /** Stage 3a. Set by the main window: turns Maket's audio on and returns what went wrong, or nothing. */
+    std::function<juce::String()> turnAudioOn;
+    /** The main window tells that audio went on or off (by the switch, or by a play). */
+    void audioChanged (bool isOn, const juce::String& trouble);
+
     void toggleDrawingTimes()           { view.setShowTimes (! view.showsTimes()); }
     bool showsDrawingTimes() const      { return view.showsTimes(); }
 

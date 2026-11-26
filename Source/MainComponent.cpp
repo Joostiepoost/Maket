@@ -15,7 +15,13 @@ MainComponent::MainComponent()
     tabBar.onSelect = [this] (int index) { showTab (index); };
     tabBar.listButton.onClick      = [this] { setListShown (! listShown); };
     tabBar.inspectorButton.onClick = [this] { setInspectorShown (! inspectorShown); };
+    tabBar.audioButton.onClick     = [this] { setAudioOn (! isAudioOn()); };
     addAndMakeVisible (tabBar);
+
+    // How the window was left: panels, widths, the tab in front.
+    windowState.load();
+    listShown = windowState.listShown();
+    inspectorShown = windowState.inspectorShown();
 
     // Read the settings before anything uses them. A problem with the file
     // is shown on the preferences page; Maket starts all the same.
@@ -37,6 +43,7 @@ MainComponent::MainComponent()
             PreferencesPage::audioOutputNames = [this] { return audioOutput.outputNames(); };
             PreferencesPage::audioOutputState = [this] { return audioOutput.describe(); };
             edition = page.get();
+            edition->turnAudioOn = [this] { return setAudioOn (true); };
             pages[(size_t) i] = std::move (page);
         }
         else
@@ -47,6 +54,24 @@ MainComponent::MainComponent()
     }
     addAndMakeVisible (inspector);
 
+    // The edges of the two panels: drag to change the width, double click for the first width.
+    listEdge.onDragStart = [this] { widthAtDragStart = windowState.listWidth(); };
+    listEdge.onDrag      = [this] (int moved) { windowState.setListWidth (widthAtDragStart + moved); applyPanelWidths(); };
+    listEdge.onReset     = [this] { windowState.setListWidth (maket::WindowState::listWidthDefault); applyPanelWidths(); };
+    listEdge.onDragEnd   = [this] { windowState.save(); };
+    inspectorEdge.onDragStart = [this] { widthAtDragStart = windowState.inspectorWidth(); };
+    inspectorEdge.onDrag      = [this] (int moved) { windowState.setInspectorWidth (widthAtDragStart - moved); applyPanelWidths(); };
+    inspectorEdge.onReset     = [this] { windowState.setInspectorWidth (maket::WindowState::inspectorWidthDefault); applyPanelWidths(); };
+    inspectorEdge.onDragEnd   = [this] { windowState.save(); };
+    addChildComponent (listEdge);
+    addChildComponent (inspectorEdge);
+    if (utilities != nullptr)
+    {
+        utilities->setListWidth (windowState.listWidth());
+        utilities->setListVisible (listShown);
+    }
+    inspector.setVisible (inspectorShown);
+
     commandManager.registerAllCommandsForTarget (this);
     commandManager.setFirstCommandTarget (this);
     addKeyListener (commandManager.getKeyMappings());
@@ -55,6 +80,7 @@ MainComponent::MainComponent()
     juce::MenuBarModel::setMacMainMenu (this);
    #endif
 
+    tabBar.setCurrent (juce::jlimit (0, (int) Tabs::count - 1, windowState.tab()));
     pages[(size_t) tabBar.getCurrent()]->setVisible (true);
     inspector.setTab (tabBar.getCurrent());
     updatePanelButtons();
@@ -68,6 +94,7 @@ MainComponent::~MainComponent()
     // A value still being typed on the preferences page is taken over, so
     // that quitting right after typing does not lose it.
     if (utilities != nullptr) utilities->commitPendingEdits();
+    windowState.save();
     PreferencesPage::audioOutputNames = nullptr;
     PreferencesPage::audioOutputState = nullptr;
 
@@ -95,9 +122,50 @@ void MainComponent::resized()
     auto area = getLocalBounds();
     tabBar.setBounds (area.removeFromTop (TabBar::height));
     if (inspectorShown)
-        inspector.setBounds (area.removeFromRight (Inspector::width));
+    {
+        // The inspector never takes more than the window can spare.
+        const int width = juce::jmin (windowState.inspectorWidth(), juce::jmax (maket::WindowState::inspectorWidthMin, area.getWidth() - 480));
+        inspector.setBounds (area.removeFromRight (width));
+    }
     for (auto& page : pages)
         page->setBounds (area);
+
+    // The edges lie over the borders, in front of everything.
+    inspectorEdge.setVisible (inspectorShown);
+    inspectorEdge.setBounds (area.getRight() - PanelEdge::thickness / 2, area.getY(), PanelEdge::thickness, area.getHeight());
+    const bool list = listShown && currentTabHasList() && utilities != nullptr;
+    listEdge.setVisible (list);
+    if (list)
+        listEdge.setBounds (area.getX() + utilities->getListWidth() - PanelEdge::thickness / 2 - 1, area.getY(), PanelEdge::thickness, area.getHeight());
+    listEdge.toFront (false);
+    inspectorEdge.toFront (false);
+}
+
+void MainComponent::applyPanelWidths()
+{
+    if (utilities != nullptr)
+        utilities->setListWidth (juce::jmin (windowState.listWidth(), juce::jmax (maket::WindowState::listWidthMin, getWidth() / 3)));
+    resized();
+}
+
+juce::String MainComponent::setAudioOn (bool shouldBeOn)
+{
+    juce::String problem;
+    if (shouldBeOn)
+    {
+        // Opens the output of the preferences; when it is open already with that output, nothing happens.
+        problem = audioOutput.open (settings.get ("audioOutput"));
+    }
+    else
+    {
+        synth.allNotesOff();
+        audioOutput.close();
+    }
+
+    tabBar.setAudioOn (isAudioOn());
+    if (edition != nullptr) edition->audioChanged (isAudioOn(), problem);
+    commandManager.commandStatusChanged();
+    return problem;
 }
 
 void MainComponent::showTab (int index)
@@ -110,6 +178,8 @@ void MainComponent::showTab (int index)
 
     tabBar.setCurrent (index);
     inspector.setTab (index);
+    windowState.setTab (index);
+    resized();                  // the list's edge shows only in a tab with a list
     updatePanelButtons();
     commandManager.commandStatusChanged();        // the View menu ticks the tab in front
 }
@@ -117,7 +187,9 @@ void MainComponent::showTab (int index)
 void MainComponent::setListShown (bool shouldShow)
 {
     listShown = shouldShow;
+    windowState.setListShown (listShown);
     if (utilities != nullptr) utilities->setListVisible (listShown);
+    resized();
     updatePanelButtons();
     commandManager.commandStatusChanged();
 }
@@ -125,6 +197,7 @@ void MainComponent::setListShown (bool shouldShow)
 void MainComponent::setInspectorShown (bool shouldShow)
 {
     inspectorShown = shouldShow;
+    windowState.setInspectorShown (inspectorShown);
     inspector.setVisible (inspectorShown);
     resized();
     updatePanelButtons();
@@ -165,7 +238,7 @@ void MainComponent::getAllCommands (juce::Array<juce::CommandID>& c)
     c.add (cmdToggleList);
     c.add (cmdToggleInspector);
     for (auto id : { cmdOpen, cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit, cmdDrawingTimes,
-                     cmdPlayStop, cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart })
+                     cmdPlayStop, cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart, cmdToggleAudio })
         c.add (id);
 }
 
@@ -258,6 +331,11 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
             info.setTicked (edition != nullptr && edition->isLoopOn());
             info.setActive (rollInFront);
             return;
+        case cmdToggleAudio:
+            info.setInfo ("Audio on", "Open or close Maket's audio output. Off: no sound from Maket itself and no processor time for it; conTimbre plays on", "Transport", 0);
+            info.addDefaultKeypress ('a', juce::ModifierKeys::commandModifier | juce::ModifierKeys::shiftModifier);
+            info.setTicked (isAudioOn());
+            return;
         case cmdToStart:
             info.setInfo ("Playhead to the start", "Put the playhead at the start of the roll", "Transport", 0);
             info.addDefaultKeypress (juce::KeyPress::returnKey, juce::ModifierKeys::noModifiers);
@@ -279,6 +357,7 @@ bool MainComponent::perform (const InvocationInfo& info)
 {
     if (info.commandID == cmdToggleList)      { setListShown (! listShown); return true; }
     if (info.commandID == cmdToggleInspector) { setInspectorShown (! inspectorShown); return true; }
+    if (info.commandID == cmdToggleAudio)     { setAudioOn (! isAudioOn()); return true; }
 
     if (edition != nullptr)
         switch (info.commandID)
@@ -335,6 +414,8 @@ juce::PopupMenu MainComponent::getMenuForIndex (int menuIndex, const juce::Strin
         m.addSeparator();
         m.addCommandItem (&commandManager, cmdToggleLoop);
         m.addCommandItem (&commandManager, cmdToStart);
+        m.addSeparator();
+        m.addCommandItem (&commandManager, cmdToggleAudio);
     }
     return m;
 }

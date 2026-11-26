@@ -23,6 +23,19 @@ TabBar::TabBar()
     setOpaque (true);
     addAndMakeVisible (listButton);
     addAndMakeVisible (inspectorButton);
+
+    audioButton.setColour (juce::TextButton::buttonOnColourId, juce::Colour (0xff2e7d4f));       // the green of Trajet's switch
+    audioButton.setColour (juce::TextButton::textColourOnId, juce::Colours::white);
+    audioButton.setWantsKeyboardFocus (false);
+    audioButton.setMouseClickGrabsKeyboardFocus (false);
+    addAndMakeVisible (audioButton);
+    setAudioOn (false);
+}
+
+void TabBar::setAudioOn (bool on)
+{
+    audioButton.setToggleState (on, juce::dontSendNotification);
+    audioButton.setButtonText (on ? "Audio on" : "Audio off");
 }
 
 void TabBar::resized()
@@ -32,6 +45,8 @@ void TabBar::resized()
     inspectorButton.setBounds (right.removeFromRight (30));
     right.removeFromRight (2);
     listButton.setBounds (right.removeFromRight (30));
+    right.removeFromRight (12);
+    audioButton.setBounds (right.removeFromRight (84).reduced (0, 1));
 }
 
 void TabBar::setCurrent (int index)
@@ -90,7 +105,7 @@ void TabBar::paint (juce::Graphics& g)
         const int left = tabBounds (Tabs::count - 1).getRight() + 12;
         g.setColour (Theme::textMuted);
         g.setFont (Theme::font (12.0f));
-        g.drawText (note, juce::Rectangle<int> (left, 0, listButton.getX() - left - 14, getHeight()),
+        g.drawText (note, juce::Rectangle<int> (left, 0, audioButton.getX() - left - 14, getHeight()),
                     juce::Justification::centredRight, true);
     }
 }

@@ -59,12 +59,29 @@ private:
             setResizable (true, true);
             setResizeLimits (1000, 560, 8000, 5000);
             centreWithSize (1400, 860);
+
+            // As it was left the last time (stage 3a), when that still fits a screen.
+            if (auto* main = dynamic_cast<MainComponent*> (getContentComponent()))
+                if (main->storedWindowBounds().isNotEmpty())
+                    restoreWindowStateFromString (main->storedWindowBounds());
             setVisible (true);
+        }
+
+        ~MainWindow() override
+        {
+            keepBounds();
         }
 
         void closeButtonPressed() override
         {
+            keepBounds();
             juce::JUCEApplication::getInstance()->systemRequestedQuit();
+        }
+
+        void keepBounds()
+        {
+            if (auto* main = dynamic_cast<MainComponent*> (getContentComponent()))
+                main->storeWindowBounds (getWindowStateAsString());
         }
 
     private:

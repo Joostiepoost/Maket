@@ -32,6 +32,8 @@ public:
 
     /** In a few words: the device, its rate, its block and its delay; or that none is open. */
     juce::String describe() const;
+    /** Stage 3a: how far the sound card's clock runs from the computer's, in words. */
+    juce::String driftInWords() const;
 
 private:
     void audioDeviceIOCallbackWithContext (const float* const* inputs, int numInputs, float* const* outputs, int numOutputs,
