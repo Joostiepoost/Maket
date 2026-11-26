@@ -66,7 +66,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 2b | Accidentals: bach's sign for every step of the eighth-tone grid, placed left of the chord by bach's method; the semitone grid as the other choice; a note the file gives by name keeps its letter | done; tested by Joost on 25 Nov. 2b.1: clusters as bach's small tree; velocity shown in grey, colour or alpha |
 | 2c | Glides (pitch breakpoints) along the duration line, markers with their names and roles, the colours of what is locked, muted or solo | done; tested by Joost on 25 Nov |
 | 2d | Transport on conTimbre: a playhead, play from any point, play prescheduled, stop, a loop region; voice names and the percussion clef as in ScAst | done; tested by Joost on 25 Nov |
-| 2e | Sound from Maket itself: the audio output as a setting, a first plain synth (one sine per note), and per voice the choice of conTimbre, synth or silent | built 25 Nov; to be tested by Joost |
+| 2e | Sound from Maket itself: the audio output as a setting, a first plain synth (one sine per note), and per voice the choice of conTimbre, synth or silent | tested by Joost on 26 Nov: all of it works; how many ms the synth must wait for the ePlayer is still being settled |
 | 2f | The closing test of step 2 | |
 | 3 | Build surface, first part: tracks, audio snippets, the library with thumbnails, linked note blocks | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -767,6 +767,18 @@ With the ePlayer in Max and the orchestra **`Maket test 2d`** (its `voice1` is t
 7. Doodsbed with its orchestra `doodsbed by number`: as before. Then click the Mezzo's tag to `synth` and play: its line as a plain tone with the ensemble.
 8. On any roll with synth voices: click in the ruler in the middle of a long or gliding note and play (it should come in at once, at the pitch the glide has reached); a loop over synth notes; ⇧space.
 9. Push `Measurements/report.md`.
+
+### After the test of 2e (26 Nov)
+
+Joost: all 208 checks passed on his Mac; every section of `Synth and conTimbre by Maket` sounds as expected; changing the audio output and the level works; Doodsbed by number sounds as before, also with the Mezzo on the synth; Stop in the middle of the mixed example silences everything.
+
+His recording of the test roll (`Contimbre & synth test2.ogg`, attached in the chat), measured:
+
+- The synth is exactly on its clock: its eight tones begin 1000.00 ms apart, within 0.05 ms, and its attack is the 10 ms it should be.
+- The cello's plucks begin **90 to 93 ms after the synth's tones** (mean 91.5 ms). They alternate between two moments 2.67 ms apart, which is one block of 128 samples at 48000: the ePlayer starts a note on a block of Max's audio.
+- The held A is at 221.0 Hz, as it should be on 442.
+
+By ear, on his set-up, Joost finds the two together with *Synth timing* at 35 to 40 ms. The 55 ms between the two figures is not explained yet: it depends on what the setting was during the recording and on which outputs Maket and Max played through, for listening and for recording. No default is changed until that is known.
 
 ## The repository
 
