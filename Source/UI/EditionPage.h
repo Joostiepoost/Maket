@@ -30,6 +30,19 @@ public:
     /** Opens a bach.roll text file; false, with the reason shown on the page, when it cannot be read. */
     bool openFile (const juce::File&);
 
+    /** Stage 3b: shows a roll that comes from the library and not from a file. */
+    void showRoll (const maket::Roll&, const juce::String& name);
+    /** The file this page shows, when it was opened from one. */
+    const juce::File& getFile() const   { return current; }
+    const juce::String& getTitle() const { return title; }
+
+    /** Stage 3b. The standard pitch to play at: the project's, or the preferences' when this is not set. */
+    std::function<double()> standardPitchNow;
+    /** Called just before this page begins to play: only one roll sounds at a time, the others are stopped first. */
+    std::function<void()> onWillPlay;
+    /** Called whenever play begins or ends here. */
+    std::function<void()> onPlayStateChanged;
+
     bool hasRoll() const                { return view.hasRoll(); }
     RollView& rollView()                { return view; }
 
@@ -72,6 +85,9 @@ public:
 
 private:
     void updateBar();
+    void take (const maket::Roll&);
+    double standardPitch() const;
+    bool wasPlaying = false;
     void startPlaying (double from, bool follow);
     void timerCallback() override;
     void setNotice (const juce::String& text, bool isProblem = false);

@@ -45,11 +45,17 @@ public:
     void setTab (int);
     void setWindowBounds (const juce::String&);
 
+    /** The folders of the projects opened last, newest first (stage 3b); at most ten. */
+    const juce::StringArray& recentProjects() const     { return recent; }
+    void addRecentProject (const juce::String& folderPath);
+    void removeRecentProject (const juce::String& folderPath);
+
 private:
     juce::File file;
     int listW = listWidthDefault, inspectorW = inspectorWidthDefault, tabIndex = 0;
     bool listOn = true, inspectorOn = true, changed = false;
     juce::String bounds;
+    juce::StringArray recent;
 };
 
 } // namespace maket

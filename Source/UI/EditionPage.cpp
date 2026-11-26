@@ -153,13 +153,33 @@ bool EditionPage::openFile (const juce::File& file)
         return false;
     }
 
-    problem.clear();
     current = file;
     title = file.getFileNameWithoutExtension();
+    take (roll);
+    if (onRollOpened) onRollOpened (file, roll);
+    return true;
+}
+
+void EditionPage::showRoll (const maket::Roll& roll, const juce::String& name)
+{
+    current = juce::File();
+    title = name;
+    take (roll);
+}
+
+double EditionPage::standardPitch() const
+{
+    return standardPitchNow ? standardPitchNow() : settings.getDouble ("standardPitch");
+}
+
+void EditionPage::take (const maket::Roll& roll)
+{
+    problem.clear();
     detail = juce::String ((int) roll.voices.size()) + " voices, " + juce::String (roll.numNotes()) + " notes, "
              + juce::String (juce::roundToInt (std::floor (roll.length() / 60000.0))) + "'"
              + juce::String (juce::roundToInt (std::fmod (roll.length() / 1000.0, 60.0))).paddedLeft ('0', 2) + "\"";
     stopTimer();
+    transport.stop();               // a roll that plays is stopped before another takes its place
     transport.setRoll (roll);       // every voice gets its default engine
     transport.setLoop (0.0, 0.0);
     transport.setLoopOn (false);
@@ -173,8 +193,6 @@ bool EditionPage::openFile (const juce::File& file)
     updateBar();
     resized();
     repaint();
-    if (onRollOpened) onRollOpened (file, roll);
-    return true;
 }
 
 void EditionPage::filesDropped (const juce::StringArray& files, int, int)
@@ -207,6 +225,12 @@ void EditionPage::updateBar()
     loopButton.setEnabled (has);
     loopButton.setToggleState (transport.isLoopOn(), juce::dontSendNotification);
     repaint (transportArea);
+
+    if (playing != wasPlaying)
+    {
+        wasPlaying = playing;
+        if (onPlayStateChanged) onPlayStateChanged();
+    }
 }
 
 // --- Transport ---------------------------------------------------------------------
@@ -255,16 +279,17 @@ void EditionPage::audioChanged (bool isOn, const juce::String& trouble)
 void EditionPage::startPlaying (double from, bool follow)
 {
     if (! view.hasRoll()) return;
+    if (onWillPlay) onWillPlay();               // whatever else plays is stopped first
 
     scheduler.setPlayer (settings.get ("ePlayerHost"), settings.getInt ("ePlayerPort"));
-    synth.setStandardPitch (settings.getDouble ("standardPitch"));
+    synth.setStandardPitch (standardPitch());
     synth.setLevel (settings.getDouble ("synthLevel"));
     transport.setSynthOffset (settings.getDouble ("synthOffset"));
     openAudioIfNeeded();
     const auto audioProblem = notice;
 
     juce::String why;
-    if (! transport.play (from, settings.getDouble ("standardPitch"), why))
+    if (! transport.play (from, standardPitch(), why))
     {
         setNotice (why, true);
         updateBar();
@@ -337,12 +362,12 @@ void EditionPage::timerCallback()
         repaint (transportArea);
     }
 
-    const bool wasPlaying = transport.isPlaying();
+    const bool playedBefore = transport.isPlaying();
     transport.service();
 
     if (! transport.isPlaying())
     {
-        if (wasPlaying)
+        if (playedBefore)
         {
             // The roll has run to its end.
             view.setPlayhead (cursor);
@@ -378,8 +403,8 @@ void EditionPage::resized()
     view.setBounds (area);
 
     auto bar = barArea.withHeight (rowHeight).reduced (10, 7);
-    openButton.setBounds (bar.removeFromLeft (76));
-    bar.removeFromLeft (14);
+    openButton.setVisible (false);              // stage 3b: opening and importing are in the library's panel
+    bar.removeFromLeft (4);
 
     // The second row: the transport at the left, the two menus at the right.
     transportArea = barArea.withTrimmedTop (rowHeight);

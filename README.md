@@ -68,8 +68,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 2d | Transport on conTimbre: a playhead, play from any point, play prescheduled, stop, a loop region; voice names and the percussion clef as in ScAst | done; tested by Joost on 25 Nov |
 | 2e | Sound from Maket itself: the audio output as a setting, a first plain synth (one sine per note), and per voice the choice of conTimbre, synth or silent | done; tested by Joost on 26 Nov. On his Mac the synth waits 91 ms for the ePlayer (*Synth timing*) |
 | 2f | The closing of step 2: speed with a very large roll (measured, and made faster where it was slow), the looks gone through once more | done; tested by Joost on 26 Nov. **Step 2 is closed** |
-| 3a | Audio on / Audio off in the tab row; panels of adjustable width; the window remembers how it was left; small tags when staves stand close; the sound card's clock held against the Mac's | built 26 Nov; to be tested by Joost |
-| 3b | Projects (a folder), a start window, the library for notes: bach rolls imported, a miniature of each, several open at once as tabs | |
+| 3a | Audio on / Audio off in the tab row; panels of adjustable width; the window remembers how it was left; small tags when staves stand close; the sound card's clock held against the Mac's | done; tested by Joost on 26 Nov |
+| 3b | Projects (a folder), a start panel with the projects opened last, the library for notes: bach rolls imported, a miniature of each, several open at once as tabs | built 26 Nov; to be tested by Joost |
 | 3c | Audio snippets in the library: import as lossless copies, waveform, listening | |
 | 3d | The build surface with audio: tracks, blocks, edges, gain, fades, crossfades, play and loop, undo | |
 | 3e | Note blocks linked to their snippet, playing in time with the audio | |
@@ -863,6 +863,46 @@ Step 3 is the first part of the build surface. Its sub-stages are in the table a
 7. The large roll, zoomed out until the staves stand close: small tags left of the names, nothing over anything else? Click one.
 8. Push `Measurements/report.md`.
 
+### After the test of 3a (26 Nov)
+
+Joost: all 219 checks passed. Audio off behaves as expected; Maket takes 0.8 % of a processor with audio off and 1 to 2 % idle with audio on; the synth falls silent at once when audio goes off and plays again at the next play; the ePlayer works in every case. The panel edges work and are remembered. The small tags are clear.
+
+**The two clocks on his Mac: the sound card runs 2.8 millionths slow against the Mac's clock**, which is 1.7 ms in ten minutes. That is small enough that a surface with audio and notes stays together over a whole piece without special care, on this output; to be looked at again at 3d, and with another output if he uses one.
+
+He could not read the end of the line under *Audio output*: it was cut off. It now has two lines.
+
+## Using stage 3b
+
+Maket now works in **projects**. A project is a folder; what was a single roll opened from a file becomes a **snippet in the project's library**.
+
+- **The start panel.** Maket opens on it: *New project…*, *Open project…*, *Open a bach roll…*, and under them the projects opened last (a click opens one). The thanks to the makers of bach and to others, the statement that bach is theirs, and Maket's licence come to this panel at a later stage.
+- **New project** (File menu, ⇧⌘N) asks for a name and a sample rate (48 kHz, or 96 kHz) and makes the folder in the *Projects* folder of the preferences. **Open project** (⇧⌘O) takes the folder. A project's folder can also be dropped on the window.
+- **The library** is the list on the left of the *Library and edition* tab (the list button and its edge work as in the Utilities tab). **Import…** (File > Import bach rolls, ⌘I) brings in bach.roll text files, several at once; they can also be dropped on the window. A file is read and **kept in the project as a copy**; the file itself is never touched, and the snippet does not change when the file changes later.
+- Each snippet shows a **miniature**: its notes as lines, across by time, up and down by pitch, darker for louder.
+- **A click on a snippet opens it in a tab.** Several can be open at once; each tab has its own zoom, scroll position, playhead, loop, and tags. The cross closes a tab (⌘W), which changes nothing in the library.
+- **One thing sounds at a time.** Play starts the snippet in front and stops whichever was playing. A snippet that plays goes on while another tab is in front; its tab shows a small green triangle. To stop it, bring its tab to the front, or just play another.
+- **A right click on a snippet**: Open, Rename, *Update from its file* (reads the file it came from again and takes its notes; an open tab follows), Show its file in Finder, Show the snippet's own files in Finder, *Remove from the library* (its files go to the project's `Trash` folder; Maket deletes nothing).
+- **The standard pitch belongs to the project** (File > The project's standard pitch); a new project starts with the one of the preferences, which stays in use for a roll opened outside a project. The list's head shows it.
+- **Open a bach roll** (⌘O) still opens a single file for a look, outside any project, in a tab of its own.
+
+**How a project is kept.** `project.json` (rate, pitch, the order of the library); in `Snippets`, for every snippet a small `<ID>.json` (its name, where it came from) and `<ID>.roll.txt`, **the notes as bach.roll text, byte for byte what bach would save**. So every note snippet of a project opens in bach.roll or ScAst as it is. This departs from the proposal, which had the notes inside a JSON file of Maket's own: the bach text is proven to come back unchanged, it keeps the library readable from Max, and nothing is lost by it. What bach has no place for goes in the JSON beside it.
+
+Not yet: sounds in the library (3c); editing (step 4); the order of the library by dragging; what was open is not reopened at the next start.
+
+### Testing stage 3b
+
+1. `git pull`, then `./build.sh`: `stage 3b`. `./build.sh tests` ends with `All 227 checks passed.`
+2. Start Maket: the start panel. *New project…*, a name, 48 kHz. The empty library appears on the left.
+3. *Import…*: choose several of your rolls at once (Doodsbed, Draaikolk, the mixed example, others). Are the miniatures recognisable?
+4. Click three of them: three tabs. Zoom and scroll each differently, set a loop in one; go back and forth: does each tab keep its own view?
+5. Play one, bring another to the front while it plays (the green triangle stays on the first), look around in it; then press Play there: the first stops, this one plays.
+6. Right click: rename one. Change one of the original files in ScAst and save it; the snippet in Maket stays as it was; *Update from its file*: now it follows, also in its open tab. Remove one: it is in the project's `Trash` folder.
+7. In Finder, open the project's `Snippets` folder and read one of the `.roll.txt` files into ScAst: is it the roll, unchanged?
+8. Quit and start again: the project is in the list of the start panel; a click opens it with everything in it.
+9. File > The project's standard pitch: set 440, play, set it back.
+10. With audio on for a while, the line under *Audio output* in the preferences: readable to its end now?
+11. Push `Measurements/report.md`.
+
 ## The repository
 
 ```
@@ -871,9 +911,9 @@ CMakeLists.txt      what is built, and with which JUCE
 Source/             the application
   Main.cpp            the application object and its window
   MainComponent.*     everything inside the window
-  UI/                 interface code: tab row (with the Audio switch), panel buttons and edges, pages, preferences, inspector, colours, the roll view, the music font
+  UI/                 interface code: tab row (with the Audio switch), panel buttons and edges, pages, the library with its tabs and start panel, preferences, inspector, colours, the roll view, the music font
   Platform/           what differs per operating system (on macOS: telling the system that Maket is busy)
-  Model/              no interface code: the settings; what the window remembers; the name, version and build stage; bach's list type; the roll
+  Model/              no interface code: the settings; what the window remembers; the project on disk and its library; the name, version and build stage; bach's list type; the roll
   Formats/            no interface code: reading and writing files (bach's text, bach.roll)
   Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test; what of a roll plays from where to where and on which engine (`Playing`), the transport (`Transport`), the synth (`Synth`) and the clock of the audio stream (`StreamClock`)
   Audio/              the audio output: the device, and the call in which the synth fills each block

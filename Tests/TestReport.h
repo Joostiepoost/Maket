@@ -70,3 +70,4 @@ void testPlaying (const juce::File& temp);
 void testSynth (const juce::File& temp);
 void testSpeed (const juce::File& temp);
 void testState (const juce::File& workFolder);
+void testProject (const juce::File& workFolder, const juce::File& temp);

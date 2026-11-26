@@ -23,15 +23,31 @@ public:
         openFromCommandLine (commandLine);
     }
 
-    /** Opens the roll named on the command line, if there is one. */
+    /** Opens what is named on the command line, or dropped on Maket's icon: a project's folder is opened as the
+        project; a bach roll goes into the library of the open project, or, with no project open, is shown by itself. */
     void openFromCommandLine (const juce::String& commandLine)
     {
-        const auto path = commandLine.trim().unquoted();
-        if (path.isEmpty() || mainWindow == nullptr) return;
-        const auto file = juce::File::getCurrentWorkingDirectory().getChildFile (path);
-        if (file.existsAsFile())
-            if (auto* main = dynamic_cast<MainComponent*> (mainWindow->getContentComponent()))
-                main->openRollFile (file);
+        if (mainWindow == nullptr) return;
+        auto* main = dynamic_cast<MainComponent*> (mainWindow->getContentComponent());
+        if (main == nullptr) return;
+
+        juce::StringArray words;
+        words.addTokens (commandLine, " ", "\"'");
+        juce::Array<juce::File> files;
+        for (auto word : words)
+        {
+            word = word.trim().unquoted();
+            if (word.isEmpty()) continue;
+            const auto file = juce::File::getCurrentWorkingDirectory().getChildFile (word);
+            if (file.exists()) files.add (file);
+        }
+        // One path with spaces and without quotes, as before.
+        if (files.isEmpty())
+        {
+            const auto whole = juce::File::getCurrentWorkingDirectory().getChildFile (commandLine.trim().unquoted());
+            if (commandLine.trim().isNotEmpty() && whole.exists()) files.add (whole);
+        }
+        main->openFiles (files);
     }
 
     void shutdown() override

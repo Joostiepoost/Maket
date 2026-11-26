@@ -39,11 +39,12 @@ MainComponent::MainComponent()
         }
         else if (i == Tabs::library)
         {
-            auto page = std::make_unique<EditionPage> (settings, oscScheduler, synth, audioOutput);
+            auto page = std::make_unique<LibraryPage> (settings, windowState, oscScheduler, synth, audioOutput);
             PreferencesPage::audioOutputNames = [this] { return audioOutput.outputNames(); };
             PreferencesPage::audioOutputState = [this] { return audioOutput.describe(); };
-            edition = page.get();
-            edition->turnAudioOn = [this] { return setAudioOn (true); };
+            library = page.get();
+            library->turnAudioOn = [this] { return setAudioOn (true); };
+            library->onChanged = [this] { resized(); updatePanelButtons(); commandManager.commandStatusChanged(); };
             pages[(size_t) i] = std::move (page);
         }
         else
@@ -70,6 +71,11 @@ MainComponent::MainComponent()
         utilities->setListWidth (windowState.listWidth());
         utilities->setListVisible (listShown);
     }
+    if (library != nullptr)
+    {
+        library->setListWidth (windowState.listWidth());
+        library->setListVisible (listShown);
+    }
     inspector.setVisible (inspectorShown);
 
     commandManager.registerAllCommandsForTarget (this);
@@ -80,7 +86,7 @@ MainComponent::MainComponent()
     juce::MenuBarModel::setMacMainMenu (this);
    #endif
 
-    tabBar.setCurrent (juce::jlimit (0, (int) Tabs::count - 1, windowState.tab()));
+    tabBar.setCurrent (Tabs::library);          // stage 3b: Maket opens on the start panel, in the first tab
     pages[(size_t) tabBar.getCurrent()]->setVisible (true);
     inspector.setTab (tabBar.getCurrent());
     updatePanelButtons();
@@ -133,18 +139,22 @@ void MainComponent::resized()
     // The edges lie over the borders, in front of everything.
     inspectorEdge.setVisible (inspectorShown);
     inspectorEdge.setBounds (area.getRight() - PanelEdge::thickness / 2, area.getY(), PanelEdge::thickness, area.getHeight());
-    const bool list = listShown && currentTabHasList() && utilities != nullptr;
+    const bool list = listShown && currentTabHasList() && utilities != nullptr && library != nullptr;
     listEdge.setVisible (list);
     if (list)
-        listEdge.setBounds (area.getX() + utilities->getListWidth() - PanelEdge::thickness / 2 - 1, area.getY(), PanelEdge::thickness, area.getHeight());
+    {
+        const int width = tabBar.getCurrent() == Tabs::library ? library->getListWidth() : utilities->getListWidth();
+        listEdge.setBounds (area.getX() + width - PanelEdge::thickness / 2 - 1, area.getY(), PanelEdge::thickness, area.getHeight());
+    }
     listEdge.toFront (false);
     inspectorEdge.toFront (false);
 }
 
 void MainComponent::applyPanelWidths()
 {
-    if (utilities != nullptr)
-        utilities->setListWidth (juce::jmin (windowState.listWidth(), juce::jmax (maket::WindowState::listWidthMin, getWidth() / 3)));
+    const int listWidth = juce::jmin (windowState.listWidth(), juce::jmax (maket::WindowState::listWidthMin, getWidth() / 3));
+    if (utilities != nullptr) utilities->setListWidth (listWidth);
+    if (library != nullptr)   library->setListWidth (listWidth);
     resized();
 }
 
@@ -163,7 +173,7 @@ juce::String MainComponent::setAudioOn (bool shouldBeOn)
     }
 
     tabBar.setAudioOn (isAudioOn());
-    if (edition != nullptr) edition->audioChanged (isAudioOn(), problem);
+    if (library != nullptr) library->audioChanged (isAudioOn(), problem);
     commandManager.commandStatusChanged();
     return problem;
 }
@@ -189,6 +199,7 @@ void MainComponent::setListShown (bool shouldShow)
     listShown = shouldShow;
     windowState.setListShown (listShown);
     if (utilities != nullptr) utilities->setListVisible (listShown);
+    if (library != nullptr)   library->setListVisible (listShown);
     resized();
     updatePanelButtons();
     commandManager.commandStatusChanged();
@@ -238,16 +249,33 @@ void MainComponent::getAllCommands (juce::Array<juce::CommandID>& c)
     c.add (cmdToggleList);
     c.add (cmdToggleInspector);
     for (auto id : { cmdOpen, cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit, cmdDrawingTimes,
-                     cmdPlayStop, cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart, cmdToggleAudio })
+                     cmdPlayStop, cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart, cmdToggleAudio,
+                     cmdNewProject, cmdOpenProject, cmdCloseProject, cmdImportRolls, cmdProjectPitch, cmdCloseTab })
         c.add (id);
 }
 
 bool MainComponent::openRollFile (const juce::File& file)
 {
     showTab (Tabs::library);
-    const bool opened = edition != nullptr && edition->openFile (file);
+    // A folder that holds a project is opened as a project; a file as a single roll, outside any project.
+    const bool opened = library != nullptr && (file.isDirectory() ? library->openProject (file) : library->openLooseRoll (file));
     commandManager.commandStatusChanged();
     return opened;
+}
+
+void MainComponent::openFiles (const juce::Array<juce::File>& files)
+{
+    if (library == nullptr || files.isEmpty()) return;
+    showTab (Tabs::library);
+    juce::Array<juce::File> rolls;
+    for (const auto& f : files)
+    {
+        if (f.isDirectory()) library->openProject (f);
+        else                 rolls.add (f);
+    }
+    if (library->hasProject()) library->importFiles (rolls);
+    else for (const auto& f : rolls) library->openLooseRoll (f);
+    commandManager.commandStatusChanged();
 }
 
 void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommandInfo& info)
@@ -271,12 +299,40 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
     }
 
     const auto cmd = juce::ModifierKeys::commandModifier;
-    const bool rollInFront = edition != nullptr && edition->hasRoll() && tabBar.getCurrent() == Tabs::library;
+    const auto cmdShift = juce::ModifierKeys::commandModifier | juce::ModifierKeys::shiftModifier;
+    const bool rollInFront = editor() != nullptr && editor()->hasRoll() && tabBar.getCurrent() == Tabs::library;
+    const bool project = library != nullptr && library->hasProject();
     switch (id)
     {
         case cmdOpen:
-            info.setInfo (juce::String::fromUTF8 ("Openâ¦"), "Open a bach.roll text file", "File", 0);
+            info.setInfo (juce::String::fromUTF8 ("Open a bach roll\xe2\x80\xa6"), "Open a single bach.roll text file, outside any project", "File", 0);
             info.addDefaultKeypress ('o', cmd);
+            return;
+        case cmdNewProject:
+            info.setInfo (juce::String::fromUTF8 ("New project\xe2\x80\xa6"), "Make a new project: a folder with a library", "File", 0);
+            info.addDefaultKeypress ('n', cmdShift);
+            return;
+        case cmdOpenProject:
+            info.setInfo (juce::String::fromUTF8 ("Open project\xe2\x80\xa6"), "Open a project by its folder", "File", 0);
+            info.addDefaultKeypress ('o', cmdShift);
+            return;
+        case cmdCloseProject:
+            info.setInfo ("Close the project", "Close the project; Maket shows the start panel again", "File", 0);
+            info.setActive (project);
+            return;
+        case cmdImportRolls:
+            info.setInfo (juce::String::fromUTF8 ("Import bach rolls\xe2\x80\xa6"), "Bring bach.roll text files into the project's library", "File", 0);
+            info.addDefaultKeypress ('i', cmd);
+            info.setActive (project);
+            return;
+        case cmdProjectPitch:
+            info.setInfo (juce::String::fromUTF8 ("The project's standard pitch\xe2\x80\xa6"), "Set the frequency of the A for everything in this project", "File", 0);
+            info.setActive (project);
+            return;
+        case cmdCloseTab:
+            info.setInfo ("Close the snippet's tab", "Close the tab in front; the snippet stays in the library", "File", 0);
+            info.addDefaultKeypress ('w', cmd);
+            info.setActive (editor() != nullptr && tabBar.getCurrent() == Tabs::library);
             return;
         case cmdZoomAcrossIn:
             info.setInfo ("More time detail", "Zoom in along the time axis", "View", 0);
@@ -305,7 +361,7 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
             info.setActive (rollInFront);
             return;
         case cmdPlayStop:
-            info.setInfo (edition != nullptr && edition->isPlaying() ? "Stop" : "Play", "Play the roll from the playhead on the conTimbre ePlayer, or stop", "Transport", 0);
+            info.setInfo (editor() != nullptr && editor()->isPlaying() ? "Stop" : "Play", "Play the roll from the playhead on the conTimbre ePlayer, or stop", "Transport", 0);
             info.addDefaultKeypress (juce::KeyPress::spaceKey, juce::ModifierKeys::noModifiers);
             info.setActive (rollInFront);
             return;
@@ -317,18 +373,18 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
         case cmdDrawingTimes:
             info.setInfo ("Show drawing times", "Write in the corner of the roll how long its last drawing took", "View", 0);
             info.addDefaultKeypress ('t', cmdAlt);
-            info.setTicked (edition != nullptr && edition->showsDrawingTimes());
+            info.setTicked (editor() != nullptr && editor()->showsDrawingTimes());
             info.setActive (rollInFront);
             return;
         case cmdPlayOn:
             info.setInfo ("Play on from where it stopped", "Play from where the last play was stopped", "Transport", 0);
             info.addDefaultKeypress (juce::KeyPress::spaceKey, juce::ModifierKeys::altModifier);
-            info.setActive (rollInFront && ! edition->isPlaying());
+            info.setActive (rollInFront && ! editor()->isPlaying());
             return;
         case cmdToggleLoop:
             info.setInfo ("Go round the loop", "Play goes round the loop region marked in the ruler", "Transport", 0);
             info.addDefaultKeypress ('l', juce::ModifierKeys::noModifiers);
-            info.setTicked (edition != nullptr && edition->isLoopOn());
+            info.setTicked (editor() != nullptr && editor()->isLoopOn());
             info.setActive (rollInFront);
             return;
         case cmdToggleAudio:
@@ -359,10 +415,23 @@ bool MainComponent::perform (const InvocationInfo& info)
     if (info.commandID == cmdToggleInspector) { setInspectorShown (! inspectorShown); return true; }
     if (info.commandID == cmdToggleAudio)     { setAudioOn (! isAudioOn()); return true; }
 
-    if (edition != nullptr)
+    if (library != nullptr)
+    {
         switch (info.commandID)
         {
-            case cmdOpen:           showTab (Tabs::library); edition->chooseFile(); return true;
+            case cmdOpen:           showTab (Tabs::library); library->chooseRoll();             return true;
+            case cmdNewProject:     showTab (Tabs::library); library->newProject();             return true;
+            case cmdOpenProject:    showTab (Tabs::library); library->chooseProject();          return true;
+            case cmdCloseProject:   library->closeProject();                                    return true;
+            case cmdImportRolls:    showTab (Tabs::library); library->chooseRollsToImport();    return true;
+            case cmdProjectPitch:   library->editStandardPitch();                               return true;
+            case cmdCloseTab:       library->closeFrontTab();                                   return true;
+            default: break;
+        }
+    }
+    if (auto* edition = editor())
+        switch (info.commandID)
+        {
             case cmdZoomAcrossIn:   edition->zoomAcross (1);    return true;
             case cmdZoomAcrossOut:  edition->zoomAcross (-1);   return true;
             case cmdZoomDownIn:     edition->zoomDown (1);      return true;
@@ -393,7 +462,14 @@ juce::PopupMenu MainComponent::getMenuForIndex (int menuIndex, const juce::Strin
     juce::PopupMenu m;
     if (menuIndex == 0)
     {
+        for (auto id : { cmdNewProject, cmdOpenProject, cmdCloseProject })
+            m.addCommandItem (&commandManager, id);
+        m.addSeparator();
+        m.addCommandItem (&commandManager, cmdImportRolls);
+        m.addCommandItem (&commandManager, cmdProjectPitch);
+        m.addSeparator();
         m.addCommandItem (&commandManager, cmdOpen);
+        m.addCommandItem (&commandManager, cmdCloseTab);
     }
     else if (menuIndex == 1)
     {

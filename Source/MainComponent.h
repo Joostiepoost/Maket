@@ -21,6 +21,7 @@
 #include "UI/Inspector.h"
 #include "UI/UtilitiesPage.h"
 #include "UI/EditionPage.h"
+#include "UI/LibraryPage.h"
 #include "Engine/OscScheduler.h"
 #include "Engine/Synth.h"
 #include "Audio/AudioOutput.h"
@@ -50,7 +51,8 @@ public:
         cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit, cmdDrawingTimes,
         cmdPlayStop = 0x3030,       // stage 2d: the transport of the roll
         cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart,
-        cmdToggleAudio = 0x3040     // stage 3a
+        cmdToggleAudio = 0x3040,    // stage 3a
+        cmdNewProject = 0x3050, cmdOpenProject, cmdCloseProject, cmdImportRolls, cmdProjectPitch, cmdCloseTab     // stage 3b
     };
 
     /** Audio on: Maket's audio output is open. Off: it is closed and Maket makes no sound of its own and spends no
@@ -64,6 +66,8 @@ public:
 
     /** Opens a bach.roll text file in the tab Library and edition. */
     bool openRollFile (const juce::File&);
+    /** Several at once: a project's folder first if there is one, then rolls (into the open project's library, or shown by themselves). */
+    void openFiles (const juce::Array<juce::File>&);
 
     /** Hides or shows the list on the left of the tabs that have one. */
     void setListShown (bool shouldShow);
@@ -86,7 +90,10 @@ public:
 
 private:
     /** True when the tab in front has a list on its left. */
-    bool currentTabHasList() const      { return tabBar.getCurrent() == Tabs::utilities; }
+    bool currentTabHasList() const      { return tabBar.getCurrent() == Tabs::utilities
+                                                 || (tabBar.getCurrent() == Tabs::library && library != nullptr && library->hasList()); }
+    /** The editor of the snippet in front in the Library and edition tab; null when none is open. */
+    EditionPage* editor() const         { return library != nullptr ? library->front() : nullptr; }
 
     /** Brings the two panel buttons in line with what shows. */
     void updatePanelButtons();
@@ -108,7 +115,7 @@ private:
     AudioOutput audioOutput { synth };
     KeepAwake keepAwake { oscScheduler };       // tells macOS not to slow Maket down while messages wait
     UtilitiesPage* utilities = nullptr;         // owned by `pages`
-    EditionPage* edition = nullptr;             // owned by `pages`
+    LibraryPage* library = nullptr;             // owned by `pages`
     bool listShown = true;
     bool inspectorShown = true;
 

@@ -41,6 +41,10 @@ void WindowState::load()
     tabIndex = juce::jmax (0, number ("tab", 0));
     const auto b = object->getProperty ("window");
     bounds = b.isString() ? b.toString() : juce::String();
+    recent.clear();
+    if (auto* list = object->getProperty ("recentProjects").getArray())
+        for (const auto& v : *list)
+            if (v.isString() && v.toString().isNotEmpty() && recent.size() < 10) recent.addIfNotAlreadyThere (v.toString());
     changed = false;
 }
 
@@ -57,6 +61,9 @@ bool WindowState::save()
     object->setProperty ("listWidth", listW);
     object->setProperty ("inspectorShown", inspectorOn);
     object->setProperty ("inspectorWidth", inspectorW);
+    juce::Array<juce::var> list;
+    for (const auto& r : recent) list.add (r);
+    object->setProperty ("recentProjects", list);
 
     if (! file.getParentDirectory().createDirectory().wasOk()) return false;
     if (! file.replaceWithText (juce::JSON::toString (root) + "\n", false, false, "\n")) return false;
@@ -79,6 +86,20 @@ void WindowState::setInspectorWidth (int w)
 void WindowState::setListShown (bool on)            { if (on != listOn) { listOn = on; changed = true; } }
 void WindowState::setInspectorShown (bool on)       { if (on != inspectorOn) { inspectorOn = on; changed = true; } }
 void WindowState::setTab (int t)                    { t = juce::jmax (0, t); if (t != tabIndex) { tabIndex = t; changed = true; } }
+void WindowState::addRecentProject (const juce::String& path)
+{
+    if (path.isEmpty() || (recent.size() > 0 && recent[0] == path)) return;
+    recent.removeString (path);
+    recent.insert (0, path);
+    while (recent.size() > 10) recent.remove (recent.size() - 1);
+    changed = true;
+}
+
+void WindowState::removeRecentProject (const juce::String& path)
+{
+    if (recent.contains (path)) { recent.removeString (path); changed = true; }
+}
+
 void WindowState::setWindowBounds (const juce::String& b)   { if (b != bounds) { bounds = b; changed = true; } }
 
 } // namespace maket

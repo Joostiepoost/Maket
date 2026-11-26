@@ -106,8 +106,11 @@ public:
         const auto status = problem.isNotEmpty() ? problem : statusText();
         g.setColour (problem.isNotEmpty() ? Theme::warning : Theme::textMuted);
         g.setFont (Theme::font (12.0f));
-        g.drawText (status, label, fieldHeight + 4, getWidth() - label, 18,
-                    juce::Justification::centredLeft, true);
+        if (info.kind == maket::SettingKind::audioDevice)
+            g.drawFittedText (status, label, fieldHeight + 4, getWidth() - label, 32, juce::Justification::topLeft, 2, 1.0f);
+        else
+            g.drawText (status, label, fieldHeight + 4, getWidth() - label, 18,
+                        juce::Justification::centredLeft, true);
     }
 
     void resized() override
@@ -279,8 +282,10 @@ PreferencesPage::Layout PreferencesPage::computeLayout (int width) const
         for (size_t i = 0; i < all.size(); ++i)
             if (group == all[i].group)
             {
-                l.rowBounds.set ((int) i, { margin, y, w, rowHeight });
-                y += rowHeight + 6;
+                // The line under the audio output says a good deal: it gets room for two lines.
+                const int height = all[i].kind == maket::SettingKind::audioDevice ? rowHeight + 16 : rowHeight;
+                l.rowBounds.set ((int) i, { margin, y, w, height });
+                y += height + 6;
             }
     }
 
