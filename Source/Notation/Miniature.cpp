@@ -32,12 +32,13 @@ std::vector<MiniLine> miniatureOf (const Roll& roll, int most)
     int index = 0;
     for (const auto& voice : roll.voices)
     {
-        if (voice.isMuted()) { index += voice.numNotes(); continue; }
         for (const auto& chord : voice.chords)
             for (const auto& note : chord.notes)
             {
-                if (index++ % step != 0 || chord.isMuted() || note.isMuted()) continue;
-                const float weight = (float) std::clamp (note.velocity / 127.0, 0.0, 1.0);
+                if (index++ % step != 0) continue;
+                // What is muted is drawn too, paler: a snippet whose voices are all muted still shows what it holds.
+                const bool muted = voice.isMuted() || chord.isMuted() || note.isMuted();
+                const float weight = (float) std::clamp (note.velocity / 127.0, 0.0, 1.0) * (muted ? 0.35f : 1.0f);
                 if (note.breakpoints.size() >= 2)
                 {
                     for (size_t i = 1; i < note.breakpoints.size(); ++i)

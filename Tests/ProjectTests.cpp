@@ -175,7 +175,22 @@ void testProject (const juce::File& work, const juce::File& temp)
         for (const auto& v : doodsbed.voices)
             for (const auto& c : v.chords)
                 for (const auto& n : c.notes)
-                    if (! v.isMuted() && ! c.isMuted() && ! n.isMuted()) expected += n.breakpoints.size() >= 2 ? (int) n.breakpoints.size() - 1 : 1;
+                    expected += n.breakpoints.size() >= 2 ? (int) n.breakpoints.size() - 1 : 1;
+        // A muted note is in the picture, paler than the same note unmuted.
+        maket::Roll two;
+        two.voices.resize (1);
+        for (int i = 0; i < 2; ++i)
+        {
+            maket::Chord chord;
+            chord.onset = 1000.0 * i;
+            maket::Note note;
+            note.cents = 6000.0; note.duration = 500.0; note.velocity = 100;
+            if (i == 1) note.flags = maket::flagMuted;
+            chord.notes.push_back (note);
+            two.voices[0].chords.push_back (chord);
+        }
+        const auto pair = maket::notation::miniatureOf (two);
+        const bool paler = pair.size() == 2 && pair[1].weight > 0.0f && std::abs (pair[1].weight - 0.35f * pair[0].weight) < 1.0e-5f;
         bool inside = ! lines.empty();
         for (const auto& l : lines)
             inside = inside && l.x0 >= 0.0f && l.x1 <= 1.0001f && l.x0 <= l.x1 && l.y0 >= 0.0f && l.y0 <= 1.0f && l.y1 >= 0.0f && l.y1 <= 1.0f;
@@ -184,8 +199,8 @@ void testProject (const juce::File& work, const juce::File& temp)
         const bool haveLarge = maket::readBachRollFile (temp.getChildFile ("written by Maket").getChildFile ("Large roll by Maket.txt"), large, remarks).wasOk();
         const auto many = maket::notation::miniatureOf (large);
         maket::Roll empty;
-        checkRow (ok && (int) lines.size() == expected && inside && maket::notation::miniatureOf (empty).empty() && haveLarge && many.size() > 1500 && many.size() < 4500,
-                  "The miniature of doodsbed: " + juce::String ((int) lines.size()) + " lines, one for every note that is not muted and one for every stretch of a glide, "
+        checkRow (ok && paler && (int) lines.size() == expected && inside && maket::notation::miniatureOf (empty).empty() && haveLarge && many.size() > 1500 && many.size() < 4500,
+                  "The miniature of doodsbed: " + juce::String ((int) lines.size()) + " lines, one for every note (a muted one paler) and one for every stretch of a glide, "
                   "all inside the picture; the large roll's is thinned out to " + juce::String ((int) many.size()) + " lines; an empty roll has none");
     }
 

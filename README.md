@@ -69,7 +69,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 2e | Sound from Maket itself: the audio output as a setting, a first plain synth (one sine per note), and per voice the choice of conTimbre, synth or silent | done; tested by Joost on 26 Nov. On his Mac the synth waits 91 ms for the ePlayer (*Synth timing*) |
 | 2f | The closing of step 2: speed with a very large roll (measured, and made faster where it was slow), the looks gone through once more | done; tested by Joost on 26 Nov. **Step 2 is closed** |
 | 3a | Audio on / Audio off in the tab row; panels of adjustable width; the window remembers how it was left; small tags when staves stand close; the sound card's clock held against the Mac's | done; tested by Joost on 26 Nov |
-| 3b | Projects (a folder), a start panel with the projects opened last, the library for notes: bach rolls imported, a miniature of each, several open at once as tabs | built 26 Nov; to be tested by Joost |
+| 3b | Projects (a folder), a start panel with the projects opened last, the library for notes: bach rolls imported, a miniature of each, several open at once as tabs | tested by Joost on 27 Nov; 3b.1 (27 Nov) mends a crash and enlarges the miniatures, to be tested |
 | 3c | Audio snippets in the library: import as lossless copies, waveform, listening | |
 | 3d | The build surface with audio: tracks, blocks, edges, gain, fades, crossfades, play and loop, undo | |
 | 3e | Note blocks linked to their snippet, playing in time with the audio | |
@@ -902,6 +902,18 @@ Not yet: sounds in the library (3c); editing (step 4); the order of the library 
 9. File > The project's standard pitch: set 440, play, set it back.
 10. With audio on for a while, the line under *Audio output* in the preferences: readable to its end now?
 11. Push `Measurements/report.md`.
+
+### After the test of 3b (27 Nov), and stage 3b.1
+
+Joost: all 227 checks passed. The name of a new project can be typed straight away; the tabs keep their own view; play starts the snippet in front; the project's standard pitch works; the line under *Audio output* is readable (his MacBook Air's speakers at 96 kHz: 19.3 ms delay, the clock 3.1 millionths slow).
+
+Two things were wrong or wanting, and 3b.1 changes them:
+
+- **Maket crashed when a project was opened by a click in the list of projects opened last** (not through *Open project…*). The cause: opening the project rebuilds that list, and so the button was done away with while its own click was still being handled. The opening now waits until the click has ended. This could not be made to happen on the test machine, where the same mistake went unpunished; the Mac is where it shows.
+- **The miniatures were too small.** A miniature now takes the whole width of the list, with the name and the counts on one line under it, so that it is more than twice as wide as before at the same list width, and **grows when the list is dragged wider**. Where the line under it is short of room, the counts give way before the name does.
+- A snippet whose voices are muted had an empty miniature (FMmod in his screenshot). Muted notes are now drawn too, paler.
+
+To test 3b.1: `git pull`, `./build.sh` (`stage 3b.1`), `./build.sh tests` (`All 227 checks passed.`). Open a project from the list of the start panel, several times, also right after closing a project (File > Close the project). Drag the list wider and narrower: are the miniatures recognisable now, and at which width do you like them?
 
 ## The repository
 

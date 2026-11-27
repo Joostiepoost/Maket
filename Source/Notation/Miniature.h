@@ -19,7 +19,7 @@ struct MiniLine
 };
 
 /** The notes of the roll as lines. With more than `most` notes, only every so-manyth is given: the picture stays the
-    same to the eye, and drawing it stays quick. Muted notes are left out. */
+    same to the eye, and drawing it stays quick. Muted notes are drawn too, at a third of their weight. */
 std::vector<MiniLine> miniatureOf (const Roll& roll, int most = 3000);
 
 } // namespace maket::notation

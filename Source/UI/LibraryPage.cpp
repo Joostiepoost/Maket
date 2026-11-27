@@ -38,7 +38,6 @@ public:
         addAndMakeVisible (importButton);
 
         box.setModel (this);
-        box.setRowHeight (rowHeight);
         box.setColour (juce::ListBox::backgroundColourId, Theme::panel);
         box.setWantsKeyboardFocus (false);
         addAndMakeVisible (box);
@@ -100,9 +99,11 @@ public:
         area.removeFromRight (1);
         if (owner.notice.isNotEmpty()) area.removeFromBottom (noticeHeight);
         box.setBounds (area);
+        // The rows follow the width: a miniature a third as high as it is wide, and the line with the name under it.
+        box.setRowHeight (juce::jlimit (70, 300, juce::roundToInt ((float) (area.getWidth() - 20) * 0.34f)) + captionHeight + 10);
     }
 
-    static constexpr int rowHeight = 62, headHeight = 62, noticeHeight = 52;
+    static constexpr int captionHeight = 20, headHeight = 62, noticeHeight = 52;
 
 private:
     int getNumRows() override       { return (int) owner.project.getSnippets().size(); }
@@ -121,30 +122,42 @@ private:
         }
         if (selected) { g.setColour (Theme::accent); g.fillRect (0, 0, 3, height); }
 
-        // The miniature: the notes as lines, across by time, up and down by pitch.
-        const juce::Rectangle<float> mini (10.0f, 8.0f, 76.0f, (float) height - 16.0f);
+        // The miniature: the notes as lines, across by time, up and down by pitch. It takes the width of the list,
+        // so that a wider list gives larger miniatures (stage 3b.1).
+        const juce::Rectangle<float> mini (10.0f, 7.0f, (float) width - 20.0f, (float) (height - captionHeight - 10));
         g.setColour (miniPaper);
         g.fillRoundedRectangle (mini, 3.0f);
         const auto found = owner.miniatures.find (s.id);
         if (found != owner.miniatures.end())
         {
-            const auto inner = mini.reduced (3.0f, 3.0f);
+            const auto inner = mini.reduced (4.0f, 4.0f);
+            const float thickness = inner.getHeight() > 90.0f ? 1.5f : 1.0f;
             for (const auto& l : found->second)
             {
-                g.setColour (miniInk.withAlpha (0.35f + 0.6f * l.weight));
+                g.setColour (miniInk.withAlpha (0.3f + 0.65f * l.weight));
                 const float x0 = inner.getX() + l.x0 * inner.getWidth(), x1 = juce::jmax (x0 + 1.0f, inner.getX() + l.x1 * inner.getWidth());
-                g.drawLine (x0, inner.getY() + l.y0 * inner.getHeight(), x1, inner.getY() + l.y1 * inner.getHeight(), 1.0f);
+                g.drawLine (x0, inner.getY() + l.y0 * inner.getHeight(), x1, inner.getY() + l.y1 * inner.getHeight(), thickness);
             }
         }
 
-        auto text = juce::Rectangle<int> (96, 0, width - 102, height).reduced (0, 11);
-        g.setColour (Theme::text);
-        g.setFont (Theme::font (13.0f, openAt >= 0));
-        g.drawText (s.name, text.removeFromTop (20), juce::Justification::centredLeft, true);
+        // Under it one line: the name, and as much of the counts as there is room for.
+        auto caption = juce::Rectangle<int> (12, height - captionHeight - 3, width - 24, captionHeight);
+        const auto nameFont = Theme::font (13.0f, openAt >= 0), factsFont = Theme::font (11.0f);
+        const int nameWidth = juce::roundToInt (juce::GlyphArrangement::getStringWidth (nameFont, s.name)) + 10;
+        const juce::String length = lengthText (s.length);
+        const juce::String notes = juce::String (s.notes) + " notes, " + length;
+        const juce::String all3 = juce::String (s.voices) + (s.voices == 1 ? " voice, " : " voices, ") + notes;
+        juce::String facts;
+        for (const auto& candidate : { all3, notes, length })
+            if (facts.isEmpty() && nameWidth + juce::roundToInt (juce::GlyphArrangement::getStringWidth (factsFont, candidate)) <= caption.getWidth())
+                facts = candidate;
         g.setColour (Theme::textMuted);
-        g.setFont (Theme::font (11.0f));
-        g.drawText (juce::String (s.voices) + (s.voices == 1 ? " voice, " : " voices, ") + juce::String (s.notes) + " notes, " + lengthText (s.length),
-                    text.removeFromTop (16), juce::Justification::centredLeft, true);
+        g.setFont (factsFont);
+        g.drawText (facts, caption, juce::Justification::centredRight, false);
+        g.setColour (Theme::text);
+        g.setFont (nameFont);
+        g.drawText (s.name, facts.isEmpty() ? caption : caption.withTrimmedRight (juce::roundToInt (juce::GlyphArrangement::getStringWidth (factsFont, facts)) + 8),
+                    juce::Justification::centredLeft, true);
 
         g.setColour (Theme::line.withAlpha (0.6f));
         g.fillRect (0, height - 1, width, 1);
@@ -285,7 +298,12 @@ public:
                 b->setButtonText (folder.getFileName() + (there ? juce::String() : juce::String ("  (not found)")));
                 b->setTooltip (path);
                 b->setEnabled (there);
-                b->onClick = [this, folder] { owner.openProject (folder); };
+                // Opening the project rebuilds this very list of buttons. That must not happen while the click on one
+                // of them is still being handled (it crashed on the Mac at 3b), so the opening waits for the click to end.
+                b->onClick = [safe = juce::Component::SafePointer<LibraryPage> (&owner), folder]
+                {
+                    juce::MessageManager::callAsync ([safe, folder] { if (safe != nullptr) safe->openProject (folder); });
+                };
                 styleButton (*b);
                 addAndMakeVisible (b);
             }
