@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 3b.1. Machine: Apple M4, Mac OSX 27.2.1. Date: 27 Nov 2026 9:09:56am.
+Maket 0.0.1, stage 3c. Machine: Apple M4, Mac OSX 27.2.1. Date: 27 Nov 2026 11:51:34am.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`3b.1`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`3c`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -279,8 +279,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.028 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.007 ms; the latest of all: 0.010 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.029 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.000 ms; the latest of all: 0.004 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -288,8 +288,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.010 | 0.007 | 0.010 |
-| Arrived at the listener in this program | 0.072 | 0.100 | 2.655 |
+| Left Maket | -0.015 | 0.000 | 0.004 |
+| Arrived at the listener in this program | 0.063 | 0.102 | 0.270 |
 
 ### A command from a typed line (stage 1f.5)
 
@@ -344,14 +344,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.07 ms; the farthest 0.19 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.16 ms; the farthest 0.51 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.04 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.10 ms; the farthest 0.19 ms (earliest -0.10, latest +0.19).
-The note-ons alone: half within 0.04 ms of their time, 95 in 100 within 0.08 ms, 99 in 100 within 0.10 ms; the farthest 0.19 ms (earliest -0.10, latest +0.19).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.07 ms, the farthest 0.19 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.01 ms after it.
+All messages: half within 0.05 ms of their time, 95 in 100 within 0.16 ms, 99 in 100 within 0.40 ms; the farthest 0.51 ms (earliest -0.11, latest +0.51).
+The note-ons alone: half within 0.05 ms of their time, 95 in 100 within 0.09 ms, 99 in 100 within 0.15 ms; the farthest 0.17 ms (earliest -0.11, latest +0.17).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.16 ms, the farthest 0.51 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.02 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -687,26 +687,26 @@ A roll far larger than Joost's own is written into `Temp/written by Maket` and t
 
 | What | Time here |
 | --- | --- |
-| The roll: 24 voices, 20 minutes, 41191 chords, 74157 notes, 7518 of them gliding, 239 markers; as a file 5.9 MB | made in 60 ms |
-| Writing it as a bach.roll text | 169 ms |
-| Reading the file | 190 ms |
-| Working out staves, spelling, heads, accidentals and glides for every note | 39 ms |
-| Preparing a play of the whole roll: 106273 commands for the ePlayer, 37220 notes for the synth | 135 ms |
-| Making the roll ready for the transport (once after opening, and after a change of who plays a voice) | 75 ms |
-| After that: a play from the middle to the end | 25 ms |
-| After that: one round of a loop of 10 s (963 commands, 322 synth notes) | 2.4 ms |
-| From the press of Play to everything being scheduled | 139 ms |
-| Stop: taking back what was scheduled | 14 ms |
-| The synth with 128 gliding notes at once: 10 s of sound | 779 ms (7.8 % of the time it lasts) |
-| One block of sound (10.7 ms long) while 37220 synth notes wait their turn | 0.044 ms |
+| The roll: 24 voices, 20 minutes, 41191 chords, 74157 notes, 7518 of them gliding, 239 markers; as a file 5.9 MB | made in 31 ms |
+| Writing it as a bach.roll text | 84 ms |
+| Reading the file | 93 ms |
+| Working out staves, spelling, heads, accidentals and glides for every note | 20 ms |
+| Preparing a play of the whole roll: 106273 commands for the ePlayer, 37220 notes for the synth | 66 ms |
+| Making the roll ready for the transport (once after opening, and after a change of who plays a voice) | 35 ms |
+| After that: a play from the middle to the end | 12 ms |
+| After that: one round of a loop of 10 s (963 commands, 322 synth notes) | 0.9 ms |
+| From the press of Play to everything being scheduled | 65 ms |
+| Stop: taking back what was scheduled | 6.3 ms |
+| The synth with 128 gliding notes at once: 10 s of sound | 396 ms (4.0 % of the time it lasts) |
+| One block of sound (10.7 ms long) while 37220 synth notes wait their turn | 0.023 ms |
 
 | Check | Passed |
 | --- | --- |
 | `Temp/written by Maket/Large roll by Maket.txt` is written (74157 notes) and, read back, holds the same | yes |
 | Writing, reading and working out the notation each take seconds at most, far less on a fast machine | yes |
 | A play of the whole roll, and of a part of it, is prepared in seconds at most | yes |
-| A round of a loop is worked out from its own ten seconds, not from the whole roll (2.4 ms), and gives the same commands as the plain way | yes |
-| However long the preparing takes, the first note keeps its lead: when everything is scheduled, the start of the roll still lies ahead (here 100 ms), so the opening is not played late or bunched together | yes |
+| A round of a loop is worked out from its own ten seconds, not from the whole roll (0.9 ms), and gives the same commands as the plain way | yes |
+| However long the preparing takes, the first note keeps its lead: when everything is scheduled, the start of the roll still lies ahead (here 110 ms), so the opening is not played late or bunched together | yes |
 | The synth at full load makes sound several times faster than it is heard, and waiting notes cost next to nothing | yes |
 
 ## 12. The window's state and the two clocks (stage 3a)
@@ -736,7 +736,20 @@ A project is a folder; a note snippet in it is kept as the bach.roll text bach i
 | The miniature of doodsbed: 319 lines, one for every note (a muted one paler) and one for every stretch of a glide, all inside the picture; the large roll's is thinned out to 3234 lines; an empty roll has none | yes |
 | The projects opened last: the newest first, each once, ten at most, one that is gone taken off the list; kept with the window's state | yes |
 
-## 14. Test material
+## 14. Sound files in the library (stage 3c)
+
+A sound file is copied into the project without loss, at the project's sample rate, and played from memory. The files here are plain tones made by the test program.
+
+| Check | Passed |
+| --- | --- |
+| The change of rate: a tone of 1 kHz from 44.1 to 48 kHz comes out as that tone, what is not the tone lying 107 dB under it; 15 kHz from 48 to 96 kHz: 100 dB; 10 kHz from 96 down to 48 kHz: 109 dB; a tone of 30 kHz, which 48 kHz cannot hold, is taken out (-111 dB) instead of folding back; a steady level stays what it was; the lengths are right to the sample | yes |
+| Import: a stereo file of 16 bits at the project's rate is kept as FLAC with every sample the very number the file has; a mono file of 44.1 kHz becomes one channel at 48 kHz holding the same tone (107 dB clean); a file that is no sound is refused and leaves nothing behind | yes |
+| An audio snippet in the project opened anew: its kind, one or two channels, its length, the rate of the file it came from. Update from its file takes the new sound (1 s becomes 2 s); a broken file leaves the snippet as it was; a removed snippet's sound is in the project's `Trash` folder | yes |
+| Playing at the project's rate: every sample out is the sample of the sound, in blocks of 512 and of 37; silence after its end; a sound of one channel goes to both sides alike | yes |
+| Begun in the middle, the sound comes in over 4 ms and is then itself; Stop takes it out over 4 ms without a click, then silence; a loop of 100 ms keeps going round, with a dip instead of a click at its seam | yes |
+| Played through a device at another rate than the project's 48 kHz, the tones come out as they are (96 kHz: 108 dB; 44.1 kHz: 102 dB clean) | yes |
+
+## 15. Test material
 
 The files Joost puts in the repository's `Temp` folder are what the coming steps are tested on. This section lists what the program finds there; nothing is read yet. A missing file is not a failed check at this stage.
 
@@ -925,4 +938,4 @@ Needed for the coming stages:
 | 1c maket log | 1d: Maket's send log of 22 Nov, to check the measuring | yes, as `support materials/1c maket log.txt` |
 | 1c max log | 1d: the Max patch's log of 22 Nov, to check the measuring | yes, as `support materials/1c max log.txt` |
 
-All 227 checks passed.
+All 233 checks passed.
