@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 3b. Machine: Apple M4, Mac OSX 27.2.1. Date: 27 Nov 2026 12:23:27am.
+Maket 0.0.1, stage 3b.1. Machine: Apple M4, Mac OSX 27.2.1. Date: 27 Nov 2026 9:09:56am.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`3b`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`3b.1`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -279,8 +279,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.027 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.009 ms; the latest of all: 0.017 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.028 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.007 ms; the latest of all: 0.010 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -288,8 +288,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.012 | 0.009 | 0.017 |
-| Arrived at the listener in this program | 0.066 | 0.103 | 0.254 |
+| Left Maket | -0.010 | 0.007 | 0.010 |
+| Arrived at the listener in this program | 0.072 | 0.100 | 2.655 |
 
 ### A command from a typed line (stage 1f.5)
 
@@ -344,14 +344,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.08 ms; the farthest 0.19 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.07 ms; the farthest 0.19 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.04 ms of their time, 95 in 100 within 0.08 ms, 99 in 100 within 0.10 ms; the farthest 0.19 ms (earliest -0.12, latest +0.19).
-The note-ons alone: half within 0.04 ms of their time, 95 in 100 within 0.09 ms, 99 in 100 within 0.12 ms; the farthest 0.19 ms (earliest -0.12, latest +0.19).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.08 ms, the farthest 0.19 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.02 ms after it.
+All messages: half within 0.04 ms of their time, 95 in 100 within 0.07 ms, 99 in 100 within 0.10 ms; the farthest 0.19 ms (earliest -0.10, latest +0.19).
+The note-ons alone: half within 0.04 ms of their time, 95 in 100 within 0.08 ms, 99 in 100 within 0.10 ms; the farthest 0.19 ms (earliest -0.10, latest +0.19).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.07 ms, the farthest 0.19 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 0.01 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -572,14 +572,15 @@ The rolls Joost gave for the roll view (`Temp/Roll view 2/roll txt`), read and w
 | `Capriccio voorzin.txt` | 18 | 25 | 231 | 246 | 0 | None, FG, FFG, G, F, Tenor | 1400 to 9000 | 53.9 s | byte for byte |
 | `Doodsbed.txt` | 8 | 15 | 252 | 307 | 49 | None, FG, G8vb, F, Alto, FFGG | 2100 to 9500 | 179.2 s | byte for byte |
 | `Draaikolk.txt` | 19 | 25 | 548 | 577 | 21 | G, FFG, FG, GG, F | 1700 to 10100 | 25.1 s | byte for byte |
-| `FMmod.txt` | 1 | 4 | 8 | 77 | 0 | FFGG | 1428 to 10550 | 8.0 s | byte for byte |
+| `FMmod.txt` | 1 | 4 | 9 | 94 | 0 | FFGG | 1428 to 10550 | 10.0 s | byte for byte |
+| `FMmod_old.txt` | 1 | 4 | 8 | 77 | 0 | FFGG | 1428 to 10550 | 8.0 s | byte for byte |
 | `Mexican Bird.txt` | 1 | 2 | 454 | 595 | 0 | GG | 8820 to 10546 | 15.6 s | byte for byte |
 | `Mixed_roll_example_01h.txt` | 18 | 18 | 25 | 25 | 0 | Percussion, G, F | 4600 to 8325 | 7.6 s | byte for byte |
 | `Priem boventonen.txt` | 5 | 10 | 19 | 68 | 0 | FFGG, G, FG, F | 3425 to 9650 | 18.5 s | byte for byte |
 
 | Check | Passed |
 | --- | --- |
-| 9 rolls are read | yes |
+| 10 rolls are read | yes |
 | Each of them, written back, is byte for byte the file (the test of stage 1b on new files) | yes |
 | Every clef in them is one Maket knows, and every note gets a spelling within half a grid step of its pitch | yes |
 
@@ -604,7 +605,7 @@ Which sign a note gets and where the signs of a chord stand, by bach's rules; th
 | C sharp, F sharp, A flat: the outer two are clear of each other and both stand at the heads, the middle one left of them | yes |
 | A second (C quarter sharp, D quarter flat): the heads on both sides of the stem, both signs left of the left head | yes |
 | In the roll written below (89 chords, 10 with two signs or more) no sign lies over another sign or over a head, and no head over another, with the stem up or down | yes |
-| The same in the 9 rolls of `Temp/Roll view 2` (3079 chords, 190 with two signs or more) | yes |
+| The same in the 10 rolls of `Temp/Roll view 2` (3088 chords, 198 with two signs or more) | yes |
 | `Temp/written by Maket/Accidentals by Maket.txt` is written (5 voices, 125 notes) and, read back, holds the same notes | yes |
 
 The roll `Accidentals by Maket.txt`, for bach.roll beside Maket (the README tells what to look at):
@@ -627,7 +628,7 @@ The line of a note whose pitch moves, and the lines marker names are written on,
 | The height of a pitch between the notes: C sharp half a step above C, a quarter tone above E half way to F, across octaves | yes |
 | A glide begins at the head and goes through its points: from a C sharp, +200 cents lies on D and -100 on B, as in bach; half way along a curved piece the height follows the curve; a note without points has no glide | yes |
 | Marker names: a name that would run into the one before goes a line lower, and back to the first line when there is room again | yes |
-| In the 9 rolls of `Temp/Roll view 2`: 69 notes glide, each line whole from head to tail; 123 markers; 619 notes locked, muted or solo (themselves, their chord or their voice) | yes |
+| In the 10 rolls of `Temp/Roll view 2`: 69 notes glide, each line whole from head to tail; 123 markers; 619 notes locked, muted or solo (themselves, their chord or their voice) | yes |
 | `Temp/written by Maket/Glides and markers by Maket.txt` is written (5 voices, 55 notes, 7 of them gliding, 27 locked, muted or solo; 8 markers) and, read back, holds the same; a voice name of two words is written as two words, as bach keeps it, and read back as one name | yes |
 
 The roll `Glides and markers by Maket.txt`, for bach.roll beside Maket (the README tells what to look at):
@@ -687,16 +688,16 @@ A roll far larger than Joost's own is written into `Temp/written by Maket` and t
 | What | Time here |
 | --- | --- |
 | The roll: 24 voices, 20 minutes, 41191 chords, 74157 notes, 7518 of them gliding, 239 markers; as a file 5.9 MB | made in 60 ms |
-| Writing it as a bach.roll text | 167 ms |
-| Reading the file | 191 ms |
+| Writing it as a bach.roll text | 169 ms |
+| Reading the file | 190 ms |
 | Working out staves, spelling, heads, accidentals and glides for every note | 39 ms |
-| Preparing a play of the whole roll: 106273 commands for the ePlayer, 37220 notes for the synth | 133 ms |
-| Making the roll ready for the transport (once after opening, and after a change of who plays a voice) | 72 ms |
-| After that: a play from the middle to the end | 24 ms |
-| After that: one round of a loop of 10 s (963 commands, 322 synth notes) | 2.0 ms |
-| From the press of Play to everything being scheduled | 136 ms |
+| Preparing a play of the whole roll: 106273 commands for the ePlayer, 37220 notes for the synth | 135 ms |
+| Making the roll ready for the transport (once after opening, and after a change of who plays a voice) | 75 ms |
+| After that: a play from the middle to the end | 25 ms |
+| After that: one round of a loop of 10 s (963 commands, 322 synth notes) | 2.4 ms |
+| From the press of Play to everything being scheduled | 139 ms |
 | Stop: taking back what was scheduled | 14 ms |
-| The synth with 128 gliding notes at once: 10 s of sound | 770 ms (7.7 % of the time it lasts) |
+| The synth with 128 gliding notes at once: 10 s of sound | 779 ms (7.8 % of the time it lasts) |
 | One block of sound (10.7 ms long) while 37220 synth notes wait their turn | 0.044 ms |
 
 | Check | Passed |
@@ -704,7 +705,7 @@ A roll far larger than Joost's own is written into `Temp/written by Maket` and t
 | `Temp/written by Maket/Large roll by Maket.txt` is written (74157 notes) and, read back, holds the same | yes |
 | Writing, reading and working out the notation each take seconds at most, far less on a fast machine | yes |
 | A play of the whole roll, and of a part of it, is prepared in seconds at most | yes |
-| A round of a loop is worked out from its own ten seconds, not from the whole roll (2.0 ms), and gives the same commands as the plain way | yes |
+| A round of a loop is worked out from its own ten seconds, not from the whole roll (2.4 ms), and gives the same commands as the plain way | yes |
 | However long the preparing takes, the first note keeps its lead: when everything is scheduled, the start of the roll still lies ahead (here 100 ms), so the opening is not played late or bunched together | yes |
 | The synth at full load makes sound several times faster than it is heard, and waiting notes cost next to nothing | yes |
 
@@ -727,12 +728,12 @@ A project is a folder; a note snippet in it is kept as the bach.roll text bach i
 | Check | Passed |
 | --- | --- |
 | A new project is a folder with `project.json`, `Snippets` and `Sounds`; a second project in the same folder, and a sample rate other than 48000 or 96000, are refused; opened anew it has its rate and its standard pitch; a folder without `project.json` is not taken for a project | yes |
-| 15 of the 18 bach files in `Temp/support materials` and `Temp/Roll view 2/roll txt` are imported; 15 of them are kept in the project byte for byte as the file they came from; not a bach.roll text: 01a doodsbed roll stats.txt, 1c maket log.txt, 1c max log.txt | yes |
+| 16 of the 19 bach files in `Temp/support materials` and `Temp/Roll view 2/roll txt` are imported; 16 of them are kept in the project byte for byte as the file they came from; not a bach.roll text: 01a doodsbed roll stats.txt, 1c maket log.txt, 1c max log.txt | yes |
 | The project opened anew holds the same snippets in the same order, each with its own ID, its name, where it came from, and its counts of voices and notes; each one's notes, read and written again, are the text that is kept | yes |
 | A snippet is renamed (an empty name is refused), put at another place in the list, and removed: its two files are then in the project's `Trash` folder, not deleted; all of it is there when the project is opened anew | yes |
 | Update from file: a snippet does not change when the file it came from changes; on request it takes the file's notes (25 notes become 24); when the file is no roll any more, or is gone, the snippet stays as it was | yes |
-| The standard pitch belongs to the project (set to 440 and kept; 500 refused). A `project.json` that has lost its list of snippets: every snippet in the folder is put back, with a remark for each (14) | yes |
-| The miniature of doodsbed: 318 lines, one for every note that is not muted and one for every stretch of a glide, all inside the picture; the large roll's is thinned out to 3234 lines; an empty roll has none | yes |
+| The standard pitch belongs to the project (set to 440 and kept; 500 refused). A `project.json` that has lost its list of snippets: every snippet in the folder is put back, with a remark for each (15) | yes |
+| The miniature of doodsbed: 319 lines, one for every note (a muted one paler) and one for every stretch of a glide, all inside the picture; the large roll's is thinned out to 3234 lines; an empty roll has none | yes |
 | The projects opened last: the newest first, each once, ten at most, one that is gone taken off the list; kept with the window's state | yes |
 
 ## 14. Test material
@@ -741,6 +742,7 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 
 | File in `Temp` | Size |
 | --- | --- |
+| `library 3b/screenshots/library thumbnails.jpg` | 973.8 KB |
 | `Mapping 1e/20261123-090222 doodsbed final v1c scast maket commands.txt` | 38.3 KB |
 | `Mapping 1e/20261123-090222 doodsbed final v1c scast max log.txt` | 68.3 KB |
 | `Mapping 1e/20261123-091638 doodsbed final v1c scast maket commands.txt` | 38.3 KB |
@@ -783,7 +785,8 @@ The files Joost puts in the repository's `Temp` folder are what the coming steps
 | `Roll view 2/roll txt/Capriccio voorzin.txt` | 32.5 KB |
 | `Roll view 2/roll txt/Doodsbed.txt` | 57.1 KB |
 | `Roll view 2/roll txt/Draaikolk.txt` | 51.5 KB |
-| `Roll view 2/roll txt/FMmod.txt` | 11.0 KB |
+| `Roll view 2/roll txt/FMmod.txt` | 11.5 KB |
+| `Roll view 2/roll txt/FMmod_old.txt` | 11.0 KB |
 | `Roll view 2/roll txt/Mexican Bird.txt` | 30.7 KB |
 | `Roll view 2/roll txt/Mixed_roll_example_01h.txt` | 17.2 KB |
 | `Roll view 2/roll txt/Priem boventonen.txt` | 12.0 KB |
