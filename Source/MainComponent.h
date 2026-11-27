@@ -111,6 +111,7 @@ private:
     maket::Settings settings { maket::Settings::defaultFile() };
     maket::WindowState windowState { maket::WindowState::defaultFile() };
     maket::OscScheduler oscScheduler;           // sends OSC messages at their time, on a thread of its own
+    maket::SoundPlayer soundPlayer;     // plays one sound file at a time (stage 3c); before the pages
     maket::Synth synth;                 // Maket's own sound (stage 2e); before the pages, which use it
     AudioOutput audioOutput { synth };
     KeepAwake keepAwake { oscScheduler };       // tells macOS not to slow Maket down while messages wait

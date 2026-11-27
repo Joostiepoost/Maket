@@ -39,7 +39,8 @@ MainComponent::MainComponent()
         }
         else if (i == Tabs::library)
         {
-            auto page = std::make_unique<LibraryPage> (settings, windowState, oscScheduler, synth, audioOutput);
+            audioOutput.setSoundPlayer (&soundPlayer);
+            auto page = std::make_unique<LibraryPage> (settings, windowState, oscScheduler, synth, audioOutput, soundPlayer);
             PreferencesPage::audioOutputNames = [this] { return audioOutput.outputNames(); };
             PreferencesPage::audioOutputState = [this] { return audioOutput.describe(); };
             library = page.get();
@@ -169,6 +170,7 @@ juce::String MainComponent::setAudioOn (bool shouldBeOn)
     else
     {
         synth.allNotesOff();
+        soundPlayer.stop();
         audioOutput.close();
     }
 
@@ -302,6 +304,8 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
     const auto cmdShift = juce::ModifierKeys::commandModifier | juce::ModifierKeys::shiftModifier;
     const bool rollInFront = editor() != nullptr && editor()->hasRoll() && tabBar.getCurrent() == Tabs::library;
     const bool project = library != nullptr && library->hasProject();
+    const bool soundInFront = library != nullptr && library->frontSound() != nullptr && tabBar.getCurrent() == Tabs::library;
+    const bool anyInFront = rollInFront || soundInFront;
     switch (id)
     {
         case cmdOpen:
@@ -321,7 +325,7 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
             info.setActive (project);
             return;
         case cmdImportRolls:
-            info.setInfo (juce::String::fromUTF8 ("Import bach rolls\xe2\x80\xa6"), "Bring bach.roll text files into the project's library", "File", 0);
+            info.setInfo (juce::String::fromUTF8 ("Import\xe2\x80\xa6"), "Bring bach.roll text files and sound files into the project's library", "File", 0);
             info.addDefaultKeypress ('i', cmd);
             info.setActive (project);
             return;
@@ -338,12 +342,12 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
             info.setInfo ("More time detail", "Zoom in along the time axis", "View", 0);
             info.addDefaultKeypress ('=', cmd);
             info.addDefaultKeypress ('+', cmd);
-            info.setActive (rollInFront);
+            info.setActive (anyInFront);
             return;
         case cmdZoomAcrossOut:
             info.setInfo ("Less time detail", "Zoom out along the time axis", "View", 0);
             info.addDefaultKeypress ('-', cmd);
-            info.setActive (rollInFront);
+            info.setActive (anyInFront);
             return;
         case cmdZoomDownIn:
             info.setInfo ("Larger staves", "Zoom in on the staves", "View", 0);
@@ -358,12 +362,12 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
         case cmdZoomToFit:
             info.setInfo ("The whole roll in the window", "Zoom so that the whole roll shows", "View", 0);
             info.addDefaultKeypress ('0', cmd);
-            info.setActive (rollInFront);
+            info.setActive (anyInFront);
             return;
         case cmdPlayStop:
-            info.setInfo (editor() != nullptr && editor()->isPlaying() ? "Stop" : "Play", "Play the roll from the playhead on the conTimbre ePlayer, or stop", "Transport", 0);
+            info.setInfo ((editor() != nullptr && editor()->isPlaying()) || (library != nullptr && library->frontSound() != nullptr && library->frontSound()->isPlaying()) ? "Stop" : "Play", "Play the roll from the playhead on the conTimbre ePlayer, or stop", "Transport", 0);
             info.addDefaultKeypress (juce::KeyPress::spaceKey, juce::ModifierKeys::noModifiers);
-            info.setActive (rollInFront);
+            info.setActive (anyInFront);
             return;
         case cmdPlayPrescheduled:
             info.setInfo ("Play prescheduled", "Play from the playhead without anything on screen following the sound", "Transport", 0);
@@ -385,7 +389,7 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
             info.setInfo ("Go round the loop", "Play goes round the loop region marked in the ruler", "Transport", 0);
             info.addDefaultKeypress ('l', juce::ModifierKeys::noModifiers);
             info.setTicked (editor() != nullptr && editor()->isLoopOn());
-            info.setActive (rollInFront);
+            info.setActive (anyInFront);
             return;
         case cmdToggleAudio:
             info.setInfo ("Audio on", "Open or close Maket's audio output. Off: no sound from Maket itself and no processor time for it; conTimbre plays on", "Transport", 0);
@@ -395,7 +399,7 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
         case cmdToStart:
             info.setInfo ("Playhead to the start", "Put the playhead at the start of the roll", "Transport", 0);
             info.addDefaultKeypress (juce::KeyPress::returnKey, juce::ModifierKeys::noModifiers);
-            info.setActive (rollInFront);
+            info.setActive (anyInFront);
             return;
         default: break;
     }
@@ -429,6 +433,17 @@ bool MainComponent::perform (const InvocationInfo& info)
             default: break;
         }
     }
+    if (auto* sound = library != nullptr ? library->frontSound() : nullptr)
+        switch (info.commandID)
+        {
+            case cmdZoomAcrossIn:   sound->zoomAcross (1);      return true;
+            case cmdZoomAcrossOut:  sound->zoomAcross (-1);     return true;
+            case cmdZoomToFit:      sound->zoomToFit();         return true;
+            case cmdPlayStop:       sound->playOrStop();        commandManager.commandStatusChanged(); return true;
+            case cmdToggleLoop:     sound->toggleLoop();        commandManager.commandStatusChanged(); return true;
+            case cmdToStart:        sound->toStart();           return true;
+            default: break;
+        }
     if (auto* edition = editor())
         switch (info.commandID)
         {

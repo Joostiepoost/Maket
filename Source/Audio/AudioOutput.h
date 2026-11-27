@@ -14,11 +14,14 @@
 
 #include "../Engine/StreamClock.h"
 #include "../Engine/Synth.h"
+#include "../Sound/SoundPlayer.h"
 
 class AudioOutput : private juce::AudioIODeviceCallback
 {
 public:
     explicit AudioOutput (maket::Synth&);
+    /** Stage 3c: a player of sound files, mixed in with the synth. Set once, before the output is opened. */
+    void setSoundPlayer (maket::SoundPlayer* p)     { soundPlayer = p; }
     ~AudioOutput() override;
 
     /** Opens the output with this name (empty: the computer's default output), unless it is open already.
@@ -42,6 +45,7 @@ private:
     void audioDeviceStopped() override;
 
     maket::Synth& synth;
+    maket::SoundPlayer* soundPlayer = nullptr;
     juce::AudioDeviceManager manager;
     maket::StreamClock clock;
     bool initialised = false;

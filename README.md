@@ -69,8 +69,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 2e | Sound from Maket itself: the audio output as a setting, a first plain synth (one sine per note), and per voice the choice of conTimbre, synth or silent | done; tested by Joost on 26 Nov. On his Mac the synth waits 91 ms for the ePlayer (*Synth timing*) |
 | 2f | The closing of step 2: speed with a very large roll (measured, and made faster where it was slow), the looks gone through once more | done; tested by Joost on 26 Nov. **Step 2 is closed** |
 | 3a | Audio on / Audio off in the tab row; panels of adjustable width; the window remembers how it was left; small tags when staves stand close; the sound card's clock held against the Mac's | done; tested by Joost on 26 Nov |
-| 3b | Projects (a folder), a start panel with the projects opened last, the library for notes: bach rolls imported, a miniature of each, several open at once as tabs | tested by Joost on 27 Nov; 3b.1 (27 Nov) mends a crash and enlarges the miniatures, to be tested |
-| 3c | Audio snippets in the library: import as lossless copies, waveform, listening | |
+| 3b | Projects (a folder), a start panel with the projects opened last, the library for notes: bach rolls imported, a miniature of each, several open at once as tabs | done; tested by Joost on 27 Nov (3b and 3b.1) |
+| 3c | Audio snippets in the library: import as lossless copies at the project's rate, a waveform miniature, a waveform view with play, stop and loop | built 27 Nov; to be tested by Joost |
 | 3d | The build surface with audio: tracks, blocks, edges, gain, fades, crossfades, play and loop, undo | |
 | 3e | Note blocks linked to their snippet, playing in time with the audio | |
 | 3f | The closing test of step 3 | |
@@ -915,6 +915,35 @@ Two things were wrong or wanting, and 3b.1 changes them:
 
 To test 3b.1: `git pull`, `./build.sh` (`stage 3b.1`), `./build.sh tests` (`All 227 checks passed.`). Open a project from the list of the start panel, several times, also right after closing a project (File > Close the project). Drag the list wider and narrower: are the miniatures recognisable now, and at which width do you like them?
 
+## Using stage 3c
+
+Sound files come into the library, beside the rolls.
+
+- **Import…** (⌘I, or dropping files) now takes sound files too: WAV, AIFF, FLAC, Ogg, and on the Mac also MP3, AAC (m4a) and CAF; rolls and sounds can be chosen together. A sound is **copied into the project without loss**: `Sounds/<ID>.flac`, 24 bits, at the project's sample rate. A file of another rate is converted while it is imported (a long one takes a moment; the pointer shows it). One and two channels are kept as they are; of more than two, the first two are taken, and Maket says so. Your file is not touched.
+- In the list a sound shows its **waveform** as miniature, and `sound, stereo` or `mono` with its length.
+- **A click opens it in a tab**, as a roll: the waveform of each channel over a time ruler. Zoom across with the − and + buttons, ⌘= and ⌘−, a pinch, or ⌘ with the wheel; *Fit* shows all of it. Zoomed far in, the single samples show.
+- **Play** (space) plays from the playhead through Maket's audio output, which goes on by itself; **Stop** (space) fades out in a few thousandths of a second. A click in the ruler or the waveform sets the playhead. **A loop**: drag in the ruler with ⌥ held (⌥-click takes it away); *Loop* (L) switches it. After Stop the playhead is back where the play began.
+- Only one thing sounds at a time here too: playing a sound stops a roll that plays, and the other way round.
+- *Update from its file*, *Rename*, *Remove* (the FLAC goes to the project's `Trash`) work as for rolls.
+
+How the sound is treated: at the project's rate it is played **sample for sample** as it is in the file. Where rates differ (a 44.1 kHz file in a 48 kHz project; a 48 kHz project through your output at 96 kHz), the sound is read between its samples with a long windowed sinc; in the checks, what is not the tone lies 100 dB or more under it, and going down in rate nothing folds back. This reader is written for Maket and is the one the build surface will use; it follows the same method as the one in Projet and Effet but is not a copy of their code.
+
+This is a view for looking and listening. Which part of a sound a block uses, its gain and its fades are set on the build surface (3d), not here.
+
+Known limits: starting one sound while another plays cuts the first off at once (no fade); at the seam of a loop the sound dips for a moment instead of crossing over; a very long import holds the window still while it runs.
+
+### Testing stage 3c
+
+1. `git pull`, then `./build.sh`: `stage 3c`. `./build.sh tests` ends with `All 233 checks passed.`
+2. Open your project and import a handful of sound files of different kinds: WAV and AIFF, 44.1, 48 and 96 kHz, mono and stereo, an MP3 if you have one, a short one and one of a minute or two. Does each arrive, and how long does the longest take?
+3. The miniatures: recognisable? Open one: the waveform, zoom far in and out, scroll, *Fit*.
+4. Play, Stop, click somewhere and play from there, a loop with ⌥-drag. Any click or crackle at a start, a stop, or the loop's seam?
+5. **Against Reaper:** the same file in Reaper and in Maket, one after the other: the same level, the same pitch, the same sound? Above all a 44.1 kHz file (converted on import) and any file through your 96 kHz output.
+6. Play a roll, then play a sound in another tab: the roll stops. And the other way round.
+7. In Finder, the project's `Sounds` folder: drag one of the `.flac` files into Reaper beside its original: the same?
+8. *Update from its file* after changing a sound file; *Remove* one.
+9. Push `Measurements/report.md`.
+
 ## The repository
 
 ```
@@ -928,6 +957,7 @@ Source/             the application
   Model/              no interface code: the settings; what the window remembers; the project on disk and its library; the name, version and build stage; bach's list type; the roll
   Formats/            no interface code: reading and writing files (bach's text, bach.roll)
   Engine/             no interface code: OSC messages, the sender and its thread, the ePlayer's commands, the timing test; what of a roll plays from where to where and on which engine (`Playing`), the transport (`Transport`), the synth (`Synth`) and the clock of the audio stream (`StreamClock`)
+  Sound/              no interface code: a sound in memory, importing a sound file as a lossless copy, the change of sample rate, the player of one sound
   Audio/              the audio output: the device, and the call in which the synth fills each block
   Notation/           no interface code: which note and accidental a pitch is drawn as, the staves of each clef, how voices are stacked, the heads and accidentals of a chord, glides, the lines of marker names
 Resources/Fonts/    the Bravura music font (Steinberg, SIL Open Font License), built into the app

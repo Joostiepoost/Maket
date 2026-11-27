@@ -2,6 +2,7 @@
 
 #include "Project.h"
 #include "../Formats/BachRoll.h"
+#include "../Sound/Sound.h"
 
 namespace maket
 {
@@ -93,6 +94,15 @@ juce::Result Project::open (const juce::File& f, Project& result, juce::StringAr
         {
             s.sourcePath = source->getProperty ("path").toString();
             s.sourceModified = (juce::int64) source->getProperty ("modified");
+            s.sourceRate = (double) source->getProperty ("sampleRate");
+        }
+        if (auto* pairs = info->getProperty ("overview").getArray())
+            for (const auto& v : *pairs) s.overview.push_back ((float) (double) v);
+        if (s.kind == "audio")
+        {
+            SoundFacts facts;
+            if (readSoundFacts (result.soundFile (id), facts).wasOk()) { s.channels = facts.channels; s.length = facts.lengthMs; }
+            else remarks.add ("The sound of \"" + s.name + "\" could not be read (" + result.soundFile (id).getFileName() + ").");
         }
         if (s.kind == "notes")
         {
@@ -132,6 +142,13 @@ juce::Result Project::writeInfo (const SnippetInfo& s) const
     auto* source = new juce::DynamicObject();
     source->setProperty ("path", s.sourcePath);
     source->setProperty ("modified", s.sourceModified);
+    if (s.isAudio()) source->setProperty ("sampleRate", s.sourceRate);
+    if (s.isAudio())
+    {
+        juce::Array<juce::var> pairs;
+        for (float v : s.overview) pairs.add (std::round ((double) v * 1000.0) / 1000.0);
+        object->setProperty ("overview", pairs);
+    }
     object->setProperty ("source", juce::var (source));
     return writeJson (infoFile (s.id), root) ? juce::Result::ok() : juce::Result::fail ("The snippet's file could not be written: " + infoFile (s.id).getFileName());
 }
@@ -161,7 +178,7 @@ juce::String Project::newId() const
     for (;;)
     {
         const auto id = juce::String::toHexString (random.nextInt()).paddedLeft ('0', 8).substring (0, 8);
-        if (find (id) == nullptr && ! infoFile (id).exists() && ! rollFile (id).exists()) return id;
+        if (find (id) == nullptr && ! infoFile (id).exists() && ! rollFile (id).exists() && ! soundFile (id).exists()) return id;
     }
 }
 
@@ -198,6 +215,33 @@ juce::Result Project::importRoll (const juce::File& bachFile, juce::String& idOu
     return writeProjectFile();
 }
 
+juce::Result Project::importSound (const juce::File& file, juce::String& idOut, juce::StringArray& remarks)
+{
+    if (! isOpen()) return juce::Result::fail ("No project is open.");
+    SnippetInfo s;
+    s.id = newId();
+    s.kind = "audio";
+    s.name = cleanName (file.getFileNameWithoutExtension());
+    s.sourcePath = file.getFullPathName();
+    s.sourceModified = file.getLastModificationTime().toMilliseconds();
+    s.added = juce::Time::getCurrentTime().toISO8601 (true);
+
+    SoundFacts facts;
+    Sound sound;
+    const auto imported = importSoundFile (file, soundFile (s.id), sampleRate, facts, remarks, &sound);
+    if (imported.failed()) return imported;
+    s.overview = soundMiniature (sound);
+    s.channels = facts.channels;
+    s.length = facts.lengthMs;
+    s.sourceRate = facts.sourceRate;
+    const auto info = writeInfo (s);
+    if (info.failed()) return info;
+
+    idOut = s.id;
+    snippets.push_back (std::move (s));
+    return writeProjectFile();
+}
+
 juce::Result Project::updateFromFile (const juce::String& id, juce::StringArray& remarks)
 {
     auto* s = findMutable (id);
@@ -205,6 +249,23 @@ juce::Result Project::updateFromFile (const juce::String& id, juce::StringArray&
     if (s->sourcePath.isEmpty()) return juce::Result::fail ("\"" + s->name + "\" was not imported from a file.");
     const juce::File source (s->sourcePath);
     if (! source.existsAsFile()) return juce::Result::fail ("The file \"" + s->name + "\" came from is no longer there: " + s->sourcePath);
+
+    if (s->isAudio())
+    {
+        // Into a file beside the snippet's own first: a file that cannot be read leaves the snippet as it was.
+        const auto fresh = soundFile (id).getSiblingFile (id + ".new.flac");
+        SoundFacts facts;
+        Sound sound;
+        const auto imported = importSoundFile (source, fresh, sampleRate, facts, remarks, &sound);
+        if (imported.failed()) { fresh.deleteFile(); return imported; }
+        if (! fresh.moveFileTo (soundFile (id))) return juce::Result::fail ("The new sound could not be put in the snippet's place.");
+        s->overview = soundMiniature (sound);
+        s->channels = facts.channels;
+        s->length = facts.lengthMs;
+        s->sourceRate = facts.sourceRate;
+        s->sourceModified = source.getLastModificationTime().toMilliseconds();
+        return writeInfo (*s);
+    }
 
     Roll roll;
     const auto read = readBachRollFile (source, roll, remarks);
@@ -232,7 +293,7 @@ juce::Result Project::remove (const juce::String& id)
 
     const auto trash = folder.getChildFile ("Trash");
     if (! trash.createDirectory().wasOk()) return juce::Result::fail ("The project's Trash folder could not be made.");
-    for (const auto& file : { infoFile (id), rollFile (id) })
+    for (const auto& file : { infoFile (id), rollFile (id), soundFile (id) })
         if (file.existsAsFile() && ! file.moveFileTo (trash.getNonexistentChildFile (file.getFileNameWithoutExtension(), file.getFileExtension(), false)))
             return juce::Result::fail ("A file of the snippet could not be moved to the Trash folder: " + file.getFileName());
 

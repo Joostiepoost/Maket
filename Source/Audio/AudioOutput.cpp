@@ -110,4 +110,6 @@ void AudioOutput::audioDeviceIOCallbackWithContext (const float* const*, int, fl
 
     const double heardAt = clock.blockTime (maket::OscScheduler::now(), numSamples, sampleRate, context.hostTimeNs, latencyMs);
     synth.render (numOutputs > 0 ? outputs[0] : nullptr, numOutputs > 1 ? outputs[1] : nullptr, numSamples, heardAt);
+    if (soundPlayer != nullptr)
+        soundPlayer->render (numOutputs > 0 ? outputs[0] : nullptr, numOutputs > 1 ? outputs[1] : nullptr, numSamples, sampleRate);
 }

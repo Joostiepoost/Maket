@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "EditionPage.h"
+#include "SoundPage.h"
 #include "../Model/Project.h"
 #include "../Model/Settings.h"
 #include "../Model/WindowState.h"
@@ -27,7 +28,7 @@ class LibraryPage : public juce::Component,
                     public juce::FileDragAndDropTarget
 {
 public:
-    LibraryPage (maket::Settings&, maket::WindowState&, maket::OscScheduler&, maket::Synth&, AudioOutput&);
+    LibraryPage (maket::Settings&, maket::WindowState&, maket::OscScheduler&, maket::Synth&, AudioOutput&, maket::SoundPlayer&);
     ~LibraryPage() override;
 
     // --- The project ---
@@ -45,8 +46,9 @@ public:
     void chooseRoll();
     bool openLooseRoll (const juce::File&);
 
-    // --- The editor in front; null when no snippet is open ---
+    // --- The editor in front: of a roll, or of a sound (stage 3c); null when it is of the other kind or nothing is open ---
     EditionPage* front() const;
+    SoundPage* frontSound() const;
     bool hasRoll() const                    { return front() != nullptr && front()->hasRoll(); }
     bool isPlaying() const                  { return front() != nullptr && front()->isPlaying(); }
     bool anythingPlays() const;
@@ -74,7 +76,12 @@ private:
     {
         juce::String id;                    // of the snippet; empty for a roll outside the project
         juce::File file;                    // of a roll outside the project
-        std::unique_ptr<EditionPage> page;
+        std::unique_ptr<EditionPage> page;  // a roll's editor,
+        std::unique_ptr<SoundPage> sound;   // or a sound's: one of the two
+
+        juce::Component* component() const  { return page != nullptr ? static_cast<juce::Component*> (page.get()) : sound.get(); }
+        bool isPlaying() const              { return page != nullptr ? page->isPlaying() : sound != nullptr && sound->isPlaying(); }
+        void stopPlaying() const            { if (page != nullptr) page->stopPlaying(); else if (sound != nullptr) sound->stopPlaying(); }
     };
 
     class List;
@@ -85,7 +92,7 @@ private:
     Open& addEditor();
     void bringToFront (int index);
     void closeTab (int index);
-    void stopAllBut (const EditionPage* keep);
+    void stopAllBut (const juce::Component* keep);
     void refreshMiniature (const juce::String& id);
     void showMenuFor (const juce::String& id);
     void renameSnippet (const juce::String& id);
@@ -94,6 +101,7 @@ private:
     void setNotice (const juce::String& text, bool isProblem = false);
     void changed();
     juce::String tabTitle (int index) const;
+    juce::String soundFacts (const maket::SnippetInfo&) const;
     int indexOfSnippet (const juce::String& id) const;
 
     maket::Settings& settings;
@@ -101,6 +109,7 @@ private:
     maket::OscScheduler& scheduler;
     maket::Synth& synth;
     AudioOutput& audio;
+    maket::SoundPlayer& soundPlayer;
 
     maket::Project project;
     std::map<juce::String, std::vector<maket::notation::MiniLine>> miniatures;

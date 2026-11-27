@@ -18,7 +18,7 @@ endif()
 
 # The build stage this source stands at; shown at the right of the tab row,
 # so that it is clear which build is being tested.
-set(MAKET_BUILD_STAGE "3b.1")
+set(MAKET_BUILD_STAGE "3c")
 
 # --- JUCE --------------------------------------------------------------------
 # By default JUCE is downloaded automatically (first build takes a few minutes).
@@ -46,6 +46,9 @@ set(MAKET_CORE_SOURCES
     Source/Model/Settings.cpp
     Source/Model/WindowState.cpp
     Source/Model/Project.cpp
+    Source/Sound/Resampler.cpp
+    Source/Sound/Sound.cpp
+    Source/Sound/SoundPlayer.cpp
     Source/Notation/Miniature.cpp
     Source/Model/Llll.cpp
     Source/Model/Roll.cpp
@@ -103,6 +106,7 @@ target_sources(Maket PRIVATE
     Source/UI/RollView.cpp
     Source/UI/EditionPage.cpp
     Source/UI/LibraryPage.cpp
+    Source/UI/SoundPage.cpp
     Source/Audio/AudioOutput.cpp
     Source/UI/OscTestPage.cpp
     Source/UI/TimingTestPage.cpp
@@ -129,6 +133,7 @@ target_link_libraries(Maket
     PRIVATE
         MaketData
         juce::juce_audio_devices
+        juce::juce_audio_formats
         juce::juce_gui_extra
     PUBLIC
         juce::juce_recommended_config_flags
@@ -144,13 +149,14 @@ option(MAKET_BUILD_TESTS "Build the MaketTests console program" OFF)
 if(MAKET_BUILD_TESTS)
     juce_add_console_app(MaketTests PRODUCT_NAME "MaketTests")
     juce_generate_juce_header(MaketTests)
-    target_sources(MaketTests PRIVATE Tests/MaketTests.cpp Tests/BachTests.cpp Tests/BachWriteTests.cpp Tests/OscTests.cpp Tests/TimingTests.cpp Tests/MappingTests.cpp Tests/StudyTests.cpp Tests/NotationTests.cpp Tests/PlayingTests.cpp Tests/SynthTests.cpp Tests/SpeedTests.cpp Tests/StateTests.cpp Tests/ProjectTests.cpp ${MAKET_CORE_SOURCES})
+    target_sources(MaketTests PRIVATE Tests/MaketTests.cpp Tests/BachTests.cpp Tests/BachWriteTests.cpp Tests/OscTests.cpp Tests/TimingTests.cpp Tests/MappingTests.cpp Tests/StudyTests.cpp Tests/NotationTests.cpp Tests/PlayingTests.cpp Tests/SynthTests.cpp Tests/SpeedTests.cpp Tests/StateTests.cpp Tests/ProjectTests.cpp Tests/SoundTests.cpp ${MAKET_CORE_SOURCES})
     target_compile_definitions(MaketTests PRIVATE
         ${MAKET_DEFINITIONS} JUCE_STANDALONE_APPLICATION=1
         MAKET_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
     target_link_libraries(MaketTests
         PRIVATE
             juce::juce_core
+            juce::juce_audio_formats
         PUBLIC
             juce::juce_recommended_config_flags
             juce::juce_recommended_lto_flags

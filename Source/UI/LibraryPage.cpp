@@ -3,6 +3,7 @@
 #include "LibraryPage.h"
 #include "Theme.h"
 #include "../Formats/BachRoll.h"
+#include "../Sound/Sound.h"
 #include "../Model/AppInfo.h"
 
 namespace
@@ -32,7 +33,7 @@ public:
     explicit List (LibraryPage& o) : owner (o)
     {
         importButton.setButtonText (juce::String::fromUTF8 ("Import\xe2\x80\xa6"));
-        importButton.setTooltip (juce::String::fromUTF8 ("Bring bach.roll text files into the library  (\xe2\x8c\x98I). Files can also be dropped here."));
+        importButton.setTooltip (juce::String::fromUTF8 ("Bring bach.roll text files and sound files into the library  (\xe2\x8c\x98I). Files can also be dropped here."));
         importButton.onClick = [this] { owner.chooseRollsToImport(); };
         styleButton (importButton);
         addAndMakeVisible (importButton);
@@ -79,7 +80,7 @@ public:
         if (owner.project.getSnippets().empty())
         {
             g.setFont (Theme::font (12.5f));
-            g.drawFittedText (juce::String::fromUTF8 ("The library is empty. Import\xe2\x80\xa6 brings bach.roll text files in; they can also be dropped here."),
+            g.drawFittedText (juce::String::fromUTF8 ("The library is empty. Import\xe2\x80\xa6 brings bach.roll text files and sound files in; they can also be dropped here."),
                               getLocalBounds().withTrimmedTop (headHeight + 14).reduced (14, 0).removeFromTop (70), juce::Justification::topLeft, 4);
         }
 
@@ -128,7 +129,21 @@ private:
         g.setColour (miniPaper);
         g.fillRoundedRectangle (mini, 3.0f);
         const auto found = owner.miniatures.find (s.id);
-        if (found != owner.miniatures.end())
+        if (s.isAudio())
+        {
+            // A sound: from its lowest to its highest value, column by column.
+            const auto inner = mini.reduced (4.0f, 4.0f);
+            const int columns = (int) s.overview.size() / 2;
+            g.setColour (miniInk.withAlpha (0.85f));
+            const float middle = inner.getCentreY(), half = inner.getHeight() * 0.5f;
+            for (int c = 0; c < columns; ++c)
+            {
+                const float x = inner.getX() + inner.getWidth() * (float) c / (float) columns;
+                const float top = middle - s.overview[(size_t) c * 2 + 1] * half, bottom = middle - s.overview[(size_t) c * 2] * half;
+                g.fillRect (x, top, juce::jmax (1.0f, inner.getWidth() / (float) columns), juce::jmax (1.0f, bottom - top));
+            }
+        }
+        else if (found != owner.miniatures.end())
         {
             const auto inner = mini.reduced (4.0f, 4.0f);
             const float thickness = inner.getHeight() > 90.0f ? 1.5f : 1.0f;
@@ -145,8 +160,9 @@ private:
         const auto nameFont = Theme::font (13.0f, openAt >= 0), factsFont = Theme::font (11.0f);
         const int nameWidth = juce::roundToInt (juce::GlyphArrangement::getStringWidth (nameFont, s.name)) + 10;
         const juce::String length = lengthText (s.length);
-        const juce::String notes = juce::String (s.notes) + " notes, " + length;
-        const juce::String all3 = juce::String (s.voices) + (s.voices == 1 ? " voice, " : " voices, ") + notes;
+        const juce::String notes = s.isAudio() ? length : juce::String (s.notes) + " notes, " + length;
+        const juce::String all3 = s.isAudio() ? juce::String (s.channels == 2 ? "sound, stereo, " : "sound, mono, ") + length
+                                              : juce::String (s.voices) + (s.voices == 1 ? " voice, " : " voices, ") + notes;
         juce::String facts;
         for (const auto& candidate : { all3, notes, length })
             if (facts.isEmpty() && nameWidth + juce::roundToInt (juce::GlyphArrangement::getStringWidth (factsFont, candidate)) <= caption.getWidth())
@@ -195,7 +211,7 @@ public:
         {
             const auto r = tabBounds (i);
             const bool isFront = i == owner.frontIndex;
-            const bool plays = owner.open[(size_t) i].page->isPlaying();
+            const bool plays = owner.open[(size_t) i].isPlaying();
             if (isFront)
             {
                 g.setColour (Theme::header);
@@ -277,7 +293,7 @@ public:
         newButton.setButtonText (juce::String::fromUTF8 ("New project\xe2\x80\xa6"));
         openButton.setButtonText (juce::String::fromUTF8 ("Open project\xe2\x80\xa6"));
         rollButton.setButtonText (juce::String::fromUTF8 ("Open a bach roll\xe2\x80\xa6"));
-        importButton.setButtonText (juce::String::fromUTF8 ("Import bach rolls\xe2\x80\xa6"));
+        importButton.setButtonText (juce::String::fromUTF8 ("Import\xe2\x80\xa6"));
         newButton.onClick    = [this] { owner.newProject(); };
         openButton.onClick   = [this] { owner.chooseProject(); };
         rollButton.onClick   = [this] { owner.chooseRoll(); };
@@ -328,7 +344,7 @@ public:
         g.setFont (Theme::font (13.5f));
         g.drawFittedText (owner.project.isOpen()
                               ? juce::String ("Click a snippet in the library to open it; several can be open at once, each in a tab. "
-                                              "Import brings bach.roll text files into the library; the files themselves are not touched.")
+                                              "Import brings bach.roll text files and sound files into the library; the files themselves are not touched.")
                               : juce::String ("A project is a folder that holds a library of snippets. Make a new one, open one, "
                                               "or open a single bach.roll text file for a look outside any project."),
                           column.removeFromTop (44), juce::Justification::topLeft, 3);
@@ -377,8 +393,8 @@ private:
 
 //==============================================================================
 
-LibraryPage::LibraryPage (maket::Settings& s, maket::WindowState& w, maket::OscScheduler& o, maket::Synth& sy, AudioOutput& a)
-    : settings (s), windowState (w), scheduler (o), synth (sy), audio (a)
+LibraryPage::LibraryPage (maket::Settings& s, maket::WindowState& w, maket::OscScheduler& o, maket::Synth& sy, AudioOutput& a, maket::SoundPlayer& sp)
+    : settings (s), windowState (w), scheduler (o), synth (sy), audio (a), soundPlayer (sp)
 {
     list = std::make_unique<List> (*this);
     tabs = std::make_unique<Tabs> (*this);
@@ -390,14 +406,29 @@ LibraryPage::LibraryPage (maket::Settings& s, maket::WindowState& w, maket::OscS
 
 LibraryPage::~LibraryPage() = default;
 
+juce::String LibraryPage::soundFacts (const maket::SnippetInfo& s) const
+{
+    const int ms = juce::roundToInt (s.length);
+    juce::String text = juce::String (s.channels == 2 ? "stereo" : "mono") + ", " + juce::String (project.getSampleRate() / 1000.0) + " kHz, "
+                        + juce::String (ms / 60000) + "'" + juce::String ((ms % 60000) / 1000.0, 3).paddedLeft ('0', 6) + "\"";
+    if (s.sourceRate > 0.0 && std::abs (s.sourceRate - project.getSampleRate()) > 0.5)
+        text << "   (the file it came from has " << juce::String (s.sourceRate / 1000.0) << " kHz; converted on import)";
+    return text;
+}
+
 EditionPage* LibraryPage::front() const
 {
     return frontIndex >= 0 && frontIndex < (int) open.size() ? open[(size_t) frontIndex].page.get() : nullptr;
 }
 
+SoundPage* LibraryPage::frontSound() const
+{
+    return frontIndex >= 0 && frontIndex < (int) open.size() ? open[(size_t) frontIndex].sound.get() : nullptr;
+}
+
 bool LibraryPage::anythingPlays() const
 {
-    for (const auto& o : open) if (o.page->isPlaying()) return true;
+    for (const auto& o : open) if (o.isPlaying()) return true;
     return false;
 }
 
@@ -412,7 +443,7 @@ juce::String LibraryPage::tabTitle (int index) const
     const auto& o = open[(size_t) index];
     if (o.id.isNotEmpty())
         if (const auto* s = project.find (o.id)) return s->name;
-    return o.page->getTitle() + (project.isOpen() ? juce::String::fromUTF8 ("  \xc2\xb7  not in the library") : juce::String());
+    return (o.page != nullptr ? o.page->getTitle() : o.sound->getTitle()) + (project.isOpen() ? juce::String::fromUTF8 ("  \xc2\xb7  not in the library") : juce::String());
 }
 
 void LibraryPage::changed()
@@ -496,7 +527,7 @@ bool LibraryPage::openProject (const juce::File& folder)
     closeProject();
     project = std::move (opened);
     miniatures.clear();
-    for (const auto& s : project.getSnippets()) refreshMiniature (s.id);
+    for (const auto& s : project.getSnippets()) if (! s.isAudio()) refreshMiniature (s.id);
     windowState.addRecentProject (folder.getFullPathName());
     windowState.save();
     setNotice (remarks.joinIntoString (" "), ! remarks.isEmpty());
@@ -526,7 +557,8 @@ void LibraryPage::refreshMiniature (const juce::String& id)
 void LibraryPage::chooseRollsToImport()
 {
     if (! project.isOpen()) { setNotice ("Open or make a project first: a library belongs to a project.", true); return; }
-    chooser = std::make_unique<juce::FileChooser> ("Import bach.roll text files into the library", settings.getFolder ("importsFolder"), "*.txt;*.llll");
+    chooser = std::make_unique<juce::FileChooser> ("Import bach.roll text files and sound files into the library", settings.getFolder ("importsFolder"),
+                                                   "*.txt;*.llll;" + maket::soundFilePattern());
     chooser->launchAsync (juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles | juce::FileBrowserComponent::canSelectMultipleItems,
                           [this] (const juce::FileChooser& fc) { importFiles (fc.getResults()); });
 }
@@ -535,20 +567,25 @@ void LibraryPage::importFiles (const juce::Array<juce::File>& files)
 {
     if (files.isEmpty() || ! project.isOpen()) return;
     int done = 0;
-    juce::StringArray refused;
+    juce::StringArray refused, notes;
     juce::String last;
+    juce::MouseCursor::showWaitCursor();            // a long sound at another rate takes a moment
     for (const auto& file : files)
     {
         juce::String id;
         juce::StringArray remarks;
-        const auto result = project.importRoll (file, id, remarks);
+        const bool isSound = maket::looksLikeSoundFile (file);
+        const auto result = isSound ? project.importSound (file, id, remarks) : project.importRoll (file, id, remarks);
         if (result.failed()) { refused.add (file.getFileName()); continue; }
-        refreshMiniature (id);
+        notes.addArray (remarks);
+        if (! isSound) refreshMiniature (id);
         last = id;
         ++done;
     }
-    setNotice (juce::String (done) + (done == 1 ? " roll imported." : " rolls imported.")
-               + (refused.isEmpty() ? juce::String() : " Not a bach.roll text: " + refused.joinIntoString (", ") + "."), ! refused.isEmpty());
+    setNotice (juce::String (done) + (done == 1 ? " file imported." : " files imported.")
+               + (refused.isEmpty() ? juce::String() : " Neither a bach.roll text nor a sound Maket can read: " + refused.joinIntoString (", ") + ".")
+               + (notes.isEmpty() ? juce::String() : " " + notes.joinIntoString (" ")), ! refused.isEmpty());
+    juce::MouseCursor::hideWaitCursor();
     changed();
     if (done == 1) openSnippet (last);
 }
@@ -600,6 +637,26 @@ void LibraryPage::openSnippet (const juce::String& id)
     const auto* info = project.find (id);
     if (info == nullptr) return;
 
+    if (info->isAudio())
+    {
+        auto sound = std::make_shared<maket::Sound>();
+        const auto read = maket::readSoundFile (project.soundFile (id), *sound);
+        if (read.failed()) { setNotice ("\"" + info->name + "\": " + read.getErrorMessage(), true); return; }
+
+        Open o;
+        o.id = id;
+        o.sound = std::make_unique<SoundPage> (soundPlayer);
+        auto* page = o.sound.get();
+        page->turnAudioOn = [this] { return turnAudioOn ? turnAudioOn() : juce::String(); };
+        page->onWillPlay = [this, page] { stopAllBut (page); };
+        page->onPlayStateChanged = [this] { tabs->repaint(); if (onChanged) onChanged(); };
+        page->showSound (sound, info->name, soundFacts (*info));
+        addChildComponent (*page);
+        open.push_back (std::move (o));
+        bringToFront ((int) open.size() - 1);
+        return;
+    }
+
     maket::Roll roll;
     juce::StringArray remarks;
     const auto result = project.loadRoll (id, roll, remarks);
@@ -645,7 +702,7 @@ void LibraryPage::bringToFront (int index)
 {
     if (index < 0 || index >= (int) open.size()) return;
     frontIndex = index;
-    for (size_t i = 0; i < open.size(); ++i) open[i].page->setVisible ((int) i == index);
+    for (size_t i = 0; i < open.size(); ++i) open[i].component()->setVisible ((int) i == index);
     changed();
 }
 
@@ -654,26 +711,29 @@ void LibraryPage::closeFrontTab()       { closeTab (frontIndex); }
 void LibraryPage::closeTab (int index)
 {
     if (index < 0 || index >= (int) open.size()) return;
-    open[(size_t) index].page->stopPlaying();
-    removeChildComponent (open[(size_t) index].page.get());
+    open[(size_t) index].stopPlaying();
+    removeChildComponent (open[(size_t) index].component());
     open.erase (open.begin() + index);
     if (open.empty())               frontIndex = -1;
     else if (index < frontIndex)    --frontIndex;
     else if (index == frontIndex)   frontIndex = juce::jmin (index, (int) open.size() - 1);
-    for (size_t i = 0; i < open.size(); ++i) open[i].page->setVisible ((int) i == frontIndex);
+    for (size_t i = 0; i < open.size(); ++i) open[i].component()->setVisible ((int) i == frontIndex);
     changed();
 }
 
-void LibraryPage::stopAllBut (const EditionPage* keep)
+void LibraryPage::stopAllBut (const juce::Component* keep)
 {
     for (auto& o : open)
-        if (o.page.get() != keep && o.page->isPlaying()) o.page->stopPlaying();
+        if (o.component() != keep && o.isPlaying()) o.stopPlaying();
 }
 
 void LibraryPage::audioChanged (bool isOn, const juce::String& trouble)
 {
     for (auto& o : open)
-        o.page->audioChanged (isOn, asking == nullptr || asking == o.page.get() ? trouble : juce::String());
+    {
+        if (o.page != nullptr) o.page->audioChanged (isOn, asking == nullptr || asking == o.page.get() ? trouble : juce::String());
+        else                   o.sound->audioChanged (isOn, trouble);
+    }
 }
 
 //==============================================================================
@@ -700,7 +760,7 @@ void LibraryPage::showMenuFor (const juce::String& id)
         if (chosen == 2) renameSnippet (id);
         if (chosen == 3) updateSnippet (id);
         if (chosen == 4) juce::File (s->sourcePath).revealToUser();
-        if (chosen == 5) project.rollFile (id).revealToUser();
+        if (chosen == 5) (s->isAudio() ? project.soundFile (id) : project.rollFile (id)).revealToUser();
         if (chosen == 6) removeSnippet (id);
     });
 }
@@ -730,8 +790,19 @@ void LibraryPage::updateSnippet (const juce::String& id)
     const auto* info = project.find (id);
     if (updated.failed() || info == nullptr) { setNotice (updated.getErrorMessage(), true); return; }
 
-    refreshMiniature (id);
     const int at = indexOfSnippet (id);
+    if (info->isAudio())
+    {
+        if (at >= 0)
+        {
+            auto sound = std::make_shared<maket::Sound>();
+            if (maket::readSoundFile (project.soundFile (id), *sound).wasOk()) open[(size_t) at].sound->showSound (sound, info->name, soundFacts (*info));
+        }
+        setNotice ("\"" + info->name + "\" now holds the sound its file holds.");
+        changed();
+        return;
+    }
+    refreshMiniature (id);
     if (at >= 0)
     {
         // The open tab takes the new notes (a play of it is stopped).
@@ -799,5 +870,5 @@ void LibraryPage::resized()
         return;
     }
     tabs->setBounds (area.removeFromTop (tabsHeight));
-    for (auto& o : open) o.page->setBounds (area);
+    for (auto& o : open) o.component()->setBounds (area);
 }

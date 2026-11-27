@@ -32,9 +32,15 @@ struct SnippetInfo
     juce::int64 sourceModified = 0; // that file's time of change when it was read, ms
     juce::String added;             // ISO date and time
 
-    // Read from the notes when the project is opened, not stored:
+    // Read from the notes or the sound when the project is opened, not stored:
     int voices = 0, notes = 0;
     double length = 0.0;            // ms
+    int channels = 0;               // audio: one or two
+    double sourceRate = 0.0;        // audio: the rate of the file it came from (stored)
+
+    std::vector<float> overview;    // audio: pairs of lowest and highest value, for the small picture (stored)
+
+    bool isAudio() const            { return kind == "audio"; }
 };
 
 class Project
@@ -59,7 +65,11 @@ public:
 
     /** Reads a bach.roll text file and puts it in the library as a note snippet; the file itself is not touched. */
     juce::Result importRoll (const juce::File& bachFile, juce::String& newId, juce::StringArray& remarks);
-    /** Reads the snippet's source file again and puts its notes in the snippet's place. */
+    /** Stage 3c: reads a sound file and puts a copy without loss (FLAC, 24 bits, at the project's rate) in the library. */
+    juce::Result importSound (const juce::File& soundFile, juce::String& newId, juce::StringArray& remarks);
+    juce::File soundFile (const juce::String& id) const     { return folder.getChildFile ("Sounds").getChildFile (id + ".flac"); }
+
+    /** Reads the snippet's source file again and puts its notes, or its sound, in the snippet's place. */
     juce::Result updateFromFile (const juce::String& id, juce::StringArray& remarks);
     juce::Result rename (const juce::String& id, const juce::String& newName);
     /** Takes the snippet out of the library; its files go to the project's Trash folder. */
