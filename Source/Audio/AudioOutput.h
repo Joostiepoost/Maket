@@ -15,6 +15,7 @@
 #include "../Engine/StreamClock.h"
 #include "../Engine/Synth.h"
 #include "../Sound/SoundPlayer.h"
+#include "../Sound/SurfaceEngine.h"
 
 class AudioOutput : private juce::AudioIODeviceCallback
 {
@@ -22,6 +23,8 @@ public:
     explicit AudioOutput (maket::Synth&);
     /** Stage 3c: a player of sound files, mixed in with the synth. Set once, before the output is opened. */
     void setSoundPlayer (maket::SoundPlayer* p)     { soundPlayer = p; }
+    /** Stage 3d: the engine of the build surface, mixed in as well. Set once, before the output is opened. */
+    void setSurfaceEngine (maket::SurfaceEngine* e)     { surfaceEngine = e; }
     ~AudioOutput() override;
 
     /** Opens the output with this name (empty: the computer's default output), unless it is open already.
@@ -46,6 +49,7 @@ private:
 
     maket::Synth& synth;
     maket::SoundPlayer* soundPlayer = nullptr;
+    maket::SurfaceEngine* surfaceEngine = nullptr;
     juce::AudioDeviceManager manager;
     maket::StreamClock clock;
     bool initialised = false;

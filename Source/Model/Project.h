@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "Roll.h"
+#include "Surface.h"
 
 namespace maket
 {
@@ -79,6 +80,11 @@ public:
 
     juce::Result loadRoll (const juce::String& id, Roll& roll, juce::StringArray& remarks) const;
     juce::Result saveRoll (const juce::String& id, const Roll& roll);
+
+    /** Stage 3d: the project's build surface (one for now), kept in Surfaces/main.json. A project without one gets an empty one. */
+    juce::Result loadSurface (Surface& surface) const;
+    juce::Result saveSurface (const Surface& surface) const;
+    juce::File surfaceFile() const                          { return folder.getChildFile ("Surfaces").getChildFile ("main.json"); }
 
     juce::File rollFile (const juce::String& id) const      { return folder.getChildFile ("Snippets").getChildFile (id + ".roll.txt"); }
     juce::File infoFile (const juce::String& id) const      { return folder.getChildFile ("Snippets").getChildFile (id + ".json"); }

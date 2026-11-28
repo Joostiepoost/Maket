@@ -42,10 +42,15 @@ void WindowState::load()
     const auto b = object->getProperty ("window");
     bounds = b.isString() ? b.toString() : juce::String();
     recent.clear();
+    bool dropped = false;
     if (auto* list = object->getProperty ("recentProjects").getArray())
         for (const auto& v : *list)
-            if (v.isString() && v.toString().isNotEmpty() && recent.size() < 10) recent.addIfNotAlreadyThere (v.toString());
-    changed = false;
+        {
+            // An entry that is not a path (the crash of 3b could leave one) is left out, and the file is written again.
+            if (v.isString() && juce::File::isAbsolutePath (v.toString()) && recent.size() < 10) recent.addIfNotAlreadyThere (v.toString());
+            else if (v.isString()) dropped = true;
+        }
+    changed = dropped;
 }
 
 bool WindowState::save()

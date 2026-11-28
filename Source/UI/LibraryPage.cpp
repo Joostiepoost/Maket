@@ -725,6 +725,7 @@ void LibraryPage::stopAllBut (const juce::Component* keep)
 {
     for (auto& o : open)
         if (o.component() != keep && o.isPlaying()) o.stopPlaying();
+    if (keep != nullptr && onWillPlay) onWillPlay();        // the build surface falls silent too
 }
 
 void LibraryPage::audioChanged (bool isOn, const juce::String& trouble)
@@ -799,6 +800,7 @@ void LibraryPage::updateSnippet (const juce::String& id)
             if (maket::readSoundFile (project.soundFile (id), *sound).wasOk()) open[(size_t) at].sound->showSound (sound, info->name, soundFacts (*info));
         }
         setNotice ("\"" + info->name + "\" now holds the sound its file holds.");
+        if (onSnippetChanged) onSnippetChanged (id);
         changed();
         return;
     }
@@ -822,6 +824,7 @@ void LibraryPage::removeSnippet (const juce::String& id)
     if (at >= 0) closeTab (at);
     const auto removed = project.remove (id);
     miniatures.erase (id);
+    if (onSnippetChanged) onSnippetChanged (id);
     setNotice (removed.wasOk() ? "\"" + name + "\" is out of the library; its files are in the project's Trash folder." : removed.getErrorMessage(), removed.failed());
     changed();
 }

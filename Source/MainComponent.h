@@ -22,6 +22,7 @@
 #include "UI/UtilitiesPage.h"
 #include "UI/EditionPage.h"
 #include "UI/LibraryPage.h"
+#include "UI/SurfacePage.h"
 #include "Engine/OscScheduler.h"
 #include "Engine/Synth.h"
 #include "Audio/AudioOutput.h"
@@ -52,7 +53,8 @@ public:
         cmdPlayStop = 0x3030,       // stage 2d: the transport of the roll
         cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart,
         cmdToggleAudio = 0x3040,    // stage 3a
-        cmdNewProject = 0x3050, cmdOpenProject, cmdCloseProject, cmdImportRolls, cmdProjectPitch, cmdCloseTab     // stage 3b
+        cmdNewProject = 0x3050, cmdOpenProject, cmdCloseProject, cmdImportRolls, cmdProjectPitch, cmdCloseTab,    // stage 3b
+        cmdUndo = 0x3060, cmdRedo, cmdDeleteBlock, cmdDuplicateBlock, cmdAddTrack                                  // stage 3d
     };
 
     /** Audio on: Maket's audio output is open. Off: it is closed and Maket makes no sound of its own and spends no
@@ -112,11 +114,15 @@ private:
     maket::WindowState windowState { maket::WindowState::defaultFile() };
     maket::OscScheduler oscScheduler;           // sends OSC messages at their time, on a thread of its own
     maket::SoundPlayer soundPlayer;     // plays one sound file at a time (stage 3c); before the pages
+    maket::SurfaceEngine surfaceEngine; // plays the build surface (stage 3d); before the pages
     maket::Synth synth;                 // Maket's own sound (stage 2e); before the pages, which use it
     AudioOutput audioOutput { synth };
     KeepAwake keepAwake { oscScheduler };       // tells macOS not to slow Maket down while messages wait
     UtilitiesPage* utilities = nullptr;         // owned by `pages`
     LibraryPage* library = nullptr;             // owned by `pages`
+    SurfacePage* surface = nullptr;             // owned by `pages`
+    /** True when the build surface is in front and a project is open. */
+    bool surfaceInFront() const         { return surface != nullptr && tabBar.getCurrent() == Tabs::buildSurface && surface->hasProject(); }
     bool listShown = true;
     bool inspectorShown = true;
 

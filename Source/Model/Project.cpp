@@ -314,6 +314,22 @@ void Project::move (const juce::String& id, int newIndex)
         }
 }
 
+juce::Result Project::loadSurface (Surface& surface) const
+{
+    surface = Surface();
+    if (! isOpen()) return juce::Result::fail ("No project is open.");
+    if (! surfaceFile().existsAsFile()) return juce::Result::ok();
+    return Surface::fromJson (surfaceFile().loadFileAsString(), surface);
+}
+
+juce::Result Project::saveSurface (const Surface& surface) const
+{
+    if (! isOpen()) return juce::Result::fail ("No project is open.");
+    if (! surfaceFile().getParentDirectory().createDirectory().wasOk()) return juce::Result::fail ("The project's Surfaces folder could not be made.");
+    return surfaceFile().replaceWithText (surface.toJson(), false, false, "\n") ? juce::Result::ok()
+                                                                                 : juce::Result::fail ("The surface could not be written.");
+}
+
 juce::Result Project::loadRoll (const juce::String& id, Roll& roll, juce::StringArray& remarks) const
 {
     if (find (id) == nullptr) return juce::Result::fail ("That snippet is not in the library.");

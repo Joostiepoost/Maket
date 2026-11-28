@@ -63,6 +63,10 @@ public:
     /** Set by the main window; handed to every editor. */
     std::function<juce::String()> turnAudioOn;
     void audioChanged (bool isOn, const juce::String& trouble);
+    /** Stage 3d: a snippet was updated from its file, renamed or taken out; and: something in the library is about to play. */
+    std::function<void (const juce::String& id)> onSnippetChanged;
+    std::function<void()> onWillPlay;
+    void stopEverything()                   { stopAllBut (nullptr); }
     /** Something changed that the menus or the window's title show. */
     std::function<void()> onChanged;
 

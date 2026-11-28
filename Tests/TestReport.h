@@ -72,3 +72,4 @@ void testSpeed (const juce::File& temp);
 void testState (const juce::File& workFolder);
 void testProject (const juce::File& workFolder, const juce::File& temp);
 void testSound (const juce::File& workFolder);
+void testSurface (const juce::File& workFolder);

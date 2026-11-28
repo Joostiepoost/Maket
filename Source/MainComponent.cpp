@@ -45,7 +45,22 @@ MainComponent::MainComponent()
             PreferencesPage::audioOutputState = [this] { return audioOutput.describe(); };
             library = page.get();
             library->turnAudioOn = [this] { return setAudioOn (true); };
-            library->onChanged = [this] { resized(); updatePanelButtons(); commandManager.commandStatusChanged(); };
+            library->onChanged = [this] { if (surface != nullptr) surface->projectChanged(); resized(); updatePanelButtons(); commandManager.commandStatusChanged(); };
+            library->onSnippetChanged = [this] (const juce::String& id) { if (surface != nullptr) surface->snippetChanged (id); };
+            library->onWillPlay = [this] { if (surface != nullptr) surface->stopPlaying(); };
+            pages[(size_t) i] = std::move (page);
+        }
+        else if (i == Tabs::buildSurface && library != nullptr)
+        {
+            // Stage 3d. The library's page was made just before this one and outlives it.
+            audioOutput.setSurfaceEngine (&surfaceEngine);
+            auto page = std::make_unique<SurfacePage> (surfaceEngine, library->getProject());
+            surface = page.get();
+            surface->turnAudioOn = [this] { return setAudioOn (true); };
+            surface->onWillPlay = [this] { if (library != nullptr) library->stopEverything(); };
+            surface->onChanged = [this] { commandManager.commandStatusChanged(); };
+            surface->showDetail = [this] (const juce::String& kind, const juce::String& name, const juce::StringPairArray& lines) { inspector.showDetail (kind, name, lines); };
+            surface->clearDetail = [this] { if (tabBar.getCurrent() == Tabs::buildSurface) inspector.clearDetail(); };
             pages[(size_t) i] = std::move (page);
         }
         else
@@ -172,10 +187,12 @@ juce::String MainComponent::setAudioOn (bool shouldBeOn)
         synth.allNotesOff();
         soundPlayer.stop();
         audioOutput.close();
+        surfaceEngine.halt();
     }
 
     tabBar.setAudioOn (isAudioOn());
     if (library != nullptr) library->audioChanged (isAudioOn(), problem);
+    if (surface != nullptr) surface->audioChanged (isAudioOn());
     commandManager.commandStatusChanged();
     return problem;
 }
@@ -190,6 +207,7 @@ void MainComponent::showTab (int index)
 
     tabBar.setCurrent (index);
     inspector.setTab (index);
+    if (index == Tabs::buildSurface && surface != nullptr) surface->tabShown();
     windowState.setTab (index);
     resized();                  // the list's edge shows only in a tab with a list
     updatePanelButtons();
@@ -252,7 +270,8 @@ void MainComponent::getAllCommands (juce::Array<juce::CommandID>& c)
     c.add (cmdToggleInspector);
     for (auto id : { cmdOpen, cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit, cmdDrawingTimes,
                      cmdPlayStop, cmdPlayPrescheduled, cmdPlayOn, cmdToggleLoop, cmdToStart, cmdToggleAudio,
-                     cmdNewProject, cmdOpenProject, cmdCloseProject, cmdImportRolls, cmdProjectPitch, cmdCloseTab })
+                     cmdNewProject, cmdOpenProject, cmdCloseProject, cmdImportRolls, cmdProjectPitch, cmdCloseTab,
+                     cmdUndo, cmdRedo, cmdDeleteBlock, cmdDuplicateBlock, cmdAddTrack })
         c.add (id);
 }
 
@@ -305,7 +324,8 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
     const bool rollInFront = editor() != nullptr && editor()->hasRoll() && tabBar.getCurrent() == Tabs::library;
     const bool project = library != nullptr && library->hasProject();
     const bool soundInFront = library != nullptr && library->frontSound() != nullptr && tabBar.getCurrent() == Tabs::library;
-    const bool anyInFront = rollInFront || soundInFront;
+    const bool onSurface = surfaceInFront();
+    const bool anyInFront = rollInFront || soundInFront || onSurface;
     switch (id)
     {
         case cmdOpen:
@@ -338,6 +358,30 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
             info.addDefaultKeypress ('w', cmd);
             info.setActive (editor() != nullptr && tabBar.getCurrent() == Tabs::library);
             return;
+        case cmdUndo:
+            info.setInfo ("Undo", "Take back the last change on the build surface", "Edit", 0);
+            info.addDefaultKeypress ('z', cmd);
+            info.setActive (onSurface && surface->canUndo());
+            return;
+        case cmdRedo:
+            info.setInfo ("Redo", "Do again what was taken back", "Edit", 0);
+            info.addDefaultKeypress ('z', cmdShift);
+            info.setActive (onSurface && surface->canRedo());
+            return;
+        case cmdDeleteBlock:
+            info.setInfo ("Remove the block", "Take the selected block off the build surface; its sound stays in the library", "Edit", 0);
+            info.setActive (onSurface && surface->hasSelection());
+            return;
+        case cmdDuplicateBlock:
+            info.setInfo ("Duplicate the block", "Put a copy of the selected block right after it", "Edit", 0);
+            info.addDefaultKeypress ('d', cmd);
+            info.setActive (onSurface && surface->hasSelection());
+            return;
+        case cmdAddTrack:
+            info.setInfo ("Add a track", "Add a track at the bottom of the build surface", "Edit", 0);
+            info.addDefaultKeypress ('t', cmdShift);
+            info.setActive (onSurface);
+            return;
         case cmdZoomAcrossIn:
             info.setInfo ("More time detail", "Zoom in along the time axis", "View", 0);
             info.addDefaultKeypress ('=', cmd);
@@ -365,7 +409,9 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
             info.setActive (anyInFront);
             return;
         case cmdPlayStop:
-            info.setInfo ((editor() != nullptr && editor()->isPlaying()) || (library != nullptr && library->frontSound() != nullptr && library->frontSound()->isPlaying()) ? "Stop" : "Play", "Play the roll from the playhead on the conTimbre ePlayer, or stop", "Transport", 0);
+            info.setInfo (onSurface ? (surface->isPlaying() ? "Stop" : "Play")
+                                    : (editor() != nullptr && editor()->isPlaying()) || (library != nullptr && library->frontSound() != nullptr && library->frontSound()->isPlaying()) ? "Stop" : "Play",
+                          "Play what is in front from its playhead, or stop", "Transport", 0);
             info.addDefaultKeypress (juce::KeyPress::spaceKey, juce::ModifierKeys::noModifiers);
             info.setActive (anyInFront);
             return;
@@ -388,7 +434,7 @@ void MainComponent::getCommandInfo (juce::CommandID id, juce::ApplicationCommand
         case cmdToggleLoop:
             info.setInfo ("Go round the loop", "Play goes round the loop region marked in the ruler", "Transport", 0);
             info.addDefaultKeypress ('l', juce::ModifierKeys::noModifiers);
-            info.setTicked (editor() != nullptr && editor()->isLoopOn());
+            info.setTicked (onSurface ? surface->isLoopOn() : editor() != nullptr && editor()->isLoopOn());
             info.setActive (anyInFront);
             return;
         case cmdToggleAudio:
@@ -433,6 +479,23 @@ bool MainComponent::perform (const InvocationInfo& info)
             default: break;
         }
     }
+    if (surfaceInFront())
+        switch (info.commandID)
+        {
+            case cmdZoomAcrossIn:   surface->zoomAcross (1);        return true;
+            case cmdZoomAcrossOut:  surface->zoomAcross (-1);       return true;
+            case cmdZoomToFit:      surface->zoomToFit();           return true;
+            case cmdPlayStop:       surface->playOrStop();          commandManager.commandStatusChanged(); return true;
+            case cmdToggleLoop:     surface->toggleLoop();          commandManager.commandStatusChanged(); return true;
+            case cmdToStart:        surface->toStart();             return true;
+            case cmdUndo:           surface->undo();                return true;
+            case cmdRedo:           surface->redo();                return true;
+            case cmdDeleteBlock:    surface->deleteSelected();      return true;
+            case cmdDuplicateBlock: surface->duplicateSelected();   return true;
+            case cmdAddTrack:       surface->addTrack();            return true;
+            default: break;
+        }
+    if (tabBar.getCurrent() != Tabs::library && info.commandID >= cmdOpen && info.commandID < cmdToggleAudio) return true;     // a roll's command, and no roll in front
     if (auto* sound = library != nullptr ? library->frontSound() : nullptr)
         switch (info.commandID)
         {
@@ -469,7 +532,7 @@ bool MainComponent::perform (const InvocationInfo& info)
 
 juce::StringArray MainComponent::getMenuBarNames()
 {
-    return { "File", "View", "Transport" };
+    return { "File", "Edit", "View", "Transport" };
 }
 
 juce::PopupMenu MainComponent::getMenuForIndex (int menuIndex, const juce::String&)
@@ -488,6 +551,16 @@ juce::PopupMenu MainComponent::getMenuForIndex (int menuIndex, const juce::Strin
     }
     else if (menuIndex == 1)
     {
+        m.addCommandItem (&commandManager, cmdUndo);
+        m.addCommandItem (&commandManager, cmdRedo);
+        m.addSeparator();
+        m.addCommandItem (&commandManager, cmdDuplicateBlock);
+        m.addCommandItem (&commandManager, cmdDeleteBlock);
+        m.addSeparator();
+        m.addCommandItem (&commandManager, cmdAddTrack);
+    }
+    else if (menuIndex == 2)
+    {
         for (auto id : { cmdZoomAcrossIn, cmdZoomAcrossOut, cmdZoomDownIn, cmdZoomDownOut, cmdZoomToFit })
             m.addCommandItem (&commandManager, id);
         m.addCommandItem (&commandManager, cmdDrawingTimes);
@@ -498,7 +571,7 @@ juce::PopupMenu MainComponent::getMenuForIndex (int menuIndex, const juce::Strin
         m.addCommandItem (&commandManager, cmdToggleList);
         m.addCommandItem (&commandManager, cmdToggleInspector);
     }
-    else if (menuIndex == 2)
+    else if (menuIndex == 3)
     {
         for (auto id : { cmdPlayStop, cmdPlayPrescheduled, cmdPlayOn })
             m.addCommandItem (&commandManager, id);

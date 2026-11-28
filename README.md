@@ -70,8 +70,8 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 2f | The closing of step 2: speed with a very large roll (measured, and made faster where it was slow), the looks gone through once more | done; tested by Joost on 26 Nov. **Step 2 is closed** |
 | 3a | Audio on / Audio off in the tab row; panels of adjustable width; the window remembers how it was left; small tags when staves stand close; the sound card's clock held against the Mac's | done; tested by Joost on 26 Nov |
 | 3b | Projects (a folder), a start panel with the projects opened last, the library for notes: bach rolls imported, a miniature of each, several open at once as tabs | done; tested by Joost on 27 Nov (3b and 3b.1) |
-| 3c | Audio snippets in the library: import as lossless copies at the project's rate, a waveform miniature, a waveform view with play, stop and loop | built 27 Nov; to be tested by Joost |
-| 3d | The build surface with audio: tracks, blocks, edges, gain, fades, crossfades, play and loop, undo | |
+| 3c | Audio snippets in the library: import as lossless copies at the project's rate, a waveform miniature, a waveform view with play, stop and loop | done; tested by Joost on 28 Nov (a first round, also against Reaper; he goes on testing) |
+| 3d | The build surface with audio: tracks, blocks, edges, gain, fades, crossfades, play and loop, undo. In two parts: **3d.1** tracks, blocks, moving, edges, crossings, play, undo; **3d.2** a block's own gain and fades, dragging from the library | 3d.1 built 28 Nov; to be tested by Joost |
 | 3e | Note blocks linked to their snippet, playing in time with the audio | |
 | 3f | The closing test of step 3 | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -943,6 +943,40 @@ Known limits: starting one sound while another plays cuts the first off at once 
 7. In Finder, the project's `Sounds` folder: drag one of the `.flac` files into Reaper beside its original: the same?
 8. *Update from its file* after changing a sound file; *Remove* one.
 9. Push `Measurements/report.md`.
+
+### After the test of 3c (28 Nov)
+
+All checks passed on Joost's Mac; a first round of testing found everything working, the comparison with Reaper included. He goes on testing; 3d was started in the meantime.
+
+## Using stage 3d.1
+
+The tab **Build surface** now holds the project's surface: tracks under one another, and on them blocks of sound from the library. Stage 3d comes in two parts; this is the first.
+
+- **Tracks.** *+ Track* (or ⇧⌘T) adds one. On its left: the name (double click to change it), **M** (mute) and **S** (solo), the gain (drag; double click for 0 dB) and the place between left and right (drag; double click for the middle). A right click on that part: rename, move up or down, remove. The track clicked last has an amber strip; that is where *+ Sound* puts its sound.
+- **Blocks.** *+ Sound* puts a sound of the library at the playhead. A right click in a track puts one at that spot. A block is one appearance of a sound: the same sound can stand on the surface many times, and the library's copy is never changed.
+- **Moving and cutting.** Drag a block to another time or another track. Drag its left or right edge to use less of its sound, or more again; the sound itself stays where it sounds. A right click on a block: duplicate (⌘D), *Use the whole sound again*, remove (also ⌫).
+- **Crossing over.** Where two blocks on one track overlap, the earlier fades out while the later fades in, at equal power; two blue curves show it. A block that begins later lies over one that begins earlier. On different tracks nothing fades: they add up.
+- **Play.** Space plays from the playhead and stops; a click in the ruler or in an empty part sets the playhead; ⌥-drag in the ruler sets a loop, **L** turns it on and off. Every change is heard at once, also while it plays.
+- **Undo.** ⌘Z and ⇧⌘Z, in the new *Edit* menu, for everything on the surface.
+- **Kept.** Every change is written at once to `Surfaces/main.json` in the project's folder.
+- The inspector shows the selected block: where it starts and ends, which part of its sound it uses.
+- A sound taken out of the library leaves its blocks on the surface, hatched and silent.
+
+Not yet (3d.2): a block's own gain and fades with handles, dragging a sound from the library's list onto the surface, snapping. Not yet (3e): note blocks. For now one thing sounds at a time: a play on the surface stops a roll or sound playing in the library, and the other way round.
+
+### Testing stage 3d.1
+
+1. `git pull`, then `./build.sh`: `stage 3d.1`. `./build.sh tests` ends with `All 239 checks passed.`
+2. Open your project, go to *Build surface*. Add three or four tracks, put sounds on them (both ways: *+ Sound*, and a right click in a track).
+3. Move blocks in time and to other tracks; drag edges in and out. Does it feel direct? Is anything hard to take hold of?
+4. Overlap two blocks on one track and listen to the crossing; make the overlap long and short. Then the same two on two tracks.
+5. Gain, pan, mute and solo while it plays. Hard left and hard right on headphones.
+6. A loop over a busy part; change things while it goes round.
+7. Undo a row of changes back to the start, and redo them.
+8. Quit Maket, start it again: is the surface as you left it?
+9. **Against Reaper or Projet:** build the same small arrangement there (same files, same times; the inspector gives the times to the millisecond). Does it sound the same?
+10. Activity Monitor while a busy surface plays: Maket's share of the processor.
+11. Push `Measurements/report.md`.
 
 ## The repository
 
