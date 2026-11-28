@@ -1,6 +1,6 @@
 # Maket: test report
 
-Maket 0.0.1, stage 3d.1. Machine: Intel(R) Xeon(R) Processor @ 2.10GHz, Linux. Date: 28 Nov 2026 1:18:01am.
+Maket 0.0.1, stage 3d.2. Machine: Intel(R) Xeon(R) Processor @ 2.30GHz, Linux. Date: 28 Nov 2026 2:32:05pm.
 
 ## 1. The test program
 
@@ -9,7 +9,7 @@ This program builds Maket's sources that hold no interface code (model, file for
 | Check | Passed |
 | --- | --- |
 | The version reads as three numbers (`0.0.1`) | yes |
-| The build stage reads as a step number and a letter, with the number of a part where there is one (`3d.1`) | yes |
+| The build stage reads as a step number and a letter, with the number of a part where there is one (`3d.2`) | yes |
 | A work folder can be made in the system's temporary folder and removed again | yes |
 | A text file of 4114 bytes with accents and both kinds of line ending reads back byte for byte | yes |
 | The report folder can be written | yes |
@@ -279,8 +279,8 @@ A listener inside the test program takes the place of Max. This shows that the m
 | --- | --- |
 | Without a target nothing is sent; with one, 50 messages arrive at the listener one by one, each as it was sent | yes |
 | 200 messages, one every 5 ms, all leave and all arrive, in order | yes |
-| None leaves before its time (the earliest: -0.029 ms) | yes |
-| 95 in 100 leave within 2 ms after their time (within 0.003 ms; the latest of all: 0.222 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
+| None leaves before its time (the earliest: -0.028 ms) | yes |
+| 95 in 100 leave within 2 ms after their time (within 0.007 ms; the latest of all: 0.012 ms, a measurement and not a check, since a busy computer can hold any program up for a moment) | yes |
 | Six messages with the same time (a chord) leave in the order they were given | yes |
 | A note-off that is due in a minute is sent at once when asked; and what still waits can be dropped and `all_notes_off` sent in its place (as when Maket quits) | yes |
 
@@ -288,8 +288,8 @@ How punctual the send thread was in the run of 200 messages, in milliseconds aft
 
 | | Half of them within | 95 in 100 within | The latest |
 | --- | --- | --- | --- |
-| Left Maket | -0.012 | 0.003 | 0.222 |
-| Arrived at the listener in this program | 0.074 | 0.140 | 0.361 |
+| Left Maket | -0.006 | 0.007 | 0.012 |
+| Arrived at the listener in this program | 0.051 | 0.107 | 0.613 |
 
 ### A command from a typed line (stage 1f.5)
 
@@ -344,14 +344,14 @@ The first three seconds of the dense passage go through the send thread to a lis
 | Check | Passed |
 | --- | --- |
 | All 240 messages are found in the listener's log, none out of order | yes |
-| 95 in 100 arrive within 2 ms of their time (within 0.10 ms; the farthest 2.55 ms) | yes |
+| 95 in 100 arrive within 2 ms of their time (within 0.09 ms; the farthest 1.34 ms) | yes |
 
 ```
 Arrived: 240 of 240 messages; out of order: 0.
-All messages: half within 0.03 ms of their time, 95 in 100 within 0.10 ms, 99 in 100 within 0.26 ms; the farthest 2.55 ms (earliest -0.08, latest +2.55).
-The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.08 ms, 99 in 100 within 0.26 ms; the farthest 2.55 ms (earliest -0.08, latest +2.55).
-  Part 1 (a line, 40 notes a second): 95 in 100 within 0.10 ms, the farthest 2.55 ms.
-Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 2.57 ms after it.
+All messages: half within 0.02 ms of their time, 95 in 100 within 0.09 ms, 99 in 100 within 0.78 ms; the farthest 1.34 ms (earliest -0.07, latest +1.34).
+The note-ons alone: half within 0.03 ms of their time, 95 in 100 within 0.06 ms, 99 in 100 within 0.29 ms; the farthest 0.78 ms (earliest -0.07, latest +0.78).
+  Part 1 (a line, 40 notes a second): 95 in 100 within 0.09 ms, the farthest 1.34 ms.
+Leaving Maket: 95 in 100 within 0.02 ms of their time, the latest 1.34 ms after it.
 ```
 
 ### The takes of 22 Nov on Joost's Mac
@@ -687,26 +687,26 @@ A roll far larger than Joost's own is written into `Temp/written by Maket` and t
 
 | What | Time here |
 | --- | --- |
-| The roll: 24 voices, 20 minutes, 41191 chords, 74157 notes, 7518 of them gliding, 239 markers; as a file 5.9 MB | made in 73 ms |
-| Writing it as a bach.roll text | 232 ms |
-| Reading the file | 262 ms |
-| Working out staves, spelling, heads, accidentals and glides for every note | 50 ms |
-| Preparing a play of the whole roll: 106273 commands for the ePlayer, 37220 notes for the synth | 326 ms |
+| The roll: 24 voices, 20 minutes, 41191 chords, 74157 notes, 7518 of them gliding, 239 markers; as a file 5.9 MB | made in 60 ms |
+| Writing it as a bach.roll text | 210 ms |
+| Reading the file | 244 ms |
+| Working out staves, spelling, heads, accidentals and glides for every note | 48 ms |
+| Preparing a play of the whole roll: 106273 commands for the ePlayer, 37220 notes for the synth | 320 ms |
 | Making the roll ready for the transport (once after opening, and after a change of who plays a voice) | 219 ms |
-| After that: a play from the middle to the end | 75 ms |
-| After that: one round of a loop of 10 s (963 commands, 322 synth notes) | 5.8 ms |
-| From the press of Play to everything being scheduled | 208 ms |
-| Stop: taking back what was scheduled | 48 ms |
-| The synth with 128 gliding notes at once: 10 s of sound | 946 ms (9.5 % of the time it lasts) |
-| One block of sound (10.7 ms long) while 37220 synth notes wait their turn | 0.077 ms |
+| After that: a play from the middle to the end | 88 ms |
+| After that: one round of a loop of 10 s (963 commands, 322 synth notes) | 5.5 ms |
+| From the press of Play to everything being scheduled | 197 ms |
+| Stop: taking back what was scheduled | 52 ms |
+| The synth with 128 gliding notes at once: 10 s of sound | 752 ms (7.5 % of the time it lasts) |
+| One block of sound (10.7 ms long) while 37220 synth notes wait their turn | 0.079 ms |
 
 | Check | Passed |
 | --- | --- |
 | `Temp/written by Maket/Large roll by Maket.txt` is written (74157 notes) and, read back, holds the same | yes |
 | Writing, reading and working out the notation each take seconds at most, far less on a fast machine | yes |
 | A play of the whole roll, and of a part of it, is prepared in seconds at most | yes |
-| A round of a loop is worked out from its own ten seconds, not from the whole roll (5.8 ms), and gives the same commands as the plain way | yes |
-| However long the preparing takes, the first note keeps its lead: when everything is scheduled, the start of the roll still lies ahead (here 95 ms), so the opening is not played late or bunched together | yes |
+| A round of a loop is worked out from its own ten seconds, not from the whole roll (5.5 ms), and gives the same commands as the plain way | yes |
+| However long the preparing takes, the first note keeps its lead: when everything is scheduled, the start of the roll still lies ahead (here 97 ms), so the opening is not played late or bunched together | yes |
 | The synth at full load makes sound several times faster than it is heard, and waiting notes cost next to nothing | yes |
 
 ## 12. The window's state and the two clocks (stage 3a)
@@ -755,12 +755,12 @@ Blocks of sound on tracks, played many at once. The sounds here are made by the 
 
 | Check | Passed |
 | --- | --- |
-| A surface with two tracks and two blocks is written and read back the same (names, gain, pan, solo; each block's place, part, gain and fades), also through a project; a track taken away takes its blocks with it | yes |
+| A surface with two tracks and two blocks is written and read back the same (names, gain, pan, solo; each block's place, part, gain and fades), also through a project; a track taken away takes its blocks with it; a new track never gets a name that is in use | yes |
 | A block at 1 s that uses 300 ms of a sound from 100 ms in: every sample out is that sample of the sound, left and right, in blocks of 512 and of 37; silence before and after; the play ends by itself a quarter of a second after the last block | yes |
 | Levels: a sound of one channel goes to both sides at its own level; a block at -6 dB is half; a track at +6 dB is double; pan hard left silences the right, pan half right halves the left; a muted track is silent; with a track on solo only that one sounds; two tracks add up | yes |
 | A block's own fades run in a straight line (half way up at half the fade). Two blocks on one track that overlap by 200 ms cross over at equal power: the earlier goes out as the later comes in, each at 0.707 in the middle; on two tracks they simply add up | yes |
 | A loop of 200 ms goes round without a click; Stop ends in silence; a track muted while it plays falls silent at once; through a device at 96 kHz a tone comes out as it is (110 dB clean) | yes |
-| 24 tracks of stereo sound at once take 0.6 % of real time through a device at the project's rate, and 12.6 % through a device at 96 kHz (where every sample is worked out anew) | yes |
+| 24 tracks of stereo sound at once take 0.2 % of real time through a device at the project's rate, and 10.7 % through a device at 96 kHz (where every sample is worked out anew) | yes |
 
 ## 16. Test material
 
