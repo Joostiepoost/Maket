@@ -126,6 +126,7 @@ private:
     int xOf (double ms) const;
     int trackTop (int index) const;
     int trackIndexAt (int y) const;
+    int rowsToShow() const;                 // the tracks, and one more while a block is dragged (the track it may make)
     void viewChanged();
     void zoomAround (double factor, double anchorMs);
     void repaintPlayhead (double before, double after);
@@ -150,6 +151,7 @@ private:
     double playhead = 0.0, playedFrom = 0.0;
     double loopStart = 0.0, loopEnd = 0.0;
     bool loopOn = false, playing = false, wasPlaying = false;
+    bool newTrackBelow = false;             // a block is being dragged below the last track: it gets a new one when let go
     juce::String notice;
     bool noticeIsProblem = false;
 

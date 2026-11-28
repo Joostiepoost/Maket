@@ -1,6 +1,7 @@
 // RollView.cpp
 
 #include "RollView.h"
+#include "PlayheadFlag.h"
 #include "MusicFont.h"
 #include "Theme.h"
 #include "../Notation/Chords.h"
@@ -571,13 +572,20 @@ juce::Rectangle<int> RollView::playheadStrip (double ms) const
     return { x - 8, 0, 16, getHeight() - barThickness };
 }
 
-void RollView::setPlayhead (double ms)
+void RollView::setPlayhead (double ms, bool showTime)
 {
-    if (std::abs (ms - playheadMs) < 1.0e-6) return;
-    const auto before = playheadStrip (playheadMs);
+    if (std::abs (ms - playheadMs) < 1.0e-6 && showTime == playheadShowsTime) return;
+    // Only the strip of the playhead is drawn again, with the time that rides on it: see PlayheadFlag.h.
+    const int right = rollArea().getRight();
+    const auto strip = [this, right] (double at)
+    {
+        auto area = playheadStrip (at);
+        return playheadShowsTime ? area.getUnion (playheadflag::bounds (juce::roundToInt (xOf (at)), 0, right)) : area;
+    };
+    overlayLayer.repaint (strip (playheadMs));
     playheadMs = ms;
-    overlayLayer.repaint (before);
-    overlayLayer.repaint (playheadStrip (playheadMs));
+    playheadShowsTime = showTime;
+    overlayLayer.repaint (strip (playheadMs));
 }
 
 void RollView::paintOverlay (juce::Graphics& g)
@@ -593,6 +601,8 @@ void RollView::paintOverlay (juce::Graphics& g)
     juce::Path flag;
     flag.addTriangle (x - 6.0f, 0.0f, x + 6.0f, 0.0f, x, 9.0f);
     g.fillPath (flag);
+    if (playheadShowsTime)
+        playheadflag::draw (g, playheadflag::bounds (juce::roundToInt (x), 0, area.getRight()), playheadMs, playColour.darker (0.05f));
 }
 
 void RollView::turnPageTo (double ms)

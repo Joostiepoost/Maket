@@ -382,8 +382,7 @@ void EditionPage::timerCallback()
     {
         const double position = transport.position();
         view.turnPageTo (position);
-        view.setPlayhead (position);
-        repaint (transportTextArea);
+        view.setPlayhead (position, true);      // the time rides on the playhead; the bar is not drawn again on every tick
     }
 }
 
@@ -392,7 +391,7 @@ juce::String EditionPage::transportText() const
     if (notice.isNotEmpty()) return notice;
     if (! transport.isPlaying()) return "from " + timeText (cursor);
     const juce::String round = transport.isLoopOn() && transport.hasLoop() && transport.startedFrom() < transport.loopEnd() ? ", round the loop" : "";
-    return following ? timeText (transport.position()) + round
+    return following ? "playing" + round
                      : "playing prescheduled from " + timeText (transport.startedFrom()) + round;
 }
 

@@ -87,9 +87,14 @@ void testSurface (const juce::File& work)
         // A track taken away takes its blocks with it; a file that is no surface is refused.
         back.removeTrack (id1);
         Surface wrong;
+        // A track added after one was taken away gets a number that no track has ("Track 2" is there: it becomes "Track 3").
+        Surface named;
+        named.addTrack(); named.addTrack();
+        named.removeTrack (named.tracks[0].id);
+        ok = ok && named.addTrack().name == "Track 3";
         ok = ok && back.tracks.size() == 1 && back.placements.size() == 1 && back.placements[0].snippetId == "tone" && Surface::fromJson ("{ \"x\": 1 }", wrong).failed();
         checkRow (ok, "A surface with two tracks and two blocks is written and read back the same (names, gain, pan, solo; each block's place, part, gain and fades), "
-                      "also through a project; a track taken away takes its blocks with it");
+                      "also through a project; a track taken away takes its blocks with it; a new track never gets a name that is in use");
     }
 
     // --- One block, sample for sample ---

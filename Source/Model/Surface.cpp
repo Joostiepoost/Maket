@@ -47,7 +47,14 @@ SurfaceTrack& Surface::addTrack()
 {
     SurfaceTrack t;
     t.id = newId ("t");
-    t.name = "Track " + juce::String ((int) tracks.size() + 1);
+    // "Track" and the next number that no track has yet.
+    for (int number = (int) tracks.size() + 1;; ++number)
+    {
+        t.name = "Track " + juce::String (number);
+        bool taken = false;
+        for (const auto& other : tracks) taken = taken || other.name == t.name;
+        if (! taken) break;
+    }
     tracks.push_back (t);
     return tracks.back();
 }

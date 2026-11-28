@@ -67,7 +67,8 @@ public:
 
     /** The playhead: where the sound is, or where play will begin. It is drawn in a layer of its own,
         so moving it does not draw the notes again. */
-    void setPlayhead (double ms);
+    /** `showTime`: the running time rides on the playhead (while it follows a play). */
+    void setPlayhead (double ms, bool showTime = false);
     double playhead() const             { return playheadMs; }
 
     /** Scrolls so that `ms` shows, as bach's "ChangePage": when it has passed the right edge (or lies
@@ -165,6 +166,8 @@ private:
     static constexpr float smallTag = 17.0f;
 
     double playheadMs = 0.0;
+
+    bool playheadShowsTime = false;
     double loopStartMs = 0.0, loopEndMs = 0.0;
     bool loopShownOn = false;
     bool pressInRuler = false, draggingLoop = false, loopDragged = false;

@@ -2,6 +2,7 @@
 
 #include "SurfacePage.h"
 #include "Theme.h"
+#include "PlayheadFlag.h"
 #include <algorithm>
 #include <cmath>
 
@@ -634,8 +635,9 @@ void SurfacePage::duplicateSelected()
 
 juce::Rectangle<int> SurfacePage::blockBounds (const maket::Placement& p) const
 {
-    const int index = surface.trackIndex (p.trackId);
+    int index = surface.trackIndex (p.trackId);
     if (index < 0) return {};
+    if (newTrackBelow && drag == Drag::move && p.id == selected) index = (int) surface.tracks.size();      // shown on the track it is about to make
     const int x0 = xOf (p.start), x1 = xOf (p.end());
     return { x0, trackTop (index) + 5, juce::jmax (3, x1 - x0), trackHeight - 11 };
 }
@@ -746,10 +748,10 @@ void SurfacePage::timerCallback()
 
 void SurfacePage::repaintPlayhead (double before, double after)
 {
+    // Only the strip of the playhead is drawn again, with the time that rides on it: see PlayheadFlag.h.
     const auto ruler = rulerArea(), lanes = lanesArea();
     for (double ms : { before, after })
-        repaint (xOf (ms) - 9, ruler.getY(), 20, lanes.getBottom() - ruler.getY());
-    repaint (0, rowHeight, getWidth(), rowHeight);      // the time in the bar
+        repaint (xOf (ms) - playheadflag::reach, ruler.getY(), 2 * playheadflag::reach, lanes.getBottom() - ruler.getY());
 }
 
 void SurfacePage::updateBar()
@@ -787,6 +789,11 @@ double SurfacePage::msAt (int x) const        { return scrollMs + (x - lanesArea
 int SurfacePage::xOf (double ms) const        { return lanesArea().getX() + juce::roundToInt ((ms - scrollMs) * pixelsPerMs); }
 int SurfacePage::trackTop (int index) const   { return lanesArea().getY() + index * trackHeight - scrollY; }
 
+int SurfacePage::rowsToShow() const
+{
+    return (int) surface.tracks.size() + (drag == Drag::move && gestureOpen ? 1 : 0);
+}
+
 int SurfacePage::trackIndexAt (int y) const
 {
     const int index = (int) std::floor ((y - lanesArea().getY() + scrollY) / (double) trackHeight);
@@ -802,7 +809,7 @@ void SurfacePage::viewChanged()
     scrollBar.setRangeLimits (0.0, juce::jmax (length + visible * 0.5, scrollMs + visible), juce::dontSendNotification);
     scrollBar.setCurrentRange (scrollMs, visible, juce::dontSendNotification);
 
-    const int all = (int) surface.tracks.size() * trackHeight;
+    const int all = rowsToShow() * trackHeight;
     scrollY = juce::jlimit (0, juce::jmax (0, all - lanes.getHeight()), scrollY);
     downBar.setVisible (all > lanes.getHeight());
     downBar.setRangeLimits (0.0, (double) juce::jmax (all, lanes.getHeight()), juce::dontSendNotification);
@@ -945,6 +952,12 @@ void SurfacePage::mouseDrag (const juce::MouseEvent& e)
     if (drag == Drag::move)
     {
         p->start = juce::jmax (0.0, grabbed.start + moved);
+        // Near the bottom edge the tracks scroll up, so that the room under the last track can be reached.
+        const auto lanes = lanesArea();
+        if (e.y > lanes.getBottom() - 16) scrollY = juce::jmin (scrollY + 16, juce::jmax (0, rowsToShow() * trackHeight - lanes.getHeight()));
+        else if (e.y < lanes.getY() + 16) scrollY = juce::jmax (0, scrollY - 16);
+        // Below the last track: the block goes to a new track, made when it is let go (as in Projet).
+        newTrackBelow = e.y >= trackTop ((int) surface.tracks.size());
         const int track = trackIndexAt (e.y);
         if (track >= 0) p->trackId = surface.tracks[(size_t) track].id;
         currentTrack = p->trackId;
@@ -969,8 +982,17 @@ void SurfacePage::mouseDrag (const juce::MouseEvent& e)
 
 void SurfacePage::mouseUp (const juce::MouseEvent&)
 {
-    if (drag == Drag::move || drag == Drag::trimStart || drag == Drag::trimEnd) endGesture();
-    drag = Drag::none;
+    if (drag == Drag::move && newTrackBelow && gestureOpen)
+    {
+        const auto id = surface.addTrack().id;
+        if (auto* p = surface.find (selected)) p->trackId = id;
+        currentTrack = id;
+        touched();
+    }
+    newTrackBelow = false;
+    const bool wasBlock = drag == Drag::move || drag == Drag::trimStart || drag == Drag::trimEnd;
+    drag = Drag::none;                  // (before the gesture ends: the view then no longer keeps room for one more track)
+    if (wasBlock) endGesture();
 }
 
 bool SurfacePage::keyPressed (const juce::KeyPress& key)
@@ -1017,7 +1039,7 @@ void SurfacePage::resized()
 void SurfacePage::paintBlock (juce::Graphics& g, const maket::Placement& p, juce::Rectangle<int> lanes, double crossingInMs) const
 {
     const auto b = blockBounds (p);
-    const auto shown = b.getIntersection (lanes);
+    const auto shown = b.getIntersection (lanes).getIntersection (g.getClipBounds());      // only the part that is to be drawn now
     if (shown.isEmpty()) return;
     const bool isSelected = p.id == selected;
     const auto found = sounds.find (p.snippetId);
@@ -1119,7 +1141,7 @@ void SurfacePage::paint (juce::Graphics& g)
     g.setColour (noticeIsProblem ? Theme::warning : Theme::textMuted);
     juce::String text = notice;
     if (text.isEmpty() && project.isOpen())
-        text = (isPlaying() ? juce::String() : juce::String ("from ")) + timeText (playhead, true)
+        text = (isPlaying() ? juce::String ("playing") : "from " + timeText (playhead, true))
                + (loopEnd > loopStart ? juce::String::fromUTF8 ("   \xc2\xb7   loop ") + timeText (loopStart, true) + juce::String::fromUTF8 (" \xe2\x80\x93 ") + timeText (loopEnd, true) : juce::String());
     g.drawText (text, second, juce::Justification::centredLeft, true);
 
@@ -1139,6 +1161,22 @@ void SurfacePage::paint (juce::Graphics& g)
     g.setColour (Theme::line);
     g.fillRect (headerWidth - 1, ruler.getY(), 1, getHeight() - ruler.getY());
     g.fillRect (0, ruler.getBottom() - 1, headerWidth, 1);
+
+    if (newTrackBelow && drag == Drag::move)
+    {
+        const juce::Rectangle<int> cell (0, trackTop ((int) surface.tracks.size()), headerWidth - 1, trackHeight);
+        if (cell.getY() >= lanes.getY() - trackHeight)
+        {
+            g.saveState();
+            g.reduceClipRegion (0, lanes.getY(), headerWidth, lanes.getHeight());
+            g.setColour (Theme::accent.withAlpha (0.14f));
+            g.fillRect (cell);
+            g.setColour (Theme::accent);
+            g.setFont (Theme::font (13.5f, true));
+            g.drawText ("New track", cell.reduced (14, 0), juce::Justification::centredLeft, true);
+            g.restoreState();
+        }
+    }
 
     // The paper: ruler and lanes.
     g.setColour (paper);
@@ -1177,6 +1215,17 @@ void SurfacePage::paint (juce::Graphics& g)
     {
         const int y = trackTop (i) - 1;
         if (y > lanes.getY() && y < lanes.getBottom()) g.fillRect (lanes.getX(), y, lanes.getWidth(), 1);
+    }
+
+    // A block dragged below the last track: the track it will make.
+    if (newTrackBelow && drag == Drag::move)
+    {
+        const int y = trackTop ((int) surface.tracks.size());
+        const juce::Rectangle<int> row (lanes.getX(), y, lanes.getWidth(), trackHeight);
+        g.setColour (Theme::accent.withAlpha (0.14f));
+        g.fillRect (row);
+        g.setColour (Theme::accent.withAlpha (0.8f));
+        g.drawRect (row, 1);
     }
 
     // The loop, behind the blocks.
@@ -1218,7 +1267,7 @@ void SurfacePage::paint (juce::Graphics& g)
         const auto f = fades.find (p.id);
         if (f == fades.end()) continue;
         const auto b = blockBounds (p);
-        if (b.isEmpty() || ! b.intersects (lanes)) continue;
+        if (b.isEmpty() || ! b.intersects (lanes) || ! b.intersects (g.getClipBounds())) continue;
         const bool crossedIn = f->second.first > p.fadeIn + 0.01, crossedOut = f->second.second > p.fadeOut + 0.01;
         for (int end = 0; end < 2; ++end)
         {
@@ -1264,5 +1313,6 @@ void SurfacePage::paint (juce::Graphics& g)
     juce::Path head;
     head.addTriangle ((float) x - 5.0f, (float) ruler.getY(), (float) x + 7.0f, (float) ruler.getY(), (float) x + 1.0f, (float) ruler.getY() + 9.0f);
     g.fillPath (head);
+    if (isPlaying()) playheadflag::draw (g, playheadflag::bounds (x, ruler.getY(), ruler.getRight()), playhead, playColour);
     g.restoreState();
 }

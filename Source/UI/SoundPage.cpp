@@ -2,6 +2,7 @@
 
 #include "SoundPage.h"
 #include "Theme.h"
+#include "PlayheadFlag.h"
 
 namespace
 {
@@ -126,12 +127,16 @@ void SoundPage::timerCallback()
         repaint();
         return;
     }
+    const double before = playhead;
     playhead = player.positionMs();
     // Turn the page when the playhead runs out of view, as the roll does.
     const auto area = waveArea();
     const double visible = area.getWidth() / pixelsPerMs;
-    if (playhead < scrollMs || playhead > scrollMs + visible) { scrollMs = juce::jmax (0.0, playhead - visible * 0.05); viewChanged(); }
-    repaint();
+    if (playhead < scrollMs || playhead > scrollMs + visible) { scrollMs = juce::jmax (0.0, playhead - visible * 0.05); viewChanged(); repaint(); return; }
+    // Only the strip of the playhead is drawn again, with the time that rides on it: see PlayheadFlag.h.
+    const auto ruler = rulerArea();
+    for (double ms : { before, playhead })
+        repaint (xOf (ms) - playheadflag::reach, ruler.getY(), 2 * playheadflag::reach, area.getBottom() - ruler.getY());
 }
 
 void SoundPage::updateBar()
@@ -283,8 +288,9 @@ void SoundPage::paintChannel (juce::Graphics& g, juce::Rectangle<int> area, int 
     {
         // Close up: the samples themselves, joined by a line.
         juce::Path path;
-        const int first = juce::jmax (0, (int) (scrollMs * sound->sampleRate / 1000.0) - 1);
-        const int last = juce::jmin (length - 1, first + (int) (area.getWidth() * samplesPerPixel) + 3);
+        const auto clip = g.getClipBounds();
+        const int first = juce::jmax (0, (int) ((scrollMs + juce::jmax (0, clip.getX() - area.getX()) / pixelsPerMs) * sound->sampleRate / 1000.0) - 2);
+        const int last = juce::jmin (length - 1, (int) ((scrollMs + (juce::jmin (area.getRight(), clip.getRight()) - area.getX()) / pixelsPerMs) * sound->sampleRate / 1000.0) + 3);
         for (int i = first; i <= last; ++i)
         {
             const float x = (float) area.getX() + (float) ((i * 1000.0 / sound->sampleRate - scrollMs) * pixelsPerMs);
@@ -299,7 +305,8 @@ void SoundPage::paintChannel (juce::Graphics& g, juce::Rectangle<int> area, int 
     // Further off: for every pixel across, from the lowest to the highest value it covers.
     const auto& ranges = sound->overview[(size_t) channel];
     const bool fromOverview = samplesPerPixel >= maket::Sound::overviewStep;
-    for (int px = 0; px < area.getWidth(); ++px)
+    const auto clip = g.getClipBounds();
+    for (int px = juce::jmax (0, clip.getX() - area.getX()); px < juce::jmin (area.getWidth(), clip.getRight() - area.getX()); ++px)
     {
         const double from = (scrollMs + px / pixelsPerMs) * sound->sampleRate / 1000.0;
         const int a = (int) from, b = juce::jmin (length, (int) (from + samplesPerPixel) + 1);
@@ -340,7 +347,7 @@ void SoundPage::paint (juce::Graphics& g)
     g.setFont (Theme::font (12.5f));
     juce::String text = notice;
     if (text.isEmpty() && sound != nullptr)
-        text = (isPlaying() ? juce::String() : juce::String ("from ")) + timeText (playhead, true)
+        text = (isPlaying() ? juce::String ("playing") : "from " + timeText (playhead, true))
                + (loopEnd > loopStart ? juce::String::fromUTF8 ("   \xc2\xb7   loop ") + timeText (loopStart, true) + juce::String::fromUTF8 (" \xe2\x80\x93 ") + timeText (loopEnd, true) : juce::String());
     g.drawText (text, second, juce::Justification::centredLeft, true);
 
@@ -403,5 +410,6 @@ void SoundPage::paint (juce::Graphics& g)
     juce::Path head;
     head.addTriangle ((float) x - 5.0f, (float) ruler.getY(), (float) x + 7.0f, (float) ruler.getY(), (float) x + 1.0f, (float) ruler.getY() + 9.0f);
     g.fillPath (head);
+    if (isPlaying()) playheadflag::draw (g, playheadflag::bounds (x, ruler.getY(), wave.getRight()), playhead, playColour);
     g.restoreState();
 }

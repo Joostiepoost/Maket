@@ -71,7 +71,7 @@ Each step is cut into sub-stages that add one thing and are tested on Joost's Ma
 | 3a | Audio on / Audio off in the tab row; panels of adjustable width; the window remembers how it was left; small tags when staves stand close; the sound card's clock held against the Mac's | done; tested by Joost on 26 Nov |
 | 3b | Projects (a folder), a start panel with the projects opened last, the library for notes: bach rolls imported, a miniature of each, several open at once as tabs | done; tested by Joost on 27 Nov (3b and 3b.1) |
 | 3c | Audio snippets in the library: import as lossless copies at the project's rate, a waveform miniature, a waveform view with play, stop and loop | done; tested by Joost on 28 Nov (a first round, also against Reaper; he goes on testing) |
-| 3d | The build surface with audio: tracks, blocks, edges, gain, fades, crossfades, play and loop, undo. In two parts: **3d.1** tracks, blocks, moving, edges, crossings, play, undo; **3d.2** a block's own gain and fades, dragging from the library | 3d.1 built 28 Nov; to be tested by Joost |
+| 3d | The build surface with audio: tracks, blocks, edges, gain, fades, crossfades, play and loop, undo. In parts: **3d.1** tracks, blocks, moving, edges, crossings, play, undo; **3d.2** drawing while playing made light, a block dragged below the last track makes a track; **3d.3** a block's own gain and fades, dragging from the library | 3d.1 tested by Joost on 28 Nov; 3d.2 built 28 Nov, to be tested |
 | 3e | Note blocks linked to their snippet, playing in time with the audio | |
 | 3f | The closing test of step 3 | |
 | 4 | Roll editing: bach's gestures, linear entry, grids, copy and paste, undo, save | |
@@ -962,7 +962,7 @@ The tab **Build surface** now holds the project's surface: tracks under one anot
 - The inspector shows the selected block: where it starts and ends, which part of its sound it uses.
 - A sound taken out of the library leaves its blocks on the surface, hatched and silent.
 
-Not yet (3d.2): a block's own gain and fades with handles, dragging a sound from the library's list onto the surface, snapping. Not yet (3e): note blocks. For now one thing sounds at a time: a play on the surface stops a roll or sound playing in the library, and the other way round.
+Not yet (3d.3): a block's own gain and fades with handles, dragging a sound from the library's list onto the surface, snapping. Not yet (3e): note blocks. For now one thing sounds at a time: a play on the surface stops a roll or sound playing in the library, and the other way round.
 
 ### Testing stage 3d.1
 
@@ -977,6 +977,28 @@ Not yet (3d.2): a block's own gain and fades with handles, dragging a sound from
 9. **Against Reaper or Projet:** build the same small arrangement there (same files, same times; the inspector gives the times to the millisecond). Does it sound the same?
 10. Activity Monitor while a busy surface plays: Maket's share of the processor.
 11. Push `Measurements/report.md`.
+
+### After the test of 3d.1 (28 Nov), and stage 3d.2
+
+All checks passed on Joost's Mac. Moving, edges, crossings, track controls, changes during a loop, undo and redo, and closing and reopening all worked; a small construction sounded the same in Reaper.
+
+**Found: Maket used far more of the processor while playing than Reaper** (24 to 40 % against 11 % for the same files, whatever the device's rate). His screen capture shows macOS's WindowServer rising along with Maket, and the sound engine by itself measures well under 1 % for 24 tracks: so it is the drawing, not the sound. The cause: on the Mac, all parts of a window that are to be drawn again within one frame are taken together as one rectangle around them. The running time in the bar at the top and the playhead in the view together made nearly the whole page be drawn again 30 times a second. The roll and the sound's view had the same fault in a milder form.
+
+Stage 3d.2:
+
+- **While something plays, only the strip of the playhead is drawn again.** The running time now rides on the playhead as a small green flag (in the build surface, the roll and the sound's view); the bar says `playing`. Drawing a strip no longer works out the parts outside it.
+- **A block dragged below the last track makes a new track** when let go, as in Projet: the room under the last track lights up with *New track* while you hold the block there. Near the bottom edge the tracks scroll, so that the room can be reached when the tracks fill the view. One undo takes back the move and the track.
+- A new track gets the next number that no track has (no two "Track 10").
+
+### Testing stage 3d.2
+
+1. `git pull`, then `./build.sh`: `stage 3d.2`. `./build.sh tests` ends with `All 239 checks passed.`
+2. The surface of your screen capture, the same loop, play: what does Activity Monitor say for Maket now, and for WindowServer? And Reaper beside it?
+3. Should it still be high: while it plays, switch to the tab *Utilities* (the sound goes on, nothing of the surface is drawn) and read Maket's figure again. That tells drawing from sound.
+4. The time riding on the playhead: easy to read? Also in a roll and in a sound's view.
+5. Play the large roll once more: Maket's share against the 22 % of before.
+6. Drag a block below the last track; then undo. With so many tracks that they fill the view: hold the block at the bottom edge and move it a little, the tracks scroll.
+7. Push `Measurements/report.md`.
 
 ## The repository
 
